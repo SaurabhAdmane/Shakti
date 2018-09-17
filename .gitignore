@@ -1,0 +1,15 @@
+*.iml
+/.idea
+
+.gradle
+/gradle
+/local.properties
+/build
+/captures
+.externalNativeBuild
+
+# Mac OS
+.DS_Store
+
+# Windows
+Thumbs.db
