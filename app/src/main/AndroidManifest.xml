@@ -16,8 +16,13 @@
         <activity
             android:name=".registration.SignUpActivity"
             android:screenOrientation="portrait"/>
+
         <activity
             android:name=".registration.SignInActivity"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity android:name=".SplashActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
