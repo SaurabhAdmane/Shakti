@@ -4,9 +4,10 @@
     <string name="welcom_message">Welcome to Shakti Coin</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
-    <string name="forgot_password">Forgot Password</string>
+    <string name="forgot_password"><a href="https://localhost/">Forgot Password</a></string>
     <string name="register_now">Register Now</string>
-    <string name="do_registration">Don\'t have an account? Register Now</string>
+    <string name="no_account">Don\'t have an account?</string>
+    <string name="do_registration"><a href="https://localhost/">Register Now</a></string>
     <string name="login_password_required">Both username and password are required</string>
 
 </resources>

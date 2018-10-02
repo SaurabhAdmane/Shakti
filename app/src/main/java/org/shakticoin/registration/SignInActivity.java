@@ -1,6 +1,9 @@
 package org.shakticoin.registration;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -52,6 +55,22 @@ public class SignInActivity extends AppCompatActivity {
                 return false;
             }
         });
+        TextView ctrlRegisterNowLink = findViewById(R.id.register_now_link);
+        final Context self = this;
+        ctrlRegisterNowLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(self, SignUpActivity.class);
+                startActivity(intent);
+            }
+        });
+        TextView ctrlForgotPwd = findViewById(R.id.forgotPassword);
+        ctrlForgotPwd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BaseUrl.get())
@@ -77,7 +96,7 @@ public class SignInActivity extends AppCompatActivity {
         Call<LoginServiceResponse> call = loginService.login(credentials);
         call.enqueue(new Callback<LoginServiceResponse>() {
             @Override
-            public void onResponse(Call<LoginServiceResponse> call, Response<LoginServiceResponse> response) {
+            public void onResponse(@NonNull Call<LoginServiceResponse> call, @NonNull Response<LoginServiceResponse> response) {
                 if (call.isExecuted() && response.isSuccessful()) {
                     LoginServiceResponse resp = response.body();
                     if (resp != null) {
@@ -87,7 +106,7 @@ public class SignInActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<LoginServiceResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<LoginServiceResponse> call, @NonNull Throwable t) {
                 Debug.logException(t);
             }
         });
