@@ -1,10 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingStart="@dimen/activity_horizontal_margin"
+        android:paddingEnd="@dimen/activity_horizontal_margin">
 
-</LinearLayout>
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            app:srcCompat="@mipmap/ic_launcher_round" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/welcom_message"
+            android:textSize="24sp"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"/>
+
+        <Spinner
+            android:id="@+id/contries"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="72dp"/>
+
+
+        <EditText
+            android:id="@+id/postal_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:ems="10"
+            android:inputType="number"
+            android:hint="@string/hint_postal_code"
+            android:textColorHint="@android:color/white"
+            android:textColor="@android:color/white"
+            android:background="@drawable/edit_bordered"/>
+
+        <EditText
+            android:id="@+id/tel_or_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:ems="10"
+            android:inputType="text"
+            android:hint="@string/hint_phone_address"
+            android:textColorHint="@android:color/white"
+            android:textColor="@android:color/white"
+            android:imeOptions="actionDone"
+            android:background="@drawable/edit_bordered"/>
+
+        <Button
+            android:id="@+id/register"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="96dp"
+            android:text="@string/register_now"
+            android:textColor="@android:color/white"
+            android:background="@drawable/button_rounded"
+            android:textAllCaps="false"
+            android:onClick="onStartRegistration"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:paddingEnd="4dp"
+                android:text="@string/has_account"
+                android:textAlignment="textEnd"
+                android:textColor="@android:color/white"/>
+
+            <TextView
+                android:id="@+id/sign_in_link"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/do_login"
+                android:textAlignment="textStart"
+                android:textColor="@android:color/white"
+                android:autoLink="web"
+                android:linksClickable="true"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>
