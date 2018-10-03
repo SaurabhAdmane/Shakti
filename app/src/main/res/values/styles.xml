@@ -7,8 +7,8 @@
     </style>
 
     <style name="AppTheme.Splash" parent="AppTheme">
-        <item name="android:windowBackground">@color/colorSplash</item>
-        <item name="colorPrimaryDark">@color/colorSplash</item>
+        <item name="android:windowBackground">@drawable/splash</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
     </style>
 
 </resources>

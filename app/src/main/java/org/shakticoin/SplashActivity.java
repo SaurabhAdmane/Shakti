@@ -21,7 +21,6 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void route() {
-        // TODO: we can send new user directly to registration but not sure we need it. Think about this.
         startActivity(new Intent(this, SignInActivity.class));
     }
 }
