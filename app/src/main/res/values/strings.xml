@@ -9,5 +9,11 @@
     <string name="no_account">Don\'t have an account?</string>
     <string name="do_registration"><a href="https://localhost/">Register Now</a></string>
     <string name="login_password_required">Both username and password are required</string>
+    <string name="tour1_title">Sign up</string>
+    <string name="tour1_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed feugiat purus sit amet risus pulvinar semper.</string>
+    <string name="tour2_title">Receive Bounty</string>
+    <string name="tour2_text">Cras bibendum dolor semper dolor varius sollicitudin. Duis dignissim magna eget massa mollis vulputate. Curabitur pharetra dapibus quam et tincidunt.</string>
+    <string name="tour3_title">Refer Friends</string>
+    <string name="tour3_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed feugiat purus sit amet risus pulvinar semper. Fusce vitae libero nisi.</string>
 
 </resources>

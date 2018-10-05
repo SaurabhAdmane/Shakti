@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
-import org.shakticoin.registration.SignInActivity;
+import org.shakticoin.tour.WelcomeTourActivity;
 
 
 public class SplashActivity extends AppCompatActivity {
@@ -21,6 +21,6 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void route() {
-        startActivity(new Intent(this, SignInActivity.class));
+        startActivity(new Intent(this, WelcomeTourActivity.class));
     }
 }
