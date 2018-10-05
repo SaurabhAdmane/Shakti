@@ -17,6 +17,7 @@
     </style>
     <style name="AppText.Title" parent="AppText">
         <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@android:color/white</item>
     </style>
     <style name="AppText.Title.Branded" parent="AppText.Title">
         <item name="android:textColor">@color/colorBrand</item>
@@ -24,6 +25,22 @@
     <style name="AppText.Body" parent="AppText">
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="AppButton" parent="@style/Base.TextAppearance.AppCompat.Widget.Button">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+    <style name="AppButton.Rounded">
+        <item name="android:background">@drawable/button_rounded</item>
+    </style>
+
+    <style name="AppTextField" parent="AppTheme">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColorHint">@android:color/white</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:background">@drawable/edit_bordered</item>
     </style>
 
 </resources>

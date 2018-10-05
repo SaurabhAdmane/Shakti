@@ -40,9 +40,6 @@ public class SignInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin);
 
-        // TODO: temporarily, must be an image
-        getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.colorAppGrey));
-
         ctrlUsername = findViewById(R.id.username);
         ctrlPassword = findViewById(R.id.password);
         ctrlPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -68,7 +65,6 @@ public class SignInActivity extends AppCompatActivity {
         ctrlForgotPwd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
             }
         });
 

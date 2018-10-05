@@ -3,10 +3,10 @@
 
     <dimen name="activity_horizontal_margin">32dp</dimen>
 
-    <dimen name="field_padding">10dp</dimen>
+    <dimen name="field_padding">14dp</dimen>
     <dimen name="field_radius">3dp</dimen>
     <dimen name="field_border">1dp</dimen>
 
-    <dimen name="button_radius">25dp</dimen>
+    <dimen name="button_radius">23dp</dimen>
 
 </resources>
