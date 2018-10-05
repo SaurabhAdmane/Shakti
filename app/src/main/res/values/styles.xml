@@ -18,6 +18,7 @@
     <style name="AppText.Title" parent="AppText">
         <item name="android:textSize">24sp</item>
         <item name="android:textColor">@android:color/white</item>
+        <item name="android:textAlignment">center</item>
     </style>
     <style name="AppText.Title.Branded" parent="AppText.Title">
         <item name="android:textColor">@color/colorBrand</item>

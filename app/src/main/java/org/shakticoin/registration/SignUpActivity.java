@@ -16,19 +16,18 @@ import org.shakticoin.R;
 public class SignUpActivity extends AppCompatActivity {
     private Spinner ctrlCountries;
     private EditText ctrlPostalCode;
-    private EditText ctrlPhoneAddr;
+    private EditText ctrlEmailAddress;
+    private EditText ctrlPhoneNumber;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-        // TODO: temporarily, must be an image
-        getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.colorAppGrey));
-
         ctrlCountries = findViewById(R.id.contries);
         ctrlPostalCode = findViewById(R.id.postal_code);
-        ctrlPhoneAddr = findViewById(R.id.tel_or_address);
+        ctrlEmailAddress = findViewById(R.id.email_address);
+        ctrlPhoneNumber = findViewById(R.id.phone_number);
         TextView ctrlSignInLink = findViewById(R.id.sign_in_link);
         final Context self = this;
         ctrlSignInLink.setOnClickListener(new View.OnClickListener() {
