@@ -3,5 +3,8 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:drawable="@drawable/bg_welcome"/>
+    <item>
+        <color android:color="@color/colorTintBackground"/>
+    </item>
 
 </layer-list>

@@ -3,6 +3,9 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:drawable="@drawable/bg_welcome"/>
+    <item>
+        <color android:color="@color/colorTintBackground"/>
+    </item>
     <item android:gravity="center" android:drawable="@drawable/shakti_logo" android:bottom="100dp"/>
 
 </layer-list>
