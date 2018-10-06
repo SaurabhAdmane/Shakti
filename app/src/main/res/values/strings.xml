@@ -9,6 +9,8 @@
     <string name="log_in">Log in</string>
     <string name="do_registration"><u>Don\'t have an account? Register Now</u></string>
     <string name="do_login"><u>Already have an account? Sign in</u></string>
+    <string name="do_send">Send</string>
+    <string name="do_resend">Resend</string>
     <string name="login_password_required">Both username and password are required</string>
     <string name="tour1_title">Sign up</string>
     <string name="tour1_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed feugiat purus sit amet risus pulvinar semper.</string>
@@ -28,5 +30,9 @@
     <string name="add_password_save">Save Password</string>
     <string name="hint_new_password">Choose your password</string>
     <string name="hint_confirm_password">Confirm your password</string>
+    <string name="recovery_email_title">Password Recovery</string>
+    <string name="recovery_email_subtitle">I will send a link to your email address bellow.</string>
+    <string name="recovery_sent_title">Link Sent</string>
+    <string name="recovery_sent_subtitle">Please be sure to check spam or junkmail.</string>
 
 </resources>
