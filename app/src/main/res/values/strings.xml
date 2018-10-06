@@ -8,7 +8,6 @@
     <string name="register_now">Register Now</string>
     <string name="log_in">Log in</string>
     <string name="do_registration"><u>Don\'t have an account? Register Now</u></string>
-    <string name="has_account"></string>
     <string name="do_login"><u>Already have an account? Sign in</u></string>
     <string name="login_password_required">Both username and password are required</string>
     <string name="tour1_title">Sign up</string>
@@ -23,5 +22,11 @@
     <string name="hint_phone_number">Mobile Number</string>
     <string name="unlock_bounty">Unlock your Bounty Bonus today.</string>
     <string name="lets_go">Let\'s go!</string>
+    <string name="add_password_title">Add a Password</string>
+    <string name="add_password_subtitle">Enter a password bellow for your account</string>
+    <string name="add_password_cancel">Cancel</string>
+    <string name="add_password_save">Save Password</string>
+    <string name="hint_new_password">Choose your password</string>
+    <string name="hint_confirm_password">Confirm your password</string>
 
 </resources>

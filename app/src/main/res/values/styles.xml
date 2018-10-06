@@ -19,9 +19,17 @@
         <item name="android:textSize">24sp</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textAlignment">center</item>
+        <item name="android:fontFamily">@font/lato_light</item>
+        <item name="android:textFontWeight">300</item>
     </style>
     <style name="AppText.Title.Branded" parent="AppText.Title">
         <item name="android:textColor">@color/colorBrand</item>
+    </style>
+    <style name="AppText.Subtitle" parent="AppText">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">#FFD9D9DA</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textFontWeight">600</item>
     </style>
     <style name="AppText.Body" parent="AppText">
         <item name="android:textSize">14sp</item>
