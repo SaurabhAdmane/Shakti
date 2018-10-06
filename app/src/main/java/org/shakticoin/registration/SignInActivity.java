@@ -2,6 +2,7 @@ package org.shakticoin.registration;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,6 +22,7 @@ import org.shakticoin.api.auth.Credentials;
 import org.shakticoin.api.auth.LoginService;
 import org.shakticoin.api.auth.LoginServiceResponse;
 import org.shakticoin.util.Debug;
+import org.shakticoin.util.PreferenceHelper;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -97,6 +99,8 @@ public class SignInActivity extends AppCompatActivity {
                     LoginServiceResponse resp = response.body();
                     if (resp != null) {
                         Session.key(resp.getKey());
+                        SharedPreferences prefs = getSharedPreferences(PreferenceHelper.GENERAL_PREFERENCES, Context.MODE_PRIVATE);
+                        prefs.edit().putBoolean(PreferenceHelper.PREF_KEY_HAS_ACCOUNT, true).apply();
                     }
                 }
             }

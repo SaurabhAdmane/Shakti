@@ -1,6 +1,8 @@
 package org.shakticoin.tour;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,6 +16,7 @@ import android.widget.ImageView;
 
 import org.shakticoin.R;
 import org.shakticoin.registration.SignUpActivity;
+import org.shakticoin.util.PreferenceHelper;
 
 
 public class WelcomeTourActivity extends AppCompatActivity {
@@ -69,6 +72,8 @@ public class WelcomeTourActivity extends AppCompatActivity {
     }
 
     public void onEndTour(View view) {
+        SharedPreferences prefs = getSharedPreferences(PreferenceHelper.GENERAL_PREFERENCES, Context.MODE_PRIVATE);
+        prefs.edit().putBoolean(PreferenceHelper.PREF_KEY_TOUR_DONE, true).apply();
         startActivity(new Intent(this, SignUpActivity.class));
         finish();
     }

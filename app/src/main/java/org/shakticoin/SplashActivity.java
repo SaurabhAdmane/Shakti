@@ -1,11 +1,16 @@
 package org.shakticoin;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
+import org.shakticoin.registration.SignInActivity;
+import org.shakticoin.registration.SignUpActivity;
 import org.shakticoin.tour.WelcomeTourActivity;
+import org.shakticoin.util.PreferenceHelper;
 
 
 public class SplashActivity extends AppCompatActivity {
@@ -20,6 +25,17 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void route() {
-        startActivity(new Intent(this, WelcomeTourActivity.class));
+        SharedPreferences prefs = getSharedPreferences(PreferenceHelper.GENERAL_PREFERENCES, Context.MODE_PRIVATE);
+        boolean tourDone = prefs.getBoolean(PreferenceHelper.PREF_KEY_TOUR_DONE, false);
+        if (tourDone) {
+            boolean hasAccount = prefs.getBoolean(PreferenceHelper.PREF_KEY_HAS_ACCOUNT, false);
+            if (hasAccount) {
+                startActivity(new Intent(this, SignInActivity.class));
+            } else {
+                startActivity(new Intent(this, SignUpActivity.class));
+            }
+        } else {
+            startActivity(new Intent(this, WelcomeTourActivity.class));
+        }
     }
 }
