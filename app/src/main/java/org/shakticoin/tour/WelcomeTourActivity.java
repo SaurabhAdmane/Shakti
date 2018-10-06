@@ -1,5 +1,6 @@
 package org.shakticoin.tour;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,9 +9,11 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ImageView;
 
 import org.shakticoin.R;
+import org.shakticoin.registration.SignUpActivity;
 
 
 public class WelcomeTourActivity extends AppCompatActivity {
@@ -63,6 +66,11 @@ public class WelcomeTourActivity extends AppCompatActivity {
                 tickmarks[i].setImageAlpha(0x4D);
             }
         }
+    }
+
+    public void onEndTour(View view) {
+        startActivity(new Intent(this, SignUpActivity.class));
+        finish();
     }
 
     class WelcomeTourAdapter extends FragmentPagerAdapter {
