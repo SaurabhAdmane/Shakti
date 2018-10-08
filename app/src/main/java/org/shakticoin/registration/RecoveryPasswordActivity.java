@@ -84,7 +84,7 @@ public class RecoveryPasswordActivity extends AppCompatActivity {
         final Activity self = this;
 
         progressBar.setVisibility(View.VISIBLE);
-        Call<ResponseBody> call = loginService.reset(Session.key(), new PasswordResetRequest(emailAddress));
+        Call<ResponseBody> call = loginService.reset(new PasswordResetRequest(emailAddress));
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
