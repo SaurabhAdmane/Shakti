@@ -1,0 +1,10 @@
+<resources>
+
+    <!-- TODO: we upload proper transalation to the database but if user change his language the
+    database still returns the same. We need develop a runtime method for transaltion or catch
+    changing the language and reupload certain tables. -->
+    <string name="COUNTRY_AF">Afghanistan</string>
+    <string name="COUNTRY_AX">Åland islands</string>
+    <string name="COUNTRY_AL">Albania</string>
+
+</resources>
