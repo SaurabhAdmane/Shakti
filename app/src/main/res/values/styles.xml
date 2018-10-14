@@ -52,4 +52,19 @@
         <item name="android:background">@drawable/edit_bordered</item>
     </style>
 
+    <style name="AppSpinner" parent="AppTheme">
+        <item name="android:background">@drawable/edit_bordered</item>
+    </style>
+    <style name="AppSpinnerItem" parent="AppTheme">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+    <style name="AppSpinnerDropdownItem" parent="AppTheme">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:background">@android:color/black</item>
+        <item name="android:padding">8dp</item>
+    </style>
+
 </resources>

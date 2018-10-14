@@ -22,6 +22,8 @@ import org.shakticoin.api.Session;
 import org.shakticoin.api.auth.Credentials;
 import org.shakticoin.api.auth.LoginService;
 import org.shakticoin.api.auth.LoginServiceResponse;
+import org.shakticoin.api.miner.MinerDataResponse;
+import org.shakticoin.api.miner.MinerService;
 import org.shakticoin.util.Debug;
 import org.shakticoin.util.PreferenceHelper;
 
@@ -38,6 +40,7 @@ public class SignInActivity extends AppCompatActivity {
     private ProgressBar progressBar;
 
     private LoginService loginService;
+    private MinerService minerService;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,6 +74,7 @@ public class SignInActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         loginService = retrofit.create(LoginService.class);
+        minerService = retrofit.create(MinerService.class);
 
     }
 
@@ -100,9 +104,30 @@ public class SignInActivity extends AppCompatActivity {
                         Session.key(resp.getKey());
                         SharedPreferences prefs = getSharedPreferences(PreferenceHelper.GENERAL_PREFERENCES, Context.MODE_PRIVATE);
                         prefs.edit().putBoolean(PreferenceHelper.PREF_KEY_HAS_ACCOUNT, true).apply();
+
+                        Call<MinerDataResponse> call1 = minerService.getUserInfo(Session.getAuthorizationHeader());
+                        call1.enqueue(new Callback<MinerDataResponse>() {
+                            @Override
+                            public void onResponse(@NonNull Call<MinerDataResponse> call, @NonNull Response<MinerDataResponse> response) {
+                                if (call.isExecuted() && response.isSuccessful()) {
+                                    MinerDataResponse body = response.body();
+                                    if (body != null) {
+                                        Session.setUser(body.getUser());
+                                    }
+                                }
+                                progressBar.setVisibility(View.INVISIBLE);
+                            }
+
+                            @Override
+                            public void onFailure(@NonNull Call<MinerDataResponse> call, @NonNull Throwable t) {
+                                progressBar.setVisibility(View.INVISIBLE);
+                                Toast.makeText(self, R.string.err_unexpected, Toast.LENGTH_SHORT).show();
+                                Debug.logException(t);
+                            }
+                        });
+
                     }
                 }
-                progressBar.setVisibility(View.INVISIBLE);
             }
 
             @Override

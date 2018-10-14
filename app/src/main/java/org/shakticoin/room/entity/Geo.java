@@ -64,7 +64,8 @@ public class Geo {
         return new Geo[] {
                 new Geo("COUNTRY", "AF", context.getString(R.string.COUNTRY_AF)),
                 new Geo("COUNTRY", "AX", context.getString(R.string.COUNTRY_AX)),
-                new Geo("COUNTRY", "AL", context.getString(R.string.COUNTRY_AL))
+                new Geo("COUNTRY", "AL", context.getString(R.string.COUNTRY_AL)),
+                new Geo("COUNTRY", "UA", context.getString(R.string.COUNTRY_UA))
         };
     }
 

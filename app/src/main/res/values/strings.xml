@@ -36,5 +36,7 @@
     <string name="recovery_sent_subtitle">Please be sure to check spam or junkmail.</string>
     <string name="err_email_required">Please enter a valid email</string>
     <string name="err_unexpected">Unexpected error occurred</string>
+    <string name="err_incorrect_password">Incorrect password</string>
+    <string name="err_all_fields_required">All fields are required</string>
 
 </resources>

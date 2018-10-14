@@ -14,6 +14,6 @@ public interface LoginService {
     @POST("rest-auth/logout/")
     Call<ResponseBody> logout(@Header("Authorization") String authorization);
 
-    @POST("rest-auth/password/reset")
+    @POST("v1/mobile/password-reset")
     Call<ResponseBody> reset(@Body PasswordResetRequest request);
 }
