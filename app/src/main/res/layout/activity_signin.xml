@@ -52,7 +52,7 @@
                 android:layout_marginEnd="22dp"
                 android:layout_marginRight="22dp"
                 android:ems="10"
-                android:hint="@string/username"
+                android:hint="@string/hint_email_address"
                 android:inputType="textEmailAddress"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -80,16 +80,14 @@
                 android:id="@+id/forgotPassword"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="26dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:fontFamily="@font/lato"
                 android:text="@string/forgot_password"
-                android:textColor="@android:color/white"
-                android:textSize="12sp"
-                android:textStyle="bold"
+                android:textAppearance="@style/AppButton.Link"
                 app:layout_constraintEnd_toEndOf="@+id/password"
                 app:layout_constraintTop_toBottomOf="@+id/password" />
 
@@ -100,7 +98,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="22dp"
                 android:layout_marginLeft="22dp"
-                android:layout_marginTop="163dp"
+                android:layout_marginTop="202dp"
                 android:layout_marginEnd="22dp"
                 android:layout_marginRight="22dp"
                 android:onClick="onLogin"
@@ -130,6 +128,18 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/register" />
+
+            <CheckBox
+                android:id="@+id/rememberMe"
+                style="@style/AppCheckbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/remember_me"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/password" />
 
         </android.support.constraint.ConstraintLayout>
     </ScrollView>

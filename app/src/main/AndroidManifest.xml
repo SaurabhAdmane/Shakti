@@ -53,6 +53,14 @@
                 android:value=".registration.SignInActivity" />
         </activity>
 
+        <activity
+            android:name=".registration.ReferralActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".registration.ReferralConfirmationActivity"
+            android:screenOrientation="portrait"/>
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
