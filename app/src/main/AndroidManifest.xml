@@ -38,14 +38,6 @@
             android:screenOrientation="portrait"/>
 
         <activity
-            android:name=".registration.PasswordActivity"
-            android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".registration.SignUpActivity"/>
-        </activity>
-
-        <activity
             android:name=".registration.RecoveryPasswordActivity"
             android:screenOrientation="portrait">
             <meta-data

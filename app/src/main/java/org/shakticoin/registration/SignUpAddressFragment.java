@@ -1,0 +1,105 @@
+package org.shakticoin.registration;
+
+import android.app.Activity;
+import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
+import android.databinding.BindingAdapter;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.TextView;
+
+import org.shakticoin.R;
+import org.shakticoin.api.country.Country;
+import org.shakticoin.databinding.FragmentSignupAddressBinding;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class SignUpAddressFragment extends Fragment {
+    private SignUpActivityModel viewModel;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        FragmentActivity activity = getActivity();
+        if (activity != null) {
+            viewModel = ViewModelProviders.of(activity).get(SignUpActivityModel.class);
+        }
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        FragmentSignupAddressBinding binding = FragmentSignupAddressBinding.inflate(inflater, container, false);
+        binding.setLifecycleOwner(this);
+        if (viewModel != null) {
+            binding.setViewModel(viewModel);
+        }
+
+        Activity activity = getActivity();
+        if (activity != null) {
+            // initially the adapter is empty and updated via data binding
+            ArrayList<Object> countryList = new ArrayList<>();
+            countryList.add(getString(R.string.hint_country));
+            CountryListAdapter countryListAdapter = new CountryListAdapter(getActivity(), R.layout.spinner_styled_item, countryList);
+            countryListAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+            binding.countries.setAdapter(countryListAdapter);
+
+            // initially the adapter is empty and updated via data binding
+            ArrayList<Object> countryList1 = new ArrayList<>();
+            countryList1.add(getString(R.string.hint_citizenship));
+            CountryListAdapter citizenshipListAdapter = new CountryListAdapter(getActivity(), R.layout.spinner_styled_item, countryList1);
+            citizenshipListAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+            binding.citizenship.setAdapter(citizenshipListAdapter);
+        }
+
+        return binding.getRoot();
+    }
+
+    @BindingAdapter("android:entries")
+    public static void setCountryList(Spinner view, List<Country> countries) {
+        CountryListAdapter adapter = (CountryListAdapter) view.getAdapter();
+        if (adapter != null) {
+            Object firstItem = adapter.getItem(0);
+            adapter.clear();
+            adapter.add(firstItem);
+            if (countries != null) {
+                adapter.addAll(countries);
+            }
+        }
+    }
+
+    /**
+     * Add special processing for the first item to emulate hint message.
+     */
+    class CountryListAdapter extends ArrayAdapter<Object> {
+
+        CountryListAdapter(@NonNull Context context, int resource, @NonNull List<Object> objects) {
+            super(context, resource, objects);
+        }
+
+        @Override
+        public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+            // change color of the first item because in fact it is a hint and should not be selectable
+            TextView view = (TextView) super.getDropDownView(position, convertView, parent);
+            view.setTextColor(position == 0 ? Color.GRAY : Color.WHITE);
+            return view;
+        }
+
+        @Override
+        public boolean isEnabled(int position) {
+            // disable first item that play the role of a hint
+            return position != 0;
+        }
+    }
+
+}

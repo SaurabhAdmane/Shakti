@@ -1,122 +1,121 @@
 package org.shakticoin.registration;
 
+import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
 import android.content.Intent;
-import android.databinding.BindingAdapter;
-import android.databinding.DataBindingUtil;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.text.TextUtilsCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.shakticoin.R;
-import org.shakticoin.api.country.Country;
-import org.shakticoin.databinding.ActivitySignupBinding;
-import org.shakticoin.util.CommonUtil;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.shakticoin.api.OnCompleteListener;
+import org.w3c.dom.Text;
 
 
 public class SignUpActivity extends AppCompatActivity {
 
-    private SignUpModel viewModel;
+    private SignUpActivityModel viewModel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivitySignupBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_signup);
-        binding.setLifecycleOwner(this);
+        setContentView(R.layout.activity_signup);
 
-        viewModel = ViewModelProviders.of(this).get(SignUpModel.class);
+        viewModel = ViewModelProviders.of(this).get(SignUpActivityModel.class);
         viewModel.initCountryList(getResources().getConfiguration().locale);
-        binding.setViewModel(viewModel);
 
-        // initially the adapter is empty and updated via data binding
-        Spinner ctrlCountries = findViewById(R.id.countries);
-        ArrayList<Object> countryList = new ArrayList<>();
-        countryList.add(getString(R.string.hint_country));
-        CountryListAdapter countryListAdapter = new CountryListAdapter(this, R.layout.spinner_styled_item, countryList);
-        countryListAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
-        ctrlCountries.setAdapter(countryListAdapter);
+        onContactsPageSelected();
     }
 
-    public void onStartRegistration(View view) {
-        String emailAddress = viewModel.emailAddress.getValue();
-        String phoneNumber = viewModel.phoneNumber.getValue();
-        String postalCode = viewModel.postalCode.getValue();
-        String countryCode = viewModel.getCurrentCountryCode();
-        if (TextUtils.isEmpty(emailAddress) || TextUtils.isEmpty(phoneNumber)
-                || TextUtils.isEmpty(postalCode) || TextUtils.isEmpty(countryCode)) {
-            Toast.makeText(this, R.string.err_all_fields_required, Toast.LENGTH_SHORT).show();
-            return;
+    public void onMainAction(View v) {
+        String tag = (String) v.getTag();
+        if ("ContactsPage".equals(tag)) {
+            if (validateContacts()) onAddressPageSelected();
+
+        } else if ("AddressPage".equals(tag)) {
+            if (validateAddress()) onPasswordPageSelected();
+
+        } else if ("PasswordPage".equals(tag)) {
+            if (validatePassword()) startRegistration();
         }
-
-        // pass all data along to the next activity
-        Intent intent = new Intent(this, PasswordActivity.class);
-        intent.putExtra(CommonUtil.prefixed(PasswordActivity.KEY_EMAIL_ADDR, this), emailAddress);
-        intent.putExtra(CommonUtil.prefixed(PasswordActivity.KEY_PHONE_NUMBER, this), phoneNumber);
-        intent.putExtra(CommonUtil.prefixed(PasswordActivity.KEY_POSTAL_CODE, this), postalCode);
-        intent.putExtra(CommonUtil.prefixed(PasswordActivity.KEY_COUNTRY_CODE, this), countryCode);
-        startActivity(intent);
     }
 
-    public void onDoLogin(View v) {
+    public void startRegistration() {
+        final Activity activity = this;
+        viewModel.createUser(new OnCompleteListener() {
+            @Override
+            public void onComplete(Throwable error) {
+                if (error != null) {
+                    Toast.makeText(activity, R.string.err_unexpected, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                Intent intent = new Intent(activity, ReferralActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    public void onDoLogin(View view) {
         Intent intent = new Intent(this, SignInActivity.class);
         startActivity(intent);
     }
 
-    /**
-     * Return the country code where the SIM card of the device is registered.</br>
-     * It is not an universal solution but must work in most cases.
-     */
-    public String getCountryCode() {
-        TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-        return telephonyManager != null ? telephonyManager.getSimCountryIso() : null;
+    /** Return true if all fields on the first page has valid values */
+    private boolean validateContacts() {
+        if (TextUtils.isEmpty(viewModel.firstName.getValue())
+                || TextUtils.isEmpty(viewModel.lastName.getValue())
+                || TextUtils.isEmpty(viewModel.emailAddress.getValue())
+                || TextUtils.isEmpty(viewModel.phoneNumber.getValue())) {
+            Toast.makeText(this, R.string.err_all_fields_required, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
     }
 
-    @BindingAdapter("android:entries")
-    public static void setCountryList(Spinner view, List<Country> countries) {
-        CountryListAdapter adapter = (CountryListAdapter) view.getAdapter();
-        Object firstItem = adapter.getItem(0);
-        adapter.clear();
-        adapter.add(firstItem);
-        if (countries != null) {
-            adapter.addAll(countries);
+    /** Return true if all fields on the second page has valid values */
+    private boolean validateAddress() {
+        if (TextUtils.isEmpty(viewModel.address.getValue())
+                || TextUtils.isEmpty(viewModel.city.getValue())
+                || TextUtils.isEmpty(viewModel.postalCode.getValue())) {
+            Toast.makeText(this, R.string.err_all_fields_required, Toast.LENGTH_SHORT).show();
+            return false;
         }
+        return true;
     }
 
-    /**
-     * Add special processing for the first item to emulate hint message.
-     */
-    class CountryListAdapter extends ArrayAdapter<Object> {
-
-        CountryListAdapter(@NonNull Context context, int resource, @NonNull List<Object> objects) {
-            super(context, resource, objects);
+    /** Return true if both fields contain the same string */
+    private boolean validatePassword() {
+        String newPassword = viewModel.newPassword.getValue();
+        String verifyPassword = viewModel.verifyPassword.getValue();
+        if (TextUtils.isEmpty(newPassword) || TextUtils.isEmpty(verifyPassword)
+                || !newPassword.equals(verifyPassword)) {
+            Toast.makeText(this, R.string.err_incorrect_password, Toast.LENGTH_SHORT).show();
+            return false;
         }
-
-        @Override
-        public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-            // change color of the first item because in fact it is a hint and should not be selectable
-            TextView view = (TextView) super.getDropDownView(position, convertView, parent);
-            view.setTextColor(position == 0 ? Color.GRAY : Color.WHITE);
-            return view;
-        }
-
-        @Override
-        public boolean isEnabled(int position) {
-            // disable first item that play the role of a hint
-            return position != 0;
-        }
+        return true;
     }
+
+    private void onContactsPageSelected() {
+        SignUpContactsFragment fragment = new SignUpContactsFragment();
+        FragmentManager manager = getSupportFragmentManager();
+        manager.beginTransaction().replace(R.id.frame, fragment).commit();
+    }
+
+    private void onAddressPageSelected() {
+        SignUpAddressFragment fragment = new SignUpAddressFragment();
+        FragmentManager manager = getSupportFragmentManager();
+        manager.beginTransaction().replace(R.id.frame, fragment).addToBackStack("AddressPage").commit();
+    }
+
+    private void onPasswordPageSelected() {
+        SignUpPasswordFragment fragment = new SignUpPasswordFragment();
+        FragmentManager manager = getSupportFragmentManager();
+        manager.beginTransaction().replace(R.id.frame, fragment).addToBackStack("PasswordPage").commit();
+    }
+
 }
