@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import org.shakticoin.api.BaseUrl;
 import org.shakticoin.api.OnCompleteListener;
+import org.shakticoin.api.RemoteException;
 import org.shakticoin.api.Session;
 import org.shakticoin.util.Debug;
 
@@ -30,11 +31,43 @@ public class MinerRepository {
         call.enqueue(new Callback<MinerDataResponse>() {
             @Override
             public void onResponse(@NonNull Call<MinerDataResponse> call, @NonNull Response<MinerDataResponse> response) {
-                if (call.isExecuted() && response.isSuccessful()) {
-                    MinerDataResponse minerData = response.body();
-                    if (minerData != null) {
-                        Session.setUser(minerData.getUser());
-                        if (listener != null) listener.onComplete(null);
+                if (call.isExecuted()) {
+                    if (response.isSuccessful()) {
+                        MinerDataResponse minerData = response.body();
+                        if (minerData != null) {
+                            Session.setUser(minerData.getUser());
+                            if (listener != null) listener.onComplete(null);
+                        }
+                    } else {
+                        if (listener != null) listener.onComplete(new RemoteException(response.message(), response.code()));
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<MinerDataResponse> call, @NonNull Throwable t) {
+                Debug.logException(t);
+                if (listener != null) listener.onComplete(t);
+            }
+        });
+
+    }
+
+    public void getUserInfo(OnCompleteListener listener) {
+        Call<MinerDataResponse> call = minerService.getUserInfo(Session.getAuthorizationHeader());
+        call.enqueue(new Callback<MinerDataResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<MinerDataResponse> call, @NonNull Response<MinerDataResponse> response) {
+                if (call.isExecuted()) {
+                    if (response.isSuccessful()) {
+                        MinerDataResponse body = response.body();
+                        if (body != null) {
+                            Session.setUser(body.getUser());
+                            if (listener != null) listener.onComplete(null);
+                        }
+                    } else {
+                        if (listener != null) listener.onComplete(
+                                new RemoteException(response.message(), response.code()));
                     }
                 }
             }

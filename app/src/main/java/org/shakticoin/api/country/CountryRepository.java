@@ -39,17 +39,19 @@ public class CountryRepository {
         countryService.getCountries(locale.getLanguage()).enqueue(new Callback<Map<String, String>>() {
             @Override
             public void onResponse(Call<Map<String, String>> call, Response<Map<String, String>> response) {
-                if (call.isExecuted() && response.isSuccessful()) {
-                    Map<String, String> countries = response.body();
-                    if (countries != null && countries.size() > 0) {
-                        Set<Map.Entry<String, String>> entries = countries.entrySet();
-                        List<Country> countryList = new ArrayList<>();
-                        for (Map.Entry<String, String> entry : entries) {
-                            if (entry.getValue() != null)
-                                countryList.add(new Country(entry.getKey(), entry.getValue()));
+                if (call.isExecuted()) {
+                    if (response.isSuccessful()) {
+                        Map<String, String> countries = response.body();
+                        if (countries != null && countries.size() > 0) {
+                            Set<Map.Entry<String, String>> entries = countries.entrySet();
+                            List<Country> countryList = new ArrayList<>();
+                            for (Map.Entry<String, String> entry : entries) {
+                                if (entry.getValue() != null)
+                                    countryList.add(new Country(entry.getKey(), entry.getValue()));
+                            }
+                            Collections.sort(countryList, (o1, o2) -> o1.getName().compareToIgnoreCase(o2.getName()));
+                            liveData.setValue(countryList);
                         }
-                        Collections.sort(countryList, (o1, o2) -> o1.getName().compareToIgnoreCase(o2.getName()));
-                        liveData.setValue(countryList);
                     }
                 }
             }

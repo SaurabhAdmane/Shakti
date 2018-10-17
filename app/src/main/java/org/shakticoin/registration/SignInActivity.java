@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
@@ -98,40 +99,47 @@ public class SignInActivity extends AppCompatActivity {
         call.enqueue(new Callback<LoginServiceResponse>() {
             @Override
             public void onResponse(@NonNull Call<LoginServiceResponse> call, @NonNull Response<LoginServiceResponse> response) {
-                if (call.isExecuted() && response.isSuccessful()) {
-                    LoginServiceResponse resp = response.body();
-                    if (resp != null) {
-                        Session.key(resp.getKey());
-                        SharedPreferences prefs = getSharedPreferences(PreferenceHelper.GENERAL_PREFERENCES, Context.MODE_PRIVATE);
-                        prefs.edit().putBoolean(PreferenceHelper.PREF_KEY_HAS_ACCOUNT, true).apply();
+                if (call.isExecuted()) {
+                    if (response.isSuccessful()) {
+                        LoginServiceResponse resp = response.body();
+                        if (resp != null) {
+                            Session.key(resp.getKey());
+                            SharedPreferences prefs = getSharedPreferences(PreferenceHelper.GENERAL_PREFERENCES, Context.MODE_PRIVATE);
+                            prefs.edit().putBoolean(PreferenceHelper.PREF_KEY_HAS_ACCOUNT, true).apply();
 
-                        Call<MinerDataResponse> call1 = minerService.getUserInfo(Session.getAuthorizationHeader());
-                        call1.enqueue(new Callback<MinerDataResponse>() {
-                            @Override
-                            public void onResponse(@NonNull Call<MinerDataResponse> call, @NonNull Response<MinerDataResponse> response) {
-                                if (call.isExecuted() && response.isSuccessful()) {
-                                    MinerDataResponse body = response.body();
-                                    if (body != null) {
-                                        Session.setUser(body.getUser());
+                            Call<MinerDataResponse> call1 = minerService.getUserInfo(Session.getAuthorizationHeader());
+                            call1.enqueue(new Callback<MinerDataResponse>() {
+                                @Override
+                                public void onResponse(@NonNull Call<MinerDataResponse> call, @NonNull Response<MinerDataResponse> response) {
+                                    if (call.isExecuted()) {
+                                        if (response.isSuccessful()) {
+                                            MinerDataResponse body = response.body();
+                                            if (body != null) {
+                                                Session.setUser(body.getUser());
+                                            }
+                                        }
                                     }
+                                    progressBar.setVisibility(View.INVISIBLE);
                                 }
-                                progressBar.setVisibility(View.INVISIBLE);
-                            }
 
-                            @Override
-                            public void onFailure(@NonNull Call<MinerDataResponse> call, @NonNull Throwable t) {
-                                progressBar.setVisibility(View.INVISIBLE);
-                                Toast.makeText(self, R.string.err_unexpected, Toast.LENGTH_SHORT).show();
-                                Debug.logException(t);
-                            }
-                        });
+                                @Override
+                                public void onFailure(@NonNull Call<MinerDataResponse> call, @NonNull Throwable t) {
+                                    progressBar.setVisibility(View.INVISIBLE);
+                                    Toast.makeText(self, R.string.err_unexpected, Toast.LENGTH_SHORT).show();
+                                    Debug.logException(t);
+                                }
+                            });
 
+                        }
+                    } else {
+                        progressBar.setVisibility(View.INVISIBLE);
                     }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<LoginServiceResponse> call, @NonNull Throwable t) {
+                Log.d("XXX", "failure");
                 progressBar.setVisibility(View.INVISIBLE);
                 Toast.makeText(self, R.string.err_unexpected, Toast.LENGTH_SHORT).show();
                 Debug.logException(t);
