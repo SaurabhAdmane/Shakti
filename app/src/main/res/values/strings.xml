@@ -56,5 +56,6 @@
     <string name="refconfirm_title">Thank you!</string>
     <string name="refconfirm_wallet">Cool, take me to my wallet!</string>
     <string name="remember_me">Remember me</string>
+    <string name="err_registration_fail">Registration cannot be completed</string>
 
 </resources>

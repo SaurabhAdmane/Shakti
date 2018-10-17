@@ -50,7 +50,7 @@
 
 
             <EditText
-                android:id="@+id/address"
+                android:id="@+id/lastName"
                 style="@style/AppTextField"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -81,12 +81,11 @@
                 android:layout_marginRight="24dp"
                 android:ems="10"
                 android:hint="@string/hint_email_address"
-                android:imeOptions="actionDone"
                 android:inputType="textEmailAddress"
                 android:text="@={viewModel.emailAddress}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/address"
+                app:layout_constraintTop_toBottomOf="@+id/lastName"
                 tools:layout_conversion_absoluteHeight="1dp"
                 tools:layout_conversion_absoluteWidth="1dp" />
 
@@ -129,7 +128,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/phone_number"
                 tools:layout_conversion_absoluteHeight="1dp"
                 tools:layout_conversion_absoluteWidth="1dp" />
-
 
             <TextView
                 android:id="@+id/textView5"
