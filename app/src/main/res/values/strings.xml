@@ -40,7 +40,7 @@
     <string name="recovery_email_title">Password Recovery</string>
     <string name="recovery_email_subtitle">I will send a link to your email address bellow.</string>
     <string name="recovery_sent_title">Link Sent</string>
-    <string name="recovery_sent_subtitle">Please be sure to check spam or junkmail.</string>
+    <string name="recovery_sent_subtitle">Be sure to check spam or junkmail.</string>
     <string name="err_email_required">Please enter a valid email</string>
     <string name="err_unexpected">Unexpected error occurred</string>
     <string name="err_incorrect_password">Incorrect password</string>
