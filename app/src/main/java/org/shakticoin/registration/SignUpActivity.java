@@ -8,14 +8,16 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.shakticoin.R;
 import org.shakticoin.api.OnCompleteListener;
 
 
-public class SignUpActivity extends AppCompatActivity {
+public class SignUpActivity extends AppCompatActivity implements TextView.OnEditorActionListener {
 
     private SignUpActivityModel viewModel;
 
@@ -116,4 +118,9 @@ public class SignUpActivity extends AppCompatActivity {
         manager.beginTransaction().replace(R.id.frame, fragment).addToBackStack("PasswordPage").commit();
     }
 
+    @Override
+    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+        onMainAction(v);
+        return true;
+    }
 }

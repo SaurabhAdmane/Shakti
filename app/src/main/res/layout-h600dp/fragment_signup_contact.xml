@@ -92,6 +92,7 @@
 
             <EditText
                 android:id="@+id/phone_number"
+                android:tag="ContactsPage"
                 style="@style/AppTextField"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

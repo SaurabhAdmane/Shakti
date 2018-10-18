@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import org.shakticoin.databinding.FragmentSignupContactBinding;
 
@@ -32,6 +33,11 @@ public class SignUpContactsFragment extends Fragment {
         binding.setLifecycleOwner(this);
         if (viewModel != null) {
             binding.setViewModel(viewModel);
+        }
+
+        TextView.OnEditorActionListener listener = (TextView.OnEditorActionListener) getActivity();
+        if (listener != null) {
+            binding.phoneNumber.setOnEditorActionListener(listener);
         }
 
         return binding.getRoot();

@@ -139,7 +139,6 @@ public class SignInActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(@NonNull Call<LoginServiceResponse> call, @NonNull Throwable t) {
-                Log.d("XXX", "failure");
                 progressBar.setVisibility(View.INVISIBLE);
                 Toast.makeText(self, R.string.err_unexpected, Toast.LENGTH_SHORT).show();
                 Debug.logException(t);

@@ -46,6 +46,11 @@ public class SignUpAddressFragment extends Fragment {
             binding.setViewModel(viewModel);
         }
 
+        TextView.OnEditorActionListener listener = (TextView.OnEditorActionListener) getActivity();
+        if (listener != null) {
+            binding.postalCode.setOnEditorActionListener(listener);
+        }
+
         Activity activity = getActivity();
         if (activity != null) {
             // initially the adapter is empty and updated via data binding
