@@ -52,7 +52,7 @@ public class SignUpActivity extends AppCompatActivity {
                     Toast.makeText(activity, R.string.err_unexpected, Toast.LENGTH_SHORT).show();
                     return;
                 }
-                Intent intent = new Intent(activity, ReferralActivity.class);
+                Intent intent = new Intent(activity, ConfirmEmailActivity.class);
                 startActivity(intent);
             }
         });

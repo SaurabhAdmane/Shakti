@@ -7,7 +7,6 @@ import android.databinding.ObservableInt;
 import android.view.View;
 
 import org.shakticoin.api.OnCompleteListener;
-import org.shakticoin.api.auth.AuthRepository;
 import org.shakticoin.api.country.Country;
 import org.shakticoin.api.country.CountryRepository;
 import org.shakticoin.api.miner.CreateUserRequest;
@@ -73,7 +72,7 @@ public class SignUpActivityModel extends ViewModel {
 
     void createUser(OnCompleteListener listener) {
         progressBarVisibility.set(View.VISIBLE);
-        //TODO: we must have fields for missing data in SignUpActivity
+
         CreateUserRequest request = new CreateUserRequest();
         request.setFirst_name(firstName.getValue());
         request.setLast_name(lastName.getValue());
@@ -91,38 +90,8 @@ public class SignUpActivityModel extends ViewModel {
         repository.createUser(request, new OnCompleteListener() {
             @Override
             public void onComplete(Throwable error) {
-                if (error != null) {
-                    progressBarVisibility.set(View.INVISIBLE);
-                    if (listener != null) listener.onComplete(error);
-                    return;
-                }
-
-                AuthRepository authRepository = new AuthRepository();
-                String username = emailAddress.getValue();
-                String password = newPassword.getValue();
-                if (username != null && password != null) {
-                    authRepository.login(emailAddress.getValue(), newPassword.getValue(), new OnCompleteListener() {
-                        @Override
-                        public void onComplete(Throwable error) {
-                            if (error != null) {
-                                progressBarVisibility.set(View.INVISIBLE);
-                                if (listener != null) listener.onComplete(error);
-                                return;
-                            }
-
-                            MinerRepository minerRepository = new MinerRepository();
-                            minerRepository.getUserInfo(new OnCompleteListener() {
-                                @Override
-                                public void onComplete(Throwable error) {
-                                    progressBarVisibility.set(View.INVISIBLE);
-                                    if (listener != null) listener.onComplete(error);
-                                }
-                            });
-                        }
-                    });
-                } else {
-                    progressBarVisibility.set(View.INVISIBLE);
-                }
+                progressBarVisibility.set(View.INVISIBLE);
+                if (listener != null) listener.onComplete(error);
             }
         });
     }
