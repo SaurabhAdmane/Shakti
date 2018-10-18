@@ -19,8 +19,6 @@
     <style name="AppText.Title" parent="AppText">
         <item name="android:textSize">24sp</item>
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:textAlignment">center</item>
-        <item name="android:gravity">center_horizontal</item>
         <item name="android:fontFamily">@font/lato_light</item>
         <item name="android:textFontWeight">300</item>
     </style>
@@ -31,13 +29,11 @@
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">#FFD9D9DA</item>
         <item name="android:textAlignment">center</item>
-        <item name="android:gravity">center_horizontal</item>
     </style>
     <style name="AppText.Body" parent="AppText">
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textAlignment">center</item>
-        <item name="android:gravity">center_horizontal</item>
     </style>
 
     <style name="AppButton" parent="@style/Base.TextAppearance.AppCompat.Widget.Button">
@@ -80,5 +76,9 @@
         <item name="android:background">@android:color/black</item>
         <item name="android:padding">8dp</item>
     </style>
+
+    <declare-styleable name="CheckableRoundButton">
+        <attr name="is_checked" format="boolean" />
+    </declare-styleable>
 
 </resources>
