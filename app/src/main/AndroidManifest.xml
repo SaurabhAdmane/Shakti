@@ -16,11 +16,13 @@
 
         <activity
             android:name=".registration.SignUpActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
 
         <activity
             android:name=".registration.SignInActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan">
         </activity>
 
         <activity
@@ -39,7 +41,8 @@
 
         <activity
             android:name=".registration.RecoveryPasswordActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".registration.SignInActivity" />
@@ -47,11 +50,13 @@
 
         <activity
             android:name=".registration.ReferralActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
 
         <activity
             android:name=".registration.ReferralConfirmationActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
 
         <meta-data
             android:name="preloaded_fonts"

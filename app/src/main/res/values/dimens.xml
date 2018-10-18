@@ -2,7 +2,7 @@
 <resources>
 
     <dimen name="activity_horizontal_margin">24dp</dimen>
-    <dimen name="scrollable_bottom_padding">16dp</dimen>
+    <dimen name="scrollable_bottom_padding">24dp</dimen>
 
     <dimen name="field_padding">14dp</dimen>
     <dimen name="field_radius">3dp</dimen>
