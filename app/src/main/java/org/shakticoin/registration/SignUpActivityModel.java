@@ -3,6 +3,7 @@ package org.shakticoin.registration;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
+import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
 import android.view.View;
 
@@ -34,8 +35,8 @@ public class SignUpActivityModel extends ViewModel {
     /** A trigger for progress indicator */
     public ObservableInt progressBarVisibility = new ObservableInt(View.INVISIBLE);
 
-    private String currentCountryCode;
-    private String currentCitizenshipCode;
+    public ObservableField<Country> countryCode = new ObservableField<>();
+    public ObservableField<Country> citizenshipCode = new ObservableField<>();
 
     void initCountryList(Locale locale) {
         if (countryList == null) {
@@ -52,7 +53,7 @@ public class SignUpActivityModel extends ViewModel {
             List<Country> list = countryList.getValue();
             if (list != null && list.size() > i) {
                 Country country = list.get(i);
-                currentCountryCode = country.getCode();
+                countryCode.set(country);
             }
         }
     }
@@ -65,7 +66,7 @@ public class SignUpActivityModel extends ViewModel {
             List<Country> list = countryList.getValue();
             if (list != null && list.size() > i) {
                 Country country = list.get(i);
-                currentCitizenshipCode = country.getCode();
+                citizenshipCode.set(country);
             }
         }
     }
@@ -78,8 +79,14 @@ public class SignUpActivityModel extends ViewModel {
         request.setLast_name(lastName.getValue());
         request.setEmail(emailAddress.getValue());
         request.setUser_type("MN"); //TODO: must be more types later
-        request.setCurrent_country(currentCountryCode);
-        request.setCitizenship(Collections.singletonList(currentCitizenshipCode));
+        Country currentCountry = countryCode.get();
+        if (currentCountry != null) {
+            request.setCurrent_country(currentCountry.getCode());
+        }
+        Country citizenshipCountry = citizenshipCode.get();
+        if (citizenshipCountry != null) {
+            request.setCitizenship(Collections.singletonList(citizenshipCountry.getCode()));
+        }
         // TODO: postal code?
         request.setStreet_and_number(address.getValue());
         request.setCity(city.getValue());

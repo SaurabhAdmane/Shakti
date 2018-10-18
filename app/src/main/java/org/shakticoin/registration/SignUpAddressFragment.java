@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import org.shakticoin.R;
@@ -74,6 +75,23 @@ public class SignUpAddressFragment extends Fragment {
             adapter.add(firstItem);
             if (countries != null) {
                 adapter.addAll(countries);
+            }
+        }
+    }
+
+    @BindingAdapter("newValue")
+    public static void setCountry(Spinner view, Country country) {
+        if (country != null) {
+            SpinnerAdapter adapter = view.getAdapter();
+            Object selectedCountry = view.getSelectedItem();
+            if (!selectedCountry.equals(country)) {
+                // skip item at 0 as it isn't an instance of Country, just a String
+                for (int i = 1; i < adapter.getCount(); i++) {
+                    Country c = (Country) adapter.getItem(i);
+                    if (c.equals(country)) {
+                        view.setSelection(i);
+                    }
+                }
             }
         }
     }
