@@ -61,6 +61,7 @@
         <activity
             android:name=".registration.ConfirmEmailActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name=".registration.BonusBountyActivity" />
 
         <meta-data
             android:name="preloaded_fonts"
