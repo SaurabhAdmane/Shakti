@@ -65,5 +65,13 @@
     <string name="bonus_secondary_action">View special <u>promotion details</u>.</string>
     <string name="bonus_valueof">Value of</string>
     <string name="bonus_expires">Expires on</string>
+    <string name="dlg_confirm_email_title"><![CDATA[Become a <font color="#D8C295">Miner</font>]]></string>
+    <string name="dlg_confirm_email_text"><![CDATA[<p><b>Earn an addition income with Shakti!</b></p><p>However,
+        we need to make sure that there is no error and you provide us with a correct email address.
+        Please, open your email, find a message from us, and click confirmation link.</p><p>After your
+        email is confirmed you may return and log in using the email and the password you just
+        entered.\n\nComplete registration and become a miner!</p>]]>
+    </string>
+    <string name="dlg_confirm_email_action">Got it</string>
 
 </resources>
