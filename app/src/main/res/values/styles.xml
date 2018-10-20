@@ -35,6 +35,16 @@
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textAlignment">center</item>
     </style>
+    <style name="AppText.DialogText">
+        <item name="android:fontFamily">@font/lato</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">#FF4A4A4A</item>
+    </style>
+    <style name="AppText.DialogTitle">
+        <item name="android:fontFamily">@font/lato_light</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">#FF4A4A4A</item>
+    </style>
 
     <style name="AppButton" parent="@style/Base.TextAppearance.AppCompat.Widget.Button">
         <item name="android:textColor">@android:color/white</item>
