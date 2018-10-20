@@ -9,7 +9,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
@@ -116,6 +115,20 @@ public class SignInActivity extends AppCompatActivity {
                                             MinerDataResponse body = response.body();
                                             if (body != null) {
                                                 Session.setUser(body.getUser());
+
+                                                int registrationStatus = body.getRegistration_status();
+                                                if (registrationStatus < 3/*not verified*/) {
+                                                    // we cannot continue before email is confirmed and
+                                                    // just display an information in a popup window
+                                                    showNotConfirmed();
+
+                                                } if (registrationStatus == 3) {
+                                                    // add referral code if exists and pay the enter fee
+                                                    startActivity(new Intent(self, ReferralActivity.class));
+
+                                                } else {
+                                                    // go to the wallet
+                                                }
                                             }
                                         }
                                     }
@@ -144,5 +157,13 @@ public class SignInActivity extends AppCompatActivity {
                 Debug.logException(t);
             }
         });
+    }
+
+    /**
+     * We cannot continue before email is confirmed and just show information window to the user
+     */
+    private void showNotConfirmed() {
+        DialogConfirmEmail dialog = DialogConfirmEmail.getInstance(true);
+        dialog.show(getSupportFragmentManager(), DialogConfirmEmail.class.getSimpleName());
     }
 }
