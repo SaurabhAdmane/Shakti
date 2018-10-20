@@ -53,10 +53,10 @@ public class AuthRepository {
                         LoginServiceResponse resp = response.body();
                         if (resp != null) {
                             Session.key(resp.getKey());
-                            listener.onComplete(null);
+                            listener.onComplete(null,null);
                         }
                     } else {
-                        listener.onComplete(new RemoteException(response.message(), response.code()));
+                        listener.onComplete(null, new RemoteException(response.message(), response.code()));
                     }
                 }
             }
@@ -64,7 +64,7 @@ public class AuthRepository {
             @Override
             public void onFailure(@NonNull Call<LoginServiceResponse> call, @NonNull Throwable t) {
                 Debug.logException(t);
-                listener.onComplete(t);
+                listener.onComplete(null, t);
             }
         });
     }

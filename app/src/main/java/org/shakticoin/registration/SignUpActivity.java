@@ -47,9 +47,9 @@ public class SignUpActivity extends AppCompatActivity implements TextView.OnEdit
 
     public void startRegistration() {
         final Activity activity = this;
-        viewModel.createUser(new OnCompleteListener() {
+        viewModel.createUser(new OnCompleteListener<Void>() {
             @Override
-            public void onComplete(Throwable error) {
+            public void onComplete(Void value, Throwable error) {
                 if (error != null) {
                     Toast.makeText(activity, R.string.err_unexpected, Toast.LENGTH_SHORT).show();
                     return;

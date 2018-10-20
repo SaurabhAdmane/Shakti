@@ -36,10 +36,10 @@ public class MinerRepository {
                         MinerDataResponse minerData = response.body();
                         if (minerData != null) {
                             Session.setUser(minerData.getUser());
-                            if (listener != null) listener.onComplete(null);
+                            if (listener != null) listener.onComplete(null,null);
                         }
                     } else {
-                        if (listener != null) listener.onComplete(new RemoteException(response.message(), response.code()));
+                        if (listener != null) listener.onComplete(null, new RemoteException(response.message(), response.code()));
                     }
                 }
             }
@@ -47,7 +47,7 @@ public class MinerRepository {
             @Override
             public void onFailure(@NonNull Call<MinerDataResponse> call, @NonNull Throwable t) {
                 Debug.logException(t);
-                if (listener != null) listener.onComplete(t);
+                if (listener != null) listener.onComplete(null, t);
             }
         });
 
@@ -63,10 +63,10 @@ public class MinerRepository {
                         MinerDataResponse body = response.body();
                         if (body != null) {
                             Session.setUser(body.getUser());
-                            if (listener != null) listener.onComplete(null);
+                            if (listener != null) listener.onComplete(null, null);
                         }
                     } else {
-                        if (listener != null) listener.onComplete(
+                        if (listener != null) listener.onComplete(null,
                                 new RemoteException(response.message(), response.code()));
                     }
                 }
@@ -75,7 +75,7 @@ public class MinerRepository {
             @Override
             public void onFailure(@NonNull Call<MinerDataResponse> call, @NonNull Throwable t) {
                 Debug.logException(t);
-                if (listener != null) listener.onComplete(t);
+                if (listener != null) listener.onComplete(null, t);
             }
         });
 

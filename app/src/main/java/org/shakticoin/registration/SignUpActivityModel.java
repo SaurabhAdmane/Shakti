@@ -94,11 +94,11 @@ public class SignUpActivityModel extends ViewModel {
         request.setPassword2(verifyPassword.getValue());
 
         MinerRepository repository = new MinerRepository();
-        repository.createUser(request, new OnCompleteListener() {
+        repository.createUser(request, new OnCompleteListener<Void>() {
             @Override
-            public void onComplete(Throwable error) {
+            public void onComplete(Void value, Throwable error) {
                 progressBarVisibility.set(View.INVISIBLE);
-                if (listener != null) listener.onComplete(error);
+                if (listener != null) listener.onComplete(value, error);
             }
         });
     }
