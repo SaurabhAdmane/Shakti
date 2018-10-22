@@ -14,6 +14,7 @@ import org.shakticoin.R;
 public class CheckableRoundButton extends android.support.v7.widget.AppCompatImageButton implements Checkable {
     private static final int[] CHECKED_STATE_SET = { R.attr.is_checked };
     private boolean checkedFlag = false;
+    private OnCheckedChangeListener mOnCheckedChangeListener;
 
     public CheckableRoundButton(Context context) {
         super(context);
@@ -60,6 +61,10 @@ public class CheckableRoundButton extends android.support.v7.widget.AppCompatIma
         if (checkedFlag != checked) {
             checkedFlag = checked;
             refreshDrawableState();
+
+            if (mOnCheckedChangeListener != null) {
+                mOnCheckedChangeListener.onCheckedChanged(this, checkedFlag);
+            }
         }
     }
 
@@ -72,4 +77,23 @@ public class CheckableRoundButton extends android.support.v7.widget.AppCompatIma
     public void toggle() {
         setChecked(!checkedFlag);
     }
+
+    public void setOnCheckedChangeListener(OnCheckedChangeListener listener) {
+        mOnCheckedChangeListener = listener;
+    }
+
+    /**
+     * Interface definition for a callback to be invoked when the checked state changed.
+     */
+    public interface OnCheckedChangeListener {
+
+        /**
+         * Called when the checked state of a compound button has changed.
+         *
+         * @param buttonView The view whose state has changed.
+         * @param isChecked  The new checked state.
+         */
+        void onCheckedChanged(CheckableRoundButton buttonView, boolean isChecked);
+    }
+
 }

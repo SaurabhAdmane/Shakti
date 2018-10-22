@@ -61,7 +61,14 @@
         <activity
             android:name=".registration.ConfirmEmailActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".registration.BonusBountyActivity" />
+
+        <activity
+            android:name=".registration.BonusBountyActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".registration.MiningLicenseActivity"
+            android:screenOrientation="portrait"/>
 
         <meta-data
             android:name="preloaded_fonts"

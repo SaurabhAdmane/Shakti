@@ -73,5 +73,20 @@
         entered.\n\nComplete registration and become a miner!</p>]]>
     </string>
     <string name="dlg_confirm_email_action">Got it</string>
+    <string name="minerlic_title">Power Miner\nMover. Shaker. Digital Banker.</string>
+    <string name="minerlic_choose">Choose your license type:</string>
+    <string name="minerlic_license"><b>%1$s</b> License</string>
+    <string name="minerlic_bonus_bounty_m101">Get an extra SXE 1,000 bonus bounty\n- that is $5,000 USD</string>
+    <string name="minerlic_bonus_bounty_t100">Get an extra SXE 10,000 bonus bounty\n- that is $50,000 USD</string>
+    <string name="minerlic_bonus_bounty_t200">Get an extra SXE 10,000 bonus bounty\n- that is $50,000 USD</string>
+    <string name="minerlic_bonus_bounty_t300">Get an extra SXE 10,000 bonus bounty\n- that is $50,000 USD</string>
+    <string name="minerlic_bonus_bounty_t400">Get an extra SXE 10,000 bonus bounty\n- that is $50,000 USD</string>
+    <string name="minerlic_one_time_payment">For a one time payment of</string>
+    <string name="minerlic_action">Apply to %1$s</string>
+    <string name="minerlic_description_m101"><![CDATA[M101 Features\n\n\u2022Individual Mining Licese\n\n\u2022Mine SXE coins from home or wherever you work from.\n\n\u2022Priority upgrade option to Power Mining License.]]></string>
+    <string name="minerlic_description_t100"><![CDATA[T100 Features\n\n\u2022Exclusive limited territory access.\n\n\u2022Be among the first 20.000 Power Miners.\n\n\u2022Be the first to on-board merchants.\n\n\u2022Earn thousands of USD equivalent in SXE.]]></string>
+    <string name="minerlic_description_t200"><![CDATA[T200 Features\n\n\u2022All features from M101 and T100 License.\n\n\u2022Be among the first 50.000 Power Miners.\n\n\u2022Dedicated Support.\n\n\u2022Earn thousands of USD equivalent in SXE.]]></string>
+    <string name="minerlic_description_t300"><![CDATA[T300 Features\n\n\u2022Exclusive limited territory access.\n\n\u2022Be among the first 50.000 Power Miners.\n\n\u2022Be the first to on-board merchants.\n\n\u2022Earn thousands of USD equivalent in SXE.]]></string>
+    <string name="minerlic_description_t400"><![CDATA[T400 Features\n\n\u2022Be among the first 60.000 Power Miners.\n\n\u2022Be the first one to choose your data center anywhere in the world.\n\n\u2022Earn thousands of USD equivalent in SXE.]]></string>
 
 </resources>
