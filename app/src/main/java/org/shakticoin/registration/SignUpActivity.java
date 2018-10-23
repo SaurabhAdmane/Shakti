@@ -54,8 +54,8 @@ public class SignUpActivity extends AppCompatActivity implements TextView.OnEdit
                     Toast.makeText(activity, R.string.err_unexpected, Toast.LENGTH_SHORT).show();
                     return;
                 }
-                Intent intent = new Intent(activity, ConfirmEmailActivity.class);
-                startActivity(intent);
+                DialogConfirmEmail.getInstance(false)
+                        .show(getSupportFragmentManager(), DialogConfirmEmail.class.getSimpleName());
             }
         });
     }

@@ -40,12 +40,12 @@ public class DialogConfirmEmail extends DialogFragment implements View.OnClickLi
     /**
      * Creates an instance of DialogConfirmEmail class.
      *
-     * @param dismissOnlyOnAction Dialog open login activity when action button is pressed but
+     * @param dismissOnly Dialog open login activity when action button is pressed but
      *                            this flag make possible prefent it. Dialog just closing.
      */
-    public static DialogConfirmEmail getInstance(boolean dismissOnlyOnAction) {
+    public static DialogConfirmEmail getInstance(boolean dismissOnly) {
         Bundle args = new Bundle();
-        args.putBoolean(DialogConfirmEmail.DISMISS_ONLY, dismissOnlyOnAction);
+        args.putBoolean(DialogConfirmEmail.DISMISS_ONLY, dismissOnly);
         DialogConfirmEmail dialog = new DialogConfirmEmail();
         dialog.setArguments(args);
         return dialog;
