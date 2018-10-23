@@ -1,19 +1,15 @@
 package org.shakticoin.api.tier;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import org.shakticoin.api.BaseUrl;
 import org.shakticoin.api.OnCompleteListener;
 import org.shakticoin.api.RemoteException;
 import org.shakticoin.api.Session;
-import org.shakticoin.api.auth.LoginService;
 import org.shakticoin.util.Debug;
 
-import java.io.IOException;
 import java.util.List;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -33,7 +29,7 @@ public class TierRepository {
     }
 
     public void getTiers(@NonNull String countryCode, OnCompleteListener<List<Tier>> listener) {
-        Call<List<Tier>> call = tierService.getTiers(Session.key(), countryCode);
+        Call<List<Tier>> call = tierService.getTiers(Session.getAuthorizationHeader(), countryCode);
         call.enqueue(new Callback<List<Tier>>() {
             @Override
             public void onResponse(@NonNull Call<List<Tier>> call, @NonNull Response<List<Tier>> response) {

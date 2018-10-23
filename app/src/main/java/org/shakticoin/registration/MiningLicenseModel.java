@@ -22,7 +22,7 @@ public class MiningLicenseModel extends ViewModel {
     public ObservableBoolean onT300 = new ObservableBoolean();
     public ObservableBoolean onT400 = new ObservableBoolean();
 
-    public MutableLiveData<Plan> selectedPlan = new MutableLiveData<>();
+    MutableLiveData<Plan> selectedPlan = new MutableLiveData<>();
 
     private List<Tier> tiers = new ArrayList<>();
 
@@ -100,7 +100,7 @@ public class MiningLicenseModel extends ViewModel {
         });
     }
 
-    public void init(List<Tier> tiersList) {
+    void init(List<Tier> tiersList) {
         if (tiersList != null) {
             tiers = tiersList;
             disableInactivePlans();
@@ -127,6 +127,19 @@ public class MiningLicenseModel extends ViewModel {
             for (Tier tier : tiers) {
                 if (planName.equalsIgnoreCase(tier.getName())) {
                     return BigDecimal.valueOf(tier.getPrice());
+                }
+            }
+        }
+        return null;
+    }
+
+    Long getSelectedPlan() {
+        Plan plan = selectedPlan.getValue();
+        if (plan != null) {
+            String planName = plan.name();
+            for (Tier tier : tiers) {
+                if (planName.equalsIgnoreCase(tier.getName())) {
+                    return tier.getId();
                 }
             }
         }

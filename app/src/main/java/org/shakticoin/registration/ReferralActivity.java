@@ -52,5 +52,6 @@ public class ReferralActivity extends AppCompatActivity {
         if (tiers != null) {
             intent.putParcelableArrayListExtra(CommonUtil.prefixed("tiersList", this), tiers);
         }
+        startActivity(intent);
     }
 }
