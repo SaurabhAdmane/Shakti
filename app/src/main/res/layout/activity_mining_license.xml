@@ -165,6 +165,7 @@
                 android:layout_marginEnd="24dp"
                 android:layout_marginRight="24dp"
                 android:text="@string/minerlic_action"
+                android:onClick="onApply"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -294,11 +295,29 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
                 android:text="@string/minerlic_description_m101"
-                android:textAppearance="@style/AppButton.Rounded.Grey"
+                android:textAppearance="@style/AppText.Subtitle"
+                android:gravity="left|start"
                 app:layout_constraintBottom_toBottomOf="@+id/onT200"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/onT200"
                 app:layout_constraintTop_toTopOf="@+id/onT200" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
