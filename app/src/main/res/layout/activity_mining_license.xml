@@ -17,7 +17,7 @@
         <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bounty_background"
+            android:background="@drawable/miner_background"
             android:paddingBottom="@dimen/scrollable_bottom_padding">
 
             <TextView
