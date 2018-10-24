@@ -1,5 +1,8 @@
 <resources>
 
+    <string name="stripe_pub_key" translatable="false">pk_test_wMi9qDrafbnRQfmWEGv4etOD</string>
+    <string name="stripe_sec_key" translatable="false">sk_test_8kAp9i19E4j2pOiuj3y5RFyZ</string>
+
     <string name="app_name" translatable="false">Shakti Coin</string>
     <string name="welcom_message">Welcome to Shakti Coin</string>
     <string name="username">Username</string>
