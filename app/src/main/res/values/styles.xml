@@ -87,6 +87,19 @@
         <item name="android:padding">8dp</item>
     </style>
 
+    <!-- Stripe card widget styling -->
+    <style name="CardWidgetStyle" parent="@android:style/Theme.DeviceDefault">
+        <item name="editTextStyle">@style/EditTextOverride</item>
+        <item name="android:editTextStyle">@style/EditTextOverride</item>
+    </style>
+
+    <style name="EditTextOverride" parent="@android:style/Widget.EditText">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColorHint">#808080</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+    <!-- End of Stripe styles -->
+
     <declare-styleable name="CheckableRoundButton">
         <attr name="is_checked" format="boolean" />
     </declare-styleable>

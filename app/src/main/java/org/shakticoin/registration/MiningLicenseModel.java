@@ -133,13 +133,13 @@ public class MiningLicenseModel extends ViewModel {
         return null;
     }
 
-    Long getSelectedPlan() {
+    Tier getSelectedPlan() {
         Plan plan = selectedPlan.getValue();
         if (plan != null) {
             String planName = plan.name();
             for (Tier tier : tiers) {
                 if (planName.equalsIgnoreCase(tier.getName())) {
-                    return tier.getId();
+                    return tier;
                 }
             }
         }

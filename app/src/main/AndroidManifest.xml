@@ -65,7 +65,11 @@
         <activity
             android:name=".registration.MiningLicenseActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".payment.stripe.StripeActivity" />
+
+        <activity
+            android:name=".payment.stripe.StripeActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
 
         <meta-data
             android:name="preloaded_fonts"
