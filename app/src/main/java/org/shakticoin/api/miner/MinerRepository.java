@@ -63,7 +63,7 @@ public class MinerRepository {
                         MinerDataResponse body = response.body();
                         if (body != null) {
                             Session.setUser(body.getUser());
-                            if (listener != null) listener.onComplete(null, null);
+                            if (listener != null) listener.onComplete(body, null);
                         }
                     } else {
                         if (listener != null) listener.onComplete(null,

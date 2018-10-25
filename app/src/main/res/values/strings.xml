@@ -96,5 +96,11 @@
     <string name="stripe_amount">$%1$.2f</string>
     <string name="err_incorrect_card">Please enter a valid card data</string>
     <string name="err_payment_cancelled">The payment was cancelled or failed</string>
+    <string name="wallet_toolbar_title">My Wallet</string>
+    <string name="wallet_welcom">Welcome %1$s!</string>
+    <string name="wallet_message">You now have a Shakti Wallet and are part of the grassroots movement for smarter money.\n\nPlease help us spread the word by letting your networks know about the Shakti Coin movement.</string>
+    <string name="wallet_ref_code">Your personal referral code is:</string>
+    <string name="wallet_ref_link">Your personal referral link is:</string>
+    <string name="content_share_button">Share button</string>
 
 </resources>

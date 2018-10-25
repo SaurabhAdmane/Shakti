@@ -45,6 +45,12 @@
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">#FF4A4A4A</item>
     </style>
+    <style name="AppText.ToolBarTitle">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textFontWeight">500</item>
+        <item name="android:fontFamily">@font/futura_medium</item>
+    </style>
 
     <style name="AppButton" parent="@style/Base.TextAppearance.AppCompat.Widget.Button">
         <item name="android:textColor">@android:color/white</item>

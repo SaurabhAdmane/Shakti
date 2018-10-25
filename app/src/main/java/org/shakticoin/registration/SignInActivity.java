@@ -18,14 +18,16 @@ import android.widget.Toast;
 
 import org.shakticoin.R;
 import org.shakticoin.api.BaseUrl;
+import org.shakticoin.api.OnCompleteListener;
 import org.shakticoin.api.Session;
 import org.shakticoin.api.auth.Credentials;
 import org.shakticoin.api.auth.LoginService;
 import org.shakticoin.api.auth.LoginServiceResponse;
 import org.shakticoin.api.miner.MinerDataResponse;
-import org.shakticoin.api.miner.MinerService;
+import org.shakticoin.api.miner.MinerRepository;
 import org.shakticoin.util.Debug;
 import org.shakticoin.util.PreferenceHelper;
+import org.shakticoin.wallet.WalletActivity;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -40,7 +42,7 @@ public class SignInActivity extends AppCompatActivity {
     private ProgressBar progressBar;
 
     private LoginService loginService;
-    private MinerService minerService;
+    private MinerRepository minerRepository;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,7 +76,7 @@ public class SignInActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         loginService = retrofit.create(LoginService.class);
-        minerService = retrofit.create(MinerService.class);
+        minerRepository = new MinerRepository();
 
     }
 
@@ -106,43 +108,37 @@ public class SignInActivity extends AppCompatActivity {
                             SharedPreferences prefs = getSharedPreferences(PreferenceHelper.GENERAL_PREFERENCES, Context.MODE_PRIVATE);
                             prefs.edit().putBoolean(PreferenceHelper.PREF_KEY_HAS_ACCOUNT, true).apply();
 
-                            Call<MinerDataResponse> call1 = minerService.getUserInfo(Session.getAuthorizationHeader());
-                            call1.enqueue(new Callback<MinerDataResponse>() {
+                            minerRepository.getUserInfo(new OnCompleteListener<MinerDataResponse>() {
                                 @Override
-                                public void onResponse(@NonNull Call<MinerDataResponse> call, @NonNull Response<MinerDataResponse> response) {
-                                    if (call.isExecuted()) {
-                                        if (response.isSuccessful()) {
-                                            MinerDataResponse body = response.body();
-                                            if (body != null) {
-                                                Session.setUser(body.getUser());
+                                public void onComplete(MinerDataResponse value, Throwable error) {
+                                    progressBar.setVisibility(View.INVISIBLE);
+                                    if (error != null) {
+                                        Toast.makeText(self, R.string.err_unexpected, Toast.LENGTH_SHORT).show();
+                                        Debug.logException(error);
+                                        return;
+                                    }
 
-                                                int registrationStatus = body.getRegistration_status();
-                                                if (registrationStatus < 3/*not verified*/) {
-                                                    // we cannot continue before email is confirmed and
-                                                    // just display an information in a popup window
-                                                    showNotConfirmed();
+                                    if (value != null) {
+                                        Session.setUser(value.getUser());
 
-                                                } if (registrationStatus == 3) {
-                                                    // add referral code if exists and pay the enter fee
-                                                    startActivity(new Intent(self, ReferralActivity.class));
+                                        int registrationStatus = value.getRegistration_status();
+                                        if (registrationStatus < 3/*not verified*/) {
+                                            // we cannot continue before email is confirmed and
+                                            // just display an information in a popup window
+                                            showNotConfirmed();
 
-                                                } else {
-                                                    // go to the wallet
-                                                }
-                                            }
+                                        } if (registrationStatus == 3) {
+                                            // add referral code if exists and pay the enter fee
+                                            startActivity(new Intent(self, ReferralActivity.class));
+
+                                        } else {
+                                            // go to the wallet
+                                            startActivity(new Intent(self, WalletActivity.class));
                                         }
                                     }
-                                    progressBar.setVisibility(View.INVISIBLE);
-                                }
 
-                                @Override
-                                public void onFailure(@NonNull Call<MinerDataResponse> call, @NonNull Throwable t) {
-                                    progressBar.setVisibility(View.INVISIBLE);
-                                    Toast.makeText(self, R.string.err_unexpected, Toast.LENGTH_SHORT).show();
-                                    Debug.logException(t);
                                 }
                             });
-
                         }
                     } else {
                         progressBar.setVisibility(View.INVISIBLE);

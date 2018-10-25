@@ -23,6 +23,7 @@ import org.shakticoin.databinding.ActivityMiningLicenseBinding;
 import org.shakticoin.payment.stripe.StripeActivity;
 import org.shakticoin.util.CommonUtil;
 import org.shakticoin.util.Debug;
+import org.shakticoin.wallet.WalletActivity;
 import org.shakticoin.widget.CheckableRoundButton;
 
 import java.math.BigDecimal;
@@ -46,6 +47,7 @@ public class MiningLicenseActivity extends AppCompatActivity {
                     break;
                 case RESULT_CANCELED:
                     Toast.makeText(this, R.string.err_payment_cancelled, Toast.LENGTH_SHORT).show();
+                    openWallet();
                     break;
             }
         } else {
@@ -190,12 +192,14 @@ public class MiningLicenseActivity extends AppCompatActivity {
                 binding.progressBar.setVisibility(View.INVISIBLE);
                 if (error != null) {
                     Toast.makeText(activity, R.string.err_unexpected, Toast.LENGTH_SHORT).show();
+                    return;
                 }
+                openWallet();
             }
         });
     }
 
     private void openWallet() {
-
+        startActivity(new Intent(this, WalletActivity.class));
     }
 }
