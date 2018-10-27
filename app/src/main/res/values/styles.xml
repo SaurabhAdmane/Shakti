@@ -63,6 +63,8 @@
     </style>
     <style name="AppButton.Rounded.Grey">
         <item name="android:background">@drawable/button_rounded_grey</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textFontWeight">500</item>
     </style>
     <style name="AppButton.Link">
     </style>
