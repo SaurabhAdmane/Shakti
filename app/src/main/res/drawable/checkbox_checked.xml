@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape  android:shape="rectangle">
+        <size
+            android:height="20dp"
+            android:width="20dp" />
+        <solid
+            android:color="@color/colorAccent" />
+        <stroke
+            android:color="@color/colorAccent"
+            android:width="1dp" />
+        </shape>
+    </item>
+    <item
+        android:drawable="@drawable/checkbox_checkmark"
+        android:bottom="4dp"
+        android:left="2dp"
+        android:right="2dp"
+        android:top="4dp"/>
+</layer-list>
