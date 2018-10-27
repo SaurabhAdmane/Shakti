@@ -20,7 +20,8 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         super.setContentView(R.layout.activity_splash);
 
-        route();
+//        route();
+        startActivity(new Intent(this, WelcomeTourActivity.class));
         finish();
     }
 

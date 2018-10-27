@@ -1,21 +1,63 @@
 package org.shakticoin.tour;
 
+import android.arch.lifecycle.ViewModelProviders;
+import android.databinding.Observable;
+import android.databinding.ObservableBoolean;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import org.shakticoin.R;
 
 
 public class StepThreeFragment extends Fragment {
 
+    private Button ctrlEndTour;
+    private WelcomeTourModel viewModel;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        FragmentActivity activity = getActivity();
+        if (activity != null) {
+            viewModel = ViewModelProviders.of(activity).get(WelcomeTourModel.class);
+            viewModel.fadeInButton.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+                @Override
+                public void onPropertyChanged(Observable sender, int propertyId) {
+                    if (((ObservableBoolean) sender).get()) {
+                        // animate the button if it is not visible, otherwise this cause blinking
+                        // when we go one step back and forth again.
+                        if (ctrlEndTour.getVisibility() != View.VISIBLE) {
+                            Handler handler = new Handler();
+                            handler.postDelayed(() -> {
+                                ctrlEndTour.setAlpha(0f);
+                                ctrlEndTour.setVisibility(View.VISIBLE);
+                                ctrlEndTour.animate()
+                                        .alpha(1f)
+                                        .setDuration(WelcomeTourActivity.FADE_IN_DURATION);
+                            }, WelcomeTourActivity.VIEW_DELAY);
+                        }
+                    }
+                }
+            });
+        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_tour_3, container, false);
+        View v = inflater.inflate(R.layout.fragment_tour_3, container, false);
+
+        ctrlEndTour = v.findViewById(R.id.endTour);
+
+        return v;
     }
 }
