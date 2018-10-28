@@ -104,5 +104,6 @@
     <string name="content_share_button">Share button</string>
     <string name="share_referral_code">Share the personal referral code</string>
     <string name="share_referral_link">Share the personal referral link</string>
+    <string name="err_login_failed">Login attempt failed. Please ensure you enter correct username and password.</string>
 
 </resources>
