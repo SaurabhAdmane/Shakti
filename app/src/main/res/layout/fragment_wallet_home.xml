@@ -6,6 +6,7 @@
             name="viewModel"
             type="org.shakticoin.wallet.WalletModel"/>
     </data>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -64,14 +65,17 @@
 
             <TextView
                 android:id="@+id/referralCode"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginLeft="24dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
                 android:text="@{viewModel.referralCode}"
                 android:textAppearance="@style/AppText.Title.Branded"
                 android:textSize="18sp"
+                app:layout_constraintEnd_toStartOf="@+id/onShareCode"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/label1" />
 
@@ -92,14 +96,17 @@
 
             <TextView
                 android:id="@+id/referralLink"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginLeft="24dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
                 android:text="@{viewModel.referralLink}"
                 android:textAppearance="@style/AppText.Title.Branded"
                 android:textSize="18sp"
+                app:layout_constraintEnd_toStartOf="@+id/onShareLink"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/label2" />
 
@@ -110,8 +117,8 @@
                 android:layout_marginEnd="24dp"
                 android:layout_marginRight="24dp"
                 android:background="@android:color/transparent"
-                android:onClick="onShareCode"
                 android:contentDescription="@string/content_share_button"
+                android:onClick="onShareCode"
                 app:layout_constraintBottom_toBottomOf="@+id/referralCode"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/referralCode"
@@ -124,8 +131,8 @@
                 android:layout_marginEnd="24dp"
                 android:layout_marginRight="24dp"
                 android:background="@android:color/transparent"
-                android:onClick="onShareLink"
                 android:contentDescription="@string/content_share_button"
+                android:onClick="onShareLink"
                 app:layout_constraintBottom_toBottomOf="@+id/referralLink"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/referralLink"
