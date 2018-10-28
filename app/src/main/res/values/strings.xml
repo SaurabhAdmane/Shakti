@@ -102,5 +102,7 @@
     <string name="wallet_ref_code">Your personal referral code is:</string>
     <string name="wallet_ref_link">Your personal referral link is:</string>
     <string name="content_share_button">Share button</string>
+    <string name="share_referral_code">Share the personal referral code</string>
+    <string name="share_referral_link">Share the personal referral link</string>
 
 </resources>
