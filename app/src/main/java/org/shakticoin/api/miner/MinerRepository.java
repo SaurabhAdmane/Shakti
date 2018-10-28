@@ -39,6 +39,7 @@ public class MinerRepository {
                             if (listener != null) listener.onComplete(null,null);
                         }
                     } else {
+                        Debug.logDebug(response.toString());
                         if (listener != null) listener.onComplete(null, new RemoteException(response.message(), response.code()));
                     }
                 }
@@ -66,6 +67,7 @@ public class MinerRepository {
                             if (listener != null) listener.onComplete(body, null);
                         }
                     } else {
+                        Debug.logDebug(response.toString());
                         if (listener != null) listener.onComplete(null,
                                 new RemoteException(response.message(), response.code()));
                     }

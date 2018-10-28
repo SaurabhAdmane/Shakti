@@ -52,6 +52,8 @@ public class CountryRepository {
                             Collections.sort(countryList, (o1, o2) -> o1.getName().compareToIgnoreCase(o2.getName()));
                             liveData.setValue(countryList);
                         }
+                    } else {
+                        Debug.logDebug(response.toString());
                     }
                 }
             }

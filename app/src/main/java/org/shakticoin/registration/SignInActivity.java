@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,6 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.shakticoin.BuildConfig;
 import org.shakticoin.R;
 import org.shakticoin.api.BaseUrl;
 import org.shakticoin.api.OnCompleteListener;
@@ -113,7 +115,9 @@ public class SignInActivity extends AppCompatActivity {
                                 public void onComplete(MinerDataResponse value, Throwable error) {
                                     progressBar.setVisibility(View.INVISIBLE);
                                     if (error != null) {
-                                        Toast.makeText(self, R.string.err_unexpected, Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(self,
+                                                BuildConfig.DEBUG ? error.getMessage() : getString(R.string.err_unexpected),
+                                                Toast.LENGTH_SHORT).show();
                                         Debug.logException(error);
                                         return;
                                     }
@@ -142,6 +146,7 @@ public class SignInActivity extends AppCompatActivity {
                         }
                     } else {
                         progressBar.setVisibility(View.INVISIBLE);
+                        Debug.logDebug(response.toString());
                     }
                 }
             }
@@ -149,7 +154,9 @@ public class SignInActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Call<LoginServiceResponse> call, @NonNull Throwable t) {
                 progressBar.setVisibility(View.INVISIBLE);
-                Toast.makeText(self, R.string.err_unexpected, Toast.LENGTH_SHORT).show();
+                Toast.makeText(self,
+                        BuildConfig.DEBUG ? t.getMessage() : getString(R.string.err_unexpected),
+                        Toast.LENGTH_SHORT).show();
                 Debug.logException(t);
             }
         });

@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import org.shakticoin.BuildConfig;
 import org.shakticoin.R;
 import org.shakticoin.api.OnCompleteListener;
 import org.shakticoin.api.order.Order;
@@ -162,7 +163,9 @@ public class MiningLicenseActivity extends AppCompatActivity {
                     binding.progressBar.setVisibility(View.INVISIBLE);
                     if (error != null) {
                         Debug.logException(error);
-                        Toast.makeText(activity, R.string.err_unexpected, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(activity,
+                                BuildConfig.DEBUG ? error.getMessage() : getString(R.string.err_unexpected),
+                                Toast.LENGTH_SHORT).show();
                         return;
                     }
 
@@ -191,7 +194,9 @@ public class MiningLicenseActivity extends AppCompatActivity {
             public void onComplete(Void value, Throwable error) {
                 binding.progressBar.setVisibility(View.INVISIBLE);
                 if (error != null) {
-                    Toast.makeText(activity, R.string.err_unexpected, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity,
+                            BuildConfig.DEBUG ? error.getMessage() : getString(R.string.err_unexpected),
+                            Toast.LENGTH_SHORT).show();
                     return;
                 }
                 openWallet();

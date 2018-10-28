@@ -16,6 +16,7 @@ import com.stripe.android.model.Card;
 import com.stripe.android.model.Token;
 import com.stripe.android.view.CardInputWidget;
 
+import org.shakticoin.BuildConfig;
 import org.shakticoin.R;
 import org.shakticoin.util.CommonUtil;
 import org.shakticoin.util.Debug;
@@ -71,7 +72,9 @@ public class StripeActivity extends AppCompatActivity {
             public void onError(Exception error) {
                 progressBar.setVisibility(View.INVISIBLE);
                 Debug.logException(error);
-                Toast.makeText(activity, R.string.err_unexpected, Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity,
+                        BuildConfig.DEBUG ? error.getMessage() : getString(R.string.err_unexpected),
+                        Toast.LENGTH_SHORT).show();
             }
 
             @Override

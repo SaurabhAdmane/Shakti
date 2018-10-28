@@ -56,6 +56,7 @@ public class AuthRepository {
                             listener.onComplete(null,null);
                         }
                     } else {
+                        Debug.logDebug(response.toString());
                         listener.onComplete(null, new RemoteException(response.message(), response.code()));
                     }
                 }

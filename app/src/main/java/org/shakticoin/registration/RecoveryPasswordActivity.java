@@ -14,9 +14,9 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import org.shakticoin.BuildConfig;
 import org.shakticoin.R;
 import org.shakticoin.api.BaseUrl;
-import org.shakticoin.api.Session;
 import org.shakticoin.api.auth.LoginService;
 import org.shakticoin.api.auth.PasswordResetRequest;
 import org.shakticoin.util.Debug;
@@ -88,15 +88,23 @@ public class RecoveryPasswordActivity extends AppCompatActivity {
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
-                if (response.isSuccessful()) {
-                    if (!viewModel.isRequestSent()) nextPage();
-                }
                 progressBar.setVisibility(View.INVISIBLE);
+                if (call.isExecuted()) {
+                    if (response.isSuccessful()) {
+                        if (!viewModel.isRequestSent()) nextPage();
+                    } else {
+                        Debug.logDebug(response.toString());
+                        Toast.makeText(self,
+                                BuildConfig.DEBUG ? response.message() : getString(R.string.err_unexpected),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                }
             }
 
             @Override
             public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-                Toast.makeText(self, R.string.err_unexpected, Toast.LENGTH_SHORT).show();
+                Toast.makeText(self, BuildConfig.DEBUG ? t.getMessage() : getString(R.string.err_unexpected),
+                        Toast.LENGTH_SHORT).show();
                 progressBar.setVisibility(View.INVISIBLE);
                 Debug.logException(t);
             }
