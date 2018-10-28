@@ -27,8 +27,10 @@ import org.shakticoin.api.auth.LoginService;
 import org.shakticoin.api.auth.LoginServiceResponse;
 import org.shakticoin.api.miner.MinerDataResponse;
 import org.shakticoin.api.miner.MinerRepository;
+import org.shakticoin.util.CommonUtil;
 import org.shakticoin.util.Debug;
 import org.shakticoin.util.PreferenceHelper;
+import org.shakticoin.util.Validator;
 import org.shakticoin.wallet.WalletActivity;
 
 import retrofit2.Call;
@@ -60,17 +62,6 @@ public class SignInActivity extends AppCompatActivity {
                 return true;
             }
             return false;
-        });
-        TextView ctrlRegisterNowLink = findViewById(R.id.register_now_link);
-        final Context self = this;
-        ctrlRegisterNowLink.setOnClickListener(v -> {
-            Intent intent = new Intent(self, SignUpActivity.class);
-            startActivity(intent);
-        });
-        TextView ctrlForgotPwd = findViewById(R.id.forgotPassword);
-        ctrlForgotPwd.setOnClickListener(v -> {
-            Intent intent = new Intent(self, RecoveryPasswordActivity.class);
-            startActivity(intent);
         });
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -168,5 +159,18 @@ public class SignInActivity extends AppCompatActivity {
     private void showNotConfirmed() {
         DialogConfirmEmail dialog = DialogConfirmEmail.getInstance(true);
         dialog.show(getSupportFragmentManager(), DialogConfirmEmail.class.getSimpleName());
+    }
+
+    public void onRecoveryPassword(View view) {
+        String emailAddress = ctrlUsername.getText().toString();
+        Intent intent = new Intent(this, RecoveryPasswordActivity.class);
+        if (Validator.isEmail(emailAddress))
+            intent.putExtra(CommonUtil.prefixed("emailAddress", this), emailAddress);
+        startActivity(intent);
+    }
+
+    public void onRegisterNow(View view) {
+        Intent intent = new Intent(this, SignUpActivity.class);
+        startActivity(intent);
     }
 }

@@ -88,6 +88,7 @@
                 android:fontFamily="@font/lato"
                 android:text="@string/forgot_password"
                 android:textAppearance="@style/AppButton.Link"
+                android:onClick="onRecoveryPassword"
                 app:layout_constraintEnd_toEndOf="@+id/password"
                 app:layout_constraintTop_toBottomOf="@+id/password" />
 
@@ -125,6 +126,7 @@
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
                 android:textStyle="bold"
+                android:onClick="onRegisterNow"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/register" />
