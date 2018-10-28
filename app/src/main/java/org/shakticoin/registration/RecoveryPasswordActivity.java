@@ -90,10 +90,10 @@ public class RecoveryPasswordActivity extends AppCompatActivity {
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 progressBar.setVisibility(View.INVISIBLE);
                 if (call.isExecuted()) {
+                    Debug.logDebug(response.toString());
                     if (response.isSuccessful()) {
                         if (!viewModel.isRequestSent()) nextPage();
                     } else {
-                        Debug.logDebug(response.toString());
                         Toast.makeText(self,
                                 BuildConfig.DEBUG ? response.message() : getString(R.string.err_unexpected),
                                 Toast.LENGTH_SHORT).show();

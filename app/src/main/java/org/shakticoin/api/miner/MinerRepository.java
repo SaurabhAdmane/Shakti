@@ -32,6 +32,7 @@ public class MinerRepository {
             @Override
             public void onResponse(@NonNull Call<MinerDataResponse> call, @NonNull Response<MinerDataResponse> response) {
                 if (call.isExecuted()) {
+                    Debug.logDebug(response.toString());
                     if (response.isSuccessful()) {
                         MinerDataResponse minerData = response.body();
                         if (minerData != null) {
@@ -39,7 +40,6 @@ public class MinerRepository {
                             if (listener != null) listener.onComplete(null,null);
                         }
                     } else {
-                        Debug.logDebug(response.toString());
                         if (listener != null) listener.onComplete(null, new RemoteException(response.message(), response.code()));
                     }
                 }
@@ -60,6 +60,7 @@ public class MinerRepository {
             @Override
             public void onResponse(@NonNull Call<MinerDataResponse> call, @NonNull Response<MinerDataResponse> response) {
                 if (call.isExecuted()) {
+                    Debug.logDebug(response.toString());
                     if (response.isSuccessful()) {
                         MinerDataResponse body = response.body();
                         if (body != null) {
@@ -67,7 +68,6 @@ public class MinerRepository {
                             if (listener != null) listener.onComplete(body, null);
                         }
                     } else {
-                        Debug.logDebug(response.toString());
                         if (listener != null) listener.onComplete(null,
                                 new RemoteException(response.message(), response.code()));
                     }

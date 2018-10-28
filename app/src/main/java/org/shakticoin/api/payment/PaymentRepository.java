@@ -33,11 +33,11 @@ public class PaymentRepository {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 if (call.isExecuted()) {
+                    Debug.logDebug(response.toString());
                     if (response.isSuccessful()) {
                         // real response data are not important
                         if (listener != null) listener.onComplete(null, null);
                     } else {
-                        Debug.logDebug(response.toString());
                         if (listener != null) listener.onComplete(null,
                                 new RemoteException(response.message(), response.code()));
                     }

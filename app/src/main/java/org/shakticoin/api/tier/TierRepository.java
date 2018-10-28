@@ -34,12 +34,12 @@ public class TierRepository {
             @Override
             public void onResponse(@NonNull Call<List<Tier>> call, @NonNull Response<List<Tier>> response) {
                 if (call.isExecuted()) {
+                    Debug.logDebug(response.toString());
                     if (response.isSuccessful()) {
                         List<Tier> tiers = response.body();
                         if (listener != null) listener.onComplete(tiers, null);
 
                     } else {
-                        Debug.logDebug(response.toString());
                         if (listener != null) listener.onComplete(null,
                                 new RemoteException(response.message(), response.code()));
                     }

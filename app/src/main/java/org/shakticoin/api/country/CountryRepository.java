@@ -40,6 +40,7 @@ public class CountryRepository {
             @Override
             public void onResponse(Call<Map<String, String>> call, Response<Map<String, String>> response) {
                 if (call.isExecuted()) {
+                    Debug.logDebug(response.toString());
                     if (response.isSuccessful()) {
                         Map<String, String> countries = response.body();
                         if (countries != null && countries.size() > 0) {
@@ -52,8 +53,6 @@ public class CountryRepository {
                             Collections.sort(countryList, (o1, o2) -> o1.getName().compareToIgnoreCase(o2.getName()));
                             liveData.setValue(countryList);
                         }
-                    } else {
-                        Debug.logDebug(response.toString());
                     }
                 }
             }

@@ -49,6 +49,7 @@ public class AuthRepository {
             @Override
             public void onResponse(@NonNull Call<LoginServiceResponse> call, @NonNull Response<LoginServiceResponse> response) {
                 if (call.isExecuted()) {
+                    Debug.logDebug(response.toString());
                     if (response.isSuccessful()) {
                         LoginServiceResponse resp = response.body();
                         if (resp != null) {
@@ -56,7 +57,6 @@ public class AuthRepository {
                             listener.onComplete(null,null);
                         }
                     } else {
-                        Debug.logDebug(response.toString());
                         listener.onComplete(null, new RemoteException(response.message(), response.code()));
                     }
                 }

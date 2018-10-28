@@ -103,6 +103,7 @@ public class SignInActivity extends AppCompatActivity {
             @Override
             public void onResponse(@NonNull Call<LoginServiceResponse> call, @NonNull Response<LoginServiceResponse> response) {
                 if (call.isExecuted()) {
+                    Debug.logDebug(response.toString());
                     if (response.isSuccessful()) {
                         LoginServiceResponse resp = response.body();
                         if (resp != null) {
@@ -146,7 +147,6 @@ public class SignInActivity extends AppCompatActivity {
                         }
                     } else {
                         progressBar.setVisibility(View.INVISIBLE);
-                        Debug.logDebug(response.toString());
                     }
                 }
             }
