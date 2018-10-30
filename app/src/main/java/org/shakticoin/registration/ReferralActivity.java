@@ -5,12 +5,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Toast;
 
 import org.shakticoin.R;
 import org.shakticoin.api.OnCompleteListener;
 import org.shakticoin.api.tier.Tier;
 import org.shakticoin.api.tier.TierRepository;
 import org.shakticoin.util.CommonUtil;
+import org.shakticoin.widget.qr.QRScannerActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +20,21 @@ import java.util.List;
 
 public class ReferralActivity extends AppCompatActivity {
     private ArrayList<Tier> tiers;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == QRScannerActivity.REQUEST_QR) {
+            if (resultCode == RESULT_OK) {
+                String referralCodeKey = CommonUtil.prefixed(QRScannerActivity.KEY_REFERRAL_CODE, this);
+                if (data != null && data.hasExtra(referralCodeKey)) {
+                    String referralCode = data.getStringExtra(referralCodeKey);
+                    Toast.makeText(this, referralCode, Toast.LENGTH_SHORT).show();
+                    postReferralInfo();
+                }
+            }
+        }
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,10 +58,15 @@ public class ReferralActivity extends AppCompatActivity {
     }
 
     public void onReward(View view) {
-        selectTier();
+        postReferralInfo();
     }
 
     public void onReadQRCode(View view) {
+        startActivityForResult(new Intent(this, QRScannerActivity.class), QRScannerActivity.REQUEST_QR);
+    }
+
+    private void postReferralInfo() {
+        selectTier();
     }
 
     private void selectTier() {

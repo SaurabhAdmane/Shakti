@@ -1,5 +1,7 @@
 package org.shakticoin.util;
 
+import android.net.Uri;
+import android.text.TextUtils;
 import android.util.Patterns;
 
 public class Validator {
@@ -18,5 +20,26 @@ public class Validator {
      */
     public static boolean isPhoneNumber(String phoneNumber) {
         return phoneNumber != null && Patterns.PHONE.matcher(phoneNumber).matches();
+    }
+
+    /**
+     * Returns true if a given String might be a web address.
+     * @see android.util.Patterns
+     */
+    public static boolean isWebAddress(String url) {
+        return url != null && Patterns.WEB_URL.matcher(url).matches();
+    }
+
+    /**
+     * Check format of the specified url and return true if it conforms the format used
+     * for Shakti referral url.
+     */
+    public static boolean isShaktiReferralUrl(String url) {
+        if (isWebAddress(url)) {
+            Uri uri = Uri.parse(url);
+            // just check if it contains proper parameter
+            return !TextUtils.isEmpty(uri.getQueryParameter("referral_code"));
+        }
+        return false;
     }
 }
