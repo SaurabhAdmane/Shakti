@@ -8,6 +8,7 @@
     <string name="password">Password</string>
     <string name="forgot_password"><u>Forgot Password?</u></string>
     <string name="register_now">Register Now</string>
+    <string name="next">Next</string>
     <string name="log_in">Log in</string>
     <string name="do_registration"><u>Don\'t have an account? Register Now.</u></string>
     <string name="do_login"><u>Already have an account? Sign in</u></string>

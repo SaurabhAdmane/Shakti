@@ -96,9 +96,9 @@ public class BarcodeScanningProcessor extends VisionProcessorBase<List<FirebaseV
                     if (TextUtils.isEmpty(url)) {
                         url = barcode.getDisplayValue();
                     }
-                    //TODO: check if this is a Shakti QR
 
                     if (Validator.isShaktiReferralUrl(url)) {
+                        // TODO: add a signal, vibration or sound
                         stop();
                         if (listener != null) listener.onBarcode(url);
                         break;
