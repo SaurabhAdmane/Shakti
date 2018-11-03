@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="TextInputLayout">
+        <!-- a drawable that used for password toggle button -->
+        <attr name="passwordToggleDrawable" format="reference"/>
+        <!-- enable a button for the field that toggle password visibility -->
+        <attr name="passwordToggleEnabled" format="boolean"/>
+        <!-- field has an image marks for valid and invalid input -->
+        <attr name="validationEnabled" format="boolean"/>
+    </declare-styleable>
+
+</resources>

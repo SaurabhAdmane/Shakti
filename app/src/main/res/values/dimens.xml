@@ -10,4 +10,8 @@
 
     <dimen name="button_radius">23dp</dimen>
 
+    <dimen name="error_radius">3dp</dimen>
+    <dimen name="error_padding_horizontal">25dp</dimen>
+    <dimen name="error_padding_vertical">7dp</dimen>
+
 </resources>
