@@ -87,7 +87,7 @@ public class TextInputLayout extends RelativeLayout {
         oneDPinPixels = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1f, resources.getDisplayMetrics());
 
         TypedArray a = theme.obtainStyledAttributes(attrs, R.styleable.TextInputLayout, 0, 0);
-        labelTextSize = a.getDimensionPixelSize(R.styleable.TextInputLayout_labelTextSize, 12);
+        labelTextSize = a.getDimensionPixelSize(R.styleable.TextInputLayout_labelTextSize, 0);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             labelFontTypeface = a.getFont(R.styleable.TextInputLayout_labelFontTypeface);
         } else {
@@ -132,7 +132,7 @@ public class TextInputLayout extends RelativeLayout {
             if (hint != null) {
                 setLabel();
                 // if hint is specified then we need to add some top margin to accommodate the label
-                extraTopMargin = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 9f,
+                extraTopMargin = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8f,
                         getContext().getResources().getDisplayMetrics());
                 newParams.setMargins(0, extraTopMargin.intValue(), 0, 0);
             }
@@ -167,9 +167,8 @@ public class TextInputLayout extends RelativeLayout {
         labelView.setPadding(padding.intValue(), 0, padding.intValue(), 0);
         labelView.setText(hint);
         labelView.setTextColor(resources.getColor(R.color.colorBrand));
-        labelView.setTextSize(12f);
-        Typeface font = Typeface.create("lato", Typeface.NORMAL);
-        labelView.setTypeface(font);
+        labelView.setTextSize(TypedValue.COMPLEX_UNIT_PX, labelTextSize);
+        labelView.setTypeface(labelFontTypeface);
         labelView.setVisibility(View.GONE);
 
         // add the label at the end (most likely no other children at the moment)
@@ -259,7 +258,7 @@ public class TextInputLayout extends RelativeLayout {
                 }
                 Float textWidth = textPaint.measureText((String) hint);
                 int paddingTotal = labelView.getPaddingLeft() + labelView.getPaddingRight();
-                textWidth += paddingTotal;
+                textWidth = textWidth + paddingTotal;
                 ((InlineLabelEditText) editTextView).setLabelWidth(textWidth);
             }
         } else {
