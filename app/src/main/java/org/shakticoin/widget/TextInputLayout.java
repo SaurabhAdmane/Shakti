@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
@@ -54,13 +55,16 @@ public class TextInputLayout extends RelativeLayout {
     View errorCallout;
 
     private EditText editTextView;
-    private LabelTextView labelView;
+    private TextView labelView;
     private CheckableImageButton passwordToggleView;
 
     private CharSequence hint;
 
     private Float extraTopMargin;
     private Float oneDPinPixels;
+
+    private Typeface labelFontTypeface;
+    private float labelTextSize;
 
     public TextInputLayout(Context context) {
         this(context, null);
@@ -83,6 +87,12 @@ public class TextInputLayout extends RelativeLayout {
         oneDPinPixels = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1f, resources.getDisplayMetrics());
 
         TypedArray a = theme.obtainStyledAttributes(attrs, R.styleable.TextInputLayout, 0, 0);
+        labelTextSize = a.getDimensionPixelSize(R.styleable.TextInputLayout_labelTextSize, 12);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            labelFontTypeface = a.getFont(R.styleable.TextInputLayout_labelFontTypeface);
+        } else {
+            labelFontTypeface = Typeface.create("lato", Typeface.NORMAL);
+        }
         passwordToggleDrawable = a.getDrawable(R.styleable.TextInputLayout_passwordToggleDrawable);
         passwordToggleEnabled = a.getBoolean(R.styleable.TextInputLayout_passwordToggleEnabled, false);
         validationEnabled = a.getBoolean(R.styleable.TextInputLayout_validationEnabled, false);
@@ -122,7 +132,7 @@ public class TextInputLayout extends RelativeLayout {
             if (hint != null) {
                 setLabel();
                 // if hint is specified then we need to add some top margin to accommodate the label
-                extraTopMargin = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8f,
+                extraTopMargin = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 9f,
                         getContext().getResources().getDisplayMetrics());
                 newParams.setMargins(0, extraTopMargin.intValue(), 0, 0);
             }
@@ -138,7 +148,7 @@ public class TextInputLayout extends RelativeLayout {
         Resources resources = getContext().getResources();
         DisplayMetrics metrics = resources.getDisplayMetrics();
 
-        labelView = new LabelTextView(getContext());
+        labelView = new TextView(getContext());
 
         // specify layout attributes
         LayoutParams labelParams = new LayoutParams(
@@ -237,9 +247,27 @@ public class TextInputLayout extends RelativeLayout {
         if (hasFocus || hasContent) {
             editTextView.setHint(null);
             labelView.setVisibility(View.VISIBLE);
+            if (editTextView instanceof InlineLabelEditText) {
+                // calculate width of the label TextView and pass it to the EditText
+                // in order to change the border
+                Paint textPaint = new Paint();
+                textPaint.setTextSize(labelTextSize);
+                if (labelFontTypeface != null) {
+                    textPaint.setTypeface(labelFontTypeface);
+                } else {
+                    textPaint.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+                }
+                Float textWidth = textPaint.measureText((String) hint);
+                int paddingTotal = labelView.getPaddingLeft() + labelView.getPaddingRight();
+                textWidth += paddingTotal;
+                ((InlineLabelEditText) editTextView).setLabelWidth(textWidth);
+            }
         } else {
             labelView.setVisibility(View.GONE);
             editTextView.setHint(hint);
+            if (editTextView instanceof InlineLabelEditText) {
+                ((InlineLabelEditText) editTextView).setLabelWidth(0f);
+            }
         }
     }
 

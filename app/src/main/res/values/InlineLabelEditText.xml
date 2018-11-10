@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="InlineLabelEditText">
+        <!-- a color that is used to draw both label and border -->
+        <attr name="borderColor" format="color"/>
+    </declare-styleable>
+
+</resources>

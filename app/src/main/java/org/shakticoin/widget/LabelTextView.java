@@ -48,7 +48,7 @@ public class LabelTextView extends android.support.v7.widget.AppCompatTextView {
         // paint background using XOR transfer mode and the border color
         int height = getHeight();
         int width = getWidth();
-        canvas.drawLine(0, height/2+1, width, height/2+1, paint);
+//        canvas.drawLine(0, height/2+1, width, height/2+1, paint);
 
         super.onDraw(canvas);
     }
