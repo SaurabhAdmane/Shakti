@@ -41,9 +41,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/logo" />
 
-            <EditText
-                android:id="@+id/username"
-                style="@style/AppTextField"
+            <org.shakticoin.widget.TextInputLayout
+                android:id="@+id/username_layout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="22dp"
@@ -51,16 +50,26 @@
                 android:layout_marginTop="67dp"
                 android:layout_marginEnd="22dp"
                 android:layout_marginRight="22dp"
-                android:ems="10"
-                android:hint="@string/hint_email_address"
-                android:inputType="textEmailAddress"
+                app:labelTextSize="11sp"
+                app:labelFontTypeface="@font/lato"
+                app:validationEnabled="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView" />
+                app:layout_constraintTop_toBottomOf="@+id/textView" >
 
-            <EditText
-                android:id="@+id/password"
-                style="@style/AppTextField"
+                <org.shakticoin.widget.InlineLabelEditText
+                    android:id="@+id/username"
+                    style="@style/AppTextField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="@string/hint_email_address"
+                    android:inputType="textEmailAddress"/>
+
+            </org.shakticoin.widget.TextInputLayout>
+
+            <org.shakticoin.widget.TextInputLayout
+                android:id="@+id/password_layout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="22dp"
@@ -68,13 +77,24 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="22dp"
                 android:layout_marginRight="22dp"
-                android:ems="10"
-                android:hint="@string/password"
-                android:imeOptions="actionDone"
-                android:inputType="textPassword"
+                app:labelTextSize="11sp"
+                app:labelFontTypeface="@font/lato"
+                app:validationEnabled="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/username" />
+                app:layout_constraintTop_toBottomOf="@+id/username_layout">
+
+                <org.shakticoin.widget.InlineLabelEditText
+                    android:id="@+id/password"
+                    style="@style/AppTextField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="@string/password"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPassword"/>
+
+            </org.shakticoin.widget.TextInputLayout>
 
             <TextView
                 android:id="@+id/forgotPassword"
@@ -89,8 +109,8 @@
                 android:text="@string/forgot_password"
                 android:textAppearance="@style/AppButton.Link"
                 android:onClick="onRecoveryPassword"
-                app:layout_constraintEnd_toEndOf="@+id/password"
-                app:layout_constraintTop_toBottomOf="@+id/password" />
+                app:layout_constraintEnd_toEndOf="@+id/password_layout"
+                app:layout_constraintTop_toBottomOf="@+id/password_layout" />
 
             <Button
                 android:id="@+id/register"
@@ -106,7 +126,7 @@
                 android:text="@string/log_in"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/password" />
+                app:layout_constraintTop_toBottomOf="@+id/password_layout" />
 
 
             <TextView
@@ -123,6 +143,7 @@
                 android:linksClickable="true"
                 android:text="@string/do_registration"
                 android:textAlignment="textStart"
+                android:gravity="start"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
                 android:textStyle="bold"
@@ -131,6 +152,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/register" />
 
+            <!-- TODO: does not work in 16. Perhaps problems with vector graphics -->
             <CheckBox
                 android:id="@+id/rememberMe"
                 style="@style/AppCheckbox"
@@ -144,7 +166,7 @@
                 android:button="@drawable/checkbox_states"
                 android:text="@string/remember_me"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/password" />
+                app:layout_constraintTop_toBottomOf="@+id/password_layout" />
 
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
