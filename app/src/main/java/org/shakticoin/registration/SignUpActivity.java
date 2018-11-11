@@ -68,6 +68,11 @@ public class SignUpActivity extends AppCompatActivity implements TextView.OnEdit
         startActivity(intent);
     }
 
+    public void onCancel(View view) {
+        // TODO: if user cancel registration we probable must return to login screen instead of finishing the activity
+        finish();
+    }
+
     /** Return true if all fields on the first page has valid values */
     private boolean validateContacts() {
         if (TextUtils.isEmpty(viewModel.firstName.getValue())
