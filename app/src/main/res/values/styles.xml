@@ -80,6 +80,10 @@
         <item name="android:background">@drawable/edit_bordered</item>
         <item name="borderColor">@color/colorBrand</item>
     </style>
+    <style name="AppTextLayout" parent="AppTheme">
+        <item name="labelTextSize">11sp</item>
+        <item name="labelFontTypeface">@font/lato</item>
+    </style>
 
     <style name="AppSpinner" parent="AppTheme">
         <item name="android:background">@drawable/edit_bordered</item>

@@ -84,9 +84,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/countries" />
 
-            <EditText
-                android:id="@+id/address"
-                style="@style/AppTextField"
+            <org.shakticoin.widget.TextInputLayout
+                android:id="@+id/addressLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -94,19 +93,25 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="24dp"
                 android:layout_marginRight="24dp"
-                android:ems="10"
-                android:hint="@string/hint_address"
-                android:inputType="text"
-                android:text="@={viewModel.address}"
+                style="@style/AppTextLayout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/citizenship"
                 tools:layout_conversion_absoluteHeight="1dp"
-                tools:layout_conversion_absoluteWidth="1dp" />
+                tools:layout_conversion_absoluteWidth="1dp">
+                <org.shakticoin.widget.InlineLabelEditText
+                    android:id="@+id/address"
+                    style="@style/AppTextField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="@string/hint_address"
+                    android:inputType="text"
+                    android:text="@={viewModel.address}"/>
+            </org.shakticoin.widget.TextInputLayout>
 
-            <EditText
-                android:id="@+id/city"
-                style="@style/AppTextField"
+            <org.shakticoin.widget.TextInputLayout
+                android:id="@+id/cityLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -114,20 +119,25 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="24dp"
                 android:layout_marginRight="24dp"
-                android:ems="10"
-                android:hint="@string/hint_city"
-                android:inputType="text|textCapWords"
-                android:text="@={viewModel.city}"
+                style="@style/AppTextLayout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/address"
+                app:layout_constraintTop_toBottomOf="@+id/addressLayout"
                 tools:layout_conversion_absoluteHeight="1dp"
-                tools:layout_conversion_absoluteWidth="1dp" />
+                tools:layout_conversion_absoluteWidth="1dp">
+                <org.shakticoin.widget.InlineLabelEditText
+                    android:id="@+id/city"
+                    style="@style/AppTextField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="@string/hint_city"
+                    android:inputType="text|textCapWords"
+                    android:text="@={viewModel.city}"/>
+            </org.shakticoin.widget.TextInputLayout>
 
-            <EditText
-                android:id="@+id/postalCode"
-                android:tag="AddressPage"
-                style="@style/AppTextField"
+            <org.shakticoin.widget.TextInputLayout
+                android:id="@+id/postalCodeLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -135,16 +145,24 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="24dp"
                 android:layout_marginRight="24dp"
-                android:ems="10"
-                android:hint="@string/hint_postal_code"
-                android:imeOptions="actionDone"
-                android:inputType="number"
-                android:text="@={viewModel.postalCode}"
+                style="@style/AppTextLayout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/city"
+                app:layout_constraintTop_toBottomOf="@+id/cityLayout"
                 tools:layout_conversion_absoluteHeight="1dp"
-                tools:layout_conversion_absoluteWidth="1dp" />
+                tools:layout_conversion_absoluteWidth="1dp">
+                <org.shakticoin.widget.InlineLabelEditText
+                    android:id="@+id/postalCode"
+                    android:tag="AddressPage"
+                    style="@style/AppTextField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="@string/hint_postal_code"
+                    android:imeOptions="actionDone"
+                    android:inputType="number"
+                    android:text="@={viewModel.postalCode}"/>
+            </org.shakticoin.widget.TextInputLayout>
 
             <Button
                 android:id="@+id/register"
@@ -161,7 +179,7 @@
                 android:text="@string/register_now"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/postalCode"
+                app:layout_constraintTop_toBottomOf="@+id/postalCodeLayout"
                 tools:layout_conversion_absoluteHeight="1dp"
                 tools:layout_conversion_absoluteWidth="1dp" />
 
