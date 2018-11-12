@@ -22,6 +22,7 @@ import org.shakticoin.api.auth.LoginService;
 import org.shakticoin.api.auth.PasswordResetRequest;
 import org.shakticoin.util.CommonUtil;
 import org.shakticoin.util.Debug;
+import org.shakticoin.util.Validator;
 
 import java.util.Objects;
 
@@ -85,8 +86,8 @@ public class RecoveryPasswordActivity extends AppCompatActivity {
     public void resetPassword() {
         String emailAddress = viewModel.getEmail();
 
-        if (TextUtils.isEmpty(emailAddress)) {
-            Toast.makeText(this, R.string.err_email_required, Toast.LENGTH_SHORT).show();
+        if (!Validator.isEmail(emailAddress)) {
+            viewModel.emailAddressErrMsg.setValue(getString(R.string.err_email_required));
             return;
         }
 

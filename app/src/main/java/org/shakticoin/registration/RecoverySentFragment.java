@@ -6,14 +6,14 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
 
-import org.shakticoin.R;
 import org.shakticoin.databinding.FragmentRecoverySentBinding;
+import org.shakticoin.util.Validator;
 
 
 public class RecoverySentFragment extends Fragment {
@@ -38,13 +38,22 @@ public class RecoverySentFragment extends Fragment {
             binding.setViewModel(viewModel);
         }
 
-        EditText ctrlEmailAddress = v.findViewById(R.id.email_address);
-        ctrlEmailAddress.setOnEditorActionListener((v1, actionId, event) -> {
+        binding.emailAddress.setOnEditorActionListener((v1, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEND) {
                 onSend();
                 return true;
             }
             return false;
+        });
+
+        binding.emailAddressLayout.setValidator((view, value) -> Validator.isEmail(value));
+
+        // display an error callout if activity is set an error message
+        viewModel.emailAddressErrMsg.observe(this, s -> {
+            if (!TextUtils.isEmpty(s)) {
+                binding.emailAddressLayout.setError(s);
+                viewModel.emailAddressErrMsg.setValue(null);
+            }
         });
 
         return v;

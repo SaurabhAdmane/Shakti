@@ -2,10 +2,19 @@ package org.shakticoin.registration;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
+import android.databinding.ObservableBoolean;
+import android.databinding.ObservableField;
 
 
 public class RecoveryPasswordModel extends ViewModel {
     public final MutableLiveData<String> emailAddress = new MutableLiveData<>();
+
+    /**
+     * The variable help to pass error message from activity to the fragment. Once fragment
+     * catch the change it display error callout and reset value to null.
+     */
+    public MutableLiveData<String> emailAddressErrMsg = new MutableLiveData<>();
+
     private boolean requestSent = false;
 
     String getEmail() {
