@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,6 +68,26 @@ public class SignUpAddressFragment extends Fragment {
             citizenshipListAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
             binding.citizenship.setAdapter(citizenshipListAdapter);
         }
+
+        // display error callout for the field if error message is set
+        viewModel.addressErrMsg.observe(this, s -> {
+            if (!TextUtils.isEmpty(s)) {
+                binding.addressLayout.setError(s);
+                viewModel.addressErrMsg.setValue(null);
+            }
+        });
+        viewModel.cityErrMsg.observe(this, s -> {
+            if (!TextUtils.isEmpty(s)) {
+                binding.cityLayout.setError(s);
+                viewModel.cityErrMsg.setValue(null);
+            }
+        });
+        viewModel.postalCodeErrMsg.observe(this, s -> {
+            if (!TextUtils.isEmpty(s)) {
+                binding.postalCodeLayout.setError(s);
+                viewModel.postalCodeErrMsg.setValue(null);
+            }
+        });
 
         return binding.getRoot();
     }

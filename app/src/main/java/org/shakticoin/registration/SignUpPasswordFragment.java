@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +39,20 @@ public class SignUpPasswordFragment extends Fragment {
         if (listener != null) {
             binding.confirmPassword.setOnEditorActionListener(listener);
         }
+
+        // display error callout for the field if error message is set
+        viewModel.newPasswordErrMsg.observe(this, s -> {
+            if (!TextUtils.isEmpty(s)) {
+                binding.newPasswordLayout.setError(s);
+                viewModel.newPasswordErrMsg.setValue(null);
+            }
+        });
+        viewModel.verifyPasswordErrMsg.observe(this, s -> {
+            if (!TextUtils.isEmpty(s)) {
+                binding.confirmPasswordLayout.setError(s);
+                viewModel.verifyPasswordErrMsg.setValue(null);
+            }
+        });
 
         return binding.getRoot();
     }

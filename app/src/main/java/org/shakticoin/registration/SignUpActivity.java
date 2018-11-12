@@ -16,6 +16,7 @@ import android.widget.Toast;
 import org.shakticoin.BuildConfig;
 import org.shakticoin.R;
 import org.shakticoin.api.OnCompleteListener;
+import org.shakticoin.util.Validator;
 
 
 public class SignUpActivity extends AppCompatActivity implements TextView.OnEditorActionListener {
@@ -75,36 +76,81 @@ public class SignUpActivity extends AppCompatActivity implements TextView.OnEdit
 
     /** Return true if all fields on the first page has valid values */
     private boolean validateContacts() {
-        if (TextUtils.isEmpty(viewModel.firstName.getValue())
-                || TextUtils.isEmpty(viewModel.lastName.getValue())
-                || TextUtils.isEmpty(viewModel.emailAddress.getValue())
-                || TextUtils.isEmpty(viewModel.phoneNumber.getValue())) {
-            Toast.makeText(this, R.string.err_all_fields_required, Toast.LENGTH_SHORT).show();
-            return false;
+        boolean hasErrors = false;
+        if (TextUtils.isEmpty(viewModel.firstName.getValue())) {
+            viewModel.firstNameErrMsg.setValue(getString(R.string.err_required));
+            hasErrors = true;
         }
-        return true;
+        if (TextUtils.isEmpty(viewModel.lastName.getValue())) {
+            viewModel.lastNameErrMsg.setValue(getString(R.string.err_required));
+            hasErrors = true;
+        }
+        if (!Validator.isEmail(viewModel.emailAddress.getValue())) {
+            viewModel.emailAddressErrMsg.setValue(getString(R.string.err_email_required));
+            hasErrors = true;
+        }
+        if (!Validator.isPhoneNumber(viewModel.phoneNumber.getValue())) {
+            viewModel.phoneNumberErrMsg.setValue(getString(R.string.err_phone_required));
+            hasErrors = true;
+        }
+
+        return !hasErrors;
+//        if (TextUtils.isEmpty(viewModel.firstName.getValue())
+//                || TextUtils.isEmpty(viewModel.lastName.getValue())
+//                || TextUtils.isEmpty(viewModel.emailAddress.getValue())
+//                || TextUtils.isEmpty(viewModel.phoneNumber.getValue())) {
+//            Toast.makeText(this, R.string.err_all_fields_required, Toast.LENGTH_SHORT).show();
+//            return false;
+//        }
+//        return true;
     }
 
     /** Return true if all fields on the second page has valid values */
     private boolean validateAddress() {
-        if (TextUtils.isEmpty(viewModel.address.getValue())
-                || TextUtils.isEmpty(viewModel.city.getValue())
-                || TextUtils.isEmpty(viewModel.postalCode.getValue())) {
-            Toast.makeText(this, R.string.err_all_fields_required, Toast.LENGTH_SHORT).show();
-            return false;
+        // TODO: add validation for contry fields
+        boolean hasErrors = false;
+        if (TextUtils.isEmpty(viewModel.address.getValue())) {
+            viewModel.addressErrMsg.setValue(getString(R.string.err_required));
+            hasErrors = true;
         }
-        return true;
+        if (TextUtils.isEmpty(viewModel.city.getValue())) {
+            viewModel.cityErrMsg.setValue(getString(R.string.err_required));
+            hasErrors = true;
+        }
+        if (TextUtils.isEmpty(viewModel.postalCode.getValue())) {
+            viewModel.postalCodeErrMsg.setValue(getString(R.string.err_required));
+            hasErrors = true;
+        }
+        return !hasErrors;
+//        if (TextUtils.isEmpty(viewModel.address.getValue())
+//                || TextUtils.isEmpty(viewModel.city.getValue())
+//                || TextUtils.isEmpty(viewModel.postalCode.getValue())) {
+//            Toast.makeText(this, R.string.err_all_fields_required, Toast.LENGTH_SHORT).show();
+//            return false;
+//        }
+//        return true;
     }
 
     /** Return true if both fields contain the same string */
     private boolean validatePassword() {
+        boolean hasError = false;
         String newPassword = viewModel.newPassword.getValue();
+        if (TextUtils.isEmpty(newPassword)) {
+            viewModel.newPasswordErrMsg.setValue(getString(R.string.err_required));
+            hasError = true;
+        }
         String verifyPassword = viewModel.verifyPassword.getValue();
-        if (TextUtils.isEmpty(newPassword) || TextUtils.isEmpty(verifyPassword)
-                || !newPassword.equals(verifyPassword)) {
+        if (TextUtils.isEmpty(verifyPassword)) {
+            viewModel.verifyPasswordErrMsg.setValue(getString(R.string.err_required));
+            hasError = true;
+        }
+        if (hasError) return false;
+
+        if (!newPassword.equals(verifyPassword)) {
             Toast.makeText(this, R.string.err_incorrect_password, Toast.LENGTH_SHORT).show();
             return false;
         }
+
         return true;
     }
 

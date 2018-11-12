@@ -6,12 +6,14 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.shakticoin.databinding.FragmentSignupContactBinding;
+import org.shakticoin.util.Validator;
 
 
 public class SignUpContactsFragment extends Fragment {
@@ -39,6 +41,36 @@ public class SignUpContactsFragment extends Fragment {
         if (listener != null) {
             binding.phoneNumber.setOnEditorActionListener(listener);
         }
+
+        // display a special icon if content of the field conform the target format
+        binding.emailAddressLayout.setValidator((view, value) -> Validator.isEmail(value));
+        binding.phoneNumberLayout.setValidator((view, value) -> Validator.isPhoneNumber(value));
+
+        // display error callout for the field if error message is set
+        viewModel.firstNameErrMsg.observe(this, s -> {
+            if (!TextUtils.isEmpty(s)) {
+                binding.firstNameLayout.setError(s);
+                viewModel.firstNameErrMsg.setValue(null);
+            }
+        });
+        viewModel.lastNameErrMsg.observe(this, s -> {
+            if (!TextUtils.isEmpty(s)) {
+                binding.lastNameLayout.setError(s);
+                viewModel.lastNameErrMsg.setValue(null);
+            }
+        });
+        viewModel.emailAddressErrMsg.observe(this, s -> {
+            if (!TextUtils.isEmpty(s)) {
+                binding.emailAddressLayout.setError(s);
+                viewModel.emailAddressErrMsg.setValue(null);
+            }
+        });
+        viewModel.phoneNumberErrMsg.observe(this, s -> {
+            if (!TextUtils.isEmpty(s)) {
+                binding.phoneNumberLayout.setError(s);
+                viewModel.phoneNumberErrMsg.setValue(null);
+            }
+        });
 
         return binding.getRoot();
     }

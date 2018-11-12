@@ -20,17 +20,26 @@ import java.util.Locale;
 
 public class SignUpActivityModel extends ViewModel {
     public MutableLiveData<String> firstName = new MutableLiveData<>();
+    MutableLiveData<String> firstNameErrMsg = new MutableLiveData<>();
     public MutableLiveData<String> lastName = new MutableLiveData<>();
+    MutableLiveData<String> lastNameErrMsg = new MutableLiveData<>();
     public MutableLiveData<String> emailAddress = new MutableLiveData<>();
+    MutableLiveData<String> emailAddressErrMsg = new MutableLiveData<>();
     public MutableLiveData<String> phoneNumber = new MutableLiveData<>();
+    MutableLiveData<String> phoneNumberErrMsg = new MutableLiveData<>();
 
     public LiveData<List<Country>> countryList;
     public MutableLiveData<String> postalCode = new MutableLiveData<>();
+    MutableLiveData<String> postalCodeErrMsg = new MutableLiveData<>();
     public MutableLiveData<String> city = new MutableLiveData<>();
+    MutableLiveData<String> cityErrMsg = new MutableLiveData<>();
     public MutableLiveData<String> address = new MutableLiveData<>();
+    MutableLiveData<String> addressErrMsg = new MutableLiveData<>();
 
     public MutableLiveData<String> newPassword = new MutableLiveData<>();
+    MutableLiveData<String> newPasswordErrMsg = new MutableLiveData<>();
     public MutableLiveData<String> verifyPassword = new MutableLiveData<>();
+    MutableLiveData<String> verifyPasswordErrMsg = new MutableLiveData<>();
 
     /** A trigger for progress indicator */
     public ObservableInt progressBarVisibility = new ObservableInt(View.INVISIBLE);

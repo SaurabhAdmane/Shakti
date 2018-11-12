@@ -45,8 +45,10 @@
     <string name="recovery_sent_title">Link Sent</string>
     <string name="recovery_sent_subtitle">Be sure to check spam or junkmail.</string>
     <string name="err_email_required">Please enter a valid email</string>
+    <string name="err_phone_required">Please enter a valid phone number</string>
     <string name="err_unexpected">Unexpected error occurred</string>
     <string name="err_incorrect_password">Incorrect password</string>
+    <string name="err_required">You must provide a value for this field</string>
     <string name="err_all_fields_required">All fields are required</string>
     <string name="ref_who_referred">Who referred you?</string>
     <string name="ref_story">Like an elephant, we never forget. Human effort is Shakti. One would always remember and reward honest effort. Please do provide and info about the person who referred you to Shakti.</string>
