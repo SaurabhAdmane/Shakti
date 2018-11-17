@@ -140,7 +140,7 @@ public class TextInputLayout extends RelativeLayout {
             setEditText(newParams);
 
         } else {
-            super.addView(editTextView, index, params);
+            super.addView(child, index, params);
         }
     }
 
