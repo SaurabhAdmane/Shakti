@@ -9,6 +9,7 @@
     <color name="colorTintBackground">#BF000000</color>
     <color name="colorErrorText">#FFFFFFFF</color>
     <color name="colorErrorBackground">#FFBE061C</color>
+    <color name="colorHint">#FFFFFFFF</color>
 
     <color name="colorTickmark">#FFFFFFFF</color>
 

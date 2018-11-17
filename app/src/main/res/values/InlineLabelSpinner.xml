@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="InlineLabelSpinner" >
+        <attr name="dropdownMarginLeft" format="dimension" />
+        <attr name="dropdownMarginTop" format="dimension" />
+        <attr name="dropdownHeight" format="string" />
+        <attr name="hint" format="string" />
+        <attr name="textColorHint" format="color" />
+        <!-- a color that is used to draw both label and border -->
+        <attr name="spinnerBorderColor" format="color"/>
+    </declare-styleable>
+
+</resources>

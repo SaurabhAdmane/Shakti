@@ -75,7 +75,7 @@
 
     <style name="AppTextField" parent="AppTheme">
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:textColorHint">@android:color/white</item>
+        <item name="android:textColorHint">@color/colorHint</item>
         <item name="android:textSize">14sp</item>
         <item name="android:background">@drawable/edit_bordered</item>
         <item name="borderColor">@color/colorBrand</item>
@@ -108,7 +108,7 @@
 
     <style name="EditTextOverride" parent="@android:style/Widget.EditText">
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:textColorHint">#808080</item>
+        <item name="android:textColorHint">@color/colorHint</item>
         <item name="android:textSize">14sp</item>
     </style>
     <!-- End of Stripe styles -->
