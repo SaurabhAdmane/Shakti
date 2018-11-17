@@ -49,9 +49,8 @@
                 tools:layout_conversion_absoluteHeight="1dp"
                 tools:layout_conversion_absoluteWidth="1dp" />
 
-            <Spinner
-                android:id="@+id/countries"
-                style="@style/AppSpinner"
+            <org.shakticoin.widget.SpinnerLayout
+                android:id="@+id/countriesLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -59,17 +58,28 @@
                 android:layout_marginTop="30dp"
                 android:layout_marginEnd="24dp"
                 android:layout_marginRight="24dp"
-                android:entries="@{viewModel.countryList}"
-                android:onItemSelected="@{(parent, view, position, id) -> viewModel.onCountrySelected(position)}"
-                app:newValue="@{viewModel.countryCode}"
+                style="@style/AppTextLayout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/subtitle"
                 tools:layout_conversion_absoluteHeight="1dp"
-                tools:layout_conversion_absoluteWidth="1dp" />
+                tools:layout_conversion_absoluteWidth="1dp">
+                <org.shakticoin.widget.InlineLabelSpinner
+                    android:id="@+id/countries"
+                    style="@style/AppSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:popupBackground="@android:color/transparent"
+                    android:entries="@{viewModel.countryList}"
+                    app:newValue="@{viewModel.countryCode}"
+                    app:hint="@string/hint_country"
+                    app:textColorHint="@color/colorHint"
+                    app:spinnerBorderColor="@color/colorBrand"/>
+            </org.shakticoin.widget.SpinnerLayout>
 
-            <Spinner
-                android:id="@+id/citizenship"
+            <org.shakticoin.widget.SpinnerLayout
+                android:id="@+id/citizenshipLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -77,13 +87,22 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="24dp"
                 android:layout_marginRight="24dp"
-                android:entries="@{viewModel.countryList}"
-                android:onItemSelected="@{(parent, view, position, id) -> viewModel.onCitizenshipSelected(position)}"
-                app:newValue="@{viewModel.citizenshipCode}"
-                style="@style/AppSpinner"
+                style="@style/AppTextLayout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/countries" />
+                app:layout_constraintTop_toBottomOf="@+id/countriesLayout">
+                <org.shakticoin.widget.InlineLabelSpinner
+                    android:id="@+id/citizenship"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:popupBackground="@android:color/transparent"
+                    android:entries="@{viewModel.countryList}"
+                    app:newValue="@{viewModel.citizenshipCode}"
+                    app:hint="@string/hint_citizenship"
+                    app:textColorHint="@color/colorHint"
+                    app:spinnerBorderColor="@color/colorBrand"/>
+            </org.shakticoin.widget.SpinnerLayout>
 
             <org.shakticoin.widget.TextInputLayout
                 android:id="@+id/addressLayout"
@@ -97,7 +116,7 @@
                 style="@style/AppTextLayout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/citizenship"
+                app:layout_constraintTop_toBottomOf="@+id/citizenshipLayout"
                 tools:layout_conversion_absoluteHeight="1dp"
                 tools:layout_conversion_absoluteWidth="1dp">
                 <org.shakticoin.widget.InlineLabelEditText

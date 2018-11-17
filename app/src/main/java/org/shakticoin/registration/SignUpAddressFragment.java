@@ -2,9 +2,7 @@ package org.shakticoin.registration;
 
 import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
 import android.databinding.BindingAdapter;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,14 +12,14 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
-import org.shakticoin.R;
 import org.shakticoin.api.country.Country;
 import org.shakticoin.databinding.FragmentSignupAddressBinding;
+import org.shakticoin.widget.InlineLabelSpinner;
+import org.shakticoin.widget.SpinnerListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,17 +53,13 @@ public class SignUpAddressFragment extends Fragment {
         Activity activity = getActivity();
         if (activity != null) {
             // initially the adapter is empty and updated via data binding
-            ArrayList<Object> countryList = new ArrayList<>();
-            countryList.add(getString(R.string.hint_country));
-            CountryListAdapter countryListAdapter = new CountryListAdapter(getActivity(), R.layout.spinner_styled_item, countryList);
-            countryListAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+            SpinnerListAdapter<Country> countryListAdapter =
+                    new SpinnerListAdapter<>(getActivity(), new ArrayList<>());
             binding.countries.setAdapter(countryListAdapter);
 
             // initially the adapter is empty and updated via data binding
-            ArrayList<Object> countryList1 = new ArrayList<>();
-            countryList1.add(getString(R.string.hint_citizenship));
-            CountryListAdapter citizenshipListAdapter = new CountryListAdapter(getActivity(), R.layout.spinner_styled_item, countryList1);
-            citizenshipListAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+            SpinnerListAdapter<Country> citizenshipListAdapter =
+                    new SpinnerListAdapter<>(getActivity(), new ArrayList<>());
             binding.citizenship.setAdapter(citizenshipListAdapter);
         }
 
@@ -94,14 +88,10 @@ public class SignUpAddressFragment extends Fragment {
 
     @BindingAdapter("android:entries")
     public static void setCountryList(Spinner view, List<Country> countries) {
-        CountryListAdapter adapter = (CountryListAdapter) view.getAdapter();
-        if (adapter != null) {
-            Object firstItem = adapter.getItem(0);
-            adapter.clear();
-            adapter.add(firstItem);
-            if (countries != null) {
-                adapter.addAll(countries);
-            }
+        InlineLabelSpinner spinner = (InlineLabelSpinner) view;
+        spinner.clear();
+        if (countries != null) {
+            spinner.addAll(countries);
         }
     }
 
@@ -121,29 +111,4 @@ public class SignUpAddressFragment extends Fragment {
             }
         }
     }
-
-    /**
-     * Add special processing for the first item to emulate hint message.
-     */
-    class CountryListAdapter extends ArrayAdapter<Object> {
-
-        CountryListAdapter(@NonNull Context context, int resource, @NonNull List<Object> objects) {
-            super(context, resource, objects);
-        }
-
-        @Override
-        public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-            // change color of the first item because in fact it is a hint and should not be selectable
-            TextView view = (TextView) super.getDropDownView(position, convertView, parent);
-            view.setTextColor(position == 0 ? Color.GRAY : Color.WHITE);
-            return view;
-        }
-
-        @Override
-        public boolean isEnabled(int position) {
-            // disable first item that play the role of a hint
-            return position != 0;
-        }
-    }
-
 }
