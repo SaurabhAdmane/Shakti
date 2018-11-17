@@ -52,8 +52,6 @@ public class TextInputLayout extends RelativeLayout {
      * for making validation mark invisible when user erase all chars.*/
     private boolean validationFieldEmpty = true;
 
-    View errorCallout;
-
     private EditText editTextView;
     private TextView labelView;
     private CheckableImageButton passwordToggleView;
@@ -110,7 +108,6 @@ public class TextInputLayout extends RelativeLayout {
             }
         }
 
-        errorCallout = ((Activity) context).getLayoutInflater().inflate(R.layout.error_callout_up, null);
     }
 
     @Override
