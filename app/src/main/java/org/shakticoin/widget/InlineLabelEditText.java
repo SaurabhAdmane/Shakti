@@ -111,7 +111,7 @@ public class InlineLabelEditText extends AppCompatEditText {
         super.onSizeChanged(w, h, oldw, oldh);
 
         DisplayMetrics metrics = getContext().getResources().getDisplayMetrics();
-        int radius = Float.valueOf(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 3f, metrics)).intValue();
+        int radius = Float.valueOf(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 6f, metrics)).intValue();
 
         // calculate left corner
         Point leftTop = new Point(offset, offset);
@@ -120,6 +120,8 @@ public class InlineLabelEditText extends AppCompatEditText {
         Point leftTopEnd = new Point(leftTop);
         leftTopEnd.offset(radius, 0);
         leftTopArc = new RectF(leftTopStart.x, leftTopEnd.y, leftTopEnd.x, leftTopStart.y);
+        leftTopArc.left -= 1f; // TODO: in theory these corrections does not necessary but in practice the arc does not feet well with borders
+        leftTopArc.top += 1f;
 
         // calculate left bottom corner
         Point leftBottom = new Point(offset, h - offset * 2);
