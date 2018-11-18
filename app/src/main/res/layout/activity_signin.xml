@@ -152,7 +152,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/register" />
 
-            <!-- TODO: does not work in 16. Perhaps problems with vector graphics -->
             <CheckBox
                 android:id="@+id/rememberMe"
                 style="@style/AppCheckbox"
