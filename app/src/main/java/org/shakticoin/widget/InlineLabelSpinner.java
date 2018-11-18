@@ -148,6 +148,7 @@ public class InlineLabelSpinner extends AppCompatSpinner {
         });
 
         prevListener = getOnItemSelectedListener();
+        final InlineLabelSpinner thisSpinner = this;
         super.setOnItemSelectedListener(new OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -159,8 +160,10 @@ public class InlineLabelSpinner extends AppCompatSpinner {
                     if (choiceListener != null) choiceListener.hasSelected(false);
                 } else {
                     if (choiceListener != null) choiceListener.hasSelected(true);
+                    // call stored listener using reference to the spinner directly because argument "view" is the
+                    // spinner's layout
+                    if (prevListener != null) prevListener.onItemSelected(parent, thisSpinner, position, id);
                 }
-                if (prevListener != null) prevListener.onItemSelected(parent, view, position, id);
             }
 
             @Override
@@ -290,6 +293,14 @@ public class InlineLabelSpinner extends AppCompatSpinner {
 
     public CharSequence getHint() {
         return hint;
+    }
+
+    /**
+     * Return true when the list is initialized (and basically we have a selection) and before
+     * a user select one of the items from the drop-down. During this period Spinner displays
+     * a hint instead of selected item. */
+    public boolean isChoiceMade() {
+        return choiceMade;
     }
 
     /**
