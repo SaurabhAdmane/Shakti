@@ -109,5 +109,7 @@
     <string name="share_referral_link">Share the personal referral link</string>
     <string name="err_login_failed">Login attempt failed. Please ensure you enter correct username and password.</string>
     <string name="err_qr_incorrect">QR code seems does not contain referral information.</string>
+    <string name="err_country_required">Please select a country of residence</string>
+    <string name="err_citizenship_required">Please select a citizenship</string>
 
 </resources>

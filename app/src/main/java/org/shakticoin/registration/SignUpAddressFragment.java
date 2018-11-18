@@ -1,6 +1,7 @@
 package org.shakticoin.registration;
 
 import android.app.Activity;
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.BindingAdapter;
 import android.os.Bundle;
@@ -64,6 +65,24 @@ public class SignUpAddressFragment extends Fragment {
         }
 
         // display error callout for the field if error message is set
+        viewModel.countryCodeErrMsg.observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+                if (!TextUtils.isEmpty(s)) {
+                    binding.countriesLayout.setError(s);
+                    viewModel.countryCodeErrMsg.setValue(null);
+                }
+            }
+        });
+        viewModel.citizenshipCodeErrMsg.observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+                if (!TextUtils.isEmpty(s)) {
+                    binding.citizenshipLayout.setError(s);
+                    viewModel.citizenshipCodeErrMsg.setValue(null);
+                }
+            }
+        });
         viewModel.addressErrMsg.observe(this, s -> {
             if (!TextUtils.isEmpty(s)) {
                 binding.addressLayout.setError(s);

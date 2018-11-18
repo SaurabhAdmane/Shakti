@@ -95,20 +95,19 @@ public class SignUpActivity extends AppCompatActivity implements TextView.OnEdit
         }
 
         return !hasErrors;
-//        if (TextUtils.isEmpty(viewModel.firstName.getValue())
-//                || TextUtils.isEmpty(viewModel.lastName.getValue())
-//                || TextUtils.isEmpty(viewModel.emailAddress.getValue())
-//                || TextUtils.isEmpty(viewModel.phoneNumber.getValue())) {
-//            Toast.makeText(this, R.string.err_all_fields_required, Toast.LENGTH_SHORT).show();
-//            return false;
-//        }
-//        return true;
     }
 
     /** Return true if all fields on the second page has valid values */
     private boolean validateAddress() {
-        // TODO: add validation for contry fields
         boolean hasErrors = false;
+        if (viewModel.countryCode.get() == null) {
+            viewModel.countryCodeErrMsg.setValue(getString(R.string.err_country_required));
+            hasErrors = true;
+        }
+        if (viewModel.citizenshipCode.get() == null) {
+            viewModel.citizenshipCodeErrMsg.setValue(getString(R.string.err_citizenship_required));
+            hasErrors = true;
+        }
         if (TextUtils.isEmpty(viewModel.address.getValue())) {
             viewModel.addressErrMsg.setValue(getString(R.string.err_required));
             hasErrors = true;
@@ -122,13 +121,6 @@ public class SignUpActivity extends AppCompatActivity implements TextView.OnEdit
             hasErrors = true;
         }
         return !hasErrors;
-//        if (TextUtils.isEmpty(viewModel.address.getValue())
-//                || TextUtils.isEmpty(viewModel.city.getValue())
-//                || TextUtils.isEmpty(viewModel.postalCode.getValue())) {
-//            Toast.makeText(this, R.string.err_all_fields_required, Toast.LENGTH_SHORT).show();
-//            return false;
-//        }
-//        return true;
     }
 
     /** Return true if both fields contain the same string */

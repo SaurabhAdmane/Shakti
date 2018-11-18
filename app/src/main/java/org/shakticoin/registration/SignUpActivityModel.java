@@ -12,6 +12,7 @@ import org.shakticoin.api.country.Country;
 import org.shakticoin.api.country.CountryRepository;
 import org.shakticoin.api.miner.CreateUserRequest;
 import org.shakticoin.api.miner.MinerRepository;
+import org.shakticoin.widget.InlineLabelSpinner;
 
 import java.util.Collections;
 import java.util.List;
@@ -29,6 +30,10 @@ public class SignUpActivityModel extends ViewModel {
     MutableLiveData<String> phoneNumberErrMsg = new MutableLiveData<>();
 
     public LiveData<List<Country>> countryList;
+    public ObservableField<Country> countryCode = new ObservableField<>();
+    MutableLiveData<String> countryCodeErrMsg = new MutableLiveData<>();
+    public ObservableField<Country> citizenshipCode = new ObservableField<>();
+    MutableLiveData<String> citizenshipCodeErrMsg = new MutableLiveData<>();
     public MutableLiveData<String> postalCode = new MutableLiveData<>();
     MutableLiveData<String> postalCodeErrMsg = new MutableLiveData<>();
     public MutableLiveData<String> city = new MutableLiveData<>();
@@ -44,9 +49,6 @@ public class SignUpActivityModel extends ViewModel {
     /** A trigger for progress indicator */
     public ObservableInt progressBarVisibility = new ObservableInt(View.INVISIBLE);
 
-    public ObservableField<Country> countryCode = new ObservableField<>();
-    public ObservableField<Country> citizenshipCode = new ObservableField<>();
-
     void initCountryList(Locale locale) {
         if (countryList == null) {
             CountryRepository repository = new CountryRepository();
@@ -55,28 +57,18 @@ public class SignUpActivityModel extends ViewModel {
     }
 
     /** This method is bind to onItemSelected event */
-    public void onCountrySelected(int position) {
-        // exclude first item that is a hint
-        if (position > 0) {
-            int i = position - 1;
-            List<Country> list = countryList.getValue();
-            if (list != null && list.size() > i) {
-                Country country = list.get(i);
-                countryCode.set(country);
-            }
+    public void onCountrySelected(View view, int position) {
+        InlineLabelSpinner spinner = (InlineLabelSpinner) view;
+        if (spinner.isChoiceMade()) {
+            countryCode.set((Country) spinner.getAdapter().getItem(position));
         }
     }
 
     /** This method is bind to onItemSelected event */
-    public void onCitizenshipSelected(int position) {
-        // exclude first item that is a hint
-        if (position > 0) {
-            int i = position - 1;
-            List<Country> list = countryList.getValue();
-            if (list != null && list.size() > i) {
-                Country country = list.get(i);
-                citizenshipCode.set(country);
-            }
+    public void onCitizenshipSelected(View view, int position) {
+        InlineLabelSpinner spinner = (InlineLabelSpinner) view;
+        if (spinner.isChoiceMade()) {
+            citizenshipCode.set((Country) spinner.getAdapter().getItem(position));
         }
     }
 
