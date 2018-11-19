@@ -5,13 +5,16 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import org.shakticoin.R;
 import org.shakticoin.api.OnCompleteListener;
 import org.shakticoin.api.tier.Tier;
 import org.shakticoin.api.tier.TierRepository;
+import org.shakticoin.databinding.ActivityReferralBinding;
 import org.shakticoin.util.CommonUtil;
+import org.shakticoin.util.Validator;
 import org.shakticoin.widget.qr.QRScannerActivity;
 
 import java.util.ArrayList;
@@ -40,8 +43,12 @@ public class ReferralActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_referral);
+        final ViewGroup root = (ViewGroup) ((ViewGroup) this
+                .findViewById(android.R.id.content)).getChildAt(0);
+        ActivityReferralBinding binding = ActivityReferralBinding.bind(root);
 
         // grab tiers in advance
+        //FIXME: Replace hardcoded country code with one selected by user
         TierRepository repository = new TierRepository();
         repository.getTiers("AF", new OnCompleteListener<List<Tier>>() {
             @Override
@@ -51,6 +58,10 @@ public class ReferralActivity extends AppCompatActivity {
                 }
             }
         });
+
+        // display a special icon if content of the field conform the target format
+        binding.emailAddressLayout.setValidator((view, value) -> Validator.isEmail(value));
+        binding.mobileNumberLayout.setValidator((view, value) -> Validator.isPhoneNumber(value));
     }
 
     public void OnSkipReferral(View view) {
