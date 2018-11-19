@@ -18,16 +18,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+
         <activity
             android:name=".registration.SignUpActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan"/>
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name=".registration.SignInActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan">
-        </activity>
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name=".SplashActivity"
@@ -45,8 +46,7 @@
 
         <activity
             android:name=".registration.RecoveryPasswordActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan">
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".registration.SignInActivity" />
@@ -54,13 +54,11 @@
 
         <activity
             android:name=".registration.ReferralActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan"/>
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name=".registration.ReferralConfirmationActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan"/>
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name=".registration.BonusBountyActivity"
@@ -72,21 +70,15 @@
 
         <activity
             android:name=".payment.stripe.StripeActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan"/>
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name=".wallet.WalletActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan"/>
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name=".widget.qr.QRScannerActivity"
             android:screenOrientation="portrait"/>
-
-        <meta-data
-            android:name="preloaded_fonts"
-            android:resource="@array/preloaded_fonts" />
 
     </application>
 
