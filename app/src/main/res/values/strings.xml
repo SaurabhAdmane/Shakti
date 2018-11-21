@@ -111,5 +111,6 @@
     <string name="err_qr_incorrect">QR code seems does not contain referral information.</string>
     <string name="err_country_required">Please select a country of residence</string>
     <string name="err_citizenship_required">Please select a citizenship</string>
+    <string name="err_atleast_one_required">All fields cannot be empty. At least one field must have a value.</string>
 
 </resources>

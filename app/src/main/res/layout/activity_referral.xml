@@ -132,6 +132,7 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="@string/hint_full_name"
+                    android:text="@={viewModel.fullName}"
                     android:inputType="textCapWords|textPersonName"/>
             </org.shakticoin.widget.TextInputLayout>
 
@@ -156,6 +157,7 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="@string/hint_email_address"
+                    android:text="@={viewModel.emailAddress}"
                     android:inputType="textEmailAddress"/>
             </org.shakticoin.widget.TextInputLayout>
 
@@ -180,6 +182,7 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="@string/hint_phone_number"
+                    android:text="@={viewModel.mobileNumber}"
                     android:inputType="phone"/>
             </org.shakticoin.widget.TextInputLayout>
 
@@ -203,6 +206,8 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="@string/hint_referral_code"
+                    android:text="@={viewModel.referralCode}"
+                    android:imeOptions="actionDone"
                     android:inputType="text"/>
             </org.shakticoin.widget.TextInputLayout>
 

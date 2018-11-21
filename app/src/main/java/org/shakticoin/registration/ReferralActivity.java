@@ -1,11 +1,14 @@
 package org.shakticoin.registration;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Toast;
 
 import org.shakticoin.R;
@@ -23,6 +26,7 @@ import java.util.List;
 
 public class ReferralActivity extends AppCompatActivity {
     private ArrayList<Tier> tiers;
+    private ReferralActivityModel viewModel;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -32,6 +36,7 @@ public class ReferralActivity extends AppCompatActivity {
                 String referralCodeKey = CommonUtil.prefixed(QRScannerActivity.KEY_REFERRAL_CODE, this);
                 if (data != null && data.hasExtra(referralCodeKey)) {
                     String referralCode = data.getStringExtra(referralCodeKey);
+                    viewModel.referralCode.setValue(referralCode);
                     Toast.makeText(this, referralCode, Toast.LENGTH_SHORT).show();
                     postReferralInfo();
                 }
@@ -42,10 +47,11 @@ public class ReferralActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_referral);
-        final ViewGroup root = (ViewGroup) ((ViewGroup) this
-                .findViewById(android.R.id.content)).getChildAt(0);
-        ActivityReferralBinding binding = ActivityReferralBinding.bind(root);
+        ActivityReferralBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_referral);
+
+        viewModel = ViewModelProviders.of(this).get(ReferralActivityModel.class);
+        binding.setLifecycleOwner(this);
+        binding.setViewModel(viewModel);
 
         // grab tiers in advance
         //FIXME: Replace hardcoded country code with one selected by user
@@ -62,6 +68,15 @@ public class ReferralActivity extends AppCompatActivity {
         // display a special icon if content of the field conform the target format
         binding.emailAddressLayout.setValidator((view, value) -> Validator.isEmail(value));
         binding.mobileNumberLayout.setValidator((view, value) -> Validator.isPhoneNumber(value));
+
+        // default action
+        binding.referralCode.setOnEditorActionListener((v, actionId, event) -> {
+            if (EditorInfo.IME_ACTION_DONE == actionId) {
+                postReferralInfo();
+                return true;
+            }
+            return false;
+        });
     }
 
     public void OnSkipReferral(View view) {
@@ -77,6 +92,16 @@ public class ReferralActivity extends AppCompatActivity {
     }
 
     private void postReferralInfo() {
+        // at least one field should have a value
+        if (TextUtils.isEmpty(viewModel.fullName.getValue()) &&
+                TextUtils.isEmpty(viewModel.emailAddress.getValue()) &&
+                TextUtils.isEmpty(viewModel.mobileNumber.getValue()) &&
+                TextUtils.isEmpty(viewModel.referralCode.getValue()))
+        {
+            Toast.makeText(this, R.string.err_atleast_one_required, Toast.LENGTH_LONG).show();
+            return;
+        }
+
         selectTier();
     }
 
