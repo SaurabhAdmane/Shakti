@@ -102,6 +102,7 @@ public class ReferralActivity extends AppCompatActivity {
             return;
         }
 
+        // TODO: when api is ready we should call confirmation activity if referrer found
         selectTier();
     }
 
