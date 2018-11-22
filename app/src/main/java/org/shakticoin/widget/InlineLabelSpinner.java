@@ -19,12 +19,14 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.shakticoin.R;
 import org.shakticoin.api.country.Country;
@@ -197,6 +199,15 @@ public class InlineLabelSpinner extends AppCompatSpinner {
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean performClick() {
+        Adapter adapter = getAdapter();
+
+        // network problem may produce empty adapter and we must block popup
+        // as it does not work properly
+        if (adapter == null || adapter.getCount() <= 1) {
+            Toast.makeText(getContext(), R.string.err_no_countries, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
         if (popupWindow != null) {
             if (isDropdownOpened()) {
                 hideDropdown();

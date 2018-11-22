@@ -36,9 +36,17 @@ public class CountryRepository {
     public LiveData<List<Country>> getCountries(@NonNull Locale locale) {
 
         final MutableLiveData<List<Country>> liveData = new MutableLiveData<>();
+        /*
+         * Due to how the custom spinner works we cannot supply an empty list to it. Instead
+         * we ensure at least one item exists even if network failed and request does not return
+         * anything. The country name in this case can be any string because it will be
+         * replaced by hint.
+         */
+        liveData.setValue(Collections.singletonList(new Country(null, "")));
+
         countryService.getCountries(locale.getLanguage()).enqueue(new Callback<Map<String, String>>() {
             @Override
-            public void onResponse(Call<Map<String, String>> call, Response<Map<String, String>> response) {
+            public void onResponse(@NonNull Call<Map<String, String>> call, @NonNull Response<Map<String, String>> response) {
                 if (call.isExecuted()) {
                     Debug.logDebug(response.toString());
                     if (response.isSuccessful()) {
@@ -50,8 +58,10 @@ public class CountryRepository {
                                 if (entry.getValue() != null)
                                     countryList.add(new Country(entry.getKey(), entry.getValue()));
                             }
-                            Collections.sort(countryList, (o1, o2) -> o1.getName().compareToIgnoreCase(o2.getName()));
-                            liveData.setValue(countryList);
+                            if (countryList.size() > 0) {
+                                Collections.sort(countryList, (o1, o2) -> o1.getName().compareToIgnoreCase(o2.getName()));
+                                liveData.setValue(countryList);
+                            }
                         }
                     }
                 }
