@@ -10,10 +10,10 @@ public class BaseUrl {
 
     public static String get() {
         if (BuildConfig.DEBUG) {
-            return "https://shaktiusers.djangowebstudio.com/";
+            return "https://bridge1.shakticoin.com/";
         } else {
             //TODO: should be something else
-            return "https://shaktiusers.djangowebstudio.com/";
+            return "https://bridge1.shakticoin.com/";
         }
     }
 }
