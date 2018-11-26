@@ -24,9 +24,9 @@ public class MinerRepository {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         minerService = retrofit.create(MinerService.class);
-    };
+    }
 
-    public void createUser(CreateUserRequest request, OnCompleteListener listener) {
+    public void createUser(CreateUserRequest request, OnCompleteListener<Void> listener) {
         Call<MinerDataResponse> call = minerService.createUser(request);
         call.enqueue(new Callback<MinerDataResponse>() {
             @Override
@@ -54,7 +54,7 @@ public class MinerRepository {
 
     }
 
-    public void getUserInfo(OnCompleteListener listener) {
+    public void getUserInfo(OnCompleteListener<MinerDataResponse> listener) {
         Call<MinerDataResponse> call = minerService.getUserInfo(Session.getAuthorizationHeader());
         call.enqueue(new Callback<MinerDataResponse>() {
             @Override
@@ -80,6 +80,5 @@ public class MinerRepository {
                 if (listener != null) listener.onComplete(null, t);
             }
         });
-
     }
 }
