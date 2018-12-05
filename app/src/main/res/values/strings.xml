@@ -113,5 +113,6 @@
     <string name="err_citizenship_required">Please select a citizenship</string>
     <string name="err_atleast_one_required">All fields cannot be empty. At least one field must have a value.</string>
     <string name="err_no_countries">List of countries is empty</string>
+    <string name="err_no_internet">No Internet connection. Normal operation is not possible.</string>
 
 </resources>

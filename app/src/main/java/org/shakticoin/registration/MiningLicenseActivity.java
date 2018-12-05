@@ -163,9 +163,7 @@ public class MiningLicenseActivity extends AppCompatActivity {
                     binding.progressBar.setVisibility(View.INVISIBLE);
                     if (error != null) {
                         Debug.logException(error);
-                        Toast.makeText(activity,
-                                BuildConfig.DEBUG ? error.getMessage() : getString(R.string.err_unexpected),
-                                Toast.LENGTH_SHORT).show();
+                        Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_SHORT).show();
                         return;
                     }
 
@@ -194,9 +192,7 @@ public class MiningLicenseActivity extends AppCompatActivity {
             public void onComplete(Void value, Throwable error) {
                 binding.progressBar.setVisibility(View.INVISIBLE);
                 if (error != null) {
-                    Toast.makeText(activity,
-                            BuildConfig.DEBUG ? error.getMessage() : getString(R.string.err_unexpected),
-                            Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_SHORT).show();
                     return;
                 }
                 openWallet();

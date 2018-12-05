@@ -120,9 +120,7 @@ public class SignInActivity extends AppCompatActivity {
                                 public void onComplete(MinerDataResponse value, Throwable error) {
                                     progressBar.setVisibility(View.INVISIBLE);
                                     if (error != null) {
-                                        Toast.makeText(self,
-                                                BuildConfig.DEBUG ? error.getMessage() : getString(R.string.err_unexpected),
-                                                Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(self, Debug.getFailureMsg(self, error), Toast.LENGTH_SHORT).show();
                                         Debug.logException(error);
                                         return;
                                     }
@@ -154,10 +152,7 @@ public class SignInActivity extends AppCompatActivity {
                         }
                     } else {
                         progressBar.setVisibility(View.INVISIBLE);
-                        // TODO: for demonstration purpose. The callout positioned on password field
-                        // but we don't know (and shoudl not to say) if it's a password problem
-//                        Toast.makeText(self, R.string.err_login_failed, Toast.LENGTH_LONG).show();
-                        ctrlPasswordLayout.setError(getString(R.string.err_login_failed));
+                        Toast.makeText(self, R.string.err_login_failed, Toast.LENGTH_LONG).show();
                     }
                 }
             }
@@ -165,11 +160,8 @@ public class SignInActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Call<LoginServiceResponse> call, @NonNull Throwable t) {
                 progressBar.setVisibility(View.INVISIBLE);
-                Toast.makeText(self,
-                        BuildConfig.DEBUG ? t.getMessage() : getString(R.string.err_unexpected),
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(self, Debug.getFailureMsg(self, t), Toast.LENGTH_SHORT).show();
                 Debug.logException(t);
-                ctrlPasswordLayout.setError(getString(R.string.err_login_failed));
             }
         });
     }

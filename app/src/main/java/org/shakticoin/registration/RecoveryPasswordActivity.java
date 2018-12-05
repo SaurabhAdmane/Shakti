@@ -10,7 +10,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -113,8 +112,7 @@ public class RecoveryPasswordActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-                Toast.makeText(self, BuildConfig.DEBUG ? t.getMessage() : getString(R.string.err_unexpected),
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(self, Debug.getFailureMsg(self, t), Toast.LENGTH_SHORT).show();
                 progressBar.setVisibility(View.INVISIBLE);
                 Debug.logException(t);
             }

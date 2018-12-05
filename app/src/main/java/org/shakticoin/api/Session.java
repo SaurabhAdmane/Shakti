@@ -6,6 +6,8 @@ public class Session {
     private static String tokenKey;
     private static User user;
 
+    private static boolean networkConnected = true;
+
     public static String key() {
         return tokenKey;
     }
@@ -24,5 +26,19 @@ public class Session {
 
     public static String getAuthorizationHeader() {
         return tokenKey != null ? "Token " + tokenKey : null;
+    }
+
+    /**
+     * Provide access to the flat that indicates current network availability.
+     */
+    public static boolean isNetworkConnected() {
+        return networkConnected;
+    }
+
+    /**
+     * Set or reset the network availability flag.
+     */
+    public static void setNetworkConnected(boolean connected) {
+        networkConnected = connected;
     }
 }
