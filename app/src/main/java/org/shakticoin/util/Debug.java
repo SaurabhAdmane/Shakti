@@ -4,6 +4,8 @@ import android.content.Context;
 import android.util.Log;
 
 import org.shakticoin.BuildConfig;
+import org.shakticoin.R;
+import org.shakticoin.api.Session;
 
 
 public class Debug {
@@ -32,4 +34,19 @@ public class Debug {
         }
     }
 
+    /**
+     * Return one of the standard error messages for a network call that is failed.
+     */
+    public static String getFailureMsg(Context context, Throwable e) {
+        if (e != null) {
+            if (BuildConfig.DEBUG) {
+                return e.getMessage();
+            }
+
+            if (e instanceof java.io.IOException && !Session.isNetworkConnected()) {
+                return context.getString(R.string.err_no_internet);
+            }
+        }
+        return context.getString(R.string.err_unexpected);
+    }
 }

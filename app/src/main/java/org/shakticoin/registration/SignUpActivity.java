@@ -16,6 +16,7 @@ import android.widget.Toast;
 import org.shakticoin.BuildConfig;
 import org.shakticoin.R;
 import org.shakticoin.api.OnCompleteListener;
+import org.shakticoin.util.Debug;
 import org.shakticoin.util.Validator;
 
 
@@ -53,9 +54,7 @@ public class SignUpActivity extends AppCompatActivity implements TextView.OnEdit
             @Override
             public void onComplete(Void value, Throwable error) {
                 if (error != null) {
-                    Toast.makeText(activity,
-                            BuildConfig.DEBUG ? error.getMessage() : getString(R.string.err_unexpected),
-                            Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_SHORT).show();
                     return;
                 }
                 DialogConfirmEmail.getInstance(false)
