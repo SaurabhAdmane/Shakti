@@ -1,7 +1,6 @@
 package org.shakticoin.registration;
 
 import android.app.Activity;
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.BindingAdapter;
 import android.os.Bundle;
@@ -65,22 +64,16 @@ public class SignUpAddressFragment extends Fragment {
         }
 
         // display error callout for the field if error message is set
-        viewModel.countryCodeErrMsg.observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                if (!TextUtils.isEmpty(s)) {
-                    binding.countriesLayout.setError(s);
-                    viewModel.countryCodeErrMsg.setValue(null);
-                }
+        viewModel.countryCodeErrMsg.observe(this, s -> {
+            if (!TextUtils.isEmpty(s)) {
+                binding.countriesLayout.setError(s);
+                viewModel.countryCodeErrMsg.setValue(null);
             }
         });
-        viewModel.citizenshipCodeErrMsg.observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                if (!TextUtils.isEmpty(s)) {
-                    binding.citizenshipLayout.setError(s);
-                    viewModel.citizenshipCodeErrMsg.setValue(null);
-                }
+        viewModel.citizenshipCodeErrMsg.observe(this, s -> {
+            if (!TextUtils.isEmpty(s)) {
+                binding.citizenshipLayout.setError(s);
+                viewModel.citizenshipCodeErrMsg.setValue(null);
             }
         });
         viewModel.addressErrMsg.observe(this, s -> {
@@ -101,6 +94,12 @@ public class SignUpAddressFragment extends Fragment {
                 viewModel.postalCodeErrMsg.setValue(null);
             }
         });
+        viewModel.stateErrMsg.observe(this, s -> {
+            if (!TextUtils.isEmpty(s)) {
+                binding.stateLayout.setError(s);
+                viewModel.stateErrMsg.setValue(null);
+            }
+        });
 
         return binding.getRoot();
     }
@@ -119,7 +118,7 @@ public class SignUpAddressFragment extends Fragment {
         if (country != null) {
             SpinnerAdapter adapter = view.getAdapter();
             Object selectedCountry = view.getSelectedItem();
-            if (!selectedCountry.equals(country)) {
+            if (selectedCountry != null && !selectedCountry.equals(country)) {
                 // skip item at 0 as it isn't an instance of Country, just a String
                 for (int i = 1; i < adapter.getCount(); i++) {
                     Country c = (Country) adapter.getItem(i);

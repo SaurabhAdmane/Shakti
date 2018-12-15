@@ -40,6 +40,8 @@ public class SignUpActivityModel extends ViewModel {
     MutableLiveData<String> cityErrMsg = new MutableLiveData<>();
     public MutableLiveData<String> address = new MutableLiveData<>();
     MutableLiveData<String> addressErrMsg = new MutableLiveData<>();
+    public MutableLiveData<String> state = new MutableLiveData<>();
+    MutableLiveData<String> stateErrMsg = new MutableLiveData<>();
 
     public MutableLiveData<String> newPassword = new MutableLiveData<>();
     MutableLiveData<String> newPasswordErrMsg = new MutableLiveData<>();
@@ -79,7 +81,8 @@ public class SignUpActivityModel extends ViewModel {
         request.setFirst_name(firstName.getValue());
         request.setLast_name(lastName.getValue());
         request.setEmail(emailAddress.getValue());
-        request.setUser_type("MN"); //TODO: must be more types later
+        request.setPhone_number(phoneNumber.getValue());
+        request.setUser_type("MN");
         Country currentCountry = countryCode.get();
         if (currentCountry != null) {
             request.setCurrent_country(currentCountry.getCode());
@@ -88,9 +91,10 @@ public class SignUpActivityModel extends ViewModel {
         if (citizenshipCountry != null) {
             request.setCitizenship(Collections.singletonList(citizenshipCountry.getCode()));
         }
-        // TODO: postal code?
+        request.setPostal_code(postalCode.getValue());
         request.setStreet_and_number(address.getValue());
         request.setCity(city.getValue());
+        request.setState(state.getValue());
         request.setPassword1(newPassword.getValue());
         request.setPassword2(verifyPassword.getValue());
 

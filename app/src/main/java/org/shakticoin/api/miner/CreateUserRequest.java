@@ -8,11 +8,16 @@ public class CreateUserRequest {
     private String password1;
     private String password2;
     private String email;
+    private String phone_number;
     private List<String> citizenship;
     private String user_type;
-    private String current_country;
     private String street_and_number;
     private String city;
+    private String state;
+    private String current_country;
+    private String postal_code;
+    private String referral_code;
+    private String referral;
 
     public String getFirst_name() {
         return first_name;
@@ -92,5 +97,45 @@ public class CreateUserRequest {
 
     public void setUser_type(String user_type) {
         this.user_type = user_type;
+    }
+
+    public String getPhone_number() {
+        return phone_number;
+    }
+
+    public void setPhone_number(String phone_number) {
+        this.phone_number = phone_number;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getPostal_code() {
+        return postal_code;
+    }
+
+    public void setPostal_code(String postal_code) {
+        this.postal_code = postal_code;
+    }
+
+    public String getReferral_code() {
+        return referral_code;
+    }
+
+    public void setReferral_code(String referral_code) {
+        this.referral_code = referral_code;
+    }
+
+    public String getReferral() {
+        return referral;
+    }
+
+    public void setReferral(String referral) {
+        this.referral = referral;
     }
 }

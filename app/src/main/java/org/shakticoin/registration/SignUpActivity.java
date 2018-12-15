@@ -13,9 +13,9 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.shakticoin.BuildConfig;
 import org.shakticoin.R;
 import org.shakticoin.api.OnCompleteListener;
+import org.shakticoin.api.country.Country;
 import org.shakticoin.util.Debug;
 import org.shakticoin.util.Validator;
 
@@ -118,6 +118,16 @@ public class SignUpActivity extends AppCompatActivity implements TextView.OnEdit
         if (TextUtils.isEmpty(viewModel.postalCode.getValue())) {
             viewModel.postalCodeErrMsg.setValue(getString(R.string.err_required));
             hasErrors = true;
+        }
+        Country selectedCountry = viewModel.countryCode.get();
+        if (selectedCountry != null) {
+            String code = selectedCountry.getCode();
+            // ensure state/province is set for USA and Canada
+            if (("US".equals(code) || "CA".equals(code))
+                    && TextUtils.isEmpty(viewModel.state.getValue())) {
+                viewModel.stateErrMsg.setValue(getString(R.string.err_state_reqired));
+                hasErrors = true;
+            }
         }
         return !hasErrors;
     }

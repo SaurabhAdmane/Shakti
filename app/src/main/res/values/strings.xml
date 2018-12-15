@@ -26,6 +26,7 @@
     <string name="hint_postal_code">Zip / Postal code</string>
     <string name="hint_address">Address</string>
     <string name="hint_city">City</string>
+    <string name="hint_state">State / Province</string>
     <string name="hint_email_address">Email Address</string>
     <string name="hint_phone_number">Mobile Number</string>
     <string name="hint_full_name">Full Name</string>
@@ -114,5 +115,6 @@
     <string name="err_atleast_one_required">All fields cannot be empty. At least one field must have a value.</string>
     <string name="err_no_countries">List of countries is empty</string>
     <string name="err_no_internet">No Internet connection. Normal operation is not possible.</string>
+    <string name="err_state_reqired">A state/province is required for the country</string>
 
 </resources>
