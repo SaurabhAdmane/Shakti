@@ -13,9 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import org.shakticoin.BuildConfig;
 import org.shakticoin.R;
+import org.shakticoin.api.Constants;
 import org.shakticoin.api.OnCompleteListener;
+import org.shakticoin.api.miner.MinerRepository;
 import org.shakticoin.api.order.Order;
 import org.shakticoin.api.order.OrderRepository;
 import org.shakticoin.api.payment.PaymentRepository;
@@ -190,12 +191,25 @@ public class MiningLicenseActivity extends AppCompatActivity {
         repository.makeStripePayment(orderId, token, new OnCompleteListener<Void>() {
             @Override
             public void onComplete(Void value, Throwable error) {
-                binding.progressBar.setVisibility(View.INVISIBLE);
                 if (error != null) {
                     Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_SHORT).show();
                     return;
                 }
-                openWallet();
+
+                // we can consider the registration completed at this point
+                MinerRepository minerRepository = new MinerRepository();
+                minerRepository.updateRegistrationStatus(Constants.RegistrationStatus.REGST_COMPL, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(Void value, Throwable error) {
+                        binding.progressBar.setVisibility(View.INVISIBLE);
+                        if (error != null) {
+                            Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        openWallet();
+                    }
+                });
             }
         });
     }
