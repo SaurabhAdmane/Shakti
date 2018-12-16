@@ -22,6 +22,12 @@ public class MiningLicenseModel extends ViewModel {
     public ObservableBoolean onT300 = new ObservableBoolean();
     public ObservableBoolean onT400 = new ObservableBoolean();
 
+    public ObservableBoolean enabledM101 = new ObservableBoolean(true);
+    public ObservableBoolean enabledT100 = new ObservableBoolean(true);
+    public ObservableBoolean enabledT200 = new ObservableBoolean(true);
+    public ObservableBoolean enabledT300 = new ObservableBoolean(true);
+    public ObservableBoolean enabledT400 = new ObservableBoolean(true);
+
     MutableLiveData<Plan> selectedPlan = new MutableLiveData<>();
 
     private List<Tier> tiers = new ArrayList<>();
@@ -148,9 +154,20 @@ public class MiningLicenseModel extends ViewModel {
 
     private void disableInactivePlans() {
         if (tiers == null) return;
-        String planName = selectedPlan.getValue().name();
         for (Tier tier : tiers) {
-            // TODO: we must disable buttons if corresponding tier level is not active or does not exists
+            Boolean isActive = tier.getIs_active();
+            String name = tier.getName();
+            if (Plan.M101.name().equals(name)) {
+                enabledM101.set(isActive);
+            } else if (Plan.T100.name().equals(name)) {
+                enabledT100.set(isActive);
+            } else if (Plan.T200.name().equals(name)) {
+                enabledT200.set(isActive);
+            } else if (Plan.T300.name().equals(name)) {
+                enabledT300.set(isActive);
+            } else if (Plan.T400.name().equals(name)) {
+                enabledT400.set(isActive);
+            }
         }
     }
 

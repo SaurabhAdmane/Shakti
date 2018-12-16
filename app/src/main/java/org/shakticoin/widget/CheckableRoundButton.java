@@ -46,6 +46,7 @@ public class CheckableRoundButton extends android.support.v7.widget.AppCompatIma
 
     @Override
     public boolean performClick() {
+        if (!isEnabled()) return false;
         setChecked(true);
         return super.performClick();
     }

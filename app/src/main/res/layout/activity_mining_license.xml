@@ -64,11 +64,12 @@
                 android:layout_marginRight="8dp"
                 android:background="@android:color/transparent"
                 android:tag="M101"
+                android:src="@{viewModel.enabledM101 ? @drawable/selector_btn_round : @drawable/ic_round_disabled}"
+                android:enabled="@{viewModel.enabledM101}"
                 app:is_checked="@={viewModel.onM101}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/subtitle"
-                app:srcCompat="@drawable/selector_btn_round" />
+                app:layout_constraintTop_toBottomOf="@+id/subtitle"/>
 
             <org.shakticoin.widget.CheckableRoundButton
                 android:id="@+id/onT100"
@@ -81,11 +82,12 @@
                 android:layout_marginRight="8dp"
                 android:background="@android:color/transparent"
                 android:tag="T100"
+                android:src="@{viewModel.enabledT300 ? @drawable/selector_btn_round : @drawable/ic_round_disabled}"
+                android:enabled="@{viewModel.enabledT100}"
                 app:is_checked="@={viewModel.onT100}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/onM101"
-                app:srcCompat="@drawable/selector_btn_round" />
+                app:layout_constraintTop_toBottomOf="@+id/onM101"/>
 
             <org.shakticoin.widget.CheckableRoundButton
                 android:id="@+id/onT200"
@@ -98,11 +100,12 @@
                 android:layout_marginRight="8dp"
                 android:background="@android:color/transparent"
                 android:tag="T200"
+                android:src="@{viewModel.enabledT200 ? @drawable/selector_btn_round : @drawable/ic_round_disabled}"
+                android:enabled="@{viewModel.enabledT200}"
                 app:is_checked="@={viewModel.onT200}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/onT100"
-                app:srcCompat="@drawable/selector_btn_round" />
+                app:layout_constraintTop_toBottomOf="@+id/onT100"/>
 
             <org.shakticoin.widget.CheckableRoundButton
                 android:id="@+id/onT300"
@@ -115,11 +118,12 @@
                 android:layout_marginRight="8dp"
                 android:background="@android:color/transparent"
                 android:tag="T300"
+                android:src="@{viewModel.enabledT300 ? @drawable/selector_btn_round : @drawable/ic_round_disabled}"
+                android:enabled="@{viewModel.enabledT300}"
                 app:is_checked="@={viewModel.onT300}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/onT200"
-                app:srcCompat="@drawable/selector_btn_round" />
+                app:layout_constraintTop_toBottomOf="@+id/onT200"/>
 
             <org.shakticoin.widget.CheckableRoundButton
                 android:id="@+id/onT400"
@@ -132,11 +136,12 @@
                 android:layout_marginRight="8dp"
                 android:background="@android:color/transparent"
                 android:tag="T400"
+                android:src="@{viewModel.enabledT400 ? @drawable/selector_btn_round : @drawable/ic_round_disabled}"
+                android:enabled="@{viewModel.onT400}"
                 app:is_checked="@={viewModel.onT400}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/onT300"
-                app:srcCompat="@drawable/selector_btn_round" />
+                app:layout_constraintTop_toBottomOf="@+id/onT300"/>
 
             <TextView
                 android:id="@+id/license"
