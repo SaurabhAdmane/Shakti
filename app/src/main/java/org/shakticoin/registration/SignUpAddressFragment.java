@@ -26,6 +26,7 @@ import java.util.List;
 
 public class SignUpAddressFragment extends Fragment {
     private SignUpActivityModel viewModel;
+    private FragmentSignupAddressBinding binding;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,7 +40,7 @@ public class SignUpAddressFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        FragmentSignupAddressBinding binding = FragmentSignupAddressBinding.inflate(inflater, container, false);
+        binding = FragmentSignupAddressBinding.inflate(inflater, container, false);
         binding.setLifecycleOwner(this);
         if (viewModel != null) {
             binding.setViewModel(viewModel);

@@ -18,6 +18,7 @@ import org.shakticoin.util.Validator;
 
 public class SignUpContactsFragment extends Fragment {
     private SignUpActivityModel viewModel;
+    private FragmentSignupContactBinding binding;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -31,7 +32,7 @@ public class SignUpContactsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        FragmentSignupContactBinding binding = FragmentSignupContactBinding.inflate(inflater, container, false);
+        binding = FragmentSignupContactBinding.inflate(inflater, container, false);
         binding.setLifecycleOwner(this);
         if (viewModel != null) {
             binding.setViewModel(viewModel);

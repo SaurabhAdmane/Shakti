@@ -16,6 +16,7 @@ import org.shakticoin.databinding.FragmentSignupPasswordBinding;
 
 public class SignUpPasswordFragment extends Fragment {
     private SignUpActivityModel viewModel;
+    private FragmentSignupPasswordBinding binding;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -29,7 +30,7 @@ public class SignUpPasswordFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        FragmentSignupPasswordBinding binding = FragmentSignupPasswordBinding.inflate(inflater, container, false);
+        binding = FragmentSignupPasswordBinding.inflate(inflater, container, false);
         binding.setLifecycleOwner(this);
         if (viewModel != null) {
             binding.setViewModel(viewModel);
