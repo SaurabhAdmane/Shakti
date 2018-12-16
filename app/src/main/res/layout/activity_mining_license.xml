@@ -125,24 +125,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/onT200"/>
 
-            <org.shakticoin.widget.CheckableRoundButton
-                android:id="@+id/onT400"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:background="@android:color/transparent"
-                android:tag="T400"
-                android:src="@{viewModel.enabledT400 ? @drawable/selector_btn_round : @drawable/ic_round_disabled}"
-                android:enabled="@{viewModel.onT400}"
-                app:is_checked="@={viewModel.onT400}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/onT300"/>
-
             <TextView
                 android:id="@+id/license"
                 android:layout_width="wrap_content"
@@ -157,7 +139,7 @@
                 android:textAppearance="@style/AppText.Title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/onT400" />
+                app:layout_constraintTop_toBottomOf="@+id/onT300" />
 
             <Button
                 android:id="@+id/onClaim"
@@ -196,12 +178,15 @@
                 android:id="@+id/leftCircle"
                 android:layout_width="132dp"
                 android:layout_height="132dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
                 android:background="@drawable/bg_circular"
                 app:layout_constraintBottom_toBottomOf="@+id/onT200"
                 app:layout_constraintEnd_toStartOf="@+id/onT200"
-                app:layout_constraintTop_toTopOf="@+id/onT200" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/onT100" />
 
             <TextView
                 android:id="@+id/textView6"
@@ -223,7 +208,7 @@
                 android:id="@+id/paymentAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="$199 USD"
+                android:text=""
                 android:textAppearance="@style/AppText.Body"
                 android:textSize="18sp"
                 app:layout_constraintBaseline_toBaselineOf="@+id/textView6"
@@ -279,18 +264,6 @@
                 app:srcCompat="@drawable/ic_power_miner_t300"
                 tools:ignore="ContentDescription" />
 
-            <ImageView
-                android:id="@+id/icon_t400"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="@{viewModel.onT400 ? View.VISIBLE : View.INVISIBLE}"
-                app:layout_constraintBottom_toBottomOf="@+id/leftCircle"
-                app:layout_constraintEnd_toEndOf="@+id/leftCircle"
-                app:layout_constraintStart_toStartOf="@+id/leftCircle"
-                app:layout_constraintTop_toTopOf="@+id/leftCircle"
-                app:srcCompat="@drawable/ic_power_miner_t400"
-                tools:ignore="ContentDescription" />
-
             <TextView
                 android:id="@+id/features"
                 android:layout_width="0dp"
@@ -299,13 +272,13 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
+                android:gravity="start|left"
                 android:text="@string/minerlic_description_m101"
                 android:textAppearance="@style/AppText.Subtitle"
-                android:gravity="left|start"
                 app:layout_constraintBottom_toBottomOf="@+id/onT200"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/onT200"
-                app:layout_constraintTop_toTopOf="@+id/onT200" />
+                app:layout_constraintTop_toTopOf="@+id/onT100" />
 
             <ProgressBar
                 android:id="@+id/progressBar"
