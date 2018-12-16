@@ -214,7 +214,14 @@ public class MiningLicenseActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Open wallet and reset back stack.
+     * It does not make sense to navigate back though the registration screens after the payment is
+     * completed successfully.
+     */
     private void openWallet() {
-        startActivity(new Intent(this, WalletActivity.class));
+        Intent intent = new Intent(this, WalletActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 }

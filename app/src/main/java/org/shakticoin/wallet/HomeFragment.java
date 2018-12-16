@@ -16,7 +16,6 @@ import org.shakticoin.R;
 import org.shakticoin.databinding.FragmentWalletHomeBinding;
 
 public class HomeFragment extends Fragment {
-    private FragmentWalletHomeBinding binding;
     private WalletModel viewModel;
 
     @Override
@@ -32,7 +31,7 @@ public class HomeFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentWalletHomeBinding.inflate(inflater, container, false);
+        FragmentWalletHomeBinding binding = FragmentWalletHomeBinding.inflate(inflater, container, false);
         binding.setLifecycleOwner(this);
         if (viewModel != null) binding.setViewModel(viewModel);
 

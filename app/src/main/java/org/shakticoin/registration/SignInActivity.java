@@ -15,7 +15,6 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import org.shakticoin.BuildConfig;
 import org.shakticoin.R;
 import org.shakticoin.api.BaseUrl;
 import org.shakticoin.api.OnCompleteListener;
@@ -137,12 +136,10 @@ public class SignInActivity extends AppCompatActivity {
                                         } if (registrationStatus == 3) {
                                             // add referral code if exists and pay the enter fee
                                             startActivity(new Intent(self, ReferralActivity.class));
-                                            finish();
 
                                         } else {
                                             // go to the wallet
                                             startActivity(new Intent(self, WalletActivity.class));
-                                            finish();
 
                                         }
                                     }
