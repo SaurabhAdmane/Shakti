@@ -10,10 +10,10 @@ public class BaseUrl {
 
     public static String get() {
         if (BuildConfig.DEBUG) {
-            return "https://bridge1.shakticoin.com/";
+            return "http://bridge1.shakticoin.com/";
         } else {
             //TODO: should be something else
-            return "https://bridge1.shakticoin.com/";
+            return "http://bridge1.shakticoin.com/";
         }
     }
 }
