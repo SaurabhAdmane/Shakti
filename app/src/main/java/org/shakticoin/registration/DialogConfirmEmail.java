@@ -1,6 +1,5 @@
 package org.shakticoin.registration;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,9 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.view.View;
-import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.ImageButton;
 
 import org.shakticoin.R;
 import org.shakticoin.widget.PanelDialog;
@@ -28,13 +24,12 @@ public class DialogConfirmEmail extends DialogFragment implements View.OnClickLi
             dismissOnlyOnAction = args.getBoolean(DISMISS_ONLY, false);
         }
 
-        PanelDialog dialog = new PanelDialog.Builder(getContext())
+        return new PanelDialog.Builder(getContext())
+                .setIcon(R.drawable.ic_check_email)
                 .setTitle(R.string.dlg_confirm_email_title)
                 .setText(R.string.dlg_confirm_email_text)
                 .setMainButton(R.string.dlg_confirm_email_action, this)
                 .create();
-
-        return dialog;
     }
 
     /**
