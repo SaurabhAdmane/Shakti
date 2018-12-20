@@ -21,6 +21,13 @@
 #-renamesourcefileattribute SourceFile
 
 #
+# Okio
+#
+# Animal Sniffer compileOnly dependency to ensure APIs are compatible with older versions of Java.
+-dontwarn org.codehaus.mojo.animal_sniffer.*
+# End of Okio
+
+#
 # OkHttp
 #
 # JSR 305 annotations are for embedding nullability information.
@@ -39,8 +46,9 @@
 #
 # Retrofit2
 #
-# Retrofit does reflection on generic parameters and InnerClass is required to use Signature.
--keepattributes Signature, InnerClasses
+# Retrofit does reflection on generic parameters. InnerClasses is required to use Signature and
+# EnclosingMethod is required to use InnerClasses.
+-keepattributes Signature, InnerClasses, EnclosingMethod
 
 # Retain service method parameters when optimizing.
 -keepclassmembers,allowshrinking,allowobfuscation interface * {
