@@ -9,11 +9,12 @@ import org.shakticoin.BuildConfig;
 public class BaseUrl {
 
     public static String get() {
+        final String baseUrl = "http://api1.shakticoin.com/";
         if (BuildConfig.DEBUG) {
-            return "http://bridge1.shakticoin.com/";
+            return baseUrl;
         } else {
             //TODO: should be something else
-            return "http://bridge1.shakticoin.com/";
+            return baseUrl;
         }
     }
 }
