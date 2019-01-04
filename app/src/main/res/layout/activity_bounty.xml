@@ -1,295 +1,326 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true">
-
-    <android.support.constraint.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.view.View" alias="View"/>
+        <variable
+            name="viewModel"
+            type="org.shakticoin.registration.BonusBountyModel"/>
+    </data>
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bounty_background"
-        android:paddingBottom="@dimen/scrollable_bottom_padding">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
+        <android.support.constraint.ConstraintLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginLeft="24dp"
-            android:layout_marginTop="65dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginRight="24dp"
-            android:gravity="center_horizontal"
-            android:text="@string/bonus_title"
-            android:textAppearance="@style/AppText.Title"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:background="@drawable/bounty_background"
+            android:paddingBottom="@dimen/scrollable_bottom_padding">
 
-        <TextView
-            android:id="@+id/subtitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:text="@string/bonus_subtitle"
-            android:textAppearance="@style/AppText.Subtitle"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/title" />
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="65dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginRight="24dp"
+                android:gravity="center_horizontal"
+                android:text="@string/bonus_title"
+                android:textAppearance="@style/AppText.Title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <org.shakticoin.widget.CheckableRoundButton
-            android:id="@+id/onOption5"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="28dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:background="@android:color/transparent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/subtitle"
-            app:srcCompat="@drawable/selector_btn_round" />
+            <TextView
+                android:id="@+id/subtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:text="@string/bonus_subtitle"
+                android:textAppearance="@style/AppText.Subtitle"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/title" />
 
-        <org.shakticoin.widget.CheckableRoundButton
-            android:id="@+id/onOption4"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:background="@android:color/transparent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/onOption5"
-            app:srcCompat="@drawable/selector_btn_round" />
+            <org.shakticoin.widget.CheckableRoundButton
+                android:id="@+id/onBounty1"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="28dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:background="@android:color/transparent"
+                android:tag="BB1"
+                android:enabled="true"
+                app:is_checked="@={viewModel.bountyBonus1}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/subtitle"
+                app:srcCompat="@drawable/selector_btn_round" />
 
-        <org.shakticoin.widget.CheckableRoundButton
-            android:id="@+id/onOption3"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:background="@android:color/transparent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/onOption4"
-            app:srcCompat="@drawable/selector_btn_round" />
+            <org.shakticoin.widget.CheckableRoundButton
+                android:id="@+id/onBounty2"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:background="@android:color/transparent"
+                android:tag="BB2"
+                android:enabled="true"
+                app:is_checked="@={viewModel.bountyBonus2}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/onBounty1"
+                app:srcCompat="@drawable/selector_btn_round" />
 
-        <org.shakticoin.widget.CheckableRoundButton
-            android:id="@+id/onOption2"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:background="@android:color/transparent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/onOption3"
-            app:srcCompat="@drawable/selector_btn_round" />
+            <org.shakticoin.widget.CheckableRoundButton
+                android:id="@+id/onBounty3"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:background="@android:color/transparent"
+                android:tag="BB3"
+                android:enabled="true"
+                app:is_checked="@={viewModel.bountyBonus3}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/onBounty2"
+                app:srcCompat="@drawable/selector_btn_round" />
 
-        <org.shakticoin.widget.CheckableRoundButton
-            android:id="@+id/onOption1"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:background="@android:color/transparent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/onOption2"
-            app:srcCompat="@drawable/selector_btn_round" />
+            <org.shakticoin.widget.CheckableRoundButton
+                android:id="@+id/onBounty4"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:background="@android:color/transparent"
+                android:tag="BB4"
+                android:enabled="true"
+                app:is_checked="@={viewModel.bountyBonus4}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/onBounty3"
+                app:srcCompat="@drawable/selector_btn_round" />
 
-        <TextView
-            android:id="@+id/offer1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginLeft="24dp"
-            android:layout_marginTop="43dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginRight="24dp"
-            android:gravity="center_horizontal"
-            android:text="@string/bonus_offer1"
-            android:textAppearance="@style/AppText.Body"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/onOption1" />
+            <org.shakticoin.widget.CheckableRoundButton
+                android:id="@+id/onBounty5"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:background="@android:color/transparent"
+                android:tag="BB5"
+                android:enabled="true"
+                app:is_checked="@={viewModel.bountyBonus5}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/onBounty4"
+                app:srcCompat="@drawable/selector_btn_round" />
 
-        <Button
-            android:id="@+id/onClaim"
-            style="@style/AppButton.Rounded"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginLeft="24dp"
-            android:layout_marginTop="28dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginRight="24dp"
-            android:text="@string/bonus_main_action"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/offer2" />
+            <TextView
+                android:id="@+id/offer1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="43dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginRight="24dp"
+                android:gravity="center_horizontal"
+                android:text="@string/bonus_offer1"
+                android:textAppearance="@style/AppText.Body"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/onBounty5" />
 
-        <TextView
-            android:id="@+id/textView7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginLeft="24dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginRight="24dp"
-            android:text="@string/bonus_secondary_action"
-            android:textAppearance="@style/AppButton.Link"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/onClaim" />
+            <Button
+                android:id="@+id/doClaim"
+                style="@style/AppButton.Rounded"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="28dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginRight="24dp"
+                android:text="@string/bonus_main_action"
+                android:onClick="onClaim"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/offer2" />
 
-        <TextView
-            android:id="@+id/offer2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginLeft="24dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginRight="24dp"
-            android:gravity="center_horizontal"
-            android:text="@string/bonus_offer2"
-            android:textAppearance="@style/AppText.Body"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/offer1" />
+            <TextView
+                android:id="@+id/doViewPromotion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginRight="24dp"
+                android:fontFamily="@font/lato"
+                android:text="@string/bonus_secondary_action"
+                android:textAppearance="@style/AppButton.Link"
+                android:textSize="10sp"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onViewPromotion"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/doClaim" />
 
-        <View
-            android:id="@+id/leftCircle"
-            android:layout_width="132dp"
-            android:layout_height="132dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="295dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:background="@drawable/bg_circular"
-            app:layout_constraintEnd_toStartOf="@+id/onOption3"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/offer2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginRight="24dp"
+                android:gravity="center_horizontal"
+                android:text="@string/bonus_offer2"
+                android:textAppearance="@style/AppText.Body"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/offer1" />
 
-        <View
-            android:id="@+id/rightCircle"
-            android:layout_width="132dp"
-            android:layout_height="132dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="295dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:background="@drawable/bg_circular"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/onOption3"
-            app:layout_constraintTop_toTopOf="parent" />
+            <View
+                android:id="@+id/leftCircle"
+                android:layout_width="132dp"
+                android:layout_height="132dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/bg_circular"
+                app:layout_constraintBottom_toBottomOf="@+id/onBounty3"
+                app:layout_constraintEnd_toStartOf="@+id/onBounty3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/onBounty3" />
 
-        <TextView
-            android:id="@+id/valueUSD"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="$5,555"
-            android:textAppearance="@style/AppText.Title.Branded"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/leftCircle"
-            app:layout_constraintEnd_toEndOf="@+id/leftCircle"
-            app:layout_constraintStart_toStartOf="@+id/leftCircle"
-            app:layout_constraintTop_toTopOf="@+id/leftCircle" />
+            <View
+                android:id="@+id/rightCircle"
+                android:layout_width="132dp"
+                android:layout_height="132dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/bg_circular"
+                app:layout_constraintBottom_toBottomOf="@+id/onBounty3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/onBounty3"
+                app:layout_constraintTop_toTopOf="@+id/onBounty3" />
 
-        <TextView
-            android:id="@+id/textView9"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:gravity="center_horizontal"
-            android:text="@string/bonus_valueof"
-            android:textAppearance="@style/AppText.Body"
-            android:textSize="10sp"
-            app:layout_constraintBottom_toTopOf="@+id/valueUSD"
-            app:layout_constraintEnd_toEndOf="@+id/leftCircle"
-            app:layout_constraintStart_toStartOf="@+id/leftCircle" />
+            <TextView
+                android:id="@+id/valueUSD"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="$5,555"
+                android:textAppearance="@style/AppText.Title.Branded"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/leftCircle"
+                app:layout_constraintEnd_toEndOf="@+id/leftCircle"
+                app:layout_constraintStart_toStartOf="@+id/leftCircle"
+                app:layout_constraintTop_toTopOf="@+id/leftCircle" />
 
-        <TextView
-            android:id="@+id/valueSXE"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:gravity="center_horizontal"
-            android:text="1111.00 SXE"
-            android:textAppearance="@style/AppText.Body"
-            android:textSize="10sp"
-            app:layout_constraintEnd_toEndOf="@+id/leftCircle"
-            app:layout_constraintStart_toStartOf="@+id/leftCircle"
-            app:layout_constraintTop_toBottomOf="@+id/valueUSD" />
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:gravity="center_horizontal"
+                android:text="@string/bonus_valueof"
+                android:textAppearance="@style/AppText.Body"
+                android:textSize="10sp"
+                app:layout_constraintBottom_toTopOf="@+id/valueUSD"
+                app:layout_constraintEnd_toEndOf="@+id/leftCircle"
+                app:layout_constraintStart_toStartOf="@+id/leftCircle" />
 
-        <TextView
-            android:id="@+id/date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:gravity="center_horizontal"
-            android:text="Dec 13th"
-            android:textAppearance="@style/AppText.Title.Branded"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/rightCircle"
-            app:layout_constraintEnd_toEndOf="@+id/rightCircle"
-            app:layout_constraintStart_toStartOf="@+id/rightCircle"
-            app:layout_constraintTop_toTopOf="@+id/rightCircle" />
+            <TextView
+                android:id="@+id/valueSXE"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center_horizontal"
+                android:text="1111.00 SXE"
+                android:textAppearance="@style/AppText.Body"
+                android:textSize="10sp"
+                app:layout_constraintEnd_toEndOf="@+id/leftCircle"
+                app:layout_constraintStart_toStartOf="@+id/leftCircle"
+                app:layout_constraintTop_toBottomOf="@+id/valueUSD" />
 
-        <TextView
-            android:id="@+id/textView12"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:gravity="center_horizontal"
-            android:text="@string/bonus_expires"
-            android:textAppearance="@style/AppText.Body"
-            android:textSize="10sp"
-            app:layout_constraintBottom_toTopOf="@+id/date"
-            app:layout_constraintEnd_toEndOf="@+id/rightCircle"
-            app:layout_constraintStart_toStartOf="@+id/rightCircle" />
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:gravity="center_horizontal"
+                android:text="Dec 13th"
+                android:textAppearance="@style/AppText.Title.Branded"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/rightCircle"
+                app:layout_constraintEnd_toEndOf="@+id/rightCircle"
+                app:layout_constraintStart_toStartOf="@+id/rightCircle"
+                app:layout_constraintTop_toTopOf="@+id/rightCircle" />
 
-        <TextView
-            android:id="@+id/year"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:gravity="center_horizontal"
-            android:text="2018"
-            android:textAppearance="@style/AppText.Body"
-            android:textSize="10sp"
-            app:layout_constraintEnd_toEndOf="@+id/rightCircle"
-            app:layout_constraintStart_toStartOf="@+id/rightCircle"
-            app:layout_constraintTop_toBottomOf="@+id/date" />
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:gravity="center_horizontal"
+                android:text="@string/bonus_expires"
+                android:textAppearance="@style/AppText.Body"
+                android:textSize="10sp"
+                app:layout_constraintBottom_toTopOf="@+id/date"
+                app:layout_constraintEnd_toEndOf="@+id/rightCircle"
+                app:layout_constraintStart_toStartOf="@+id/rightCircle" />
 
-    </android.support.constraint.ConstraintLayout>
-</ScrollView>
+            <TextView
+                android:id="@+id/year"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center_horizontal"
+                android:text="2018"
+                android:textAppearance="@style/AppText.Body"
+                android:textSize="10sp"
+                app:layout_constraintEnd_toEndOf="@+id/rightCircle"
+                app:layout_constraintStart_toStartOf="@+id/rightCircle"
+                app:layout_constraintTop_toBottomOf="@+id/date" />
+
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
+</layout>

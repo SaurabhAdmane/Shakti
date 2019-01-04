@@ -3,6 +3,7 @@
     <string name="stripe_pub_key" translatable="false">pk_test_wMi9qDrafbnRQfmWEGv4etOD</string>
 
     <string name="app_name" translatable="false">Shakti Coin</string>
+    <string name="err_not_implemented">Not implemented yet</string>
     <string name="welcom_message">Welcome to Shakti Coin</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
@@ -66,8 +67,8 @@
     <string name="bonus_title">Claim your\nBonus Bounty!</string>
     <string name="bonus_subtitle">Choose your new beginning:</string>
     <string name="bonus_offer1">Special limited offer for early adopters!</string>
-    <string name="bonus_offer2">Sign up now! Show Proof-of-Effort (POE), and receive an impressive bounty, valued at $$%1$.2d USD!</string>
-    <string name="bonus_main_action">Claim the bounty</string>
+    <string name="bonus_offer2">Create your Shakti ID! Show Proof-of-Effort (POE), and receive an impressive bounty, valued at $$%1$.2d USD!</string>
+    <string name="bonus_main_action">Claim this bounty</string>
     <string name="bonus_secondary_action">View special <u>promotion details</u>.</string>
     <string name="bonus_valueof">Value of</string>
     <string name="bonus_expires">Expires on</string>
