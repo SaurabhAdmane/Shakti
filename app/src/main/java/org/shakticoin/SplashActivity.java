@@ -21,8 +21,7 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         super.setContentView(R.layout.activity_splash);
 
-//        route();
-        startActivity(new Intent(this, BonusBountyActivity.class));
+        route();
         finish();
     }
 
