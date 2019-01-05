@@ -2,6 +2,9 @@ package org.shakticoin.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.databinding.BindingAdapter;
+import android.databinding.InverseBindingAdapter;
+import android.databinding.InverseBindingListener;
 import android.util.AttributeSet;
 import android.widget.Checkable;
 
@@ -83,6 +86,21 @@ public class CheckableRoundButton extends android.support.v7.widget.AppCompatIma
         mOnCheckedChangeListener = listener;
     }
 
+    @BindingAdapter("is_checked")
+    public static void setButtonState(CheckableRoundButton view, Boolean value) {
+        view.setChecked(value);
+    }
+
+    @InverseBindingAdapter(attribute = "is_checked", event = "app:is_checkedAttrChanged")
+    public static Boolean getButtonState(CheckableRoundButton view) {
+        return view.isChecked();
+    }
+
+    @BindingAdapter("app:is_checkedAttrChanged")
+    public static void setListeners(CheckableRoundButton view, final InverseBindingListener attrChange) {
+        view.setOnCheckedChangeListener((buttonView, isChecked) -> attrChange.onChange());
+    }
+
     /**
      * Interface definition for a callback to be invoked when the checked state changed.
      */
@@ -96,5 +114,4 @@ public class CheckableRoundButton extends android.support.v7.widget.AppCompatIma
          */
         void onCheckedChanged(CheckableRoundButton buttonView, boolean isChecked);
     }
-
 }
