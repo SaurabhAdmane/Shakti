@@ -67,7 +67,7 @@
     <string name="bonus_title">Claim your\nBonus Bounty!</string>
     <string name="bonus_subtitle">Choose your new beginning:</string>
     <string name="bonus_offer1">Special limited offer for early adopters!</string>
-    <string name="bonus_offer2">Create your Shakti ID! Show Proof-of-Effort (POE), and receive an impressive bounty, valued at $$%1$.2d USD!</string>
+    <string name="bonus_offer2">Create your Shakti ID! Show Proof-of-Effort (POE), and receive an impressive bounty, valued at %1$,.2f USD!</string>
     <string name="bonus_main_action">Claim this bounty</string>
     <string name="bonus_secondary_action">View special <u>promotion details</u>.</string>
     <string name="bonus_valueof">Value of</string>
