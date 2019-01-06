@@ -115,5 +115,11 @@
     <string name="err_no_countries">List of countries is empty</string>
     <string name="err_no_internet">No Internet connection. Normal operation is not possible.</string>
     <string name="err_state_reqired">A state/province is required for the country</string>
+    <string name="new_bounty_title">Congratulations!</string>
+    <string name="new_bounty_subtitle">Your new Bonus Bounty balance is:</string>
+    <string name="new_bounty_message"><b>Everyone\'s</b> a Winner</string>
+    <string name="new_bounty_action">Register my referral</string>
+    <string name="new_bounty_view_terms"><u>View terms</u> associated with with wallet usage.</string>
+    <string name="new_bounty_terms"><u>Refer to the terms</u> for more detailed conditions associated with claiming your bounty. You must sign up for a wallet first and ensure you have completed KYC to be eligible.</string>
 
 </resources>

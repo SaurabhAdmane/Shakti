@@ -80,6 +80,10 @@
             android:name=".widget.qr.QRScannerActivity"
             android:screenOrientation="portrait"/>
 
+        <activity
+            android:name=".registration.NewBonusBountyActivity"
+            android:screenOrientation="portrait"/>
+
     </application>
 
 </manifest>
