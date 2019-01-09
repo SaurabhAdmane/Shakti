@@ -67,6 +67,7 @@
         <item name="android:textFontWeight">500</item>
     </style>
     <style name="AppButton.Link">
+        <item name="android:textFontWeight">500</item>
     </style>
 
     <style name="AppCheckbox" parent="Widget.AppCompat.CompoundButton.CheckBox">
