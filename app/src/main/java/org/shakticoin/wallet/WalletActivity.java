@@ -35,8 +35,7 @@ public class WalletActivity extends AppCompatActivity {
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragments, new HomeFragment(), HomeFragment.class.getSimpleName())
+                .replace(R.id.fragments, new MainFragment(), MainFragment.class.getSimpleName())
                 .commit();
-
     }
 }

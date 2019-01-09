@@ -104,6 +104,57 @@
     <string name="wallet_message">You now have a Shakti Wallet and are part of the grassroots movement for smarter money.\n\nPlease help us spread the word by letting your networks know about the Shakti Coin movement.</string>
     <string name="wallet_ref_code">Your personal referral code is:</string>
     <string name="wallet_ref_link">Your personal referral link is:</string>
+    <string name="wallet_current_balance">Current balance:</string>
+    <string name="wallet_balance_history"><u>Balance History</u></string>
+    <string name="wallet_admin"><u>Admin</u></string>
+    <string name="wallet_unlock_it">Unlock it by</string>
+    <string name="wallet_complete_kyc"><u>completing your KYC Verification</u></string>
+    <string name="wallet_referring_friends"><u>referring friends &amp; family</u></string>
+    <string name="wallet_bonus_balance">Bonus Bounty balance:</string>
+    <string name="wallet_become_miner">Become a Miner</string>
+    <string name="wallet_become_miner_desc">
+        Get more from your Shakti account by earning an ongoing referral income. <u>Become a Basic
+        Miner</u> by signing up for a M101 License!
+    </string>
+    <string name="wallet_business">Gain a business advantage:</string>
+    <string name="wallet_add">Add a</string>
+    <string name="wallet_add_vault"><b>Business Vault</b></string>
+    <string name="wallet_add_vault_desc">
+        Become a one-world business leader with one currency - and take your money further. <u>Learn how.</u>
+    </string>
+    <string name="dlg_business_vault_title"><![CDATA[Get the <font color="#B09C75">Business Vault</font><br/>advantage</string]]></string>
+    <string name="dlg_business_vault_text"><![CDATA[
+        <p><b>As a Business Leader, you\'re eligible for SXE Vault!</b></p>
+        <p>If you have a business or are planning to start one within the next 6 months, sign up for an
+        SXE Vault, and move money with the least friction.</p>
+        <p><b>Receive the Bonus Bounty cash reward!</b></p>
+        <p>Get from $25,000 to $125,000 USD (SXE 5,000 to SXE 25,000) — only for early adopters!</p>
+        <p>Sign up now to receive limited-time offer Bonus Bounty SXE Coins.</p>
+        <p>This offer will be terminated without notice, so, SIGN UP NOW!</p>
+    ]]></string>
+    <string name="dlg_business_vault_action">Enter the Shakti business world…</string>
+    <string name="dlg_become_miner_title"><![CDATA[Become a<br/><font color="#B09C75"><b>Basic Miner (M101)</b></font>]]></string>
+    <string name="dlg_become_miner_text"><![CDATA[
+        <p><b>Earn an additional income with Shakti</b></p>
+        <p>A Miner License gives you access to our mining setups.</p>
+        <p>You can start mining <b>SXE Coins that will be added to your wallet.</b></p>
+        <p><b>Don\'t know anything about mining?</b> Don\'t worry, we\'re here to make it easy! Our
+        support center experts will guide you at every step of your journey.</p>
+        <p><b>Get an extra SXE 10,000 ($50,000 USD) by upgrading today!</b></p>
+    ]]></string>
+    <string name="dlg_become_miner_action">Learn more about M101</string>
+    <string name="dlg_grab_wallet_title"><![CDATA[Grab an<br/><font color="#B09C75"><b>Individual Wallet</b></font>]]></string>
+    <string name="dlg_grab_wallet_text"><![CDATA[
+        <p>The Shakti system makes it much easier to be in charge of your financial future based on your
+        own efforts.</p>
+        <p>How fast you unlock your bonus bounty depends entirely upon you. Tell us how many friends
+        you are prepared to refer a day, and we will forecast how fast you can unlock your bonus
+        bounty!  We will also track your progress as you refer family and friends.</p>
+        <p>You can also <b>become a Shakti evangelist</b> by building the Shakti world through social media.</p>
+        <p>Tell your friends that when they sign up, they <b>need to identify you by your email and mobile
+        number so that you too can earn that referral.</b> This will help you unlock your bonus bounty quickly.</p>
+    ]]></string>
+    <string name="dlg_grab_wallet_action">Go to my referrals</string>
     <string name="content_share_button">Share button</string>
     <string name="share_referral_code">Share the personal referral code</string>
     <string name="share_referral_link">Share the personal referral link</string>
