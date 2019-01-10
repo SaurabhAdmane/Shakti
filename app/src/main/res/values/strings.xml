@@ -172,5 +172,10 @@
     <string name="new_bounty_action">Register my referral</string>
     <string name="new_bounty_view_terms"><u>View terms</u> associated with with wallet usage.</string>
     <string name="new_bounty_terms"><u>Refer to the terms</u> for more detailed conditions associated with claiming your bounty. You must sign up for a wallet first and ensure you have completed KYC to be eligible.</string>
+    <string name="drawer_wallet">Wallet</string>
+    <string name="drawer_vault">Vault</string>
+    <string name="drawer_miner">Miner</string>
+    <string name="drawer_referrals">Referrals</string>
+    <string name="drawer_settings">Settings</string>
 
 </resources>

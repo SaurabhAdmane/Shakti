@@ -14,4 +14,9 @@
     <dimen name="error_padding_horizontal">25dp</dimen>
     <dimen name="error_padding_vertical">7dp</dimen>
 
+    <!-- Width of the list of notifications on the right of wallet -->
+    <dimen name="notifications_list_width">200dp</dimen>
+    <!-- Width of the drawer on the left of wallet -->
+    <dimen name="drawer_width">60dp</dimen>
+
 </resources>

@@ -13,4 +13,5 @@
 
     <color name="colorTickmark">#FFFFFFFF</color>
 
+    <color name="colorReadMessage">#D9D9DA</color>
 </resources>
