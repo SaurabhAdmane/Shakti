@@ -10,7 +10,7 @@
         android:layout_height="13dp"
         android:layout_marginTop="10dp"
         android:alpha="0.3"
-        app:layout_constraintEnd_toStartOf="@+id/ticketmark57489"
+        app:layout_constraintEnd_toStartOf="@+id/tickmark2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/tickmark"
@@ -32,54 +32,14 @@
         tools:ignore="SmallSp" />
 
     <ImageView
-        android:id="@+id/ticketmark57489"
-        android:layout_width="10dp"
-        android:layout_height="10dp"
-        android:layout_marginTop="11.5dp"
-        android:tint="@color/colorTickmarkTint"
-        android:alpha="0.3"
-        app:layout_constraintEnd_toStartOf="@+id/tickmark2"
-        app:layout_constraintStart_toEndOf="@+id/tickmark1"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/tickmark"
-        tools:ignore="ContentDescription" />
-
-    <ImageView
         android:id="@+id/tickmark2"
-        android:layout_width="13dp"
-        android:layout_height="13dp"
-        android:layout_marginTop="10dp"
-        android:alpha="0.3"
-        app:layout_constraintEnd_toStartOf="@+id/ticketmark88499"
-        app:layout_constraintStart_toEndOf="@+id/ticketmark57489"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/tickmark"
-        android:tint="@color/colorTickmarkTint"
-        tools:ignore="ContentDescription" />
-
-    <TextView
-        android:id="@+id/tickmark2label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:text="@string/wallet_page_additional"
-        android:textColor="@color/colorTickmark"
-        android:textSize="10sp"
-        android:fontFamily="@font/lato"
-        android:alpha="0.3"
-        app:layout_constraintEnd_toEndOf="@+id/tickmark2"
-        app:layout_constraintStart_toStartOf="@+id/tickmark2"
-        app:layout_constraintTop_toBottomOf="@+id/tickmark2"
-        tools:ignore="SmallSp" />
-
-    <ImageView
-        android:id="@+id/ticketmark88499"
         android:layout_width="10dp"
         android:layout_height="10dp"
         android:layout_marginTop="11.5dp"
+        android:tint="@color/colorTickmarkTint"
         android:alpha="0.3"
         app:layout_constraintEnd_toStartOf="@+id/tickmark3"
-        app:layout_constraintStart_toEndOf="@+id/tickmark2"
+        app:layout_constraintStart_toEndOf="@+id/tickmark1"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/tickmark"
         tools:ignore="ContentDescription" />
@@ -90,14 +50,54 @@
         android:layout_height="13dp"
         android:layout_marginTop="10dp"
         android:alpha="0.3"
+        app:layout_constraintEnd_toStartOf="@+id/tickmark4"
+        app:layout_constraintStart_toEndOf="@+id/tickmark2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/tickmark"
+        android:tint="@color/colorTickmarkTint"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/tickmark3label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:text="@string/wallet_page_additional"
+        android:textColor="@color/colorTickmark"
+        android:textSize="10sp"
+        android:fontFamily="@font/lato"
+        android:alpha="0.3"
+        app:layout_constraintEnd_toEndOf="@+id/tickmark3"
+        app:layout_constraintStart_toStartOf="@+id/tickmark3"
+        app:layout_constraintTop_toBottomOf="@+id/tickmark3"
+        tools:ignore="SmallSp" />
+
+    <ImageView
+        android:id="@+id/tickmark4"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_marginTop="11.5dp"
+        android:alpha="0.3"
+        app:layout_constraintEnd_toStartOf="@+id/tickmark5"
+        app:layout_constraintStart_toEndOf="@+id/tickmark3"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/tickmark"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/tickmark5"
+        android:layout_width="13dp"
+        android:layout_height="13dp"
+        android:layout_marginTop="10dp"
+        android:alpha="0.3"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/ticketmark88499"
+        app:layout_constraintStart_toEndOf="@+id/tickmark4"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/tickmark"
         tools:ignore="ContentDescription" />
 
     <TextView
-        android:id="@+id/tickmark3label"
+        android:id="@+id/tickmark5label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
@@ -106,8 +106,8 @@
         android:textSize="10sp"
         android:fontFamily="@font/lato"
         android:alpha="0.3"
-        app:layout_constraintEnd_toEndOf="@+id/tickmark3"
-        app:layout_constraintStart_toStartOf="@+id/tickmark3"
-        app:layout_constraintTop_toBottomOf="@+id/tickmark3"
+        app:layout_constraintEnd_toEndOf="@+id/tickmark5"
+        app:layout_constraintStart_toStartOf="@+id/tickmark5"
+        app:layout_constraintTop_toBottomOf="@+id/tickmark5"
         tools:ignore="SmallSp" />
 </merge>
