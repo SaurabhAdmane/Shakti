@@ -12,6 +12,7 @@
     <color name="colorHint">#FFFFFFFF</color>
 
     <color name="colorTickmark">#FFFFFFFF</color>
+    <color name="colorTickmarkTint">#4DFFFFFF</color>
 
     <color name="colorReadMessage">#D9D9DA</color>
 </resources>

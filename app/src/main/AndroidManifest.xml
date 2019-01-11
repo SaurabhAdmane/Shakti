@@ -84,6 +84,10 @@
             android:name=".registration.NewBonusBountyActivity"
             android:screenOrientation="portrait"/>
 
+        <activity
+            android:name=".profile.PeronalInfoActivity"
+            android:screenOrientation="portrait"/>
+
     </application>
 
 </manifest>

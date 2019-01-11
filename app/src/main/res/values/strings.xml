@@ -177,5 +177,11 @@
     <string name="drawer_miner">Miner</string>
     <string name="drawer_referrals">Referrals</string>
     <string name="drawer_settings">Settings</string>
+    <string name="profile_personal_title">Personal info</string>
+    <string name="profile_additional_title">Additional info</string>
+    <string name="profile_kyc_title">KYC Validation</string>
+    <string name="wallet_page_personal">Personal Info</string>
+    <string name="wallet_page_additional">Additional Info</string>
+    <string name="wallet_page_kyc">KYC Validation</string>
 
 </resources>
