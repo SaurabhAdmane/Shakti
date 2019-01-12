@@ -3,6 +3,7 @@ package org.shakticoin.wallet;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.shakticoin.R;
+import org.shakticoin.profile.PeronalInfoActivity;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -163,7 +165,9 @@ public class BaseWalletActivity extends AppCompatActivity {
     }
 
     public void onOpenSettings(View v) {
-        Toast.makeText(this, R.string.err_not_implemented, Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, PeronalInfoActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
     }
 
     public void onOpenMiner(View v) {
