@@ -51,19 +51,6 @@ public class SignUpAddressFragment extends Fragment {
             binding.postalCode.setOnEditorActionListener(listener);
         }
 
-        Activity activity = getActivity();
-        if (activity != null) {
-            // initially the adapter is empty and updated via data binding
-            SpinnerListAdapter<Country> countryListAdapter =
-                    new SpinnerListAdapter<>(getActivity(), new ArrayList<>());
-            binding.countries.setAdapter(countryListAdapter);
-
-            // initially the adapter is empty and updated via data binding
-            SpinnerListAdapter<Country> citizenshipListAdapter =
-                    new SpinnerListAdapter<>(getActivity(), new ArrayList<>());
-            binding.citizenship.setAdapter(citizenshipListAdapter);
-        }
-
         // display error callout for the field if error message is set
         viewModel.countryCodeErrMsg.observe(this, s -> {
             if (!TextUtils.isEmpty(s)) {
@@ -105,29 +92,4 @@ public class SignUpAddressFragment extends Fragment {
         return binding.getRoot();
     }
 
-    @BindingAdapter("android:entries")
-    public static void setCountryList(Spinner view, List<Country> countries) {
-        InlineLabelSpinner spinner = (InlineLabelSpinner) view;
-        spinner.clear();
-        if (countries != null) {
-            spinner.addAll(countries);
-        }
-    }
-
-    @BindingAdapter("newValue")
-    public static void setCountry(Spinner view, Country country) {
-        if (country != null) {
-            SpinnerAdapter adapter = view.getAdapter();
-            Object selectedCountry = view.getSelectedItem();
-            if (selectedCountry != null && !selectedCountry.equals(country)) {
-                // skip item at 0 as it isn't an instance of Country, just a String
-                for (int i = 1; i < adapter.getCount(); i++) {
-                    Country c = (Country) adapter.getItem(i);
-                    if (c.equals(country)) {
-                        view.setSelection(i);
-                    }
-                }
-            }
-        }
-    }
 }

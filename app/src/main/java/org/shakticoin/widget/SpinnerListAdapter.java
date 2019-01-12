@@ -11,9 +11,14 @@ import android.widget.TextView;
 
 import org.shakticoin.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SpinnerListAdapter<T> extends ArrayAdapter<T> {
+
+    public SpinnerListAdapter(@NonNull Context context) {
+        this(context, new ArrayList<T>());
+    }
 
     public SpinnerListAdapter(@NonNull Context context, @NonNull List objects) {
         super(context, R.layout.widget_inlinelbl_spinner_item, objects);
