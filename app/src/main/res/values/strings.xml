@@ -33,13 +33,18 @@
     <string name="hint_state">State / Province</string>
     <string name="hint_select_state">Select Your State</string>
     <string name="hint_email_address">Email Address</string>
-    <string name="hint_phone_number">Mobile Number</string>
+    <string name="hint_mobile_number">Mobile Number</string>
+    <string name="hint_phone_number">Phone Number</string>
+    <string name="hint_phone_or_email">Phone number or email address</string>
     <string name="hint_full_name">Full Name</string>
     <string name="hint_first_name">First Name</string>
     <string name="hint_last_name">Last Name</string>
     <string name="hint_middle_name">Middle Name</string>
     <string name="hint_referral_code">Referral Code</string>
     <string name="hint_birthdate">Date of Birth</string>
+    <string name="hint_relationship">Relationship</string>
+    <string name="hint_education_level">Highest level of Education</string>
+    <string name="hint_occupation">Occupation</string>
     <string name="unlock_bounty">Unlock your Bounty Bonus today!</string>
     <string name="lets_go">Let\'s go!</string>
     <string name="add_password_title">Add a Password</string>
@@ -188,6 +193,15 @@
     <string name="profile_personal_whereyou">Where do you live?</string>
     <string name="profile_personal_action">Update personal information</string>
     <string name="profile_additional_title">Additional info</string>
+    <string name="profile_additional_nextkin">Your next of kin, just in case</string>
+    <string name="profile_additional_auth_stmt">
+        I authorize Shakti network to enchance my Wallet security by accessing device <u>UDIDs</u>
+    </string>
+    <string name="profile_additional_alerts_consent">
+        I consent to receiving alerts from the Shakti Network
+    </string>
+    <string name="profile_additional_action2">Update Additional Info</string>
+    <string name="profile_additional_tellmore">Can you tell us more?</string>
     <string name="profile_kyc_title">KYC Validation</string>
     <string name="wallet_page_personal">Personal Info</string>
     <string name="wallet_page_additional">Additional Info</string>

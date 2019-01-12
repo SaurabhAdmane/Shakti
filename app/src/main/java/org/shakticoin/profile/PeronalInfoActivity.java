@@ -29,7 +29,7 @@ public class PeronalInfoActivity extends BaseWalletActivity {
         binding.pageIndicator.setSelectedIndex(1);
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.mainFragment, new PersonalPage1(), PersonalPage1.TAG)
+                .replace(R.id.mainFragment, new AdditionalInfoPage2(), AdditionalInfoPage2.TAG)
                 .commit();
     }
 
