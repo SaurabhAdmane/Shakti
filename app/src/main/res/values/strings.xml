@@ -203,6 +203,21 @@
     <string name="profile_additional_action2">Update Additional Info</string>
     <string name="profile_additional_tellmore">Can you tell us more?</string>
     <string name="profile_kyc_title">KYC Validation</string>
+    <string name="profile_kyc_proof">Proof of address</string>
+    <string name="profile_kyc_description">
+        Validate your KYC by providing 2 documents with your name and address dated within 6-months.
+    </string>
+    <string name="profile_kyc_utility_bills">Utility\nBills</string>
+    <string name="profile_kyc_utility_bills_desc">Submit a utility bill with your name and address.</string>
+    <string name="profile_kyc_property">Property\n&amp; Finance</string>
+    <string name="profile_kyc_property_desc">
+        Submit a property or finance related document with your name and address.
+    </string>
+    <string name="profile_kyc_gov">School, Gov.\n&amp; Other Doc.</string>
+    <string name="profile_kyc_gov_desc">
+        Submit a school or Gov or other body, that has issued an ID with your name and address.
+    </string>
+    <string name="profile_kyc_choosed_of_three">Choose of any three categories.</string>
     <string name="wallet_page_personal">Personal Info</string>
     <string name="wallet_page_additional">Additional Info</string>
     <string name="wallet_page_kyc">KYC Validation</string>
