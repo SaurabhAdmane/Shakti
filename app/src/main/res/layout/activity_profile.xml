@@ -10,6 +10,7 @@
             type="org.shakticoin.profile.PersonalViewModel"/>
     </data>
     <RelativeLayout
+        android:id="@+id/profileBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/personal_background">
@@ -24,6 +25,7 @@
             android:background="#66000000"
             app:selectedIndex="1"/>
 
+
         <RelativeLayout
             android:id="@+id/fragments"
             android:layout_width="match_parent"
@@ -32,13 +34,17 @@
             tools:ignore="UnknownIdInLayout">
 
             <include layout="@layout/inline_drawer"/>
-            <FrameLayout
-                android:id="@+id/mainFragment"
+            <android.support.v4.view.ViewPager
+                android:id="@+id/pager"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_centerInParent="true">
-
-            </FrameLayout>
+                android:layout_height="match_parent">
+                <!--FrameLayout
+                    android:id="@+id/mainFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true">
+                </FrameLayout-->
+            </android.support.v4.view.ViewPager>
             <include layout="@layout/inline_messages"/>
 
         </RelativeLayout>
@@ -51,4 +57,5 @@
             android:visibility="@{viewModel.progressBarTrigger ? View.VISIBLE : View.INVISIBLE}"/>
 
     </RelativeLayout>
+
 </layout>

@@ -85,7 +85,7 @@
             android:screenOrientation="portrait"/>
 
         <activity
-            android:name=".profile.PeronalInfoActivity"
+            android:name=".profile.ProfileActivity"
             android:screenOrientation="portrait"/>
 
     </application>

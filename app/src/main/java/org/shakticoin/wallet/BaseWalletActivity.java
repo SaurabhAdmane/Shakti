@@ -17,7 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.shakticoin.R;
-import org.shakticoin.profile.PeronalInfoActivity;
+import org.shakticoin.profile.ProfileActivity;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -165,7 +165,7 @@ public class BaseWalletActivity extends AppCompatActivity {
     }
 
     public void onOpenSettings(View v) {
-        Intent intent = new Intent(this, PeronalInfoActivity.class);
+        Intent intent = new Intent(this, ProfileActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
     }

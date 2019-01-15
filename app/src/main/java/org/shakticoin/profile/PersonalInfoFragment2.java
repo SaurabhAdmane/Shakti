@@ -13,8 +13,8 @@ import org.shakticoin.databinding.FragmentProfilePersonalPage2Binding;
 
 import java.util.Objects;
 
-public class PersonalPage2 extends Fragment {
-    public static final String TAG = PersonalPage2.class.getSimpleName();
+public class PersonalInfoFragment2 extends Fragment {
+    public static final String TAG = PersonalInfoFragment2.class.getSimpleName();
 
     private FragmentProfilePersonalPage2Binding binding;
     private PersonalInfoViewModel viewModel;

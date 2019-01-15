@@ -163,11 +163,11 @@
 
                 <org.shakticoin.widget.InlineLabelEditText
                     android:id="@+id/address1"
+                    style="@style/AppTextField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/AppTextField"
-                    android:inputType="textCapWords|textPersonName"
-                    android:hint="@string/hint_address1" />
+                    android:hint="@string/hint_address1"
+                    android:inputType="textShortMessage|text|textPostalAddress" />
             </org.shakticoin.widget.TextInputLayout>
 
             <org.shakticoin.widget.TextInputLayout
@@ -188,11 +188,11 @@
 
                 <org.shakticoin.widget.InlineLabelEditText
                     android:id="@+id/address2"
+                    style="@style/AppTextField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/AppTextField"
-                    android:inputType="textCapWords|textPersonName"
-                    android:hint="@string/hint_address2" />
+                    android:hint="@string/hint_address2"
+                    android:inputType="textPostalAddress" />
             </org.shakticoin.widget.TextInputLayout>
 
             <org.shakticoin.widget.TextInputLayout
@@ -213,11 +213,11 @@
 
                 <org.shakticoin.widget.InlineLabelEditText
                     android:id="@+id/postalCode"
+                    style="@style/AppTextField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/AppTextField"
-                    android:inputType="date"
-                    android:hint="@string/hint_postal_code" />
+                    android:hint="@string/hint_postal_code"
+                    android:inputType="text|textCapCharacters" />
             </org.shakticoin.widget.TextInputLayout>
 
             <Button
@@ -231,7 +231,7 @@
                 android:layout_marginEnd="24dp"
                 android:layout_marginRight="24dp"
                 android:text="@string/profile_personal_action"
-                android:onClick="onUpdate"
+                android:onClick="onUpdatePersonalInfo"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/postalCodeLayout" />

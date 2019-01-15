@@ -79,11 +79,11 @@
 
                 <org.shakticoin.widget.InlineLabelEditText
                     android:id="@+id/email"
+                    style="@style/AppTextField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/AppTextField"
-                    android:inputType="textCapWords|textPersonName"
-                    android:hint="@string/hint_email_address" />
+                    android:hint="@string/hint_email_address"
+                    android:inputType="textEmailAddress" />
             </org.shakticoin.widget.TextInputLayout>
 
             <org.shakticoin.widget.TextInputLayout
@@ -104,11 +104,11 @@
 
                 <org.shakticoin.widget.InlineLabelEditText
                     android:id="@+id/phoneNumber"
+                    style="@style/AppTextField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/AppTextField"
-                    android:inputType="textCapWords|textPersonName"
-                    android:hint="@string/hint_phone_number" />
+                    android:hint="@string/hint_phone_number"
+                    android:inputType="phone" />
             </org.shakticoin.widget.TextInputLayout>
 
             <org.shakticoin.widget.TextInputLayout
@@ -129,11 +129,11 @@
 
                 <org.shakticoin.widget.InlineLabelEditText
                     android:id="@+id/occupation"
+                    style="@style/AppTextField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/AppTextField"
-                    android:inputType="textCapWords|textPersonName"
-                    android:hint="@string/hint_occupation" />
+                    android:hint="@string/hint_occupation"
+                    android:inputType="textCapSentences" />
             </org.shakticoin.widget.TextInputLayout>
 
             <org.shakticoin.widget.SpinnerLayout
@@ -176,7 +176,7 @@
                 android:layout_marginEnd="24dp"
                 android:layout_marginRight="24dp"
                 android:text="@string/next"
-                android:onClick="onNext"
+                android:onClick="onNextAdditionalInfo"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/educationLevelLayout" />

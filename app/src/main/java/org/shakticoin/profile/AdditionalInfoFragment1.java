@@ -9,20 +9,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.shakticoin.databinding.FragmentProfileAdditionalPage2Binding;
+import org.shakticoin.databinding.FragmentProfileAdditionalPage1Binding;
 
 import java.util.Objects;
 
-public class AdditionalInfoPage2 extends Fragment {
-    public static final String TAG = AdditionalInfoPage2.class.getSimpleName();
+public class AdditionalInfoFragment1 extends Fragment {
+    public static final String TAG = AdditionalInfoFragment1.class.getSimpleName();
 
-    private FragmentProfileAdditionalPage2Binding binding;
-    private AdditionalInfoViewModel viewModel;
+    FragmentProfileAdditionalPage1Binding binding;
+    AdditionalInfoViewModel viewModel;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentProfileAdditionalPage2Binding.inflate(inflater, container, false);
+        binding = FragmentProfileAdditionalPage1Binding.inflate(inflater, container, false);
         binding.setLifecycleOwner(this);
         viewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(AdditionalInfoViewModel.class);
         binding.setViewModel(viewModel);
