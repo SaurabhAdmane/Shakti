@@ -88,6 +88,10 @@
             android:name=".profile.ProfileActivity"
             android:screenOrientation="portrait"/>
 
+        <activity
+            android:name=".profile.KycActivity"
+            android:screenOrientation="portrait"/>
+
     </application>
 
 </manifest>
