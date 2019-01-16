@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape  android:shape="rectangle">
+        <size
+            android:height="12dp"
+            android:width="12dp" />
+        <solid
+            android:color="@color/colorAccent" />
+        <stroke
+            android:color="@color/colorAccent"
+            android:width="1dp" />
+        </shape>
+    </item>
+    <!-- use bitmap prior to v21 -->
+    <item
+        android:drawable="@drawable/ic_checkmark_small"
+        android:gravity="center"/>
+</layer-list>
