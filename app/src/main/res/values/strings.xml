@@ -221,5 +221,98 @@
     <string name="wallet_page_personal">Personal Info</string>
     <string name="wallet_page_additional">Additional Info</string>
     <string name="wallet_page_kyc">KYC Validation</string>
+    <string name="kyc_utility_bills">Utility Bills</string>
+    <string name="kyc_property_finance">Property &amp; Finance</string>
+    <string name="kyc_goverment">School, Gov. &amp; Other Doc.</string>
+    <string name="kyc_desc">You can upload JPEG, PNG, TIFF, GIF and PDF files from photographed or scanned bills.</string>
+    <string name="kyc_select_document_type">Select document type:</string>
+    <string name="kyc_take_photo">Take a\nPicture</string>
+    <string name="kyc_upload_file">Scan &amp;\nUpload a File</string>
+    <string name="kyc_skip">Skip to\nUpload file</string>
+    <string name="kyc_document_match">Your document must match your name &amp; address.</string>
+    <string name="kyc_type_phone_bill">Phone</string>
+    <string name="kyc_type_gas_bill">Gas</string>
+    <string name="kyc_type_elect_bill">Electricity</string>
+    <string name="kyc_type_water_bill">Water</string>
+    <string name="kyc_type_tax_bill">Municipal Tax</string>
+    <string name="kyc_type_insurance">Insurance Coverage</string>
+    <string name="kyc_type_cable_bill">Cable</string>
+    <string name="kyc_type_other_bill">Other</string>
+    <string name="kyc_select_option">Select an Option</string>
+    <string name="kyc_opt_mining">Purchase a Mining License</string>
+    <string name="kyc_opt_fee">Pay a small Fee to Validate</string>
+    <string name="kyc_opt_propagreement"><b>Any Property Agreement:</b>\nRental\nLease\nHome\nTV/Phone Purchase</string>
+    <string name="kyc_opt_vehicleagreement"><b>Any Vehicle Agreement:</b>\nOwnership\nLease</string>
+    <string name="kyc_opt_financestmt"><b>Any Finance Statement:</b>\nBank\nCredit Card\nPost Office Saving\nMutual Funds\nOther Investment</string>
+    <string name="kyc_opt_schooladmission">School Admission Letter</string>
+    <string name="kyc_opt_schoolreport">School Report Card</string>
+    <string name="kyc_opt_incometax">Income Tax Receipt</string>
+    <string name="kyc_opt_govid">Gov Issued ID with Address</string>
+    <string name="kyc_opt_passport">Passport Copy</string>
+    <string name="kyc_opt_ngo">NGOs Issued IDs</string>
+    <string name="kyc_opt_ngoletter">Letter from an NGO</string>
+    <string name="kyc_opt_jobletter">Job Letter</string>
+    <string name="kyc_files_ready">File is ready to be sent</string>
+    <string name="kyc_files_action_add">Add another Document</string>
+    <string name="kyc_files_action_send">Send Files</string>
+    <string name="kyc_files_action_cancel">Cancel &amp; Discard</string>
+    <string name="kyc_files_num_uploaded">%1$d of %2$d Documents Uploaded.</string>
+    <string name="kyc_files_utility_docs">Utility Bills Document:</string>
+    <string name="kyc_files_property_docs">Property &amp; Finance Document:</string>
+    <string name="kyc_files_gov_docs">School, Gov. &amp; Other Doc.:</string>
+    <string name="kyc_fasttr_title">Fast-track your KYC verification!</string>
+    <string name="kyc_fasttr_desc">
+        The KYC Validation can take weeks to be processed.\n\nPay small fee to fast-track your KYC
+        verification. By opting to pay for the processing fee, you agree to pay a non-refundable
+        cost for expediting your KYC verification. This is a cost-recovered service paid to a
+        third-party to expedite, verify, and confirm your ID.
+    </string>
+    <string name="kyc_fasttr_only">For only</string>
+    <string name="kyc_fasttr_price">$%1$.2f USD</string>
+    <string name="kyc_fasttr_action">Pay to fast-track your KYC</string>
+    <string name="kyc_fasttr_cancel">Cancel &amp; Discard</string>
+    <string name="kyc_verifying">Your KYC is being processed</string>
+    <string name="kyc_verifying_title">Verifying KYC Files</string>
+    <string name="kyc_verifying_note">
+        Note that your wallet is inactive until we complete the KYC, AML and regulatory compliance.
+        Please continue to monitor your progress and update your required documents as necessary.
+    </string>
+    <string name="kyc_verifying_notice">
+        We\'re working around the clock to ensure that your wallet is activated as soon as possible.\n\n
+        In the meantime, keep referring friends to join Shakti to unlock your Bonus Bounty quickly.
+        Remember, your bonus is yours to keep!
+    </string>
+    <string name="kyc_verifying_action">Invite your friends to Shakti</string>
+    <string name="kyc_verified">Your validation was a success</string>
+    <string name="kyc_verified_message">
+        <b>Congratulations!</b> Your account has been verified. You\'ve passed all the compliance
+        validations and you\'re on your way to a great start!\n\n
+        Your wallet is now active and ready to be used.
+    </string>
+    <string name="kyc_verified_action">Start using my Shakti wallet</string>
+    <string name="kyc_rejected">Sorry, your validation was rejected</string>
+    <string name="kyc_rejected_wrong">Something went wrong.</string>
+    <string name="kyc_rejected_note">
+        The information you\'ve provided didn\'t match the government issued ID of your country of
+        residence.\n\n
+        Please review the information provided and apply again. Make sure that all fields are complete
+        and your proof of address is valid and readable. Remember your bounty is still yours to keep
+        and you can continue to work on unlocking it.
+    </string>
+    <string name="kyc_rejected_alt">Or alternatively</string>
+    <string name="kyc_rejected_buy_miner">Skip KYC verification with a Miner License!</string>
+    <string name="kyc_rejected_buy_miner_note">
+        You can choose to buy a Mining License and skip the Regular or Fast-Track KYC Verification
+        Process.
+    </string>
+    <string name="kyc_rejected_pay_miner">Pay for a Mining License</string>
+    <string name="kyc_rejected_finally">And then finally</string>
+    <string name="kyc_rejected_review"><u>Review my information and re-send for verification.</u></string>
+    <string name="kyc_rejected_review_note">
+        Your wallet is inactive until the Shakti Network completes the KYC, AML, and regulatory
+        compliance. Be assured that once you register and claim your bounty, it is yours to keep
+        as long as you comply with your bounty conditions. Shakti will work around the clock to
+        make sure your wallet is activated.
+    </string>
 
 </resources>

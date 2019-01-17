@@ -79,7 +79,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/label" />
 
             <org.shakticoin.widget.CheckableRoundButton
-                android:id="@+id/utilityDoc"
+                android:id="@+id/selectPhoto"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_marginStart="8dp"
@@ -97,7 +97,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/description"/>
 
             <org.shakticoin.widget.CheckableRoundButton
-                android:id="@+id/financeDoc"
+                android:id="@+id/selectUpload"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_marginStart="8dp"
@@ -112,10 +112,10 @@
                 app:is_checked="@={viewModel.financeDocState}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/utilityDoc"/>
+                app:layout_constraintTop_toBottomOf="@+id/selectPhoto"/>
 
             <org.shakticoin.widget.CheckableRoundButton
-                android:id="@+id/govDoc"
+                android:id="@+id/selectSkip"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_marginStart="8dp"
@@ -130,7 +130,7 @@
                 app:is_checked="@={viewModel.govDocState}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/financeDoc"/>
+                app:layout_constraintTop_toBottomOf="@+id/selectUpload"/>
 
             <TextView
                 android:id="@+id/textView5"
@@ -146,7 +146,7 @@
                 android:textSize="13sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/govDoc" />
+                app:layout_constraintTop_toBottomOf="@+id/selectSkip" />
 
             <Button
                 android:id="@+id/doNext"
@@ -192,10 +192,10 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
                 android:background="@drawable/bg_circular"
-                app:layout_constraintBottom_toBottomOf="@+id/financeDoc"
-                app:layout_constraintEnd_toStartOf="@+id/financeDoc"
+                app:layout_constraintBottom_toBottomOf="@+id/selectUpload"
+                app:layout_constraintEnd_toStartOf="@+id/selectUpload"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/financeDoc" />
+                app:layout_constraintTop_toTopOf="@+id/selectUpload" />
 
             <ImageView
                 android:id="@+id/utilityIcon"
@@ -290,10 +290,10 @@
                 android:textAppearance="@style/AppText.Body"
                 android:textSize="12sp"
                 android:visibility="@{viewModel.utilityDocState ? View.VISIBLE : View.INVISIBLE}"
-                app:layout_constraintBottom_toBottomOf="@+id/financeDoc"
+                app:layout_constraintBottom_toBottomOf="@+id/selectUpload"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/financeDoc"
-                app:layout_constraintTop_toTopOf="@+id/financeDoc" />
+                app:layout_constraintStart_toEndOf="@+id/selectUpload"
+                app:layout_constraintTop_toTopOf="@+id/selectUpload" />
 
             <TextView
                 android:id="@+id/propertyDesc"
@@ -307,10 +307,10 @@
                 android:textAppearance="@style/AppText.Body"
                 android:textSize="12sp"
                 android:visibility="@{viewModel.financeDocState ? View.VISIBLE : View.INVISIBLE}"
-                app:layout_constraintBottom_toBottomOf="@+id/financeDoc"
+                app:layout_constraintBottom_toBottomOf="@+id/selectUpload"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/financeDoc"
-                app:layout_constraintTop_toTopOf="@+id/financeDoc" />
+                app:layout_constraintStart_toEndOf="@+id/selectUpload"
+                app:layout_constraintTop_toTopOf="@+id/selectUpload" />
 
             <TextView
                 android:id="@+id/govDesc"
@@ -324,10 +324,10 @@
                 android:textAppearance="@style/AppText.Body"
                 android:textSize="12sp"
                 android:visibility="@{viewModel.govDocState ? View.VISIBLE : View.INVISIBLE}"
-                app:layout_constraintBottom_toBottomOf="@+id/financeDoc"
+                app:layout_constraintBottom_toBottomOf="@+id/selectUpload"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/financeDoc"
-                app:layout_constraintTop_toTopOf="@+id/financeDoc" />
+                app:layout_constraintStart_toEndOf="@+id/selectUpload"
+                app:layout_constraintTop_toTopOf="@+id/selectUpload" />
 
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
