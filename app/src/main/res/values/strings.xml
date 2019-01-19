@@ -406,5 +406,23 @@
         in the near future. Your bonus capital could range from $5,000 to $125,000 USD in equivalent
         SXE for early adopters.
     </string>
+    <string name="miner_upg_youhave_m101">You Own a M101 License</string>
+    <string name="miner_upg_youhave">You now have a M101 Basic Miner account.</string>
+    <string name="miner_upg_congrat">
+        <b>Congratulations!</b> You chose to become a Shakti Miner. You\'re on your way to financial success.
+    </string>
+    <string name="miner_upg_next_steps">Next steps:</string>
+    <string name="miner_upg_next_steps_1">Unlock your Wallet</string>
+    <string name="miner_upg_next_steps_2">Install the Shakti Mining App</string>
+    <string name="miner_upg_next_steps_3">Configure your account</string>
+    <string name="miner_upg_next_steps_4">Start mining!</string>
+    <string name="miner_upg_power_miner">Want to be a Power Miner and Transform the World?</string>
+    <string name="miner_upg_action">Become a Power Miner</string>
+    <string name="miner_upg_extra_note">
+        Get an additional bonus bounty and start developing your exclusive territory.
+    </string>
+    <string name="miner_upg_extra_note1">
+        You must submit a business registration and activate your SXE Wallet to become a Power Miner.
+    </string>
 
 </resources>

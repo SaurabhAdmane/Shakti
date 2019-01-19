@@ -116,6 +116,10 @@
             android:name=".miner.BecomeMinerActivity"
             android:screenOrientation="portrait"/>
 
+        <activity
+            android:name=".miner.UpgradeMinerActivity"
+            android:screenOrientation="portrait"/>
+
     </application>
 
 </manifest>
