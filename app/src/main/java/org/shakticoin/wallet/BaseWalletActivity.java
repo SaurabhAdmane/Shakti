@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -40,8 +41,15 @@ public class BaseWalletActivity extends AppCompatActivity {
         viewModel = ViewModelProviders.of(this).get(BaseWalletViewModel.class);
     }
 
-    protected void onInitView(View root, String title) {
-        leftDrawer = root.findViewById(R.id.drawerContainer);
+    protected void onInitView(View root, String title, boolean hasBackNavButton) {
+        if (hasBackNavButton) {
+            View arrow = root.findViewById(R.id.goParent);
+            View burger = root.findViewById(R.id.drawer);
+            burger.setVisibility(View.GONE);
+            arrow.setVisibility(View.VISIBLE);
+        } else {
+            leftDrawer = root.findViewById(R.id.drawerContainer);
+        }
         rightDrawer = root.findViewById(R.id.notificationContainer);
         mainFragment = root.findViewById(R.id.mainFragment);
 
@@ -56,6 +64,10 @@ public class BaseWalletActivity extends AppCompatActivity {
         notifications.setAdapter(adapter);
 
         viewModel.notifications.observe(this, notifications -> adapter.notifyDataSetChanged());
+    }
+
+    protected void onInitView(View root, String title) {
+        onInitView(root, title, false);
     }
 
     class NotificationViewHolder extends RecyclerView.ViewHolder {
@@ -130,6 +142,10 @@ public class BaseWalletActivity extends AppCompatActivity {
             anim.setDuration(250);
             anim.start();
         }
+    }
+
+    public void onGoParent(View v) {
+        NavUtils.navigateUpFromSameTask(this);
     }
 
     public void onNotifications(View v) {

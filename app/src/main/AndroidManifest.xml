@@ -92,6 +92,30 @@
             android:name=".profile.KycActivity"
             android:screenOrientation="portrait"/>
 
+        <activity
+            android:name=".referral.MyReferralsActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".referral.AddReferralActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".referral.MyReferralsActivity" />
+        </activity>
+
+        <activity
+            android:name=".referral.EffortRatesActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".referral.MyReferralsActivity" />
+        </activity>
+
+        <activity
+            android:name=".miner.BecomeMinerActivity"
+            android:screenOrientation="portrait"/>
+
     </application>
 
 </manifest>

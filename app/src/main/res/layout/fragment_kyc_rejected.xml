@@ -180,7 +180,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:gravity="center_horizontal"
-                android:text="@string/kyc_rejected_alt"
+                android:text="@string/or_alternatively"
                 android:textAppearance="@style/AppText.Body"
                 android:textColor="@color/colorBrand"
                 app:layout_constraintEnd_toEndOf="parent"

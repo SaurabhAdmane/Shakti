@@ -299,7 +299,7 @@
         and your proof of address is valid and readable. Remember your bounty is still yours to keep
         and you can continue to work on unlocking it.
     </string>
-    <string name="kyc_rejected_alt">Or alternatively</string>
+    <string name="or_alternatively">Or alternatively</string>
     <string name="kyc_rejected_buy_miner">Skip KYC verification with a Miner License!</string>
     <string name="kyc_rejected_buy_miner_note">
         You can choose to buy a Mining License and skip the Regular or Fast-Track KYC Verification
@@ -314,5 +314,72 @@
         as long as you comply with your bounty conditions. Shakti will work around the clock to
         make sure your wallet is activated.
     </string>
+    <string name="my_refs_title">My Referrals</string>
+    <string name="my_refs_locked">Locked</string>
+    <string name="my_refs_unlock">Would you like to unlock it?</string>
+    <string name="my_refs_unlock_1">
+        <b>1. Your Bonus Bounty</b> will be automatically unlocked after 7 years of using your wallet
+        at least once a month.
+    </string>
+    <string name="my_refs_unlock_2">
+        <b>2. You can speed up</b> this process by referring friends and family to join the Shakti World.
+    </string>
+    <string name="my_refs_unlock_3">
+        <b>3. Mix it up:</b> Use your wallet at least once a month and make your friends early
+        adopters at the same time. In no time, you will be able to unlock your bounty.
+    </string>
+    <string name="my_refs_howfast">How fast can you unlock your Bounty?</string>
+    <string name="my_refs_calc">
+        I will refer <u>%1$d</u> people per day, based on my effort I will unlock my bonus bounty
+        within <u>%2$d</u> days.
+    </string>
+    <string name="my_refs_calc_note">
+        We will track your effort to unlock your bounty and continue to forecast your efforts.
+        Remember it is your effort that counts.
+    </string>
+    <string name="my_refs_unlocked_action">Start referring friends and family</string>
+    <string name="my_refs_tounlock"><u>%1$sd months to unlock</u></string>
+    <string name="my_refs_refer_other">Refer others to unlock SXE</string>
+    <string name="my_refs_referred">%1$d Referred</string>
+    <string name="my_refs_refer_note">
+        Refer friends by entering their info, or by importing contacts from your social media accounts.
+    </string>
+    <string name="my_refs_addreferral_action">Add a Referral</string>
+    <string name="my_refs_myrate_action">My Effort Rates</string>
+    <string name="my_refs_import_from">Invite from:</string>
+    <string name="my_refs_media_facebook">Facebook</string>
+    <string name="my_refs_media_instagram">Instagram</string>
+    <string name="my_refs_media_plus">Google+</string>
+    <string name="my_refs_media_linkedin">LinkedIn</string>
+    <string name="my_refs_media_twitter">Twitter</string>
+    <string name="my_refs_media_pinterest">Pinterest</string>
+    <string name="my_refs_media_skype">Skype</string>
+    <string name="my_refs_media_vk">VK</string>
+    <string name="my_refs_media_wechat">WeChat</string>
+    <string name="my_refs_media_tumble">Tumblr</string>
+    <string name="my_refs_media_email">Email</string>
+    <string name="my_refs_media_other">Other</string>
+    <string name="dlg_howto_title"><![CDATA[
+        How to earn your<br/><font color="#D8C295"><b>Bonus Bounty Reward!</b></font>
+    ]]></string>
+    <string name="dlg_howto_text"><![CDATA[
+        <p><b>Use the wallet once a month for 7 years (84 months).</b></p>
+        <p>Following 84 months of use, your Bonus Bounty will be unlocked on your next birthday as our
+        gift to you.</p>
+        <p><b>To get it faster, refer friends.</b><br/>
+        Each friend you refer reduces the waiting time by one month.</p>
+        <p>If you plan to reduce your waiting time strictly through referrals, your Bonus Bounty
+        will be unlocked on your next birthday.</p>
+    ]]></string>
+    <string name="dlg_howto_action">Refer a friend</string>
+    <string name="add_ref_fillin">Fill in the referral info below</string>
+    <string name="add_ref_action">Add Referral Info</string>
+    <string name="effort_rates_title">Effort Rates</string>
+    <string name="effort_rates_chart_note">Tap the progress buttons to see the social specific leads.</string>
+    <string name="effort_rates_converted">Converted</string>
+    <string name="effort_rates_influenced">Influenced</string>
+    <string name="effort_rates_progressing">Progressing</string>
+    <string name="effort_rates_num_processing">%1$d Processing</string>
+    <string name="effort_rates_nudge">Nudge Friends</string>
 
 </resources>
