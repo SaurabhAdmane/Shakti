@@ -7,15 +7,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
-import org.shakticoin.registration.BonusBountyActivity;
-import org.shakticoin.registration.NewBonusBountyActivity;
-import org.shakticoin.registration.NewBonusBountyModel;
-import org.shakticoin.registration.ReferralConfirmationActivity;
+import org.shakticoin.miner.BecomeMinerActivity;
+import org.shakticoin.referral.EffortRatesActivity;
 import org.shakticoin.registration.SignInActivity;
 import org.shakticoin.registration.SignUpActivity;
 import org.shakticoin.tour.WelcomeTourActivity;
 import org.shakticoin.util.PreferenceHelper;
-import org.shakticoin.wallet.WalletActivity;
 
 
 public class SplashActivity extends AppCompatActivity {
@@ -26,7 +23,7 @@ public class SplashActivity extends AppCompatActivity {
         super.setContentView(R.layout.activity_splash);
 
 //        route();
-        startActivity(new Intent(this, WalletActivity.class));
+        startActivity(new Intent(this, BecomeMinerActivity.class));
         finish();
     }
 

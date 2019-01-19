@@ -72,7 +72,7 @@
     <string name="refconfirm_story1"><b>You\'ve successfuly registered your referral.</b>\nWith your good deed, your friend is little closer to unlocking their Bonus Bounty.</string>
     <string name="refconfirm_story2"><b>Finish your registration now to claim your Bonus Bounty.</b></string>
     <string name="refconfirm_title">Thank you!</string>
-    <string name="refconfirm_wallet">Cool, take me to my wallet!</string>
+    <string name="take_me_to_wallet">Cool, take me to my wallet!</string>
     <string name="remember_me">Remember me</string>
     <string name="err_registration_fail">Registration cannot be completed</string>
     <string name="bonus_title">Claim your\nBonus Bounty!</string>
@@ -267,8 +267,8 @@
         cost for expediting your KYC verification. This is a cost-recovered service paid to a
         third-party to expedite, verify, and confirm your ID.
     </string>
-    <string name="kyc_fasttr_only">For only</string>
-    <string name="kyc_fasttr_price">$%1$.2f USD</string>
+    <string name="for_price">For only</string>
+    <string name="price_usd">$%1$.2f USD</string>
     <string name="kyc_fasttr_action">Pay to fast-track your KYC</string>
     <string name="kyc_fasttr_cancel">Cancel &amp; Discard</string>
     <string name="kyc_verifying">Your KYC is being processed</string>
@@ -381,5 +381,30 @@
     <string name="effort_rates_progressing">Progressing</string>
     <string name="effort_rates_num_processing">%1$d Processing</string>
     <string name="effort_rates_nudge">Nudge Friends</string>
+    <string name="miner_intro_title">Become a Shakti Miner</string>
+    <string name="miner_intro">Earn an additional income.</string>
+    <string name="miner_intro_toolbar">Shakti Miner</string>
+    <string name="miner_intro_text"><![CDATA[
+        <p><b>A licensed miner earns income</b> by mining Shakti coins. We will provide you with a mining
+        software application to access the SXE Network to start mining.</p>
+        <p>Sign up now to maximize your success in the new digital currency world. There are limited
+        Power Mining slots, and they will go fast!</p>
+        <p>Get an extra SXE 10,000 by upgrading now!</p>
+        <p><b>M101 License Features:</b><br/>
+        <ul>
+        <li>&nbsp;Mine Shakti Coins from anywhere.</li>
+        <li>&nbsp;No business registration is required.</li></ul></p>
+    ]]></string>
+    <string name="miner_intro_cancel"><u>No, I don’t want to earn a mining income</u></string>
+    <string name="miner_intro_note1">
+        The M101 license allows you to mine SXE coins. You must provide the hardware and
+        connectivity necessary to mine coins. Refer to the <u>Terms and Conditions</u> of the Shakti
+        Network and the Bonus Bounty Offer before you sign up.
+    </string>
+    <string name="miner_intro_note2">
+        Your Bonus Bounty varies depending on the type of business you own or are planning to start
+        in the near future. Your bonus capital could range from $5,000 to $125,000 USD in equivalent
+        SXE for early adopters.
+    </string>
 
 </resources>
