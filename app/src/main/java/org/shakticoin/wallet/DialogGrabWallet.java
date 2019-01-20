@@ -1,6 +1,7 @@
 package org.shakticoin.wallet;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import org.shakticoin.R;
+import org.shakticoin.referral.MyReferralsActivity;
 import org.shakticoin.widget.PanelDialog;
 
 public class DialogGrabWallet extends DialogFragment implements View.OnClickListener {
@@ -36,6 +38,7 @@ public class DialogGrabWallet extends DialogFragment implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-        Toast.makeText(getActivity(), R.string.err_not_implemented, Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getActivity(), MyReferralsActivity.class);
+        startActivity(intent);
     }
 }

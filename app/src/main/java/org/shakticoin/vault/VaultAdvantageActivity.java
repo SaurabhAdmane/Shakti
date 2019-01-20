@@ -1,8 +1,10 @@
 package org.shakticoin.vault;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
 
 import org.shakticoin.R;
 import org.shakticoin.databinding.ActivityVaultAdvantageBinding;
@@ -18,5 +20,14 @@ public class VaultAdvantageActivity extends BaseWalletActivity {
         binding.setLifecycleOwner(this);
 
         onInitView(binding.getRoot(), getString(R.string.vault_title));
+    }
+
+    public void onCreateVault(View v) {
+        Intent intent = new Intent(this, VaultChooserActivity.class);
+        startActivity(intent);
+    }
+
+    public void onCancel(View v) {
+        finish();
     }
 }

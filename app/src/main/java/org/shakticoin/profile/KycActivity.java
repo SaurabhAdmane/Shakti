@@ -27,15 +27,27 @@ public class KycActivity extends BaseWalletActivity {
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.mainFragment, new KycRejectedFragment())
+                .replace(R.id.mainFragment, new KycUtilityFragment())
                 .commit();
     }
 
     public void onOpenDocuments(View v) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.mainFragment, new KycFilesFragment())
+                .addToBackStack(KycFilesFragment.class.getSimpleName())
+                .commit();
+    }
+
+    public void onAddDocument(View v) {
+        Toast.makeText(this, R.string.err_not_implemented, Toast.LENGTH_SHORT).show();
+    }
+
+    public void onSend(View v) {
         Toast.makeText(this, R.string.err_not_implemented, Toast.LENGTH_SHORT).show();
     }
 
     public void onCancel(View v) {
-        Toast.makeText(this, R.string.err_not_implemented, Toast.LENGTH_SHORT).show();
+        finish();
     }
 }

@@ -18,7 +18,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.shakticoin.R;
+import org.shakticoin.miner.BecomeMinerActivity;
 import org.shakticoin.profile.ProfileActivity;
+import org.shakticoin.referral.MyReferralsActivity;
+import org.shakticoin.settings.SettingsActivity;
+import org.shakticoin.vault.VaultAdvantageActivity;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -177,24 +181,32 @@ public class BaseWalletActivity extends AppCompatActivity {
     }
 
     public void onOpenReferrals(View v) {
-        Toast.makeText(this, R.string.err_not_implemented, Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, MyReferralsActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
     }
 
     public void onOpenSettings(View v) {
-        Intent intent = new Intent(this, ProfileActivity.class);
+        Intent intent = new Intent(this, SettingsActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
     }
 
     public void onOpenMiner(View v) {
-        Toast.makeText(this, R.string.err_not_implemented, Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, BecomeMinerActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
     }
 
     public void onOpenVault(View v) {
-        Toast.makeText(this, R.string.err_not_implemented, Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, VaultAdvantageActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
     }
 
     public void onOpenWallet(View v) {
-        Toast.makeText(this, R.string.err_not_implemented, Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, WalletActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
     }
 }

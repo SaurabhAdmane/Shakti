@@ -1,6 +1,7 @@
 package org.shakticoin.referral;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -24,11 +25,29 @@ public class MyReferralsActivity extends BaseWalletActivity {
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.mainFragment, new MyReferralsSummaryFragment())
+                .replace(R.id.mainFragment, new MyReferralsLockedFragment())
                 .commit();
     }
 
     public void onHowToEarn(View v) {
         DialogHowToBonus.getInstance().show(getSupportFragmentManager(), DialogHowToBonus.TAG);
+    }
+
+    public void onAddReferral(View v) {
+        Intent intent = new Intent(this, AddReferralActivity.class);
+        startActivity(intent);
+    }
+
+    public void onSeeRates(View v) {
+        Intent intent = new Intent(this, EffortRatesActivity.class);
+        startActivity(intent);
+    }
+
+    public void onStartReferring(View v) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.mainFragment, new MyReferralsSummaryFragment())
+                .addToBackStack(MyReferralsSummaryFragment.class.getSimpleName())
+                .commit();
     }
 }

@@ -4,6 +4,8 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
+import android.widget.Toast;
 
 import org.shakticoin.R;
 import org.shakticoin.databinding.ActivityVaultChooserBinding;
@@ -22,5 +24,9 @@ public class VaultChooserActivity extends BaseWalletActivity {
         binding.setViewModel(viewModel);
 
         onInitView(binding.getRoot(), getString(R.string.vault_title), true);
+    }
+
+    public void onProceedWithVault(View v) {
+        Toast.makeText(this, R.string.err_not_implemented, Toast.LENGTH_SHORT).show();
     }
 }

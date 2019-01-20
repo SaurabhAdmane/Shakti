@@ -1,6 +1,7 @@
 package org.shakticoin.registration;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -26,7 +27,8 @@ public class NewBonusBountyActivity extends AppCompatActivity {
     }
 
     public void onRegisterReferral(View v) {
-        Toast.makeText(this, R.string.err_not_implemented, Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, ReferralActivity.class);
+        startActivity(intent);
     }
 
     public void onViewTerms1(View v) {

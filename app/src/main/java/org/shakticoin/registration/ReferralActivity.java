@@ -18,6 +18,7 @@ import org.shakticoin.api.tier.TierRepository;
 import org.shakticoin.databinding.ActivityReferralBinding;
 import org.shakticoin.util.CommonUtil;
 import org.shakticoin.util.Validator;
+import org.shakticoin.wallet.WalletActivity;
 import org.shakticoin.widget.qr.QRScannerActivity;
 
 import java.util.ArrayList;
@@ -80,11 +81,19 @@ public class ReferralActivity extends AppCompatActivity {
     }
 
     public void OnSkipReferral(View view) {
-        selectTier();
+        //TODO: remove, was added for demo purpose
+        Intent intent = new Intent(this, WalletActivity.class);
+        startActivity(intent);
+
+//        selectTier();
     }
 
     public void onReward(View view) {
         postReferralInfo();
+
+        //TODO: remove, was added for demo purpose
+        Intent intent = new Intent(this, ReferralConfirmationActivity.class);
+        startActivity(intent);
     }
 
     public void onReadQRCode(View view) {
@@ -107,10 +116,11 @@ public class ReferralActivity extends AppCompatActivity {
     }
 
     private void selectTier() {
-        Intent intent = new Intent(this, MiningLicenseActivity.class);
-        if (tiers != null) {
-            intent.putParcelableArrayListExtra(CommonUtil.prefixed("tiersList", this), tiers);
-        }
-        startActivity(intent);
+
+//        Intent intent = new Intent(this, MiningLicenseActivity.class);
+//        if (tiers != null) {
+//            intent.putParcelableArrayListExtra(CommonUtil.prefixed("tiersList", this), tiers);
+//        }
+//        startActivity(intent);
     }
 }

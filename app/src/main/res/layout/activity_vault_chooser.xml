@@ -491,6 +491,7 @@
                         android:layout_marginEnd="32dp"
                         android:layout_marginRight="32dp"
                         android:text="@{viewModel.selectedVaultType==Options.DEVDOT?@string/vault_chs_action1:@string/vault_chs_action}"
+                        android:onClick="onProceedWithVault"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/option5" />
