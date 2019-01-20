@@ -120,6 +120,14 @@
             android:name=".miner.UpgradeMinerActivity"
             android:screenOrientation="portrait"/>
 
+        <activity
+            android:name=".vault.VaultAdvantageActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".vault.VaultChooserActivity"
+            android:screenOrientation="portrait"/>
+
     </application>
 
 </manifest>
