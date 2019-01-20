@@ -474,5 +474,27 @@
     </string>
     <string name="vault_chs_action">Let\'s get started</string>
     <string name="vault_chs_action1">Qualified for DevDot?</string>
+    <string name="settings_account">Account</string>
+    <string name="settings_security">Security</string>
+    <string name="settings_help">Help &amp; Policies</string>
+    <string name="settings_personal_info">Personal info</string>
+    <string name="settings_kyc_verification">KYC Verification</string>
+    <string name="settings_kyc_progress">In Progress</string>
+    <string name="settings_touch_id">TouchID</string>
+    <string name="not_released">Feature yet to be released. </string>
+    <string name="settings_notification_prefs">Notification Preferences</string>
+    <string name="settings_notify_service">General Service Notifications </string>
+    <string name="settings_notify_pmnts">Receive payments and pay requests </string>
+    <string name="settings_notify_referrals">Referral activity</string>
+    <string name="settings_notify_tips">Tips and suggestions</string>
+    <string name="settings_help_help">Help</string>
+    <string name="settings_help_terms">Application Terms</string>
+    <string name="settings_help_policy">Privacy Policy</string>
+    <string name="settings_help_taxes">Taxes Info</string>
+    <string name="settings_help_pfee">Processing Fees</string>
+    <string name="settings_help_feedback">Feedback/Contact Us</string>
+    <string name="settings_help_passwd_reset">Password Reset</string>
+    <string name="settings_logout">Log Out</string>
+    <string name="settings_version">v %1$s - Swiss Shakti Foundation</string>
 
 </resources>
