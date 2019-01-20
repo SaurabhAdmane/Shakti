@@ -17,6 +17,7 @@ import org.shakticoin.api.OnCompleteListener;
 import org.shakticoin.api.country.Country;
 import org.shakticoin.util.Debug;
 import org.shakticoin.util.Validator;
+import org.shakticoin.wallet.WalletActivity;
 
 
 public class SignUpActivity extends AppCompatActivity implements TextView.OnEditorActionListener {
@@ -48,18 +49,22 @@ public class SignUpActivity extends AppCompatActivity implements TextView.OnEdit
     }
 
     public void startRegistration() {
-        final Activity activity = this;
-        viewModel.createUser(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(Void value, Throwable error) {
-                if (error != null) {
-                    Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                DialogConfirmEmail.getInstance(false)
-                        .show(getSupportFragmentManager(), DialogConfirmEmail.class.getSimpleName());
-            }
-        });
+        // TODO remove, was added for demo purpose
+        Intent intent = new Intent(this, BonusBountyActivity.class);
+        startActivity(intent);
+
+//        final Activity activity = this;
+//        viewModel.createUser(new OnCompleteListener<Void>() {
+//            @Override
+//            public void onComplete(Void value, Throwable error) {
+//                if (error != null) {
+//                    Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_SHORT).show();
+//                    return;
+//                }
+//                DialogConfirmEmail.getInstance(false)
+//                        .show(getSupportFragmentManager(), DialogConfirmEmail.class.getSimpleName());
+//            }
+//        });
     }
 
     public void onDoLogin(View view) {

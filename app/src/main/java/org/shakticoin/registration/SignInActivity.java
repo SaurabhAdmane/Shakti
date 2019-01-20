@@ -87,80 +87,84 @@ public class SignInActivity extends AppCompatActivity {
 
     public void onLogin(View view) {
 
-        String username = ctrlUsername.getText().toString();
-        String password = ctrlPassword.getText().toString();
-        if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
-            Toast.makeText(this, R.string.login_password_required, Toast.LENGTH_SHORT).show();
-            return;
-        }
+        // TODO: remove, was added for demonstration purpose
+        Intent intent = new Intent(this, WalletActivity.class);
+        startActivity(intent);
 
-        progressBar.setVisibility(View.VISIBLE);
-
-        Credentials credentials = new Credentials();
-        credentials.setUsername(username);
-        credentials.setPassword(password);
-
-        final Activity self = this;
-        Call<LoginServiceResponse> call = loginService.login(credentials);
-        call.enqueue(new Callback<LoginServiceResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<LoginServiceResponse> call, @NonNull Response<LoginServiceResponse> response) {
-                if (call.isExecuted()) {
-                    Debug.logDebug(response.toString());
-                    if (response.isSuccessful()) {
-                        LoginServiceResponse resp = response.body();
-                        if (resp != null) {
-                            Session.key(resp.getKey());
-                            SharedPreferences prefs = getSharedPreferences(PreferenceHelper.GENERAL_PREFERENCES, Context.MODE_PRIVATE);
-                            prefs.edit().putBoolean(PreferenceHelper.PREF_KEY_HAS_ACCOUNT, true).apply();
-
-                            minerRepository.getUserInfo(new OnCompleteListener<MinerDataResponse>() {
-                                @Override
-                                public void onComplete(MinerDataResponse value, Throwable error) {
-                                    progressBar.setVisibility(View.INVISIBLE);
-                                    if (error != null) {
-                                        Toast.makeText(self, Debug.getFailureMsg(self, error), Toast.LENGTH_SHORT).show();
-                                        Debug.logException(error);
-                                        return;
-                                    }
-
-                                    if (value != null) {
-                                        Session.setUser(value.getUser());
-
-                                        int registrationStatus = value.getRegistration_status();
-                                        if (registrationStatus < 3/*not verified*/) {
-                                            // we cannot continue before email is confirmed and
-                                            // just display an information in a popup window
-                                            showNotConfirmed();
-
-                                        } if (registrationStatus == 3) {
-                                            // add referral code if exists and pay the enter fee
-                                            startActivity(new Intent(self, ReferralActivity.class));
-
-                                        } else {
-                                            // go to the wallet
-                                            startActivity(new Intent(self, WalletActivity.class));
-
-                                        }
-                                    }
-
-                                }
-                            });
-                        }
-                    } else {
-                        progressBar.setVisibility(View.INVISIBLE);
-                        Toast.makeText(self, R.string.err_login_failed, Toast.LENGTH_LONG).show();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<LoginServiceResponse> call, @NonNull Throwable t) {
-                progressBar.setVisibility(View.INVISIBLE);
-                Toast.makeText(self, Debug.getFailureMsg(self, t), Toast.LENGTH_SHORT).show();
-                Debug.logException(t);
-            }
-        });
+//        String username = ctrlUsername.getText().toString();
+//        String password = ctrlPassword.getText().toString();
+//        if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
+//            Toast.makeText(this, R.string.login_password_required, Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+//
+//        progressBar.setVisibility(View.VISIBLE);
+//
+//        Credentials credentials = new Credentials();
+//        credentials.setUsername(username);
+//        credentials.setPassword(password);
+//
+//        final Activity self = this;
+//        Call<LoginServiceResponse> call = loginService.login(credentials);
+//        call.enqueue(new Callback<LoginServiceResponse>() {
+//            @Override
+//            public void onResponse(@NonNull Call<LoginServiceResponse> call, @NonNull Response<LoginServiceResponse> response) {
+//                if (call.isExecuted()) {
+//                    Debug.logDebug(response.toString());
+//                    if (response.isSuccessful()) {
+//                        LoginServiceResponse resp = response.body();
+//                        if (resp != null) {
+//                            Session.key(resp.getKey());
+//                            SharedPreferences prefs = getSharedPreferences(PreferenceHelper.GENERAL_PREFERENCES, Context.MODE_PRIVATE);
+//                            prefs.edit().putBoolean(PreferenceHelper.PREF_KEY_HAS_ACCOUNT, true).apply();
+//
+//                            minerRepository.getUserInfo(new OnCompleteListener<MinerDataResponse>() {
+//                                @Override
+//                                public void onComplete(MinerDataResponse value, Throwable error) {
+//                                    progressBar.setVisibility(View.INVISIBLE);
+//                                    if (error != null) {
+//                                        Toast.makeText(self, Debug.getFailureMsg(self, error), Toast.LENGTH_SHORT).show();
+//                                        Debug.logException(error);
+//                                        return;
+//                                    }
+//
+//                                    if (value != null) {
+//                                        Session.setUser(value.getUser());
+//
+//                                        int registrationStatus = value.getRegistration_status();
+//                                        if (registrationStatus < 3/*not verified*/) {
+//                                            // we cannot continue before email is confirmed and
+//                                            // just display an information in a popup window
+//                                            showNotConfirmed();
+//
+//                                        } if (registrationStatus == 3) {
+//                                            // add referral code if exists and pay the enter fee
+//                                            startActivity(new Intent(self, ReferralActivity.class));
+//
+//                                        } else {
+//                                            // go to the wallet
+//                                            startActivity(new Intent(self, WalletActivity.class));
+//
+//                                        }
+//                                    }
+//
+//                                }
+//                            });
+//                        }
+//                    } else {
+//                        progressBar.setVisibility(View.INVISIBLE);
+//                        Toast.makeText(self, R.string.err_login_failed, Toast.LENGTH_LONG).show();
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(@NonNull Call<LoginServiceResponse> call, @NonNull Throwable t) {
+//                progressBar.setVisibility(View.INVISIBLE);
+//                Toast.makeText(self, Debug.getFailureMsg(self, t), Toast.LENGTH_SHORT).show();
+//                Debug.logException(t);
+//            }
+//        });
     }
 
     /**
