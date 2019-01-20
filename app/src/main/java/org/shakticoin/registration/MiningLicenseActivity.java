@@ -3,9 +3,6 @@ package org.shakticoin.registration;
 import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.databinding.BindingAdapter;
-import android.databinding.InverseBindingAdapter;
-import android.databinding.InverseBindingListener;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -26,7 +23,6 @@ import org.shakticoin.payment.stripe.StripeActivity;
 import org.shakticoin.util.CommonUtil;
 import org.shakticoin.util.Debug;
 import org.shakticoin.wallet.WalletActivity;
-import org.shakticoin.widget.CheckableRoundButton;
 
 import java.math.BigDecimal;
 
@@ -126,21 +122,6 @@ public class MiningLicenseActivity extends AppCompatActivity {
         updateDetails();
         binding.offer.setText(R.string.minerlic_bonus_bounty_t300);
         binding.features.setText(R.string.minerlic_description_t300);
-    }
-
-    @BindingAdapter("is_checked")
-    public static void setButtonState(CheckableRoundButton view, Boolean value) {
-        view.setChecked(value);
-    }
-
-    @InverseBindingAdapter(attribute = "is_checked", event = "app:is_checkedAttrChanged")
-    public static Boolean getButtonState(CheckableRoundButton view) {
-        return view.isChecked();
-    }
-
-    @BindingAdapter("app:is_checkedAttrChanged")
-    public static void setListeners(CheckableRoundButton view, final InverseBindingListener attrChange) {
-        view.setOnCheckedChangeListener((buttonView, isChecked) -> attrChange.onChange());
     }
 
     public void onApply(View view) {

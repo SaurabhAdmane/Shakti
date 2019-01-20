@@ -5,13 +5,12 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 
 import org.shakticoin.R;
 import org.shakticoin.databinding.ActivityWalletBinding;
 import org.shakticoin.registration.SignInActivity;
 
-public class WalletActivity extends AppCompatActivity {
+public class WalletActivity extends BaseWalletActivity {
     private ActivityWalletBinding binding;
     private WalletModel viewModel;
 
@@ -31,12 +30,14 @@ public class WalletActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_wallet);
         binding.setLifecycleOwner(this);
 
+        // need to call in any subclass of BaseWalletActivity
+        super.onInitView(binding.getRoot(), getString(R.string.wallet_toolbar_title));
+
         viewModel = ViewModelProviders.of(this).get(WalletModel.class);
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragments, new HomeFragment(), HomeFragment.class.getSimpleName())
+                .replace(R.id.mainFragment, new MainFragment(), MainFragment.class.getSimpleName())
                 .commit();
-
     }
 }

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.databinding.BindingAdapter;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
@@ -24,15 +25,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.shakticoin.R;
-import org.shakticoin.api.country.Country;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class InlineLabelSpinner extends AppCompatSpinner {
@@ -180,12 +180,12 @@ public class InlineLabelSpinner extends AppCompatSpinner {
     public void setAdapter(SpinnerAdapter adapter) {
         super.setAdapter(adapter);
 
-        ArrayList<Country> arrayList = new ArrayList<>();
+        ArrayList<Object> arrayList = new ArrayList<>();
         for(int i=0; i< adapter.getCount(); i++) {
-            arrayList.add((Country) adapter.getItem(i));
+            arrayList.add(adapter.getItem(i));
         }
 
-        CustomArrayAdapter<Country> arrayAdapter = new CustomArrayAdapter<>(getContext(), arrayList, adapter);
+        CustomArrayAdapter<Object> arrayAdapter = new CustomArrayAdapter<>(getContext(), arrayList, adapter);
         listView.setAdapter(arrayAdapter);
 
         final InlineLabelSpinner thisSpinner = this;
@@ -325,38 +325,74 @@ public class InlineLabelSpinner extends AppCompatSpinner {
     }
 
     public void add(Object item) {
-        CustomArrayAdapter<Country> listAdapter = (CustomArrayAdapter<Country>) listView.getAdapter();
-        SpinnerListAdapter<Country> adapter = (SpinnerListAdapter<Country>) getAdapter();
-        if (listAdapter != null && adapter != null) {
-            listAdapter.add((Country) item);
-            adapter.add((Country) item);
+        SpinnerListAdapter<Object> adapter = (SpinnerListAdapter<Object>) getAdapter();
+        if (adapter == null) {
+            adapter = new SpinnerListAdapter<>(getContext());
+            setAdapter(adapter);
         }
+        CustomArrayAdapter<Object> listAdapter = (CustomArrayAdapter<Object>) listView.getAdapter();
+        if (listAdapter == null) {
+            listAdapter = new CustomArrayAdapter<>(getContext(), new ArrayList<Object>(), adapter);
+            listView.setAdapter(listAdapter);
+        }
+        listAdapter.add(item);
+        adapter.add(item);
     }
 
     public void addAll(List<?> items) {
         if (items != null && items.size() > 0) {
-            CustomArrayAdapter<Country> listAdapter = (CustomArrayAdapter<Country>) listView.getAdapter();
-            SpinnerListAdapter<Country> adapter = (SpinnerListAdapter<Country>) getAdapter();
-            if (listAdapter != null && adapter != null) {
-                listAdapter.addAll((Collection<? extends Country>) items);
-                for (Object item : items) {
-                    adapter.add((Country) item);
-                }
+            SpinnerListAdapter<Object> adapter = (SpinnerListAdapter<Object>) getAdapter();
+            if (adapter == null) {
+                adapter = new SpinnerListAdapter<>(getContext());
+                setAdapter(adapter);
+            }
+            CustomArrayAdapter<Object> listAdapter = (CustomArrayAdapter<Object>) listView.getAdapter();
+            if (listAdapter == null) {
+                listAdapter = new CustomArrayAdapter<>(getContext(), new ArrayList<>(), adapter);
+                listView.setAdapter(listAdapter);
+            }
+            listAdapter.addAll(items);
+            for (Object item : items) {
+                adapter.add(item);
             }
         }
     }
 
     public void clear() {
-        CustomArrayAdapter<Country> listAdapter = (CustomArrayAdapter<Country>) listView.getAdapter();
-        SpinnerListAdapter<Country> adapter = (SpinnerListAdapter<Country>) getAdapter();
-        if (listAdapter != null && adapter != null) {
-            listAdapter.clear();
-            adapter.clear();
-        }
+        CustomArrayAdapter<Object> listAdapter = (CustomArrayAdapter<Object>) listView.getAdapter();
+        if (listAdapter != null) listAdapter.clear();
+        SpinnerListAdapter<Object> adapter = (SpinnerListAdapter<Object>) getAdapter();
+        if (adapter != null) adapter.clear();
     }
 
     public void setOnChoiceListener(OnChoiceListener listener) {
         choiceListener = listener;
+    }
+
+    @BindingAdapter("android:entries")
+    public static void setList(Spinner view, List<?> values) {
+        InlineLabelSpinner spinner = (InlineLabelSpinner) view;
+        spinner.clear();
+        if (values != null) {
+            spinner.addAll(values);
+        }
+    }
+
+    @BindingAdapter("newValue")
+    public static void setValue(Spinner view, Object value) {
+        if (value != null) {
+            SpinnerAdapter adapter = view.getAdapter();
+            Object selectedValue = view.getSelectedItem();
+            if (selectedValue != null && !selectedValue.equals(value)) {
+                // skip item at 0 as it isn't an instance of the item class, just a String
+                for (int i = 1; i < adapter.getCount(); i++) {
+                    Object c = adapter.getItem(i);
+                    if (c.equals(value)) {
+                        view.setSelection(i);
+                    }
+                }
+            }
+        }
     }
 
     public interface OnChoiceListener {

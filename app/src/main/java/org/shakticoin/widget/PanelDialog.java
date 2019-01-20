@@ -3,6 +3,7 @@ package org.shakticoin.widget;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.Html;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.shakticoin.R;
@@ -34,6 +36,7 @@ public class PanelDialog extends Dialog {
         private String title;
         private String text;
         private String mainButtonLabel;
+        private Drawable icon;
         private View.OnClickListener mainButtonListener;
 
         public Builder(Context context) {
@@ -56,6 +59,11 @@ public class PanelDialog extends Dialog {
             return this;
         }
 
+        public Builder setIcon(int resourceId) {
+            icon = context.getResources().getDrawable(resourceId);
+            return this;
+        }
+
         @NonNull
         public PanelDialog create() {
             PanelDialog dialog = new PanelDialog(context);
@@ -63,6 +71,9 @@ public class PanelDialog extends Dialog {
             Objects.requireNonNull(dialog.getWindow()).setLayout(
                     WindowManager.LayoutParams.MATCH_PARENT,
                     WindowManager.LayoutParams.WRAP_CONTENT);
+
+            ImageView iconView = dialog.findViewById(R.id.icon);
+            iconView.setImageDrawable(icon);
 
             TextView ctrlTitle = dialog.findViewById(R.id.title);
             if (title != null && ctrlTitle != null) ctrlTitle.setText(Html.fromHtml(title));

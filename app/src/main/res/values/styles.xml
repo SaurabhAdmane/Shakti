@@ -57,6 +57,10 @@
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">14sp</item>
         <item name="android:fontFamily">@font/futura_medium</item>
+        <item name="android:paddingLeft">15dp</item>
+        <item name="android:paddingStart">15dp</item>
+        <item name="android:paddingEnd">15dp</item>
+        <item name="android:paddingRight">15dp</item>
     </style>
     <style name="AppButton.Rounded">
         <item name="android:background">@drawable/button_rounded</item>
@@ -66,7 +70,11 @@
         <item name="android:textColor">@android:color/black</item>
         <item name="android:textFontWeight">500</item>
     </style>
+    <style name="AppButton.Rounded.Transparent.Gold" parent="AppButton">
+        <item name="android:background">@drawable/button_rounded_transparent_gold</item>
+    </style>
     <style name="AppButton.Link">
+        <item name="android:textFontWeight">500</item>
     </style>
 
     <style name="AppCheckbox" parent="Widget.AppCompat.CompoundButton.CheckBox">

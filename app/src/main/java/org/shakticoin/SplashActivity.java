@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
+import org.shakticoin.miner.BecomeMinerActivity;
+import org.shakticoin.miner.UpgradeMinerActivity;
+import org.shakticoin.referral.EffortRatesActivity;
 import org.shakticoin.registration.SignInActivity;
 import org.shakticoin.registration.SignUpActivity;
 import org.shakticoin.tour.WelcomeTourActivity;
@@ -20,7 +23,8 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         super.setContentView(R.layout.activity_splash);
 
-        route();
+//        route();
+        startActivity(new Intent(this, UpgradeMinerActivity.class));
         finish();
     }
 

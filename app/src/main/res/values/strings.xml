@@ -3,12 +3,14 @@
     <string name="stripe_pub_key" translatable="false">pk_test_wMi9qDrafbnRQfmWEGv4etOD</string>
 
     <string name="app_name" translatable="false">Shakti Coin</string>
+    <string name="err_not_implemented">Not implemented yet</string>
     <string name="welcom_message">Welcome to Shakti Coin</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="forgot_password"><u>Forgot Password?</u></string>
     <string name="register_now">Register Now</string>
     <string name="next">Next</string>
+    <string name="cancel">Cancel</string>
     <string name="log_in">Log in</string>
     <string name="do_registration"><u>Don\'t have an account? Register Now.</u></string>
     <string name="do_login"><u>Already have an account? Sign in</u></string>
@@ -23,16 +25,26 @@
     <string name="tour3_text">Friends refer friends. Everyone earns money.\nLet\'s share the wealth all over the world.</string>
     <string name="hint_country">Country of Residence</string>
     <string name="hint_citizenship">Country of Citizenship</string>
-    <string name="hint_postal_code">Zip / Postal code</string>
+    <string name="hint_postal_code">Zip/Postal code</string>
     <string name="hint_address">Address</string>
+    <string name="hint_address1">Address Line 1</string>
+    <string name="hint_address2">Address Line 2</string>
     <string name="hint_city">City</string>
     <string name="hint_state">State / Province</string>
+    <string name="hint_select_state">Select Your State</string>
     <string name="hint_email_address">Email Address</string>
-    <string name="hint_phone_number">Mobile Number</string>
+    <string name="hint_mobile_number">Mobile Number</string>
+    <string name="hint_phone_number">Phone Number</string>
+    <string name="hint_phone_or_email">Phone number or email address</string>
     <string name="hint_full_name">Full Name</string>
     <string name="hint_first_name">First Name</string>
     <string name="hint_last_name">Last Name</string>
+    <string name="hint_middle_name">Middle Name</string>
     <string name="hint_referral_code">Referral Code</string>
+    <string name="hint_birthdate">Date of Birth</string>
+    <string name="hint_relationship">Relationship</string>
+    <string name="hint_education_level">Highest level of Education</string>
+    <string name="hint_occupation">Occupation</string>
     <string name="unlock_bounty">Unlock your Bounty Bonus today!</string>
     <string name="lets_go">Let\'s go!</string>
     <string name="add_password_title">Add a Password</string>
@@ -60,25 +72,25 @@
     <string name="refconfirm_story1"><b>You\'ve successfuly registered your referral.</b>\nWith your good deed, your friend is little closer to unlocking their Bonus Bounty.</string>
     <string name="refconfirm_story2"><b>Finish your registration now to claim your Bonus Bounty.</b></string>
     <string name="refconfirm_title">Thank you!</string>
-    <string name="refconfirm_wallet">Cool, take me to my wallet!</string>
+    <string name="take_me_to_wallet">Cool, take me to my wallet!</string>
     <string name="remember_me">Remember me</string>
     <string name="err_registration_fail">Registration cannot be completed</string>
     <string name="bonus_title">Claim your\nBonus Bounty!</string>
     <string name="bonus_subtitle">Choose your new beginning:</string>
     <string name="bonus_offer1">Special limited offer for early adopters!</string>
-    <string name="bonus_offer2">Sign up now! Show Proof-of-Effort (POE), and receive an impressive bounty, valued at $$%1$.2d USD!</string>
-    <string name="bonus_main_action">Claim the bounty</string>
+    <string name="bonus_offer2">Create your Shakti ID! Show Proof-of-Effort (POE), and receive an impressive bounty, valued at %1$,.2f USD!</string>
+    <string name="bonus_main_action">Claim this bounty</string>
     <string name="bonus_secondary_action">View special <u>promotion details</u>.</string>
     <string name="bonus_valueof">Value of</string>
     <string name="bonus_expires">Expires on</string>
-    <string name="dlg_confirm_email_title"><![CDATA[Become a <font color="#D8C295">Miner</font>]]></string>
-    <string name="dlg_confirm_email_text"><![CDATA[<p><b>Earn an addition income with Shakti!</b></p><p>However,
-        we need to make sure that there is no error and you provide us with a correct email address.
-        Please, open your email, find a message from us, and click confirmation link.</p><p>After your
-        email is confirmed you may return and log in using the email and the password you just
-        entered.\n\nComplete registration and become a miner!</p>]]>
+    <string name="dlg_confirm_email_title"><![CDATA[Confirmation<br/><font color="#D8C295"><b>Email Sent!</b></font>]]></string>
+    <string name="dlg_confirm_email_text"><![CDATA[<p><b>You\'re almost there!</b></p><p>However,
+        we need to make sure that there is no error and you provided us with a correct email address.
+        Open the confirmation email sent to your address and click on the confirmation link.</p>
+        <p>After your email is confirmed you may return and sign in using the email and the password
+        you just provided us with.</p><p><b>Complete your Shakti ID now to become a part of the Shakti world!</b></p>]]>
     </string>
-    <string name="dlg_confirm_email_action">Got it</string>
+    <string name="dlg_confirm_email_action">Got it! Take me to sign in.</string>
     <string name="minerlic_title">Power Miner\nMover. Shaker. Digital Banker.</string>
     <string name="minerlic_choose">Choose your license type:</string>
     <string name="minerlic_license"><b>%1$s</b> License</string>
@@ -103,6 +115,57 @@
     <string name="wallet_message">You now have a Shakti Wallet and are part of the grassroots movement for smarter money.\n\nPlease help us spread the word by letting your networks know about the Shakti Coin movement.</string>
     <string name="wallet_ref_code">Your personal referral code is:</string>
     <string name="wallet_ref_link">Your personal referral link is:</string>
+    <string name="wallet_current_balance">Current balance:</string>
+    <string name="wallet_balance_history"><u>Balance History</u></string>
+    <string name="wallet_admin"><u>Admin</u></string>
+    <string name="wallet_unlock_it">Unlock it by</string>
+    <string name="wallet_complete_kyc"><u>completing your KYC Verification</u></string>
+    <string name="wallet_referring_friends"><u>referring friends &amp; family</u></string>
+    <string name="wallet_bonus_balance">Bonus Bounty balance:</string>
+    <string name="wallet_become_miner">Become a Miner</string>
+    <string name="wallet_become_miner_desc">
+        Get more from your Shakti account by earning an ongoing referral income. <u>Become a Basic
+        Miner</u> by signing up for a M101 License!
+    </string>
+    <string name="wallet_business">Gain a business advantage:</string>
+    <string name="wallet_add">Add a</string>
+    <string name="wallet_add_vault"><b>Business Vault</b></string>
+    <string name="wallet_add_vault_desc">
+        Become a one-world business leader with one currency - and take your money further. <u>Learn how.</u>
+    </string>
+    <string name="dlg_business_vault_title"><![CDATA[Get the <font color="#B09C75">Business Vault</font><br/>advantage</string]]></string>
+    <string name="dlg_business_vault_text"><![CDATA[
+        <p><b>As a Business Leader, you\'re eligible for SXE Vault!</b></p>
+        <p>If you have a business or are planning to start one within the next 6 months, sign up for an
+        SXE Vault, and move money with the least friction.</p>
+        <p><b>Receive the Bonus Bounty cash reward!</b></p>
+        <p>Get from $25,000 to $125,000 USD (SXE 5,000 to SXE 25,000) — only for early adopters!</p>
+        <p>Sign up now to receive limited-time offer Bonus Bounty SXE Coins.</p>
+        <p>This offer will be terminated without notice, so, SIGN UP NOW!</p>
+    ]]></string>
+    <string name="dlg_business_vault_action">Enter the Shakti business world…</string>
+    <string name="dlg_become_miner_title"><![CDATA[Become a<br/><font color="#B09C75"><b>Basic Miner (M101)</b></font>]]></string>
+    <string name="dlg_become_miner_text"><![CDATA[
+        <p><b>Earn an additional income with Shakti</b></p>
+        <p>A Miner License gives you access to our mining setups.</p>
+        <p>You can start mining <b>SXE Coins that will be added to your wallet.</b></p>
+        <p><b>Don\'t know anything about mining?</b> Don\'t worry, we\'re here to make it easy! Our
+        support center experts will guide you at every step of your journey.</p>
+        <p><b>Get an extra SXE 10,000 ($50,000 USD) by upgrading today!</b></p>
+    ]]></string>
+    <string name="dlg_become_miner_action">Learn more about M101</string>
+    <string name="dlg_grab_wallet_title"><![CDATA[Grab an<br/><font color="#B09C75"><b>Individual Wallet</b></font>]]></string>
+    <string name="dlg_grab_wallet_text"><![CDATA[
+        <p>The Shakti system makes it much easier to be in charge of your financial future based on your
+        own efforts.</p>
+        <p>How fast you unlock your bonus bounty depends entirely upon you. Tell us how many friends
+        you are prepared to refer a day, and we will forecast how fast you can unlock your bonus
+        bounty!  We will also track your progress as you refer family and friends.</p>
+        <p>You can also <b>become a Shakti evangelist</b> by building the Shakti world through social media.</p>
+        <p>Tell your friends that when they sign up, they <b>need to identify you by your email and mobile
+        number so that you too can earn that referral.</b> This will help you unlock your bonus bounty quickly.</p>
+    ]]></string>
+    <string name="dlg_grab_wallet_action">Go to my referrals</string>
     <string name="content_share_button">Share button</string>
     <string name="share_referral_code">Share the personal referral code</string>
     <string name="share_referral_link">Share the personal referral link</string>
@@ -111,8 +174,327 @@
     <string name="err_country_required">Please select a country of residence</string>
     <string name="err_citizenship_required">Please select a citizenship</string>
     <string name="err_atleast_one_required">All fields cannot be empty. At least one field must have a value.</string>
-    <string name="err_no_countries">List of countries is empty</string>
+    <string name="err_no_countries">The list is empty</string>
     <string name="err_no_internet">No Internet connection. Normal operation is not possible.</string>
     <string name="err_state_reqired">A state/province is required for the country</string>
+    <string name="new_bounty_title">Congratulations!</string>
+    <string name="new_bounty_subtitle">Your new Bonus Bounty balance is:</string>
+    <string name="new_bounty_message"><b>Everyone\'s</b> a Winner</string>
+    <string name="new_bounty_action">Register my referral</string>
+    <string name="new_bounty_view_terms"><u>View terms</u> associated with wallet usage.</string>
+    <string name="new_bounty_terms"><u>Refer to the terms</u> for more detailed conditions associated with claiming your bounty. You must sign up for a wallet first and ensure you have completed KYC to be eligible.</string>
+    <string name="drawer_wallet">Wallet</string>
+    <string name="drawer_vault">Vault</string>
+    <string name="drawer_miner">Miner</string>
+    <string name="drawer_referrals">Referrals</string>
+    <string name="drawer_settings">Settings</string>
+    <string name="profile_personal_title">Personal info</string>
+    <string name="profile_personal_whoyou">Who are you?</string>
+    <string name="profile_personal_whereyou">Where do you live?</string>
+    <string name="profile_personal_action">Update personal information</string>
+    <string name="profile_additional_title">Additional info</string>
+    <string name="profile_additional_nextkin">Your next of kin, just in case</string>
+    <string name="profile_additional_auth_stmt">
+        I authorize Shakti network to enchance my Wallet security by accessing device <u>UDIDs</u>
+    </string>
+    <string name="profile_additional_alerts_consent">
+        I consent to receiving alerts from the Shakti Network
+    </string>
+    <string name="profile_additional_action2">Update Additional Info</string>
+    <string name="profile_additional_tellmore">Can you tell us more?</string>
+    <string name="profile_kyc_title">KYC Validation</string>
+    <string name="profile_kyc_proof">Proof of address</string>
+    <string name="profile_kyc_description">
+        Validate your KYC by providing 2 documents with your name and address dated within 6-months.
+    </string>
+    <string name="profile_kyc_utility_bills">Utility\nBills</string>
+    <string name="profile_kyc_utility_bills_desc">Submit a utility bill with your name and address.</string>
+    <string name="profile_kyc_property">Property\n&amp; Finance</string>
+    <string name="profile_kyc_property_desc">
+        Submit a property or finance related document with your name and address.
+    </string>
+    <string name="profile_kyc_gov">School, Gov.\n&amp; Other Doc.</string>
+    <string name="profile_kyc_gov_desc">
+        Submit a school or Gov or other body, that has issued an ID with your name and address.
+    </string>
+    <string name="profile_kyc_choosed_of_three">Choose of any three categories.</string>
+    <string name="wallet_page_personal">Personal Info</string>
+    <string name="wallet_page_additional">Additional Info</string>
+    <string name="wallet_page_kyc">KYC Validation</string>
+    <string name="kyc_utility_bills">Utility Bills</string>
+    <string name="kyc_property_finance">Property &amp; Finance</string>
+    <string name="kyc_goverment">School, Gov. &amp; Other Doc.</string>
+    <string name="kyc_desc">You can upload JPEG, PNG, TIFF, GIF and PDF files from photographed or scanned bills.</string>
+    <string name="kyc_select_document_type">Select document type:</string>
+    <string name="kyc_take_photo">Take a\nPicture</string>
+    <string name="kyc_upload_file">Scan &amp;\nUpload a File</string>
+    <string name="kyc_skip">Skip to\nUpload file</string>
+    <string name="kyc_document_match">Your document must match your name &amp; address.</string>
+    <string name="kyc_type_phone_bill">Phone</string>
+    <string name="kyc_type_gas_bill">Gas</string>
+    <string name="kyc_type_elect_bill">Electricity</string>
+    <string name="kyc_type_water_bill">Water</string>
+    <string name="kyc_type_tax_bill">Municipal Tax</string>
+    <string name="kyc_type_insurance">Insurance Coverage</string>
+    <string name="kyc_type_cable_bill">Cable</string>
+    <string name="kyc_type_other_bill">Other</string>
+    <string name="kyc_select_option">Select an Option</string>
+    <string name="kyc_opt_mining">Purchase a Mining License</string>
+    <string name="kyc_opt_fee">Pay a small Fee to Validate</string>
+    <string name="kyc_opt_propagreement"><b>Any Property Agreement:</b>\nRental\nLease\nHome\nTV/Phone Purchase</string>
+    <string name="kyc_opt_vehicleagreement"><b>Any Vehicle Agreement:</b>\nOwnership\nLease</string>
+    <string name="kyc_opt_financestmt"><b>Any Finance Statement:</b>\nBank\nCredit Card\nPost Office Saving\nMutual Funds\nOther Investment</string>
+    <string name="kyc_opt_schooladmission">School Admission Letter</string>
+    <string name="kyc_opt_schoolreport">School Report Card</string>
+    <string name="kyc_opt_incometax">Income Tax Receipt</string>
+    <string name="kyc_opt_govid">Gov Issued ID with Address</string>
+    <string name="kyc_opt_passport">Passport Copy</string>
+    <string name="kyc_opt_ngo">NGOs Issued IDs</string>
+    <string name="kyc_opt_ngoletter">Letter from an NGO</string>
+    <string name="kyc_opt_jobletter">Job Letter</string>
+    <string name="kyc_files_ready">File is ready to be sent</string>
+    <string name="kyc_files_action_add">Add another Document</string>
+    <string name="kyc_files_action_send">Send Files</string>
+    <string name="kyc_files_action_cancel">Cancel &amp; Discard</string>
+    <string name="kyc_files_num_uploaded">%1$d of %2$d Documents Uploaded.</string>
+    <string name="kyc_files_utility_docs">Utility Bills Document:</string>
+    <string name="kyc_files_property_docs">Property &amp; Finance Document:</string>
+    <string name="kyc_files_gov_docs">School, Gov. &amp; Other Doc.:</string>
+    <string name="kyc_fasttr_title">Fast-track your KYC verification!</string>
+    <string name="kyc_fasttr_desc">
+        The KYC Validation can take weeks to be processed.\n\nPay small fee to fast-track your KYC
+        verification. By opting to pay for the processing fee, you agree to pay a non-refundable
+        cost for expediting your KYC verification. This is a cost-recovered service paid to a
+        third-party to expedite, verify, and confirm your ID.
+    </string>
+    <string name="for_price">For only</string>
+    <string name="price_usd">$%1$.2f USD</string>
+    <string name="kyc_fasttr_action">Pay to fast-track your KYC</string>
+    <string name="kyc_fasttr_cancel">Cancel &amp; Discard</string>
+    <string name="kyc_verifying">Your KYC is being processed</string>
+    <string name="kyc_verifying_title">Verifying KYC Files</string>
+    <string name="kyc_verifying_note">
+        Note that your wallet is inactive until we complete the KYC, AML and regulatory compliance.
+        Please continue to monitor your progress and update your required documents as necessary.
+    </string>
+    <string name="kyc_verifying_notice">
+        We\'re working around the clock to ensure that your wallet is activated as soon as possible.\n\n
+        In the meantime, keep referring friends to join Shakti to unlock your Bonus Bounty quickly.
+        Remember, your bonus is yours to keep!
+    </string>
+    <string name="kyc_verifying_action">Invite your friends to Shakti</string>
+    <string name="kyc_verified">Your validation was a success</string>
+    <string name="kyc_verified_message">
+        <b>Congratulations!</b> Your account has been verified. You\'ve passed all the compliance
+        validations and you\'re on your way to a great start!\n\n
+        Your wallet is now active and ready to be used.
+    </string>
+    <string name="kyc_verified_action">Start using my Shakti wallet</string>
+    <string name="kyc_rejected">Sorry, your validation was rejected</string>
+    <string name="kyc_rejected_wrong">Something went wrong.</string>
+    <string name="kyc_rejected_note">
+        The information you\'ve provided didn\'t match the government issued ID of your country of
+        residence.\n\n
+        Please review the information provided and apply again. Make sure that all fields are complete
+        and your proof of address is valid and readable. Remember your bounty is still yours to keep
+        and you can continue to work on unlocking it.
+    </string>
+    <string name="or_alternatively">Or alternatively</string>
+    <string name="kyc_rejected_buy_miner">Skip KYC verification with a Miner License!</string>
+    <string name="kyc_rejected_buy_miner_note">
+        You can choose to buy a Mining License and skip the Regular or Fast-Track KYC Verification
+        Process.
+    </string>
+    <string name="kyc_rejected_pay_miner">Pay for a Mining License</string>
+    <string name="kyc_rejected_finally">And then finally</string>
+    <string name="kyc_rejected_review"><u>Review my information and re-send for verification.</u></string>
+    <string name="kyc_rejected_review_note">
+        Your wallet is inactive until the Shakti Network completes the KYC, AML, and regulatory
+        compliance. Be assured that once you register and claim your bounty, it is yours to keep
+        as long as you comply with your bounty conditions. Shakti will work around the clock to
+        make sure your wallet is activated.
+    </string>
+    <string name="my_refs_title">My Referrals</string>
+    <string name="my_refs_locked">Locked</string>
+    <string name="my_refs_unlock">Would you like to unlock it?</string>
+    <string name="my_refs_unlock_1">
+        <b>1. Your Bonus Bounty</b> will be automatically unlocked after 7 years of using your wallet
+        at least once a month.
+    </string>
+    <string name="my_refs_unlock_2">
+        <b>2. You can speed up</b> this process by referring friends and family to join the Shakti World.
+    </string>
+    <string name="my_refs_unlock_3">
+        <b>3. Mix it up:</b> Use your wallet at least once a month and make your friends early
+        adopters at the same time. In no time, you will be able to unlock your bounty.
+    </string>
+    <string name="my_refs_howfast">How fast can you unlock your Bounty?</string>
+    <string name="my_refs_calc">
+        I will refer <u>%1$d</u> people per day, based on my effort I will unlock my bonus bounty
+        within <u>%2$d</u> days.
+    </string>
+    <string name="my_refs_calc_note">
+        We will track your effort to unlock your bounty and continue to forecast your efforts.
+        Remember it is your effort that counts.
+    </string>
+    <string name="my_refs_unlocked_action">Start referring friends and family</string>
+    <string name="my_refs_tounlock"><u>%1$sd months to unlock</u></string>
+    <string name="my_refs_refer_other">Refer others to unlock SXE</string>
+    <string name="my_refs_referred">%1$d Referred</string>
+    <string name="my_refs_refer_note">
+        Refer friends by entering their info, or by importing contacts from your social media accounts.
+    </string>
+    <string name="my_refs_addreferral_action">Add a Referral</string>
+    <string name="my_refs_myrate_action">My Effort Rates</string>
+    <string name="my_refs_import_from">Invite from:</string>
+    <string name="my_refs_media_facebook">Facebook</string>
+    <string name="my_refs_media_instagram">Instagram</string>
+    <string name="my_refs_media_plus">Google+</string>
+    <string name="my_refs_media_linkedin">LinkedIn</string>
+    <string name="my_refs_media_twitter">Twitter</string>
+    <string name="my_refs_media_pinterest">Pinterest</string>
+    <string name="my_refs_media_skype">Skype</string>
+    <string name="my_refs_media_vk">VK</string>
+    <string name="my_refs_media_wechat">WeChat</string>
+    <string name="my_refs_media_tumble">Tumblr</string>
+    <string name="my_refs_media_email">Email</string>
+    <string name="my_refs_media_other">Other</string>
+    <string name="dlg_howto_title"><![CDATA[
+        How to earn your<br/><font color="#D8C295"><b>Bonus Bounty Reward!</b></font>
+    ]]></string>
+    <string name="dlg_howto_text"><![CDATA[
+        <p><b>Use the wallet once a month for 7 years (84 months).</b></p>
+        <p>Following 84 months of use, your Bonus Bounty will be unlocked on your next birthday as our
+        gift to you.</p>
+        <p><b>To get it faster, refer friends.</b><br/>
+        Each friend you refer reduces the waiting time by one month.</p>
+        <p>If you plan to reduce your waiting time strictly through referrals, your Bonus Bounty
+        will be unlocked on your next birthday.</p>
+    ]]></string>
+    <string name="dlg_howto_action">Refer a friend</string>
+    <string name="add_ref_fillin">Fill in the referral info below</string>
+    <string name="add_ref_action">Add Referral Info</string>
+    <string name="effort_rates_title">Effort Rates</string>
+    <string name="effort_rates_chart_note">Tap the progress buttons to see the social specific leads.</string>
+    <string name="effort_rates_converted">Converted</string>
+    <string name="effort_rates_influenced">Influenced</string>
+    <string name="effort_rates_progressing">Progressing</string>
+    <string name="effort_rates_num_processing">%1$d Processing</string>
+    <string name="effort_rates_nudge">Nudge Friends</string>
+    <string name="miner_intro_title">Become a Shakti Miner</string>
+    <string name="miner_intro">Earn an additional income.</string>
+    <string name="miner_intro_toolbar">Shakti Miner</string>
+    <string name="miner_intro_text"><![CDATA[
+        <p><b>A licensed miner earns income</b> by mining Shakti coins. We will provide you with a mining
+        software application to access the SXE Network to start mining.</p>
+        <p>Sign up now to maximize your success in the new digital currency world. There are limited
+        Power Mining slots, and they will go fast!</p>
+        <p>Get an extra SXE 10,000 by upgrading now!</p>
+        <p><b>M101 License Features:</b><br/>
+        <ul>
+        <li>&nbsp;Mine Shakti Coins from anywhere.</li>
+        <li>&nbsp;No business registration is required.</li></ul></p>
+    ]]></string>
+    <string name="miner_intro_cancel"><u>No, I don’t want to earn a mining income</u></string>
+    <string name="miner_intro_note1">
+        The M101 license allows you to mine SXE coins. You must provide the hardware and
+        connectivity necessary to mine coins. Refer to the <u>Terms and Conditions</u> of the Shakti
+        Network and the Bonus Bounty Offer before you sign up.
+    </string>
+    <string name="miner_intro_note2">
+        Your Bonus Bounty varies depending on the type of business you own or are planning to start
+        in the near future. Your bonus capital could range from $5,000 to $125,000 USD in equivalent
+        SXE for early adopters.
+    </string>
+    <string name="miner_upg_youhave_m101">You Own a M101 License</string>
+    <string name="miner_upg_youhave">You now have a M101 Basic Miner account.</string>
+    <string name="miner_upg_congrat">
+        <b>Congratulations!</b> You chose to become a Shakti Miner. You\'re on your way to financial success.
+    </string>
+    <string name="miner_upg_next_steps">Next steps:</string>
+    <string name="miner_upg_next_steps_1">Unlock your Wallet</string>
+    <string name="miner_upg_next_steps_2">Install the Shakti Mining App</string>
+    <string name="miner_upg_next_steps_3">Configure your account</string>
+    <string name="miner_upg_next_steps_4">Start mining!</string>
+    <string name="miner_upg_power_miner">Want to be a Power Miner and Transform the World?</string>
+    <string name="miner_upg_action">Become a Power Miner</string>
+    <string name="miner_upg_extra_note">
+        Get an additional bonus bounty and start developing your exclusive territory.
+    </string>
+    <string name="miner_upg_extra_note1">
+        You must submit a business registration and activate your SXE Wallet to become a Power Miner.
+    </string>
+    <string name="vault_title">Business Vault</string>
+    <string name="vault_adv_title">Add-On Advantage\nBusiness Vault</string>
+    <string name="vault_adv_subtitle">You are eligible to Sign Up for SXE Vault.</string>
+    <string name="vault_adv_desc">
+        If you have a business or you are planning to start a business within the next 6-months,
+        you can sign up for SXE Vault.\n\n
+        Shakti Coin helps you become a one-world business leader and make important changes. So,
+        enjoy new financial freedom for you and your loved ones.
+    </string>
+    <string name="vault_adv_limit">Limited vaults for qualified candidates.</string>
+    <string name="vault_adv_action">I want my SXE Vault</string>
+    <string name="vault_adv_cancel"><u>No, I don\’t want a vault for my business</u></string>
+    <string name="vault_adv_footer">
+        The Bonus Bounty is granted to you as an introductory offer on a first come, first serve
+        basis. This is intended for early adopters who direct their efforts to refer other early
+        adopters. The Shakti Foundation may end this promotional offer without any notice.
+    </string>
+    <string name="vault_chs_subtitle">Choose your vault type:</string>
+    <string name="vault_chs_option1_title">Merchant</string>
+    <string name="vault_chs_option2_title">Power Miner</string>
+    <string name="vault_chs_option3_title">Feducia</string>
+    <string name="vault_chs_option4_title">Shakti Express</string>
+    <string name="vault_chs_option5_title">DevDot</string>
+    <string name="vault_chs_option1_advantages"><![CDATA[Merchant Features\n\n\u2022 Reduce banking charges.\n\n\u2022 Eliminate banking time.\n\n\u2022 Sell goods and services using universal currency.\n\n\u2022 Track tax obligations in real-time.]]></string>
+    <string name="vault_chs_option2_advantages"><![CDATA[Power Miner Features\n\n\u2022 Limited number of node operators.\n\n\u2022 Node Operator.]]></string>
+    <string name="vault_chs_option3_advantages"><![CDATA[Feducia Features\n\n\u2022 Tripartite custody of SXE assets.\n\n\u2022 Sale of asset recorded in blockchain.\n\n\u2022 Worry-free, paper-less back-office.\n\n\u2022 Instant generation of accounting records at the time of settlor executing the TRUST Deed.]]></string>
+    <string name="vault_chs_option4_advantages"><![CDATA[Shakti Express Features\n\n\u2022 Move money instantly for cents worldwide.\n\n\u2022 Built-in KYC, AML and CFT compliance.\n\n\u2022 You just UBER the money.\n\n\u2022 In-built trace path eliminates fraud.\n\n\u2022 Save time and money in cumbersome paperwork.]]></string>
+    <string name="vault_chs_option5_advantages"><![CDATA[DevDot Features\n\n\u2022 Get selected and be paid to code.\n\n\u2022 Annual tenure.\n\n\u2022 Evaluated by peers.\n\n\u2022 It’s time to reward and value the Open Source Community.]]></string>
+    <string name="vault_chs_option1_footer">
+        Improve your business with a Merchant Vault, a value of $25,000 USD. You will be eligible
+        for a Bonus Bounty of 5,000 SXE.
+    </string>
+    <string name="vault_chs_option2_footer">
+        Upgrade your account to Power Miner. Expand your territory. This vault type is eligible
+        for a Bonus Bounty of 10,000 SXE.
+    </string>
+    <string name="vault_chs_option3_footer">
+        Become a Shakti World Trustee. A Feducia vault is eligible for a Bonus Bounty up to
+        10,000 SXE. - a value of $50,000 USD!
+    </string>
+    <string name="vault_chs_option4_footer">
+        Say hello to new way to move money. No office. No staff. No paperwork. No fraud. Bonus
+        Bounty of up to SXE 20,000 - a value of $100,000 USD for early adopters.
+    </string>
+    <string name="vault_chs_option5_footer">
+        This wallet comes with Bonus Bounty of 30,000 SXE - a value of $150,000 USD. Amazing
+        opportunity for OSC developers to get their hands-dirty.
+    </string>
+    <string name="vault_chs_action">Let\'s get started</string>
+    <string name="vault_chs_action1">Qualified for DevDot?</string>
+    <string name="settings_account">Account</string>
+    <string name="settings_security">Security</string>
+    <string name="settings_help">Help &amp; Policies</string>
+    <string name="settings_personal_info">Personal info</string>
+    <string name="settings_kyc_verification">KYC Verification</string>
+    <string name="settings_kyc_progress">In Progress</string>
+    <string name="settings_touch_id">TouchID</string>
+    <string name="not_released">Feature yet to be released. </string>
+    <string name="settings_notification_prefs">Notification Preferences</string>
+    <string name="settings_notify_service">General Service Notifications </string>
+    <string name="settings_notify_pmnts">Receive payments and pay requests </string>
+    <string name="settings_notify_referrals">Referral activity</string>
+    <string name="settings_notify_tips">Tips and suggestions</string>
+    <string name="settings_help_help">Help</string>
+    <string name="settings_help_terms">Application Terms</string>
+    <string name="settings_help_policy">Privacy Policy</string>
+    <string name="settings_help_taxes">Taxes Info</string>
+    <string name="settings_help_pfee">Processing Fees</string>
+    <string name="settings_help_feedback">Feedback/Contact Us</string>
+    <string name="settings_help_passwd_reset">Password Reset</string>
+    <string name="settings_logout">Log Out</string>
+    <string name="settings_version">v %1$s - Swiss Shakti Foundation</string>
 
 </resources>

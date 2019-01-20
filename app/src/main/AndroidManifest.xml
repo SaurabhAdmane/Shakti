@@ -80,6 +80,58 @@
             android:name=".widget.qr.QRScannerActivity"
             android:screenOrientation="portrait"/>
 
+        <activity
+            android:name=".registration.NewBonusBountyActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".profile.ProfileActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".profile.KycActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".referral.MyReferralsActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".referral.AddReferralActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".referral.MyReferralsActivity" />
+        </activity>
+
+        <activity
+            android:name=".referral.EffortRatesActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".referral.MyReferralsActivity" />
+        </activity>
+
+        <activity
+            android:name=".miner.BecomeMinerActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".miner.UpgradeMinerActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".vault.VaultAdvantageActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".vault.VaultChooserActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".settings.SettingsActivity"
+            android:screenOrientation="portrait"/>
+
     </application>
 
 </manifest>

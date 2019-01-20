@@ -1,9 +1,9 @@
 package org.shakticoin.wallet;
 
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
-import android.util.Log;
 
 import org.shakticoin.api.BaseUrl;
 import org.shakticoin.api.OnCompleteListener;
@@ -11,11 +11,22 @@ import org.shakticoin.api.miner.MinerDataResponse;
 import org.shakticoin.api.miner.MinerRepository;
 import org.shakticoin.api.miner.User;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
 public class WalletModel extends ViewModel {
     public ObservableBoolean progressBarTrigger = new ObservableBoolean(false);
     public ObservableField<String> fullName = new ObservableField<>();
     public ObservableField<String> referralCode = new ObservableField<>();
     public ObservableField<String> referralLink = new ObservableField<>();
+
+    public ObservableField<BigDecimal> balance = new ObservableField<>(BigDecimal.ZERO);
+    public ObservableField<BigDecimal> bonusBalance = new ObservableField<>(BigDecimal.ZERO);
+
 
     public WalletModel() {
         progressBarTrigger.set(true);
@@ -50,6 +61,13 @@ public class WalletModel extends ViewModel {
                 }
             }
         });
+    }
+
+    public String getFormattedBalance() {
+        return String.format(Locale.getDefault(), "SXE %1$.2f", balance.get());
+    }
+    public String getFormattedBonusBalance() {
+        return String.format(Locale.getDefault(), "SXE %1$.2f", bonusBalance.get());
     }
 
 }

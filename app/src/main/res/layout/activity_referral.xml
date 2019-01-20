@@ -181,7 +181,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="@string/hint_phone_number"
+                    android:hint="@string/hint_mobile_number"
                     android:text="@={viewModel.mobileNumber}"
                     android:inputType="phone"/>
             </org.shakticoin.widget.TextInputLayout>
