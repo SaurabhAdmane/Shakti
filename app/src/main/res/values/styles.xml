@@ -76,6 +76,12 @@
     <style name="AppButton.Link">
         <item name="android:textFontWeight">500</item>
     </style>
+    <style name="AppButton.Semi.Left" parent="AppButton">
+        <item name="android:background">@drawable/button_semi_rounded_left</item>
+    </style>
+    <style name="AppButton.Semi.Right" parent="AppButton">
+        <item name="android:background">@drawable/button_semi_rounded_right</item>
+    </style>
 
     <style name="AppCheckbox" parent="Widget.AppCompat.CompoundButton.CheckBox">
         <item name="android:textColor">@android:color/white</item>
