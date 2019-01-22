@@ -249,9 +249,9 @@
                 tools:layout_conversion_absoluteWidth="1dp" />
 
             <TextView
-                android:id="@+id/sign_in_link"
+                android:id="@+id/go_back_link"
                 android:layout_width="wrap_content"
-                android:layout_height="15dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginLeft="24dp"
                 android:layout_marginTop="16dp"
@@ -259,8 +259,8 @@
                 android:layout_marginRight="24dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:onClick="onDoLogin"
-                android:text="@string/do_login"
+                android:onClick="onGoBack"
+                android:text="@string/go_back_for_changes"
                 android:textAlignment="center"
                 android:textColor="@android:color/white"
                 app:layout_constraintEnd_toEndOf="parent"

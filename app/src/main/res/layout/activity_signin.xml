@@ -50,12 +50,12 @@
                 android:layout_marginTop="67dp"
                 android:layout_marginEnd="22dp"
                 android:layout_marginRight="22dp"
-                app:labelTextSize="11sp"
                 app:labelFontTypeface="@font/lato"
-                app:validationEnabled="true"
+                app:labelTextSize="11sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView" >
+                app:layout_constraintTop_toBottomOf="@+id/textView"
+                app:validationEnabled="true">
 
                 <org.shakticoin.widget.InlineLabelEditText
                     android:id="@+id/username"
@@ -64,7 +64,7 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="@string/hint_email_address"
-                    android:inputType="textEmailAddress"/>
+                    android:inputType="textEmailAddress" />
 
             </org.shakticoin.widget.TextInputLayout>
 
@@ -77,12 +77,12 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="22dp"
                 android:layout_marginRight="22dp"
-                app:labelTextSize="11sp"
                 app:labelFontTypeface="@font/lato"
-                app:validationEnabled="true"
+                app:labelTextSize="11sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/username_layout">
+                app:layout_constraintTop_toBottomOf="@+id/username_layout"
+                app:validationEnabled="true">
 
                 <org.shakticoin.widget.InlineLabelEditText
                     android:id="@+id/password"
@@ -92,7 +92,7 @@
                     android:ems="10"
                     android:hint="@string/password"
                     android:imeOptions="actionDone"
-                    android:inputType="textPassword"/>
+                    android:inputType="textPassword" />
 
             </org.shakticoin.widget.TextInputLayout>
 
@@ -106,9 +106,9 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:fontFamily="@font/lato"
+                android:onClick="onRecoveryPassword"
                 android:text="@string/forgot_password"
                 android:textAppearance="@style/AppButton.Link"
-                android:onClick="onRecoveryPassword"
                 app:layout_constraintEnd_toEndOf="@+id/password_layout"
                 app:layout_constraintTop_toBottomOf="@+id/password_layout" />
 
@@ -117,40 +117,35 @@
                 style="@style/AppButton.Rounded"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="22dp"
-                android:layout_marginLeft="22dp"
-                android:layout_marginTop="120dp"
-                android:layout_marginEnd="22dp"
-                android:layout_marginRight="22dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="202dp"
+                android:layout_marginEnd="1dp"
+                android:layout_marginRight="1dp"
                 android:onClick="onLogin"
                 android:text="@string/log_in"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/register_now"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/password_layout" />
 
-
-            <TextView
-                android:id="@+id/register_now_link"
-                android:layout_width="wrap_content"
+            <Button
+                android:id="@+id/register_now"
+                style="@style/AppButton.Rounded"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:autoLink="web"
-                android:fontFamily="@font/lato"
-                android:linksClickable="true"
+                android:layout_marginEnd="32dp"
+                android:layout_marginRight="32dp"
+                android:layout_marginTop="202dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginStart="1dp"
                 android:text="@string/do_registration"
-                android:textAlignment="textStart"
-                android:gravity="start"
-                android:textAllCaps="false"
-                android:textColor="@android:color/white"
-                android:textStyle="bold"
                 android:onClick="onRegisterNow"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/register" />
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/register"
+                app:layout_constraintTop_toBottomOf="@+id/password_layout" />
+
 
             <CheckBox
                 android:id="@+id/rememberMe"
@@ -160,9 +155,9 @@
                 android:layout_marginStart="30dp"
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="20dp"
-                android:paddingLeft="8dp"
-                android:paddingStart="8dp"
                 android:button="@drawable/checkbox_states"
+                android:paddingStart="8dp"
+                android:paddingLeft="8dp"
                 android:text="@string/remember_me"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/password_layout" />

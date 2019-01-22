@@ -67,9 +67,8 @@ public class SignUpActivity extends AppCompatActivity implements TextView.OnEdit
 //        });
     }
 
-    public void onDoLogin(View view) {
-        Intent intent = new Intent(this, SignInActivity.class);
-        startActivity(intent);
+    public void onGoBack(View view) {
+        onContactsPageSelected();
     }
 
     public void onCancel(View view) {

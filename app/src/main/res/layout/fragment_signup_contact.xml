@@ -183,7 +183,7 @@
                 android:layout_marginRight="24dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:onClick="onDoLogin"
+                android:onClick="onGoBack"
                 android:text="@string/do_login"
                 android:textAlignment="center"
                 android:textColor="@android:color/white"
