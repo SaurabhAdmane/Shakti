@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,8 +12,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import org.shakticoin.R;
@@ -24,12 +23,15 @@ import org.shakticoin.api.auth.LoginService;
 import org.shakticoin.api.auth.LoginServiceResponse;
 import org.shakticoin.api.miner.MinerDataResponse;
 import org.shakticoin.api.miner.MinerRepository;
+import org.shakticoin.databinding.ActivitySigninBinding;
 import org.shakticoin.util.CommonUtil;
 import org.shakticoin.util.Debug;
 import org.shakticoin.util.PreferenceHelper;
 import org.shakticoin.util.Validator;
 import org.shakticoin.wallet.WalletActivity;
 import org.shakticoin.widget.TextInputLayout;
+
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -39,10 +41,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class SignInActivity extends AppCompatActivity {
-    private EditText ctrlUsername;
-    private EditText ctrlPassword;
-    private TextInputLayout ctrlPasswordLayout;
-    private ProgressBar progressBar;
+    private ActivitySigninBinding binding;
 
     private LoginService loginService;
     private MinerRepository minerRepository;
@@ -52,12 +51,10 @@ public class SignInActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signin);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_signin);
+        binding.setLifecycleOwner(this);
 
-        progressBar = findViewById(R.id.progressBar);
-        ctrlUsername = findViewById(R.id.username);
-        ctrlPassword = findViewById(R.id.password);
-        ctrlPassword.setOnEditorActionListener((v, actionId, event) -> {
+        binding.password.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 onLogin(v);
                 return true;
@@ -70,8 +67,7 @@ public class SignInActivity extends AppCompatActivity {
             // username must be email
             return Validator.isEmail(value);
         });
-        ctrlPasswordLayout = findViewById(R.id.password_layout);
-        ctrlPasswordLayout.setValidator((view, value) -> {
+        binding.passwordLayout.setValidator((view, value) -> {
             // password must be longer than 8 chars
             return value != null && value.length() > MIN_PASSWD_LEN;
         });
@@ -87,14 +83,14 @@ public class SignInActivity extends AppCompatActivity {
 
     public void onLogin(View view) {
 
-        String username = ctrlUsername.getText().toString();
-        String password = ctrlPassword.getText().toString();
+        String username = Objects.requireNonNull(binding.username.getText()).toString();
+        String password = Objects.requireNonNull(binding.password.getText()).toString();
         if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
             Toast.makeText(this, R.string.login_password_required, Toast.LENGTH_SHORT).show();
             return;
         }
 
-        progressBar.setVisibility(View.VISIBLE);
+        binding.progressBar.setVisibility(View.VISIBLE);
 
         Credentials credentials = new Credentials();
         credentials.setUsername(username);
@@ -117,7 +113,7 @@ public class SignInActivity extends AppCompatActivity {
                             minerRepository.getUserInfo(new OnCompleteListener<MinerDataResponse>() {
                                 @Override
                                 public void onComplete(MinerDataResponse value, Throwable error) {
-                                    progressBar.setVisibility(View.INVISIBLE);
+                                    binding.progressBar.setVisibility(View.INVISIBLE);
                                     if (error != null) {
                                         Toast.makeText(self, Debug.getFailureMsg(self, error), Toast.LENGTH_SHORT).show();
                                         Debug.logException(error);
@@ -148,7 +144,7 @@ public class SignInActivity extends AppCompatActivity {
                             });
                         }
                     } else {
-                        progressBar.setVisibility(View.INVISIBLE);
+                        binding.progressBar.setVisibility(View.INVISIBLE);
                         Toast.makeText(self, R.string.err_login_failed, Toast.LENGTH_LONG).show();
                     }
                 }
@@ -156,7 +152,7 @@ public class SignInActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(@NonNull Call<LoginServiceResponse> call, @NonNull Throwable t) {
-                progressBar.setVisibility(View.INVISIBLE);
+                binding.progressBar.setVisibility(View.INVISIBLE);
                 Toast.makeText(self, Debug.getFailureMsg(self, t), Toast.LENGTH_SHORT).show();
                 Debug.logException(t);
             }
@@ -172,7 +168,7 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     public void onRecoveryPassword(View view) {
-        String emailAddress = ctrlUsername.getText().toString();
+        String emailAddress = Objects.requireNonNull(binding.username.getText()).toString();
         Intent intent = new Intent(this, RecoveryPasswordActivity.class);
         if (Validator.isEmail(emailAddress))
             intent.putExtra(CommonUtil.prefixed("emailAddress", this), emailAddress);
