@@ -71,6 +71,11 @@ public class SignUpActivity extends AppCompatActivity implements TextView.OnEdit
         onContactsPageSelected();
     }
 
+    public void onDoLogin(View view) {
+        Intent intent = new Intent(this, SignInActivity.class);
+        startActivity(intent);
+    }
+
     public void onCancel(View view) {
         // TODO: if user cancel registration we probable must return to login screen instead of finishing the activity
         finish();
