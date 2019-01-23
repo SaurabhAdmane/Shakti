@@ -16,4 +16,7 @@ public interface LoginService {
 
     @POST("v1/mobile/password-reset/")
     Call<ResponseBody> reset(@Body PasswordResetRequest request);
+
+    @POST("v1/mobile/check-email-phone/")
+    Call<ResponseBody> checkEmailPhone(@Body CheckEmailPhoneParams params);
 }

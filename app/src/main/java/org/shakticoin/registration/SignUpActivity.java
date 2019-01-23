@@ -14,20 +14,23 @@ import android.widget.Toast;
 
 import org.shakticoin.R;
 import org.shakticoin.api.OnCompleteListener;
+import org.shakticoin.api.auth.AuthRepository;
 import org.shakticoin.api.country.Country;
 import org.shakticoin.util.Debug;
 import org.shakticoin.util.Validator;
-import org.shakticoin.wallet.WalletActivity;
 
 
 public class SignUpActivity extends AppCompatActivity implements TextView.OnEditorActionListener {
 
     private SignUpActivityModel viewModel;
+    private AuthRepository authRepository;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+
+        authRepository = new AuthRepository();
 
         viewModel = ViewModelProviders.of(this).get(SignUpActivityModel.class);
         viewModel.initCountryList(getResources().getConfiguration().locale);
@@ -173,12 +176,31 @@ public class SignUpActivity extends AppCompatActivity implements TextView.OnEdit
                 .commit();
     }
 
+    /**
+     * Check if we can use entered email and phone for a new account and switch to the next page.
+     */
     private void onAddressPageSelected() {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.frame, new SignUpAddressFragment())
-                .addToBackStack(null)
-                .commit();
+        String emailAddress = viewModel.emailAddress.getValue();
+        String phoneNumber = viewModel.phoneNumber.getValue();
+        Activity activity = this;
+        authRepository.checkEmailPhoneExists(this, emailAddress, phoneNumber, new OnCompleteListener<Boolean>() {
+            @Override
+            public void onComplete(Boolean value, Throwable error) {
+                if (error != null) {
+                    Toast.makeText(activity, error.getMessage(), Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                if (value) {
+                    // success means neither email nor phone number used in the database
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.frame, new SignUpAddressFragment())
+                            .addToBackStack(null)
+                            .commit();
+                }
+            }
+        });
     }
 
     private void onPasswordPageSelected() {

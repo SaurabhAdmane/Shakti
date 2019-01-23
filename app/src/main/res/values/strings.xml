@@ -65,6 +65,9 @@
     <string name="err_password_not_strong">Your password must be at least 8 chars length and contain letters and digits</string>
     <string name="err_required">You must provide a value for this field</string>
     <string name="err_all_fields_required">All fields are required</string>
+    <string name="err_email_exists">The email address is already used.</string>
+    <string name="err_phone_exists">The phone number is already used.</string>
+    <string name="err_email_phone_exists">Both the email and phone number are already used.</string>
     <string name="ref_who_referred">Who referred you?</string>
     <string name="ref_story">Like an elephant, we never forget. Human effort is Shakti. One would always remember and reward honest effort. Please do provide and info about the person who referred you to Shakti.</string>
     <string name="ref_type_info">Or, type their information:</string>
