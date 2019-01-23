@@ -42,4 +42,14 @@ public class Validator {
         }
         return false;
     }
+
+    /**
+     * Check a password strength that should be at least 8 chars length and contain digits.
+     */
+    public static boolean isPasswordStrong(String password) {
+        if (password == null) return false;
+        if (password.length() < 8) return false;
+        if (!password.matches(".*\\d+.*")) return false;
+        return true;
+    }
 }

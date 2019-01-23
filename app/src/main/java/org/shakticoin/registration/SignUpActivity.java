@@ -49,22 +49,18 @@ public class SignUpActivity extends AppCompatActivity implements TextView.OnEdit
     }
 
     public void startRegistration() {
-        // TODO remove, was added for demo purpose
-        Intent intent = new Intent(this, BonusBountyActivity.class);
-        startActivity(intent);
-
-//        final Activity activity = this;
-//        viewModel.createUser(new OnCompleteListener<Void>() {
-//            @Override
-//            public void onComplete(Void value, Throwable error) {
-//                if (error != null) {
-//                    Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
-//                DialogConfirmEmail.getInstance(false)
-//                        .show(getSupportFragmentManager(), DialogConfirmEmail.class.getSimpleName());
-//            }
-//        });
+        final Activity activity = this;
+        viewModel.createUser(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(Void value, Throwable error) {
+                if (error != null) {
+                    Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                DialogConfirmEmail.getInstance(false)
+                        .show(getSupportFragmentManager(), DialogConfirmEmail.class.getSimpleName());
+            }
+        });
     }
 
     public void onGoBack(View view) {
@@ -157,6 +153,13 @@ public class SignUpActivity extends AppCompatActivity implements TextView.OnEdit
 
         if (!newPassword.equals(verifyPassword)) {
             Toast.makeText(this, R.string.err_incorrect_password, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        // Passwords are not empty and equals at this point. Let's verify the password is
+        // strong enough.
+        if (!Validator.isPasswordStrong(newPassword)) {
+            Toast.makeText(this, R.string.err_password_not_strong, Toast.LENGTH_LONG).show();
             return false;
         }
 
