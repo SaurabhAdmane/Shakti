@@ -38,6 +38,7 @@ public class PaymentRepository {
                         // real response data are not important
                         if (listener != null) listener.onComplete(null, null);
                     } else {
+                        Debug.logErrorResponse(response);
                         if (listener != null) listener.onComplete(null,
                                 new RemoteException(response.message(), response.code()));
                     }

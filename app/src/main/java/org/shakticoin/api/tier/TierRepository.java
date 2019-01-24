@@ -40,6 +40,7 @@ public class TierRepository {
                         if (listener != null) listener.onComplete(tiers, null);
 
                     } else {
+                        Debug.logErrorResponse(response);
                         if (listener != null) listener.onComplete(null,
                                 new RemoteException(response.message(), response.code()));
                     }

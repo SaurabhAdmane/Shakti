@@ -103,6 +103,7 @@ public class RecoveryPasswordActivity extends AppCompatActivity {
                     if (response.isSuccessful()) {
                         if (!viewModel.isRequestSent()) nextPage();
                     } else {
+                        Debug.logErrorResponse(response);
                         Toast.makeText(self,
                                 BuildConfig.DEBUG ? response.message() : getString(R.string.err_unexpected),
                                 Toast.LENGTH_SHORT).show();

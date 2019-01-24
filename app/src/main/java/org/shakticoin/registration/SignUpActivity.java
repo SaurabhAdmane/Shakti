@@ -187,7 +187,7 @@ public class SignUpActivity extends AppCompatActivity implements TextView.OnEdit
             @Override
             public void onComplete(Boolean value, Throwable error) {
                 if (error != null) {
-                    Toast.makeText(activity, error.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_SHORT).show();
                     return;
                 }
 
