@@ -75,7 +75,24 @@ public class Validator {
     public static boolean isPasswordStrong(String password) {
         if (password == null) return false;
         if (password.length() < 8) return false;
-        if (!password.matches(".*\\d+.*")) return false;
-        return true;
+        boolean hasLetter = false;
+        boolean hasDigit = false;
+        boolean hasOther = false;
+        Character[] prevChars = new Character[] {null, null};
+        for (int i = 0; i < password.length(); i++) {
+            Character c = password.charAt(i);
+
+            if (!hasDigit && Character.isDigit(c)) hasDigit = true;
+            if (!hasLetter && Character.isLetter(c)) hasLetter = true;
+            if (!hasOther && !Character.isLetter(c) && !Character.isDigit(c)) hasOther = true;
+
+            // only 2 consecutive chars allowed
+            if (c.equals(prevChars[0]) && c.equals(prevChars[1])) return false;
+
+            // shift previous chars
+            prevChars[0] = prevChars[1];
+            prevChars[1] = c;
+        }
+        return hasDigit && hasLetter && hasOther;
     }
 }
