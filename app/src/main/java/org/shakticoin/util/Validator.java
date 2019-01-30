@@ -33,6 +33,9 @@ public class Validator {
         }
 
         //TODO: the number should start from a country code
+        // Database has PhoneCountryCode table with known country codes and they should be used
+        // either to validate users input or filling separate drop-down with countries (as a part
+        // of phone number)
         return true;
     }
 
