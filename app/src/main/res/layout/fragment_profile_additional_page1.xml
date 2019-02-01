@@ -132,7 +132,7 @@
                     style="@style/AppTextField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/hint_occupation"
+                    android:hint="@string/occupation"
                     android:inputType="textCapSentences" />
             </org.shakticoin.widget.TextInputLayout>
 
@@ -159,7 +159,7 @@
                     android:entries="@{viewModel.educatinLevelList}"
                     android:onItemSelected="@{(parent, view, position, id) -> viewModel.onEducationLevelSelected(view, position)}"
                     app:newValue="@{viewModel.selectedEducationLevel}"
-                    app:hint="@string/hint_education_level"
+                    app:hint="@string/education_level"
                     app:textColorHint="@color/colorHint"
                     app:spinnerBorderColor="@color/colorBrand"/>
             </org.shakticoin.widget.SpinnerLayout>

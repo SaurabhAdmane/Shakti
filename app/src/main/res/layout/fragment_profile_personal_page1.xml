@@ -158,7 +158,7 @@
                     android:layout_height="wrap_content"
                     style="@style/AppTextField"
                     android:inputType="date"
-                    android:hint="@string/hint_birthdate" />
+                    android:hint="@string/birthdate" />
             </org.shakticoin.widget.TextInputLayout>
 
             <Button

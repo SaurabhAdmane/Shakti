@@ -136,6 +136,70 @@
             android:name=".settings.SettingsActivity"
             android:screenOrientation="portrait"/>
 
+        <activity
+            android:name=".settings.SettingsPersonalActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".settings.SettingsActivity" />
+        </activity>
+
+        <activity
+            android:name=".settings.SettingsHelpActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".settings.SettingsHelpActivity" />
+        </activity>
+
+        <activity
+            android:name=".settings.SettingsPrivPolicyActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".settings.SettingsHelpActivity" />
+        </activity>
+
+        <activity
+            android:name=".settings.SettingsAppTermsActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".settings.SettingsHelpActivity" />
+        </activity>
+
+        <activity
+            android:name=".settings.SettingsTaxesActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".settings.SettingsHelpActivity" />
+        </activity>
+
+        <activity
+            android:name=".settings.SettingsProcFeeActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".settings.SettingsHelpActivity" />
+        </activity>
+
+        <activity
+            android:name=".settings.SettingsContactUsActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".settings.SettingsHelpActivity" />
+        </activity>
+
+        <activity
+            android:name=".settings.SettingsPasswordActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".settings.SettingsHelpActivity" />
+        </activity>
+
     </application>
 
 </manifest>

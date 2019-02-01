@@ -12,6 +12,7 @@ import org.shakticoin.miner.UpgradeMinerActivity;
 import org.shakticoin.referral.EffortRatesActivity;
 import org.shakticoin.registration.SignInActivity;
 import org.shakticoin.registration.SignUpActivity;
+import org.shakticoin.settings.SettingsActivity;
 import org.shakticoin.tour.WelcomeTourActivity;
 import org.shakticoin.util.PreferenceHelper;
 
@@ -23,7 +24,8 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         super.setContentView(R.layout.activity_splash);
 
-        route();
+//        route();
+        startActivity(new Intent(this, SettingsActivity.class));
         finish();
     }
 

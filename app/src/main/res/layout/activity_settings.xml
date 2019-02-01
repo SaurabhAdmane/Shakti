@@ -1,328 +1,560 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/scrollable_bottom_padding"
-    android:background="@drawable/referral_background">
-
-    <include layout="@layout/inline_header"/>
-
+    xmlns:tools="http://schemas.android.com/tools">
     <RelativeLayout
-        android:id="@+id/fragments"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar">
+        android:paddingBottom="@dimen/scrollable_bottom_padding"
+        android:background="@drawable/settings_background">
 
-        <include layout="@layout/inline_drawer"/>
-        <ScrollView
-            android:id="@+id/mainFragment"
+        <include layout="@layout/inline_header"/>
+
+        <RelativeLayout
+            android:id="@+id/fragments"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            android:fillViewport="true">
+            android:layout_below="@+id/toolbar">
 
-            <android.support.constraint.ConstraintLayout
+            <include layout="@layout/inline_drawer"/>
+            <ScrollView
+                android:id="@+id/mainFragment"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/scrollable_bottom_padding">
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:fillViewport="true">
 
-                <TextView
-                    android:id="@+id/fullName"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginLeft="24dp"
-                    android:layout_marginTop="32dp"
-                    android:layout_marginEnd="24dp"
-                    android:layout_marginRight="24dp"
-                    android:text="William Almundson"
-                    android:textAppearance="@style/AppText.Body"
-                    android:textSize="16sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/emailAddress"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginLeft="24dp"
-                    android:layout_marginEnd="24dp"
-                    android:layout_marginRight="24dp"
-                    android:text="walmund@gmail.com"
-                    android:textAppearance="@style/AppText.Body"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/fullName" />
+                    <TextView
+                        android:id="@+id/fullName"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginTop="32dp"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginRight="24dp"
+                        android:text="William Almundson"
+                        android:textAppearance="@style/AppText.Body"
+                        android:textSize="16sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/textView75"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginLeft="24dp"
-                    android:layout_marginTop="30dp"
-                    android:text="@string/settings_account"
-                    android:textAppearance="@style/AppText.Title"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/emailAddress" />
+                    <TextView
+                        android:id="@+id/emailAddress"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginRight="24dp"
+                        android:text="walmund@gmail.com"
+                        android:textAppearance="@style/AppText.Body"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/fullName" />
 
-                <TextView
-                    android:id="@+id/textView76"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginLeft="24dp"
-                    android:layout_marginTop="15dp"
-                    android:text="@string/settings_personal_info"
-                    android:textAppearance="@style/AppText.Body"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView75" />
+                    <TextView
+                        android:id="@+id/textView75"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginTop="30dp"
+                        android:text="@string/settings_account"
+                        android:textAppearance="@style/AppText.Title"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/emailAddress" />
 
-                <ImageButton
-                    android:id="@+id/doPersonalInfo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="24dp"
-                    android:layout_marginRight="24dp"
-                    android:background="@android:color/transparent"
-                    android:tint="@android:color/white"
-                    app:layout_constraintBottom_toBottomOf="@+id/textView76"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/textView76"
-                    app:srcCompat="@drawable/ic_round_keyboard_arrow_right_24px" />
+                    <TextView
+                        android:id="@+id/textView76"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginTop="15dp"
+                        android:text="@string/settings_personal_info"
+                        android:textAppearance="@style/AppText.Body"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView75" />
 
-                <TextView
-                    android:id="@+id/textView77"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginLeft="24dp"
-                    android:layout_marginTop="40dp"
-                    android:text="@string/settings_kyc_verification"
-                    android:textAppearance="@style/AppText.Body"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView76" />
+                    <ImageButton
+                        android:id="@+id/doPersonalInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginRight="24dp"
+                        android:background="@android:color/transparent"
+                        android:onClick="onOpenPersonalInfo"
+                        android:tint="@android:color/white"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView76"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/textView76"
+                        app:srcCompat="@drawable/ic_round_keyboard_arrow_right_24px"
+                        tools:ignore="ContentDescription" />
 
-                <ImageButton
-                    android:id="@+id/doKycStatus"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="24dp"
-                    android:layout_marginRight="24dp"
-                    android:background="@android:color/transparent"
-                    android:tint="@android:color/white"
-                    app:layout_constraintBottom_toBottomOf="@+id/textView77"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/textView77"
-                    app:srcCompat="@drawable/ic_round_keyboard_arrow_right_24px" />
+                    <TextView
+                        android:id="@+id/textView77"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginTop="40dp"
+                        android:text="@string/settings_kyc_verification"
+                        android:textAppearance="@style/AppText.Body"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView76" />
 
-                <TextView
-                    android:id="@+id/textView78"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginRight="16dp"
-                    android:gravity="right|end"
-                    android:text="@string/settings_kyc_progress"
-                    android:textAppearance="@style/AppText.Body"
-                    app:layout_constraintBottom_toBottomOf="@+id/doKycStatus"
-                    app:layout_constraintEnd_toStartOf="@+id/doKycStatus"
-                    app:layout_constraintTop_toTopOf="@+id/doKycStatus" />
+                    <ImageButton
+                        android:id="@+id/doKycStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginRight="24dp"
+                        android:background="@android:color/transparent"
+                        android:tint="@android:color/white"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView77"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/textView77"
+                        app:srcCompat="@drawable/ic_round_keyboard_arrow_right_24px"
+                        tools:ignore="ContentDescription" />
 
-                <TextView
-                    android:id="@+id/textView79"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginLeft="24dp"
-                    android:layout_marginTop="40dp"
-                    android:text="@string/settings_security"
-                    android:textAppearance="@style/AppText.Title"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView77" />
+                    <TextView
+                        android:id="@+id/textView78"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginRight="16dp"
+                        android:gravity="end"
+                        android:text="@string/settings_kyc_progress"
+                        android:textAppearance="@style/AppText.Body"
+                        app:layout_constraintBottom_toBottomOf="@+id/doKycStatus"
+                        app:layout_constraintEnd_toStartOf="@+id/doKycStatus"
+                        app:layout_constraintTop_toTopOf="@+id/doKycStatus" />
 
-                <TextView
-                    android:id="@+id/textView80"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginLeft="24dp"
-                    android:layout_marginTop="15dp"
-                    android:text="@string/settings_touch_id"
-                    android:textAppearance="@style/AppText.Body"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView79" />
+                    <TextView
+                        android:id="@+id/textView79"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginTop="40dp"
+                        android:text="@string/settings_security"
+                        android:textAppearance="@style/AppText.Title"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView77" />
 
-                <Switch
-                    android:id="@+id/swTouchId"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="24dp"
-                    android:layout_marginRight="24dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/textView80"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/textView80" />
+                    <TextView
+                        android:id="@+id/textView80"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginTop="15dp"
+                        android:text="@string/settings_touch_id"
+                        android:textAppearance="@style/AppText.Body"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView79" />
 
-                <TextView
-                    android:id="@+id/textView81"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginLeft="24dp"
-                    android:text="@string/not_released"
-                    android:textAppearance="@style/AppText.Body"
-                    android:textSize="9sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView80" />
+                    <Switch
+                        android:id="@+id/swTouchId"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginRight="24dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView80"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/textView80" />
 
-                <TextView
-                    android:id="@+id/textView82"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginLeft="24dp"
-                    android:layout_marginTop="48dp"
-                    android:layout_marginEnd="24dp"
-                    android:layout_marginRight="24dp"
-                    android:text="@string/settings_notification_prefs"
-                    android:textAppearance="@style/AppText.Title"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView80" />
+                    <TextView
+                        android:id="@+id/textView81"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginLeft="24dp"
+                        android:text="@string/not_released"
+                        android:textAppearance="@style/AppText.Body"
+                        android:textSize="9sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView80"
+                        tools:ignore="SmallSp" />
 
-                <TextView
-                    android:id="@+id/textView83"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginLeft="24dp"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/settings_notify_service"
-                    android:textAppearance="@style/AppText.Body"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView82" />
+                    <TextView
+                        android:id="@+id/textView82"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginTop="48dp"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginRight="24dp"
+                        android:text="@string/settings_notification_prefs"
+                        android:textAppearance="@style/AppText.Title"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView80" />
 
-                <Switch
-                    android:id="@+id/swSvcNotify"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="24dp"
-                    android:layout_marginRight="24dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/textView83"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/textView83" />
+                    <TextView
+                        android:id="@+id/textView83"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/settings_notify_service"
+                        android:textAppearance="@style/AppText.Body"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView82" />
 
-                <TextView
-                    android:id="@+id/textView84"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginLeft="24dp"
-                    android:layout_marginTop="40dp"
-                    android:text="@string/settings_notify_pmnts"
-                    android:textAppearance="@style/AppText.Body"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView83" />
+                    <Switch
+                        android:id="@+id/swSvcNotify"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginRight="24dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView83"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/textView83" />
 
-                <Switch
-                    android:id="@+id/swNotifyPmnts"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="24dp"
-                    android:layout_marginRight="24dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/textView84"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/textView84" />
+                    <TextView
+                        android:id="@+id/textView84"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginTop="40dp"
+                        android:text="@string/settings_notify_pmnts"
+                        android:textAppearance="@style/AppText.Body"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView83" />
 
-                <TextView
-                    android:id="@+id/textView85"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginLeft="24dp"
-                    android:layout_marginTop="40dp"
-                    android:text="@string/settings_notify_referrals"
-                    android:textAppearance="@style/AppText.Body"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView84" />
+                    <Switch
+                        android:id="@+id/swNotifyPmnts"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginRight="24dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView84"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/textView84" />
 
-                <Switch
-                    android:id="@+id/swNotifyReferrals"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="24dp"
-                    android:layout_marginRight="24dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/textView85"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/textView85" />
+                    <TextView
+                        android:id="@+id/textView85"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginTop="40dp"
+                        android:text="@string/settings_notify_referrals"
+                        android:textAppearance="@style/AppText.Body"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView84" />
 
-                <TextView
-                    android:id="@+id/textView86"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginLeft="24dp"
-                    android:layout_marginTop="40dp"
-                    android:text="@string/settings_notify_tips"
-                    android:textAppearance="@style/AppText.Body"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView85" />
+                    <Switch
+                        android:id="@+id/swNotifyReferrals"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginRight="24dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView85"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/textView85" />
 
-                <Switch
-                    android:id="@+id/switch5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="24dp"
-                    android:layout_marginRight="24dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/textView86"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/textView86" />
+                    <TextView
+                        android:id="@+id/textView86"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginTop="40dp"
+                        android:text="@string/settings_notify_tips"
+                        android:textAppearance="@style/AppText.Body"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView85" />
 
-                <TextView
-                    android:id="@+id/textView87"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginLeft="24dp"
-                    android:text="@string/not_released"
-                    android:textAppearance="@style/AppText.Body"
-                    android:textSize="9sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView86" />
+                    <Switch
+                        android:id="@+id/switch5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginRight="24dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView86"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/textView86" />
 
-                <TextView
-                    android:id="@+id/textView88"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginLeft="24dp"
-                    android:layout_marginTop="40dp"
-                    android:layout_marginEnd="24dp"
-                    android:layout_marginRight="24dp"
-                    android:text="@string/settings_help"
-                    android:textAppearance="@style/AppText.Title"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView86" />
-            </android.support.constraint.ConstraintLayout>
+                    <TextView
+                        android:id="@+id/textView87"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginLeft="24dp"
+                        android:text="@string/not_released"
+                        android:textAppearance="@style/AppText.Body"
+                        android:textSize="9sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView86"
+                        tools:ignore="SmallSp" />
 
-        </ScrollView>
-        <include layout="@layout/inline_messages"/>
+                    <TextView
+                        android:id="@+id/textView88"
+                        android:layout_width="363dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginTop="40dp"
+                        android:text="@string/settings_help"
+                        android:textAppearance="@style/AppText.Title"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView86" />
+
+                    <TextView
+                        android:id="@+id/textView72"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginTop="15dp"
+                        android:text="@string/settings_help_help"
+                        android:textAppearance="@style/AppText.Body"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView88" />
+
+                    <ImageButton
+                        android:id="@+id/doHelp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginRight="24dp"
+                        android:background="@android:color/transparent"
+                        android:onClick="onOpenHelp"
+                        android:tint="@android:color/white"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView72"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/textView72"
+                        app:srcCompat="@drawable/ic_round_keyboard_arrow_right_24px"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        android:id="@+id/textView74"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginTop="40dp"
+                        android:text="@string/settings_help_terms"
+                        android:textAppearance="@style/AppText.Body"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView72" />
+
+                    <ImageButton
+                        android:id="@+id/doApplicationTerms"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginRight="24dp"
+                        android:background="@android:color/transparent"
+                        android:onClick="onOpenApplicationTerms"
+                        android:tint="@android:color/white"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView74"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/textView74"
+                        app:srcCompat="@drawable/ic_round_keyboard_arrow_right_24px"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        android:id="@+id/textView89"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginTop="40dp"
+                        android:text="@string/settings_help_policy"
+                        android:textAppearance="@style/AppText.Body"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView74" />
+
+                    <ImageButton
+                        android:id="@+id/doPrivatePolicy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginRight="24dp"
+                        android:background="@android:color/transparent"
+                        android:onClick="onOpenPrivacyPolicy"
+                        android:tint="@android:color/white"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView89"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/textView89"
+                        app:srcCompat="@drawable/ic_round_keyboard_arrow_right_24px"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        android:id="@+id/textView90"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginTop="40dp"
+                        android:text="@string/settings_help_taxes"
+                        android:textAppearance="@style/AppText.Body"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView89" />
+
+                    <ImageButton
+                        android:id="@+id/doTaxes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginRight="24dp"
+                        android:background="@android:color/transparent"
+                        android:onClick="onOpenTaxesInfo"
+                        android:tint="@android:color/white"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView90"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/textView90"
+                        app:srcCompat="@drawable/ic_round_keyboard_arrow_right_24px"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        android:id="@+id/textView91"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginTop="40dp"
+                        android:text="@string/settings_help_pfee"
+                        android:textAppearance="@style/AppText.Body"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView90" />
+
+                    <ImageButton
+                        android:id="@+id/doProcFees"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginRight="24dp"
+                        android:background="@android:color/transparent"
+                        android:onClick="onOpenProcessingFees"
+                        android:tint="@android:color/white"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView91"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/textView91"
+                        app:srcCompat="@drawable/ic_round_keyboard_arrow_right_24px"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        android:id="@+id/textView92"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginTop="40dp"
+                        android:text="@string/settings_help_feedback"
+                        android:textAppearance="@style/AppText.Body"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView91" />
+
+                    <ImageButton
+                        android:id="@+id/doFeedback"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginRight="24dp"
+                        android:background="@android:color/transparent"
+                        android:onClick="onOpenContactUs"
+                        android:tint="@android:color/white"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView92"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/textView92"
+                        app:srcCompat="@drawable/ic_round_keyboard_arrow_right_24px"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        android:id="@+id/textView93"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginTop="40dp"
+                        android:text="@string/settings_help_passwd_reset"
+                        android:textAppearance="@style/AppText.Body"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView92" />
+
+                    <ImageButton
+                        android:id="@+id/doPwdReset"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginRight="24dp"
+                        android:background="@android:color/transparent"
+                        android:onClick="onResetPassword"
+                        android:tint="@android:color/white"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView93"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/textView93"
+                        app:srcCompat="@drawable/ic_round_keyboard_arrow_right_24px"
+                        tools:ignore="ContentDescription" />
+
+                    <Button
+                        android:id="@+id/doLogOut"
+                        style="@style/AppButton.Rounded.Grey"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginLeft="32dp"
+                        android:layout_marginTop="50dp"
+                        android:layout_marginEnd="32dp"
+                        android:layout_marginRight="32dp"
+                        android:text="@string/settings_logout"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView93" />
+
+                    <TextView
+                        android:id="@+id/textView94"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="64dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginRight="8dp"
+                        android:text="@string/settings_version"
+                        android:textAppearance="@style/AppText.Body"
+                        android:textSize="10sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/doLogOut"
+                        tools:ignore="SmallSp" />
+
+                </android.support.constraint.ConstraintLayout>
+
+            </ScrollView>
+            <include layout="@layout/inline_messages"/>
+
+        </RelativeLayout>
 
     </RelativeLayout>
-
-</RelativeLayout>
+</layout>

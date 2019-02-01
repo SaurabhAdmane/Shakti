@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/scrollable_bottom_padding"
+        android:background="@drawable/settings_background">
+
+        <include layout="@layout/inline_header"/>
+
+        <RelativeLayout
+            android:id="@+id/fragments"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/toolbar">
+
+            <include layout="@layout/inline_drawer"/>
+            <ScrollView
+                android:id="@+id/mainFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fillViewport="true">
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/htmlView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginTop="32dp"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginRight="24dp"
+                        android:text=""
+                        android:textAppearance="@style/AppText.Body"
+                        android:textSize="13sp"
+                        android:background="#B3000000"
+                        android:paddingTop="12dp"
+                        android:paddingBottom="12dp"
+                        android:paddingEnd="18dp"
+                        android:paddingRight="18dp"
+                        android:paddingStart="18dp"
+                        android:paddingLeft="18dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </android.support.constraint.ConstraintLayout>
+            </ScrollView>
+            <include layout="@layout/inline_messages"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+</layout>

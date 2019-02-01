@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/scrollable_bottom_padding"
+        android:background="@drawable/settings_background">
+
+        <include layout="@layout/inline_header"/>
+
+        <RelativeLayout
+            android:id="@+id/fragments"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/toolbar">
+
+            <include layout="@layout/inline_drawer"/>
+            <ScrollView
+                android:id="@+id/mainFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fillViewport="true">
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginRight="8dp"
+                        android:gravity="center_horizontal"
+                        android:text="@string/settings_contact_us_subtitle"
+                        android:textAppearance="@style/AppText.Body"
+                        android:textColor="@color/colorBrand"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:id="@+id/divider"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginRight="16dp"
+                        android:background="@color/colorBrand"
+                        app:layout_constraintBottom_toBottomOf="@+id/label"
+                        app:layout_constraintEnd_toStartOf="@+id/label"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/label" />
+
+                    <View
+                        android:id="@+id/divider2"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginRight="24dp"
+                        android:background="@color/colorBrand"
+                        app:layout_constraintBottom_toBottomOf="@+id/label"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/label"
+                        app:layout_constraintTop_toTopOf="@+id/label" />
+
+                    <org.shakticoin.widget.SpinnerLayout
+                        android:id="@+id/reasonLayout"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginRight="24dp"
+                        style="@style/AppTextLayout"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/label">
+
+                        <org.shakticoin.widget.InlineLabelSpinner
+                            android:id="@+id/reason"
+                            android:layout_width="match_parent"
+                            android:background="@android:color/transparent"
+                            android:popupBackground="@android:color/transparent"
+                            android:layout_height="wrap_content"
+                            app:hint="@string/hint_reason_to_contact"
+                            app:textColorHint="@color/colorHint"
+                            app:spinnerBorderColor="@color/colorBrand"/>
+                    </org.shakticoin.widget.SpinnerLayout>
+
+                    <org.shakticoin.widget.TextInputLayout
+                        android:id="@+id/nameLayout"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginRight="24dp"
+                        style="@style/AppTextLayout"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/reasonLayout">
+
+                        <org.shakticoin.widget.InlineLabelEditText
+                            android:id="@+id/name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/AppTextField"
+                            android:inputType="text"
+                            android:hint="@string/hint_name" />
+                    </org.shakticoin.widget.TextInputLayout>
+
+                    <org.shakticoin.widget.TextInputLayout
+                        android:id="@+id/emailLayout"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginRight="24dp"
+                        style="@style/AppTextLayout"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/nameLayout">
+
+                        <org.shakticoin.widget.InlineLabelEditText
+                            android:id="@+id/email"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/AppTextField"
+                            android:inputType="text"
+                            android:hint="@string/hint_email_address" />
+                    </org.shakticoin.widget.TextInputLayout>
+
+                    <org.shakticoin.widget.TextInputLayout
+                        android:id="@+id/phoneLayout"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginRight="24dp"
+                        style="@style/AppTextLayout"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/emailLayout">
+
+                        <org.shakticoin.widget.InlineLabelEditText
+                            android:id="@+id/phone"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/AppTextField"
+                            android:inputType="text"
+                            android:hint="@string/hint_mobile_number" />
+                    </org.shakticoin.widget.TextInputLayout>
+
+                    <org.shakticoin.widget.TextInputLayout
+                        android:id="@+id/messageLayout"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginRight="24dp"
+                        style="@style/AppTextLayout"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/phoneLayout">
+
+                        <org.shakticoin.widget.InlineLabelEditText
+                            android:id="@+id/message"
+                            style="@style/AppTextField"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/hint_message"
+                            android:inputType="textMultiLine|text|textImeMultiLine" />
+                    </org.shakticoin.widget.TextInputLayout>
+
+                    <Button
+                        android:id="@+id/doSend"
+                        style="@style/AppButton.Rounded"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginLeft="32dp"
+                        android:layout_marginTop="38dp"
+                        android:layout_marginEnd="32dp"
+                        android:layout_marginRight="32dp"
+                        android:text="@string/settings_contact_us_action"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/messageLayout" />
+
+                </android.support.constraint.ConstraintLayout>
+            </ScrollView>
+            <include layout="@layout/inline_messages"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+</layout>
