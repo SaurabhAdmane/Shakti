@@ -39,6 +39,7 @@ public class OrderRepository {
                         Order body = response.body();
                         if (listener != null) listener.onComplete(body,null);
                     } else {
+                        Debug.logErrorResponse(response);
                         if (listener != null) listener.onComplete(null,
                                 new RemoteException(response.message(), response.code()));
                     }

@@ -17,34 +17,25 @@ public class Validator {
         return emailAddress != null && Patterns.EMAIL_ADDRESS.matcher(emailAddress).matches();
     }
 
-    private static List<Character> allowedCharsPhone = Arrays.asList('.',' ','-','(',')');
-
     /**
      * Returns true if a given String might be a phone number.
      * @see android.util.Patterns
      */
     public static boolean isPhoneNumber(String phoneNumber) {
+        // 15 digits max
         if (TextUtils.isEmpty(phoneNumber)) return false;
+        if (phoneNumber.length() > 15) return false;
 
-        // + is allowed only as a first char
-        String number = phoneNumber.charAt(0) == '+' ? phoneNumber.substring(1) : phoneNumber;
-        if (number.length() == 0) return false;
-
-        // only digit allowed at first and last position
-        if (!Character.isDigit(number.charAt(0))) return false;
-        if (!Character.isDigit(number.charAt(number.length()-1))) return false;
-
-        int digitsCount = 0;
-        for(int i = 0; i < number.length(); i++){
-            final char c = number.charAt(i);
-            if (Character.isDigit(c)) {
-                digitsCount++;
-            } else {
-                // only -, ., (, ) and space are allowed
-                if (!allowedCharsPhone.contains(c)) return false;
-            }
+        // only digits
+        for(int i = 0; i < phoneNumber.length(); i++){
+            final char c = phoneNumber.charAt(i);
+            if (!Character.isDigit(c)) return false;
         }
-        if (digitsCount < 10) return false;
+
+        //TODO: the number should start from a country code
+        // Database has PhoneCountryCode table with known country codes and they should be used
+        // either to validate users input or filling separate drop-down with countries (as a part
+        // of phone number)
         return true;
     }
 

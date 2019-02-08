@@ -144,6 +144,7 @@ public class SignInActivity extends AppCompatActivity {
                             });
                         }
                     } else {
+                        Debug.logErrorResponse(response);
                         binding.progressBar.setVisibility(View.INVISIBLE);
                         Toast.makeText(self, R.string.err_login_failed, Toast.LENGTH_LONG).show();
                     }

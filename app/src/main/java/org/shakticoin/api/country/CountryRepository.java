@@ -63,6 +63,8 @@ public class CountryRepository {
                                 liveData.setValue(countryList);
                             }
                         }
+                    } else {
+                        Debug.logErrorResponse(response);
                     }
                 }
             }

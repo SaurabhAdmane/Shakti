@@ -64,6 +64,7 @@ public class AuthRepository {
                             listener.onComplete(null,null);
                         }
                     } else {
+                        Debug.logErrorResponse(response);
                         listener.onComplete(null, new RemoteException(response.message(), response.code()));
                     }
                 }
@@ -88,6 +89,7 @@ public class AuthRepository {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 if (call.isExecuted()) {
+                    Debug.logDebug(response.toString());
                     if (response.isSuccessful()) {
                         listener.onComplete(Boolean.TRUE, null);
                     } else {

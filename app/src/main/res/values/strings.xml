@@ -27,7 +27,6 @@
     <string name="hint_country">Country of Residence</string>
     <string name="hint_citizenship">Country of Citizenship</string>
     <string name="hint_postal_code">Zip/Postal code</string>
-    <string name="hint_address">Address</string>
     <string name="hint_address1">Address Line 1</string>
     <string name="hint_address2">Address Line 2</string>
     <string name="hint_city">City</string>
@@ -41,11 +40,17 @@
     <string name="hint_first_name">First Name</string>
     <string name="hint_last_name">Last Name</string>
     <string name="hint_middle_name">Middle Name</string>
+    <string name="hint_name">Name</string>
     <string name="hint_referral_code">Referral Code</string>
-    <string name="hint_birthdate">Date of Birth</string>
     <string name="hint_relationship">Relationship</string>
-    <string name="hint_education_level">Highest level of Education</string>
-    <string name="hint_occupation">Occupation</string>
+    <string name="hint_message">Message</string>
+    <string name="hint_reason_to_contact">Reason to Contact</string>
+    <string name="education_level">Highest level of Education</string>
+    <string name="occupation">Occupation</string>
+    <string name="birthdate">Date of Birth</string>
+    <string name="address">Address</string>
+    <string name="email">Email</string>
+    <string name="phone">Phone</string>
     <string name="unlock_bounty">Unlock your Bounty Bonus today!</string>
     <string name="lets_go">Let\'s go!</string>
     <string name="add_password_title">Add a Password</string>
@@ -479,6 +484,7 @@
     </string>
     <string name="vault_chs_action">Let\'s get started</string>
     <string name="vault_chs_action1">Qualified for DevDot?</string>
+    <string name="settings_title">Settings</string>
     <string name="settings_account">Account</string>
     <string name="settings_security">Security</string>
     <string name="settings_help">Help &amp; Policies</string>
@@ -501,5 +507,23 @@
     <string name="settings_help_passwd_reset">Password Reset</string>
     <string name="settings_logout">Log Out</string>
     <string name="settings_version">v %1$s - Swiss Shakti Foundation</string>
+    <string name="settings_personal_kin">Next of Kin</string>
+    <string name="settings_personal_title">Personal Info</string>
+    <string name="settings_help_title">Help</string>
+    <string name="settings_privacy_policy_title">Privacy Policy</string>
+    <string name="settings_app_terms_title">Application Terms</string>
+    <string name="settings_tax_info_title">Taxes Info</string>
+    <string name="settings_tax_info_option">
+        If you wish to be updated with current transactional tax related risks, please check this
+        box for additional information.
+    </string>
+    <string name="settings_tax_info_action">Agree</string>
+    <string name="settings_proc_fee_title">Processing Fees</string>
+    <string name="settings_contact_us_title">Contact Us</string>
+    <string name="settings_contact_us_subtitle">What would you like to say?</string>
+    <string name="settings_contact_us_action">Send Message</string>
+    <string name="settings_password_title">Password Reset</string>
+    <string name="settings_password_message">Keep your password safe &amp; and secret.</string>
+    <string name="settings_password_action">Reset Password</string>
 
 </resources>

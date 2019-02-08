@@ -7,6 +7,11 @@ import org.shakticoin.BuildConfig;
 import org.shakticoin.R;
 import org.shakticoin.api.Session;
 
+import java.io.IOException;
+
+import okhttp3.ResponseBody;
+import retrofit2.Response;
+
 
 public class Debug {
 
@@ -30,6 +35,19 @@ public class Debug {
         if (error != null) {
             if (BuildConfig.DEBUG) {
                 Log.d("org.shakticoin", error);
+            }
+        }
+    }
+
+    /** Log error body if API call was not successful */
+    public static void logErrorResponse(Response response) {
+        if (BuildConfig.DEBUG) {
+            ResponseBody errorBody = response.errorBody();
+            if (errorBody != null) {
+                try {
+                    Debug.logDebug(errorBody.string());
+
+                } catch (IOException e) {}
             }
         }
     }
