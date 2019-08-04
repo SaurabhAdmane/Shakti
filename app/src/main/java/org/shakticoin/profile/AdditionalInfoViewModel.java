@@ -1,8 +1,9 @@
 package org.shakticoin.profile;
 
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.ViewModel;
 import android.view.View;
+
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
 import org.shakticoin.widget.InlineLabelSpinner;
 

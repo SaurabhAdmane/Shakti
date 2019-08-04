@@ -1,28 +1,20 @@
 package org.shakticoin.registration;
 
-import android.app.Activity;
-import android.arch.lifecycle.ViewModelProviders;
-import android.databinding.BindingAdapter;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProviders;
+
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
-import org.shakticoin.api.country.Country;
 import org.shakticoin.databinding.FragmentSignupAddressBinding;
-import org.shakticoin.widget.InlineLabelSpinner;
-import org.shakticoin.widget.SpinnerListAdapter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class SignUpAddressFragment extends Fragment {
     private SignUpActivityModel viewModel;

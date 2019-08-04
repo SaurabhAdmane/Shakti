@@ -22,11 +22,12 @@ import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresPermission;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.WindowManager;
+
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresPermission;
 
 import com.google.android.gms.common.images.Size;
 

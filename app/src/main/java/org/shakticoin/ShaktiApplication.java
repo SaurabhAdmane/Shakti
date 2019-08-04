@@ -4,8 +4,9 @@ import android.content.Context;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.support.multidex.MultiDexApplication;
 import android.widget.Toast;
+
+import androidx.multidex.MultiDexApplication;
 
 import org.shakticoin.api.Session;
 import org.shakticoin.room.AppDatabase;

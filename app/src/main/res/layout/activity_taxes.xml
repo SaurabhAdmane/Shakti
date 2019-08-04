@@ -25,7 +25,7 @@
                 android:layout_height="match_parent"
                 android:fillViewport="true">
 
-                <android.support.constraint.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -59,7 +59,7 @@
                             android:textAppearance="@style/AppText.Body"
                             android:textSize="13sp" />
 
-                        <android.support.constraint.ConstraintLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent">
 
@@ -93,7 +93,7 @@
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toEndOf="@+id/doMoreInfo"
                                 app:layout_constraintTop_toTopOf="parent" />
-                        </android.support.constraint.ConstraintLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
                     </LinearLayout>
 
@@ -111,7 +111,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
-                </android.support.constraint.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </ScrollView>
             <include layout="@layout/inline_messages"/>
 

@@ -1,6 +1,6 @@
 package org.shakticoin.api.miner;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -10,12 +10,9 @@ import org.shakticoin.api.RemoteException;
 import org.shakticoin.api.Session;
 import org.shakticoin.util.Debug;
 
-import java.io.IOException;
-
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
-import okio.BufferedSink;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

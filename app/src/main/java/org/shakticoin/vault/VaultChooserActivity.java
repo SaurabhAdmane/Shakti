@@ -1,11 +1,12 @@
 package org.shakticoin.vault;
 
-import android.arch.lifecycle.ViewModelProviders;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProviders;
 
 import org.shakticoin.R;
 import org.shakticoin.databinding.ActivityVaultChooserBinding;

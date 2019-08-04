@@ -25,7 +25,7 @@
                 android:layout_centerInParent="true"
                 android:fillViewport="true">
 
-                <android.support.constraint.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingBottom="@dimen/scrollable_bottom_padding">
@@ -257,7 +257,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/phoneFieldLayout" />
 
-                </android.support.constraint.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </ScrollView>
             <include layout="@layout/inline_messages"/>

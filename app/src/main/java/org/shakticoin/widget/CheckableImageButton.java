@@ -1,10 +1,10 @@
 package org.shakticoin.widget;
 
 import android.content.Context;
-import android.support.v4.view.accessibility.AccessibilityEventCompat;
-import android.support.v7.widget.AppCompatImageButton;
 import android.util.AttributeSet;
 import android.widget.Checkable;
+
+import androidx.appcompat.widget.AppCompatImageButton;
 
 public class CheckableImageButton extends AppCompatImageButton implements Checkable {
     private static final int[] DRAWABLE_STATE_CHECKED = new int[]{android.R.attr.state_checked};

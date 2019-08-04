@@ -1,9 +1,7 @@
 package org.shakticoin.registration;
 
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.ViewModel;
-import android.databinding.ObservableBoolean;
-import android.databinding.ObservableField;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
 
 public class RecoveryPasswordModel extends ViewModel {

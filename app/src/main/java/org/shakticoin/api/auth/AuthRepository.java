@@ -1,11 +1,8 @@
 package org.shakticoin.api.auth;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
-import android.view.View;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,12 +11,7 @@ import org.shakticoin.api.BaseUrl;
 import org.shakticoin.api.OnCompleteListener;
 import org.shakticoin.api.RemoteException;
 import org.shakticoin.api.Session;
-import org.shakticoin.api.miner.MinerDataResponse;
-import org.shakticoin.api.miner.User;
-import org.shakticoin.registration.SignUpAddressFragment;
-import org.shakticoin.util.CommonUtil;
 import org.shakticoin.util.Debug;
-import org.shakticoin.util.PreferenceHelper;
 
 import java.io.IOException;
 

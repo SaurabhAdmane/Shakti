@@ -1,7 +1,7 @@
 package org.shakticoin.wallet;
 
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.ViewModel;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,7 +11,7 @@ import java.util.List;
 public class BaseWalletViewModel extends ViewModel {
 
     /** List of unread notification messages */
-    MutableLiveData<List<BaseWalletViewModel.Notification>> notifications = new MutableLiveData<>();
+    MutableLiveData<List<Notification>> notifications = new MutableLiveData<>();
 
     public BaseWalletViewModel() {
         /*

@@ -1,9 +1,9 @@
 package org.shakticoin.miner;
 
-import android.annotation.SuppressLint;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 
 import org.shakticoin.R;
 import org.shakticoin.databinding.ActivityUpgradeMinerBinding;

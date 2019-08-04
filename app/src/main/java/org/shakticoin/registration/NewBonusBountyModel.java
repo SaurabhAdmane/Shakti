@@ -1,8 +1,7 @@
 package org.shakticoin.registration;
 
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.ViewModel;
-import android.database.Observable;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
 public class NewBonusBountyModel extends ViewModel {
 

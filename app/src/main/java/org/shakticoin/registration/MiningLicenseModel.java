@@ -1,9 +1,9 @@
 package org.shakticoin.registration;
 
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.ViewModel;
-import android.databinding.Observable;
-import android.databinding.ObservableBoolean;
+import androidx.databinding.Observable;
+import androidx.databinding.ObservableBoolean;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
 import org.shakticoin.api.OnCompleteListener;
 import org.shakticoin.api.tier.Tier;

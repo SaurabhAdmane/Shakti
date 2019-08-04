@@ -1,7 +1,6 @@
 package org.shakticoin.widget;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -11,10 +10,12 @@ import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.constraint.ConstraintLayout;
-import android.support.graphics.drawable.VectorDrawableCompat;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.widget.TextViewCompat;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.view.ViewCompat;
+import androidx.core.widget.TextViewCompat;
+import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
+
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;

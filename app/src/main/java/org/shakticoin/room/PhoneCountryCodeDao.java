@@ -1,7 +1,7 @@
 package org.shakticoin.room;
 
-import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.Insert;
+import androidx.room.Dao;
+import androidx.room.Insert;
 
 import org.shakticoin.room.entity.PhoneCountryCode;
 

@@ -1,7 +1,7 @@
 package org.shakticoin.registration;
 
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.ViewModel;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
 public class ReferralActivityModel extends ViewModel {
     public MutableLiveData<String> fullName = new MutableLiveData<>();

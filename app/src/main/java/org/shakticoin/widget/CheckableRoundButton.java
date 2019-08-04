@@ -2,9 +2,11 @@ package org.shakticoin.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.databinding.BindingAdapter;
-import android.databinding.InverseBindingAdapter;
-import android.databinding.InverseBindingListener;
+
+import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.databinding.BindingAdapter;
+import androidx.databinding.InverseBindingAdapter;
+import androidx.databinding.InverseBindingListener;
 import android.util.AttributeSet;
 import android.widget.Checkable;
 
@@ -14,7 +16,7 @@ import org.shakticoin.R;
  * Custom round button that can have either checked or unchecked look. The main behaviour make it
  * similar to RadioButton - if you press it repeatedly it stays checked.
  */
-public class CheckableRoundButton extends android.support.v7.widget.AppCompatImageButton implements Checkable {
+public class CheckableRoundButton extends AppCompatImageButton implements Checkable {
     private static final int[] CHECKED_STATE_SET = { R.attr.is_checked };
     private boolean checkedFlag = false;
     private OnCheckedChangeListener mOnCheckedChangeListener;

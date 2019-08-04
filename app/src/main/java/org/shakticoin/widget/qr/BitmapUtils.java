@@ -7,7 +7,8 @@ import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.graphics.YuvImage;
 import android.hardware.Camera.CameraInfo;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.Nullable;
 
 import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata;
 

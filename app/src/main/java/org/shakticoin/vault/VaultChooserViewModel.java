@@ -1,11 +1,9 @@
 package org.shakticoin.vault;
 
-import android.arch.lifecycle.ViewModel;
-import android.databinding.Observable;
-import android.databinding.ObservableBoolean;
-import android.databinding.ObservableField;
-
-import org.shakticoin.profile.KycPropertyViewModel;
+import androidx.databinding.Observable;
+import androidx.databinding.ObservableBoolean;
+import androidx.databinding.ObservableField;
+import androidx.lifecycle.ViewModel;
 
 public class VaultChooserViewModel extends ViewModel {
     public enum Options {MERCHANT, POWER_MINER, FEDUCIA, EXPRESS, DEVDOT};

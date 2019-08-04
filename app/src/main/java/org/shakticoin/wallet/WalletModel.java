@@ -1,9 +1,8 @@
 package org.shakticoin.wallet;
 
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.ViewModel;
-import android.databinding.ObservableBoolean;
-import android.databinding.ObservableField;
+import androidx.databinding.ObservableBoolean;
+import androidx.databinding.ObservableField;
+import androidx.lifecycle.ViewModel;
 
 import org.shakticoin.api.BaseUrl;
 import org.shakticoin.api.OnCompleteListener;
@@ -12,10 +11,6 @@ import org.shakticoin.api.miner.MinerRepository;
 import org.shakticoin.api.miner.User;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 public class WalletModel extends ViewModel {

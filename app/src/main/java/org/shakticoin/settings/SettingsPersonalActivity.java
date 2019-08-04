@@ -1,8 +1,8 @@
 package org.shakticoin.settings;
 
-import android.databinding.DataBindingUtil;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 
 import org.shakticoin.R;
 import org.shakticoin.databinding.ActivityPersonalInfoBinding;

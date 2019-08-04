@@ -1,9 +1,9 @@
 package org.shakticoin.profile;
 
-import android.arch.lifecycle.ViewModel;
-import android.databinding.Observable;
-import android.databinding.ObservableBoolean;
-import android.databinding.ObservableField;
+import androidx.databinding.Observable;
+import androidx.databinding.ObservableBoolean;
+import androidx.databinding.ObservableField;
+import androidx.lifecycle.ViewModel;
 
 public class KycUtilityViewModel extends ViewModel {
     public enum Options {PHOTO, UPLOAD, SKIP}

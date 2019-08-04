@@ -1,7 +1,7 @@
 package org.shakticoin.tour;
 
-import android.arch.lifecycle.ViewModel;
-import android.databinding.ObservableBoolean;
+import androidx.databinding.ObservableBoolean;
+import androidx.lifecycle.ViewModel;
 
 public class WelcomeTourModel extends ViewModel {
     /**

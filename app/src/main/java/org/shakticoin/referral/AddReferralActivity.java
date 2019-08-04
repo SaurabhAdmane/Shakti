@@ -1,8 +1,8 @@
 package org.shakticoin.referral;
 
-import android.databinding.DataBindingUtil;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.View;
 
 import org.shakticoin.R;

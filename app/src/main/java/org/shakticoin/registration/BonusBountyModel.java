@@ -1,10 +1,10 @@
 package org.shakticoin.registration;
 
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.ViewModel;
-import android.databinding.Observable;
-import android.databinding.ObservableBoolean;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
+import androidx.databinding.Observable;
+import androidx.databinding.ObservableBoolean;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;

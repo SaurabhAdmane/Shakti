@@ -8,8 +8,9 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.support.v7.widget.AppCompatButton;
 import android.util.AttributeSet;
+
+import androidx.appcompat.widget.AppCompatButton;
 
 import org.shakticoin.R;
 

@@ -8,7 +8,7 @@
         android:layout_height="match_parent"
         android:fillViewport="true">
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="@dimen/scrollable_bottom_padding">
@@ -248,7 +248,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/imageView23"
                 app:layout_constraintStart_toEndOf="@+id/imageView12"
                 app:layout_constraintTop_toTopOf="@+id/imageView12" />
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
 </layout>

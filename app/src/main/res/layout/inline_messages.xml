@@ -13,7 +13,7 @@
     android:maxWidth="@dimen/notifications_list_width"
     android:background="#80000000">
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/notificationList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

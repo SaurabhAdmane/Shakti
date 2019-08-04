@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:fillViewport="true">
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/sign_up_background"
@@ -269,6 +269,6 @@
                 tools:layout_conversion_absoluteHeight="1dp"
                 tools:layout_conversion_absoluteWidth="1dp" />
 
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </layout>

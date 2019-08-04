@@ -1,9 +1,8 @@
 package org.shakticoin.api;
 
 import android.os.Build;
-import android.support.annotation.RequiresApi;
 
-import java.lang.Exception;
+import androidx.annotation.RequiresApi;
 
 public class RemoteException extends Exception {
     private int responseCode = -1;

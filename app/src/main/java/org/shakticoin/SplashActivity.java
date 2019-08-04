@@ -4,15 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 
-import org.shakticoin.miner.BecomeMinerActivity;
-import org.shakticoin.miner.UpgradeMinerActivity;
-import org.shakticoin.referral.EffortRatesActivity;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import org.shakticoin.registration.SignInActivity;
 import org.shakticoin.registration.SignUpActivity;
-import org.shakticoin.settings.SettingsActivity;
 import org.shakticoin.tour.WelcomeTourActivity;
 import org.shakticoin.util.PreferenceHelper;
 

@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
         android:fillViewport="true">
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="@dimen/scrollable_bottom_padding">
@@ -486,6 +486,6 @@
                 app:layout_constraintEnd_toStartOf="@+id/propertyCheckBox" />
 
 
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </layout>

@@ -1,6 +1,6 @@
 package org.shakticoin.api.order;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import org.shakticoin.api.BaseUrl;
 import org.shakticoin.api.OnCompleteListener;

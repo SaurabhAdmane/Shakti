@@ -8,7 +8,6 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Typeface;
 import android.os.Build;
-import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -22,6 +21,8 @@ import android.view.WindowManager;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import org.shakticoin.R;
 

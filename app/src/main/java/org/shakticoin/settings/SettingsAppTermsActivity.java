@@ -1,14 +1,13 @@
 package org.shakticoin.settings;
 
-import android.databinding.DataBindingUtil;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.text.Html;
 
 import org.apache.commons.io.IOUtils;
 import org.shakticoin.R;
 import org.shakticoin.databinding.ActivityAppTermsBinding;
-import org.shakticoin.databinding.ActivityHelpBinding;
 import org.shakticoin.wallet.BaseWalletActivity;
 
 import java.io.IOException;

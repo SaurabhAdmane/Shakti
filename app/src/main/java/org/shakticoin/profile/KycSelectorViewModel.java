@@ -1,8 +1,8 @@
 package org.shakticoin.profile;
 
-import android.arch.lifecycle.ViewModel;
-import android.databinding.Observable;
-import android.databinding.ObservableBoolean;
+import androidx.databinding.Observable;
+import androidx.databinding.ObservableBoolean;
+import androidx.lifecycle.ViewModel;
 
 public class KycSelectorViewModel extends ViewModel {
     private enum KycOption {UTILITY, PROPERTY, GOVERMENT}
