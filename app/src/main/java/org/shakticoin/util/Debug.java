@@ -3,6 +3,8 @@ package org.shakticoin.util;
 import android.content.Context;
 import android.util.Log;
 
+import com.crashlytics.android.Crashlytics;
+
 import org.shakticoin.BuildConfig;
 import org.shakticoin.R;
 import org.shakticoin.api.Session;
@@ -23,7 +25,7 @@ public class Debug {
             if (BuildConfig.DEBUG) {
                 Log.d("org.shakticoin", e.getMessage());
             } else {
-                // TODO: Crashlytics?
+                Crashlytics.logException(e);
             }
         }
     }
