@@ -1,10 +1,10 @@
 package org.shakticoin;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.multidex.MultiDexApplication;
 import android.widget.Toast;
 
 import org.shakticoin.api.Session;
@@ -12,7 +12,7 @@ import org.shakticoin.room.AppDatabase;
 import org.shakticoin.util.NetworkStateReceiver;
 
 
-public class ShaktiApplication extends Application {
+public class ShaktiApplication extends MultiDexApplication {
 
     // The BroadcastReceiver that tracks network connectivity changes.
     private NetworkStateReceiver receiver;
