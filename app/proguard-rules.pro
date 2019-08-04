@@ -83,3 +83,5 @@
 #
 -keep class com.stripe.android.** { *; }
 # End of Stripe
+
+-keep public class org.shakticoin.api.** { *; }
