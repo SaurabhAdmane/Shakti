@@ -7,6 +7,8 @@
 /build
 /captures
 .externalNativeBuild
+/app/debug
+/app/release
 
 # Mac OS
 .DS_Store
