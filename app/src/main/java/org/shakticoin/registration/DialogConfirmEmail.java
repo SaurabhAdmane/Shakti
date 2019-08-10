@@ -31,6 +31,7 @@ public class DialogConfirmEmail extends DialogFragment implements View.OnClickLi
                 .setTitle(R.string.dlg_confirm_email_title)
                 .setText(R.string.dlg_confirm_email_text)
                 .setMainButton(R.string.dlg_confirm_email_action, this)
+                .setOnCloseListener(this)
                 .create();
     }
 
@@ -55,6 +56,5 @@ public class DialogConfirmEmail extends DialogFragment implements View.OnClickLi
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         }
-        getDialog().dismiss();
     }
 }

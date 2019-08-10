@@ -39,6 +39,7 @@ public class PanelDialog extends Dialog {
         private String mainButtonLabel;
         private Drawable icon;
         private View.OnClickListener mainButtonListener;
+        private View.OnClickListener closeButtonListener;
 
         public Builder(Context context) {
             this.context = context;
@@ -57,6 +58,11 @@ public class PanelDialog extends Dialog {
         public Builder setMainButton(int resourceId, View.OnClickListener listener) {
             mainButtonLabel = context.getString(resourceId);
             mainButtonListener = listener;
+            return this;
+        }
+
+        public Builder setOnCloseListener(View.OnClickListener listener) {
+            closeButtonListener = listener;
             return this;
         }
 
@@ -83,9 +89,10 @@ public class PanelDialog extends Dialog {
 
             ImageButton ctrlOnClose = dialog.findViewById(R.id.doClose);
             if (ctrlOnClose != null) {
-                ctrlOnClose.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+                ctrlOnClose.setOnClickListener(v -> {
+                    if (closeButtonListener != null) {
+                        closeButtonListener.onClick(v);
+                    } else {
                         dialog.dismiss();
                     }
                 });
@@ -95,9 +102,7 @@ public class PanelDialog extends Dialog {
             if (ctrlMainButton != null) {
                 ctrlMainButton.setText(mainButtonLabel);
                 if (mainButtonListener != null) {
-                    if (ctrlMainButton != null) {
-                        ctrlMainButton.setOnClickListener(mainButtonListener);
-                    }
+                    ctrlMainButton.setOnClickListener(mainButtonListener);
                 }
             }
 
