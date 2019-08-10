@@ -7,6 +7,7 @@ import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.view.View;
 
+import org.shakticoin.BuildConfig;
 import org.shakticoin.R;
 import org.shakticoin.databinding.ActivitySettingsBinding;
 import org.shakticoin.wallet.BaseWalletActivity;
@@ -21,6 +22,8 @@ public class SettingsActivity extends BaseWalletActivity {
         binding.setLifecycleOwner(this);
 
         onInitView(binding.getRoot(), getString(R.string.settings_title));
+
+        binding.versionName.setText(getString(R.string.settings_version, BuildConfig.VERSION_NAME));
     }
 
     public void onOpenPersonalInfo(View v) {
