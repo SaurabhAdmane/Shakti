@@ -66,7 +66,7 @@
     <string name="err_email_required">Please enter a valid email</string>
     <string name="err_phone_required">Please enter a valid phone number</string>
     <string name="err_unexpected">Unexpected error occurred</string>
-    <string name="err_incorrect_password">Incorrect password</string>
+    <string name="err_incorrect_password">Your password and confirmation password do not match</string>
     <string name="err_password_not_strong">Your password must be at least 8 chars length and contain letters, digits, and special chars. Only 2 consecutive chars allowed.</string>
     <string name="err_required">You must provide a value for this field</string>
     <string name="err_all_fields_required">All fields are required</string>
