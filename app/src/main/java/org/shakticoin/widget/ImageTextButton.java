@@ -42,7 +42,7 @@ public class ImageTextButton extends AppCompatButton {
             Bitmap bitmap = drawableToBitmap(drawableLeft);
 
             float textWidth = getPaint().measureText((String) getText());
-            int left = (int) ((getWidth() / 2f) - (textWidth / 2f) - drawableLeftPadding - bitmap.getWidth() + getPaddingLeft());
+            int left = (int) ((getWidth() / 2f) - (textWidth / 2f) - drawableLeftPadding - bitmap.getWidth());
             int top = getHeight() / 2 - bitmap.getHeight() / 2 + getPaddingBottom();
 
             if(left >= bitmap.getWidth()) {
