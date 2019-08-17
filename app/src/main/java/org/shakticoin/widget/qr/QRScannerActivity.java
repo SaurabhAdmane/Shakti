@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class QRScannerActivity extends AppCompatActivity {
+
     public static final int REQUEST_QR              = 99;
     public static final String KEY_REFERRAL_CODE    = "referralCode";
 
@@ -175,8 +176,12 @@ public class QRScannerActivity extends AppCompatActivity {
             int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (allPermissionsGranted()) {
             createCameraSource();
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        } else {
+            Toast.makeText(this, R.string.err_qr_permissions_not_granted, Toast.LENGTH_LONG).show();
+            this.setResult(RESULT_CANCELED);
+            finish();
         }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     private static boolean isPermissionGranted(Context context, String permission) {
