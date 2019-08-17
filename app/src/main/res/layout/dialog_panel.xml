@@ -23,7 +23,6 @@
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_marginStart="15dp"
-                android:layout_marginLeft="15dp"
                 android:layout_marginTop="15dp"
                 android:background="@drawable/bg_circular_black"/>
 
@@ -32,16 +31,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignStart="@+id/circleBlack"
-                android:layout_alignLeft="@+id/circleBlack"
                 android:layout_alignTop="@+id/circleBlack"
                 android:layout_alignEnd="@+id/circleBlack"
-                android:layout_alignRight="@+id/circleBlack"
                 android:layout_alignBottom="@+id/circleBlack"
                 android:layout_marginStart="14dp"
-                android:layout_marginLeft="14dp"
                 android:layout_marginTop="14dp"
                 android:layout_marginEnd="14dp"
-                android:layout_marginRight="14dp"
                 android:layout_marginBottom="14dp"
                 android:tint="@color/colorBrand"
                 app:srcCompat="@drawable/ic_miner"
@@ -53,9 +48,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="21dp"
                 android:layout_marginEnd="20dp"
-                android:layout_marginRight="20dp"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
                 android:background="@android:color/transparent"
                 android:tint="@color/colorGrey1"
                 app:srcCompat="@drawable/ic_exit"
@@ -66,13 +59,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
                 android:layout_marginTop="32dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_toRightOf="@+id/circleBlack"
                 android:layout_toEndOf="@+id/circleBlack"
-                android:layout_toLeftOf="@+id/doClose"
                 android:layout_toStartOf="@+id/doClose"
                 android:textAppearance="@style/AppText.DialogTitle"/>
 
@@ -83,10 +72,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:layout_marginLeft="24dp"
             android:layout_marginTop="30dp"
             android:layout_marginEnd="24dp"
-            android:layout_marginRight="24dp"
             android:text="@string/dlg_confirm_email_text"
             android:textAppearance="@style/AppText.DialogText"/>
 
@@ -98,9 +85,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginStart="24dp"
-            android:layout_marginLeft="24dp"
             android:layout_marginEnd="24dp"
-            android:layout_marginRight="24dp"
             android:layout_marginBottom="4dp"
             android:text="@string/dlg_confirm_email_action" />
 

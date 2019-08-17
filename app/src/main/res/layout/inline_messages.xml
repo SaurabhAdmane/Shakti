@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:layout_gravity="end"
     android:layout_alignParentEnd="true"
-    android:layout_alignParentRight="true"
     android:translationX="@dimen/notifications_list_width"
     android:clipChildren="false"
     android:clipToPadding="false"

@@ -154,9 +154,7 @@ public class TextInputLayout extends RelativeLayout {
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         Float leftMargin = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 11f, metrics);
         labelParams.leftMargin=leftMargin.intValue();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            labelParams.setMarginStart(labelParams.leftMargin);
-        }
+        labelParams.setMarginStart(labelParams.leftMargin);
         labelParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
         labelView.setLayoutParams(labelParams);
 
@@ -278,9 +276,7 @@ public class TextInputLayout extends RelativeLayout {
                 passwordToggleView.setImageDrawable(passwordToggleDrawable);
 
                 LayoutParams layoutParams = new LayoutParams(passwordToggleView.getLayoutParams());
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                    layoutParams.addRule(RelativeLayout.ALIGN_PARENT_END);
-                }
+                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_END);
                 layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
                 layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
                 layoutParams.setMargins(0, extraTopMargin.intValue() - oneDPinPixels.intValue() * 2, 0, 0);

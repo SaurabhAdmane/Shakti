@@ -33,11 +33,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="46dp"
-            android:layout_marginRight="20dp"
             android:layout_marginEnd="20dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_toLeftOf="@+id/tickmark2"
             android:layout_toStartOf="@+id/tickmark2"
             app:srcCompat="@drawable/tickmark"
             tools:ignore="ContentDescription"/>
@@ -46,10 +44,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="46dp"
-            android:layout_marginLeft="20dp"
             android:layout_marginStart="20dp"
             android:layout_alignParentBottom="true"
-            android:layout_toRightOf="@+id/tickmark2"
             android:layout_toEndOf="@+id/tickmark2"
             app:srcCompat="@drawable/tickmark"
             tools:ignore="ContentDescription"/>
