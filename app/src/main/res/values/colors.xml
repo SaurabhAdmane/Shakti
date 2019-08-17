@@ -10,9 +10,17 @@
     <color name="colorErrorText">#FFFFFFFF</color>
     <color name="colorErrorBackground">#FFBE061C</color>
     <color name="colorHint">#FFFFFFFF</color>
+    <color name="colorGrey1">#FF898989</color>
+    <color name="colorGrey2">#FFD9D9DA</color>
 
     <color name="colorTickmark">#FFFFFFFF</color>
     <color name="colorTickmarkTint">#4DFFFFFF</color>
 
-    <color name="colorReadMessage">#D9D9DA</color>
+    <color name="colorReadMessage">@color/colorGrey2</color>
+
+    <color name="drawerButtonNormal">#FFD9D9DA</color>
+    <color name="drawerButtonSelected">@color/colorBrand</color>
+
+    <color name="colorButtonIcon">#FF4A4A4A</color>
+
 </resources>

@@ -78,6 +78,7 @@
                 android:layout_marginEnd="24dp"
                 android:layout_marginRight="24dp"
                 android:background="@drawable/button_circle_small"
+                android:tint="@color/colorBrand"
                 app:layout_constraintBottom_toBottomOf="@+id/doBalanceHistory"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/doBalanceHistory"
@@ -113,6 +114,7 @@
                 android:layout_height="21dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginLeft="20dp"
+                android:tint="@android:color/white"
                 app:layout_constraintBottom_toBottomOf="@+id/lockedBlackRect1"
                 app:layout_constraintStart_toStartOf="@+id/lockedBlackRect1"
                 app:layout_constraintTop_toTopOf="@+id/lockedBlackRect1"
@@ -198,6 +200,7 @@
                 android:layout_height="21dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginLeft="20dp"
+                android:tint="@android:color/white"
                 app:layout_constraintBottom_toBottomOf="@+id/lockedBlackRect2"
                 app:layout_constraintStart_toStartOf="@+id/lockedBlackRect2"
                 app:layout_constraintTop_toTopOf="@+id/lockedBlackRect2"
@@ -269,6 +272,7 @@
                     android:layout_marginLeft="15dp"
                     android:layout_toEndOf="@+id/label6"
                     android:layout_toRightOf="@+id/label6"
+                    android:tint="@color/colorBrand"
                     app:srcCompat="@drawable/ic_miner"
                     tools:ignore="ContentDescription" />
 

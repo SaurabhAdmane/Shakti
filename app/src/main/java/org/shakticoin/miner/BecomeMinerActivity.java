@@ -27,6 +27,11 @@ public class BecomeMinerActivity extends BaseWalletActivity {
         binding.textNote.setText(Html.fromHtml(getString(R.string.miner_intro_text)));
     }
 
+    @Override
+    protected int getCurrentDrawerSelection() {
+        return 2;
+    }
+
     public void onSelectLicense(View v) {
         Intent intent = new Intent(this, MiningLicenseActivity.class);
         startActivity(intent);

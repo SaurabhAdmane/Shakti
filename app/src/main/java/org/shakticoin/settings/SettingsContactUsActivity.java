@@ -20,4 +20,9 @@ public class SettingsContactUsActivity extends BaseWalletActivity {
         onInitView(binding.getRoot(), getString(R.string.settings_contact_us_title), true);
 
     }
+
+    @Override
+    protected int getCurrentDrawerSelection() {
+        return 4;
+    }
 }

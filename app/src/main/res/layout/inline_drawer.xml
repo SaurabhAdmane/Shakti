@@ -31,7 +31,7 @@
                 android:layout_height="22dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="13dp"
-                android:tint="#FFD9D9DA"
+                android:tint="@color/drawerButtonNormal"
                 app:srcCompat="@drawable/ic_wallet"
                 tools:ignore="ContentDescription" />
             <TextView
@@ -43,7 +43,7 @@
                 android:layout_marginTop="2dp"
                 android:text="@string/drawer_wallet"
                 android:textSize="9sp"
-                android:textColor="#FFD9D9DA"
+                android:textColor="@color/drawerButtonNormal"
                 tools:ignore="SmallSp" />
         </RelativeLayout>
 
@@ -65,7 +65,7 @@
                 android:layout_height="22dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="13dp"
-                android:tint="#FFD9D9DA"
+                android:tint="@color/drawerButtonNormal"
                 app:srcCompat="@drawable/ic_vault"
                 tools:ignore="ContentDescription" />
             <TextView
@@ -77,7 +77,7 @@
                 android:layout_marginTop="2dp"
                 android:text="@string/drawer_vault"
                 android:textSize="9sp"
-                android:textColor="#FFD9D9DA"
+                android:textColor="@color/drawerButtonNormal"
                 tools:ignore="SmallSp" />
         </RelativeLayout>
 
@@ -99,7 +99,7 @@
                 android:layout_height="24dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="13dp"
-                android:tint="#FFD9D9DA"
+                android:tint="@color/drawerButtonNormal"
                 app:srcCompat="@drawable/ic_miner"
                 tools:ignore="ContentDescription" />
             <TextView
@@ -111,7 +111,7 @@
                 android:layout_marginTop="2dp"
                 android:text="@string/drawer_miner"
                 android:textSize="9sp"
-                android:textColor="#FFD9D9DA"
+                android:textColor="@color/drawerButtonNormal"
                 tools:ignore="SmallSp" />
         </RelativeLayout>
 
@@ -133,7 +133,7 @@
                 android:layout_height="23dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="13dp"
-                android:tint="#FFD9D9DA"
+                android:tint="@color/drawerButtonNormal"
                 app:srcCompat="@drawable/ic_referral"
                 tools:ignore="ContentDescription" />
             <TextView
@@ -145,7 +145,7 @@
                 android:layout_marginTop="2dp"
                 android:text="@string/drawer_referrals"
                 android:textSize="9sp"
-                android:textColor="#FFD9D9DA"
+                android:textColor="@color/drawerButtonNormal"
                 tools:ignore="SmallSp" />
         </RelativeLayout>
 
@@ -167,7 +167,7 @@
                 android:layout_height="24dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="13dp"
-                android:tint="#FFD9D9DA"
+                android:tint="@color/drawerButtonNormal"
                 app:srcCompat="@drawable/ic_setting"
                 tools:ignore="ContentDescription" />
             <TextView
@@ -179,7 +179,7 @@
                 android:layout_marginTop="2dp"
                 android:text="@string/drawer_settings"
                 android:textSize="9sp"
-                android:textColor="#FFD9D9DA"
+                android:textColor="@color/drawerButtonNormal"
                 tools:ignore="SmallSp" />
         </RelativeLayout>
 

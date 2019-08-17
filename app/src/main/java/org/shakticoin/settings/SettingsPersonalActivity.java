@@ -19,4 +19,9 @@ public class SettingsPersonalActivity extends BaseWalletActivity {
 
         onInitView(binding.getRoot(), getString(R.string.settings_personal_title), true);
     }
+
+    @Override
+    protected int getCurrentDrawerSelection() {
+        return 4;
+    }
 }

@@ -27,6 +27,11 @@ public class VaultChooserActivity extends BaseWalletActivity {
         onInitView(binding.getRoot(), getString(R.string.vault_title), true);
     }
 
+    @Override
+    protected int getCurrentDrawerSelection() {
+        return 1;
+    }
+
     public void onProceedWithVault(View v) {
         Toast.makeText(this, R.string.err_not_implemented, Toast.LENGTH_SHORT).show();
     }

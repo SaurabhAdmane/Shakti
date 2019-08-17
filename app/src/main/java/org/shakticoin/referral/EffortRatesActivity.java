@@ -25,4 +25,9 @@ public class EffortRatesActivity extends BaseWalletActivity {
                 .replace(R.id.mainFragment, new EffortRatesListFragment())
                 .commit();
     }
+
+    @Override
+    protected int getCurrentDrawerSelection() {
+        return 3;
+    }
 }

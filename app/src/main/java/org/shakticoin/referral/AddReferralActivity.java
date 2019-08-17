@@ -21,6 +21,11 @@ public class AddReferralActivity extends BaseWalletActivity {
         onInitView(binding.getRoot(), getString(R.string.my_refs_title), true);
     }
 
+    @Override
+    protected int getCurrentDrawerSelection() {
+        return 3;
+    }
+
     public void onHowToEarn(View v) {
         DialogHowToBonus.getInstance().show(getSupportFragmentManager(), DialogHowToBonus.TAG);
     }

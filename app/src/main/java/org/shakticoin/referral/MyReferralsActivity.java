@@ -30,6 +30,11 @@ public class MyReferralsActivity extends BaseWalletActivity {
                 .commit();
     }
 
+    @Override
+    protected int getCurrentDrawerSelection() {
+        return 3;
+    }
+
     public void onHowToEarn(View v) {
         DialogHowToBonus.getInstance().show(getSupportFragmentManager(), DialogHowToBonus.TAG);
     }

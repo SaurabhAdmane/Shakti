@@ -33,4 +33,9 @@ public class SettingsTaxesActivity extends BaseWalletActivity {
             e.printStackTrace();
         }
     }
+
+    @Override
+    protected int getCurrentDrawerSelection() {
+        return 4;
+    }
 }

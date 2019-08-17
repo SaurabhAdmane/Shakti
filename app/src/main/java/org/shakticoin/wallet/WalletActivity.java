@@ -41,4 +41,9 @@ public class WalletActivity extends BaseWalletActivity {
                 .replace(R.id.mainFragment, new MainFragment(), MainFragment.class.getSimpleName())
                 .commit();
     }
+
+    @Override
+    protected int getCurrentDrawerSelection() {
+        return 0;
+    }
 }

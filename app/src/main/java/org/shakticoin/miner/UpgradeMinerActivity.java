@@ -20,4 +20,9 @@ public class UpgradeMinerActivity extends BaseWalletActivity {
 
         onInitView(binding.getRoot(), getString(R.string.miner_intro_toolbar));
     }
+
+    @Override
+    protected int getCurrentDrawerSelection() {
+        return 2;
+    }
 }

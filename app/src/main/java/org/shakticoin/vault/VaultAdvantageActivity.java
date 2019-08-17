@@ -23,6 +23,11 @@ public class VaultAdvantageActivity extends BaseWalletActivity {
         onInitView(binding.getRoot(), getString(R.string.vault_title));
     }
 
+    @Override
+    protected int getCurrentDrawerSelection() {
+        return 1;
+    }
+
     public void onCreateVault(View v) {
         Intent intent = new Intent(this, VaultChooserActivity.class);
         startActivity(intent);

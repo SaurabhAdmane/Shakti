@@ -24,6 +24,11 @@ public class SettingsPasswordActivity extends BaseWalletActivity {
         onInitView(binding.getRoot(), getString(R.string.settings_password_title), true);
     }
 
+    @Override
+    protected int getCurrentDrawerSelection() {
+        return 4;
+    }
+
     public void onResetPassword(View v) {
         startActivity(new Intent(this, RecoveryPasswordActivity.class));
     }

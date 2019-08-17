@@ -37,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
                 android:background="@android:color/transparent"
-                android:tint="#FFD8C295"
+                android:tint="@color/colorBrand"
                 app:layout_constraintEnd_toStartOf="@+id/categoryProcessing"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
@@ -113,6 +113,7 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginLeft="24dp"
                 android:layout_marginTop="25dp"
+                android:tint="@color/colorBrand"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView59"
                 app:srcCompat="@drawable/ic_media_facebook" />
@@ -124,6 +125,7 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginLeft="24dp"
                 android:layout_marginTop="15dp"
+                android:tint="@color/colorBrand"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView12"
                 app:srcCompat="@drawable/ic_media_instagram" />
@@ -135,6 +137,7 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginLeft="24dp"
                 android:layout_marginTop="15dp"
+                android:tint="@color/colorBrand"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView13"
                 app:srcCompat="@drawable/ic_media_plus" />
@@ -146,6 +149,7 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginLeft="24dp"
                 android:layout_marginTop="15dp"
+                android:tint="@color/colorBrand"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView14"
                 app:srcCompat="@drawable/ic_media_linkedin" />
@@ -157,6 +161,7 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginLeft="24dp"
                 android:layout_marginTop="15dp"
+                android:tint="@color/colorBrand"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView15"
                 app:srcCompat="@drawable/ic_media_twitter" />
@@ -168,6 +173,7 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginLeft="24dp"
                 android:layout_marginTop="15dp"
+                android:tint="@color/colorBrand"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView16"
                 app:srcCompat="@drawable/ic_media_pinterest" />
@@ -179,6 +185,7 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginLeft="24dp"
                 android:layout_marginTop="15dp"
+                android:tint="@color/colorBrand"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView17"
                 app:srcCompat="@drawable/ic_media_skype" />
@@ -190,6 +197,7 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginLeft="24dp"
                 android:layout_marginTop="15dp"
+                android:tint="@color/colorBrand"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView18"
                 app:srcCompat="@drawable/ic_media_vk" />
@@ -201,6 +209,7 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginLeft="24dp"
                 android:layout_marginTop="15dp"
+                android:tint="@color/colorBrand"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView19"
                 app:srcCompat="@drawable/ic_media_wechat" />
@@ -212,6 +221,7 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginLeft="24dp"
                 android:layout_marginTop="15dp"
+                android:tint="@color/colorBrand"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView20"
                 app:srcCompat="@drawable/ic_media_tumblr" />
@@ -223,6 +233,7 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginLeft="24dp"
                 android:layout_marginTop="15dp"
+                android:tint="@color/colorBrand"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView21"
                 app:srcCompat="@drawable/ic_media_email" />
@@ -234,6 +245,7 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginLeft="24dp"
                 android:layout_marginTop="15dp"
+                android:tint="@color/colorBrand"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView22"
                 app:srcCompat="@drawable/ic_media_other" />

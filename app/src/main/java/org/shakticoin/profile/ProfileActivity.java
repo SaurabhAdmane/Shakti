@@ -59,6 +59,11 @@ public class ProfileActivity extends BaseWalletActivity {
         });
     }
 
+    @Override
+    protected int getCurrentDrawerSelection() {
+        return 4;
+    }
+
     public void onDoKYC(View v) {
         Toast.makeText(this, R.string.err_not_implemented, Toast.LENGTH_SHORT).show();
     }

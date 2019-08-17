@@ -32,6 +32,11 @@ public class KycActivity extends BaseWalletActivity {
                 .commit();
     }
 
+    @Override
+    protected int getCurrentDrawerSelection() {
+        return 4;
+    }
+
     public void onOpenDocuments(View v) {
         getSupportFragmentManager()
                 .beginTransaction()

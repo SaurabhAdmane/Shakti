@@ -43,6 +43,7 @@
                 android:layout_marginEnd="14dp"
                 android:layout_marginRight="14dp"
                 android:layout_marginBottom="14dp"
+                android:tint="@color/colorBrand"
                 app:srcCompat="@drawable/ic_miner"
                 tools:ignore="ContentDescription" />
 
@@ -56,6 +57,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:background="@android:color/transparent"
+                android:tint="@color/colorGrey1"
                 app:srcCompat="@drawable/ic_exit"
                 tools:ignore="ContentDescription" />
 

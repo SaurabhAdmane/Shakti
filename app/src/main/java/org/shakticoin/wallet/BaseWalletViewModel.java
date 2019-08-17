@@ -10,10 +10,14 @@ import java.util.List;
 
 public class BaseWalletViewModel extends ViewModel {
 
+    /** Selected button in the drawer. 0 based index. */
+    public MutableLiveData<Integer> selectedDrawer = new MutableLiveData<>();
+
     /** List of unread notification messages */
     MutableLiveData<List<Notification>> notifications = new MutableLiveData<>();
 
     public BaseWalletViewModel() {
+        selectedDrawer.setValue(0);
         /*
          * TODO: Create a list of notifications for testing purpose. Replace with real stuff later.
          */

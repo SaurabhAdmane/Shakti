@@ -28,6 +28,7 @@
             android:id="@+id/iv_icon"
             android:padding="5dp"
             android:layout_gravity="center_vertical"
+            android:tint="@android:color/white"
             app:srcCompat="@drawable/ic_dropdown"/>
     </LinearLayout>
 

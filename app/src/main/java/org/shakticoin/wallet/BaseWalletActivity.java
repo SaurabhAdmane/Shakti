@@ -3,12 +3,15 @@ package org.shakticoin.wallet;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
+import androidx.core.content.ContextCompat;
+import androidx.core.widget.ImageViewCompat;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.shakticoin.R;
@@ -30,7 +34,7 @@ import java.util.List;
 import java.util.Objects;
 
 @SuppressLint("Registered")
-public class BaseWalletActivity extends AppCompatActivity {
+public abstract class BaseWalletActivity extends AppCompatActivity {
     private BaseWalletViewModel viewModel;
     private RecyclerView notifications;
     private BaseWalletActivity.NotificationAdapter adapter;
@@ -68,6 +72,43 @@ public class BaseWalletActivity extends AppCompatActivity {
         notifications.setAdapter(adapter);
 
         viewModel.notifications.observe(this, notifications -> adapter.notifyDataSetChanged());
+
+        // set active drawer button
+        if (leftDrawer != null) {
+            int drawerIconId = -1;
+            int drawerTextId = -1;
+            switch (getCurrentDrawerSelection()) {
+                case 0:
+                    drawerIconId = R.id.walletMenuIcon;
+                    drawerTextId = R.id.walletMenuText;
+                    break;
+                case 1:
+                    drawerIconId = R.id.vaultMenuIcon;
+                    drawerTextId = R.id.vaultMenuText;
+                    break;
+                case 2:
+                    drawerIconId = R.id.minerMenuIcon;
+                    drawerTextId = R.id.minerMenuText;
+                    break;
+                case 3:
+                    drawerIconId = R.id.referralsMenuIcon;
+                    drawerTextId = R.id.referralsMenuText;
+                    break;
+                case 4:
+                    drawerIconId = R.id.settingsMenuIcon;
+                    drawerTextId = R.id.settingsMenuText;
+                    break;
+            }
+            int selectedButtonColor = ContextCompat.getColor(this, R.color.drawerButtonSelected);
+            ImageView drawerIcon = leftDrawer.findViewById(drawerIconId);
+            if (drawerIcon != null) {
+                ImageViewCompat.setImageTintList(drawerIcon, ColorStateList.valueOf(selectedButtonColor));
+            }
+            TextView drawerText = leftDrawer.findViewById(drawerTextId);
+            if (drawerText != null) {
+                drawerText.setTextColor(selectedButtonColor);
+            }
+        }
     }
 
     protected void onInitView(View root, String title) {
@@ -209,4 +250,6 @@ public class BaseWalletActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
     }
+
+    abstract protected int getCurrentDrawerSelection();
 }
