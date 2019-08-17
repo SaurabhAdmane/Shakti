@@ -181,6 +181,7 @@
     <string name="share_referral_link">Share the personal referral link</string>
     <string name="err_login_failed">Login attempt failed. Please ensure you enter correct username and password.</string>
     <string name="err_qr_incorrect">QR code seems does not contain referral information.</string>
+    <string name="err_qr_permissions_not_granted">The permissions required for QR scaner were not granted.</string>
     <string name="err_country_required">Please select a country of residence</string>
     <string name="err_citizenship_required">Please select a citizenship</string>
     <string name="err_atleast_one_required">All fields cannot be empty. At least one field must have a value.</string>
