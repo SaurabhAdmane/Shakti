@@ -12,4 +12,6 @@ public class PreferenceHelper {
     /** Boolean preference that is true if user has been logged in at least once */
     public static String PREF_KEY_HAS_ACCOUNT = "hasAccount";
 
+    /** Authorization tocken for automatic login */
+    public static String PREF_KEY_TOKEN = "t";
 }

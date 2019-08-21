@@ -90,6 +90,7 @@ public class SignInActivity extends AppCompatActivity {
             Toast.makeText(this, R.string.login_password_required, Toast.LENGTH_SHORT).show();
             return;
         }
+        boolean rememberMe = binding.rememberMe.isChecked();
 
         binding.progressBar.setVisibility(View.VISIBLE);
 
@@ -107,7 +108,7 @@ public class SignInActivity extends AppCompatActivity {
                     if (response.isSuccessful()) {
                         LoginServiceResponse resp = response.body();
                         if (resp != null) {
-                            Session.key(resp.getKey());
+                            Session.key(resp.getKey(), rememberMe, self);
                             SharedPreferences prefs = getSharedPreferences(PreferenceHelper.GENERAL_PREFERENCES, Context.MODE_PRIVATE);
                             prefs.edit().putBoolean(PreferenceHelper.PREF_KEY_HAS_ACCOUNT, true).apply();
 
