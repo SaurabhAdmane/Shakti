@@ -9,8 +9,10 @@ import android.view.View;
 
 import org.shakticoin.BuildConfig;
 import org.shakticoin.R;
+import org.shakticoin.api.Session;
 import org.shakticoin.databinding.ActivitySettingsBinding;
 import org.shakticoin.profile.KycActivity;
+import org.shakticoin.registration.SignInActivity;
 import org.shakticoin.wallet.BaseWalletActivity;
 
 public class SettingsActivity extends BaseWalletActivity {
@@ -66,5 +68,12 @@ public class SettingsActivity extends BaseWalletActivity {
 
     public void onResetPassword(View v) {
         startActivity(new Intent(this, SettingsPasswordActivity.class));
+    }
+
+    public void onLogOut(View v) {
+        Session.clean(this);
+        Intent intent = new Intent(this, SignInActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 }
