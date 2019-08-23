@@ -1,7 +1,9 @@
 package org.shakticoin.api;
 
+import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 
 import org.shakticoin.api.miner.User;
 import org.shakticoin.util.CryptoUtil;
@@ -37,6 +39,14 @@ public class Session {
                 if (keyPair != null) {
                     try {
                         tokenKey = CryptoUtil.decryptShortString(storedToken, keyPair);
+
+                        // user might disabled locking screen by now and we should no allow
+                        // automatic login in this case
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            KeyguardManager keyguardManager =
+                                    (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
+                            if (keyguardManager != null && !keyguardManager.isDeviceSecure()) return null;
+                        }
 
                     } catch (NoSuchPaddingException e) {
                         Debug.logException(e);

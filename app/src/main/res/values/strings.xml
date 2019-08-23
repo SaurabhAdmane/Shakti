@@ -526,5 +526,8 @@
     <string name="settings_password_title">Password Reset</string>
     <string name="settings_password_message">Keep your password safe &amp; and secret.</string>
     <string name="settings_password_action">Reset Password</string>
+    <string name="err_device_not_secure">
+        Secure lock screen has not set up. Please set a lock screen method in the device Settings.
+    </string>
 
 </resources>

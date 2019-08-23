@@ -1,6 +1,7 @@
 package org.shakticoin.registration;
 
 import android.app.Activity;
+import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,10 +10,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import org.shakticoin.R;
@@ -71,6 +75,22 @@ public class SignInActivity extends AppCompatActivity {
         binding.passwordLayout.setValidator((view, value) -> {
             // password must be longer than 8 chars
             return value != null && value.length() > MIN_PASSWD_LEN;
+        });
+
+        final Activity self = this;
+        binding.rememberMe.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                boolean deviceSecure = false;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    KeyguardManager keyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
+                    deviceSecure = keyguardManager != null && keyguardManager.isDeviceSecure();
+                }
+                if (buttonView.isChecked() && !deviceSecure) {
+                    buttonView.setChecked(false);
+                    Toast.makeText(self, R.string.err_device_not_secure, Toast.LENGTH_LONG).show();
+                }
+            }
         });
 
         Retrofit retrofit = new Retrofit.Builder()
