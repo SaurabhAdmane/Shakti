@@ -25,6 +25,7 @@ import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.UnrecoverableKeyException;
+import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.util.Calendar;
 
@@ -48,7 +49,11 @@ public class CryptoUtil {
             keyStore.load(null);
 
             PrivateKey privateKey = (PrivateKey) keyStore.getKey(MASTER_ALIAS, null);
-            PublicKey publicKey = keyStore.getCertificate(MASTER_ALIAS).getPublicKey();
+            Certificate cert = keyStore.getCertificate(MASTER_ALIAS);
+            PublicKey publicKey = null;
+            if (cert != null) {
+                publicKey = keyStore.getCertificate(MASTER_ALIAS).getPublicKey();
+            }
             if (privateKey != null && publicKey != null) {
                 keyPair = new KeyPair(publicKey, privateKey);
             }
