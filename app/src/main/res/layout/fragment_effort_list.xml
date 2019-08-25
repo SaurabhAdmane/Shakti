@@ -30,7 +30,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="@string/effort_rates_num_processing"
+                android:text="@{@string/effort_rates_num_processing(0)}"
                 android:textAppearance="@style/AppText.Body"
                 app:layout_constraintBottom_toBottomOf="@+id/imageButton"
                 app:layout_constraintStart_toEndOf="@+id/imageButton"

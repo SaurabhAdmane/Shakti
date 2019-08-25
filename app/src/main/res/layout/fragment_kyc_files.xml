@@ -106,7 +106,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="30dp"
-                android:text="@string/kyc_files_num_uploaded"
+                android:text="@{@string/kyc_files_num_uploaded(0, 0)}"
                 android:textAppearance="@style/AppText.Body"
                 app:layout_constraintBottom_toTopOf="@+id/doAddDocument"
                 app:layout_constraintEnd_toEndOf="parent"
