@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools">
     <data>
         <import type="android.view.View" alias="View"/>
-        <import type="org.shakticoin.vault.VaultChooserViewModel.Options" alias="Options"/>
+        <import type="com.shakticoin.app.vault.VaultChooserViewModel.Options" alias="Options"/>
         <variable
             name="viewModel"
-            type="org.shakticoin.vault.VaultChooserViewModel"/>
+            type="com.shakticoin.app.vault.VaultChooserViewModel"/>
     </data>
     <RelativeLayout
         android:layout_width="match_parent"
@@ -67,7 +67,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView62" />
 
-                    <org.shakticoin.widget.CheckableRoundButton
+                    <com.shakticoin.app.widget.CheckableRoundButton
                         android:id="@+id/option1"
                         android:layout_width="60dp"
                         android:layout_height="60dp"
@@ -82,7 +82,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/subtitle" />
 
-                    <org.shakticoin.widget.CheckableRoundButton
+                    <com.shakticoin.app.widget.CheckableRoundButton
                         android:id="@+id/option2"
                         android:layout_width="60dp"
                         android:layout_height="60dp"
@@ -97,7 +97,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/option1" />
 
-                    <org.shakticoin.widget.CheckableRoundButton
+                    <com.shakticoin.app.widget.CheckableRoundButton
                         android:id="@+id/option3"
                         android:layout_width="60dp"
                         android:layout_height="60dp"
@@ -112,7 +112,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/option2" />
 
-                    <org.shakticoin.widget.CheckableRoundButton
+                    <com.shakticoin.app.widget.CheckableRoundButton
                         android:id="@+id/option4"
                         android:layout_width="60dp"
                         android:layout_height="60dp"
@@ -127,7 +127,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/option3" />
 
-                    <org.shakticoin.widget.CheckableRoundButton
+                    <com.shakticoin.app.widget.CheckableRoundButton
                         android:id="@+id/option5"
                         android:layout_width="60dp"
                         android:layout_height="60dp"

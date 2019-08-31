@@ -132,7 +132,7 @@
                         app:layout_constraintStart_toEndOf="@+id/label"
                         app:layout_constraintTop_toTopOf="@+id/label" />
 
-                    <org.shakticoin.widget.TextInputLayout
+                    <com.shakticoin.app.widget.TextInputLayout
                         android:id="@+id/firstNameFieldLayout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -145,7 +145,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/label">
 
-                        <org.shakticoin.widget.InlineLabelEditText
+                        <com.shakticoin.app.widget.InlineLabelEditText
                             android:id="@+id/firstName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -153,9 +153,9 @@
                             android:ems="10"
                             android:inputType="textPersonName"
                             android:hint="@string/hint_first_name" />
-                    </org.shakticoin.widget.TextInputLayout>
+                    </com.shakticoin.app.widget.TextInputLayout>
 
-                    <org.shakticoin.widget.TextInputLayout
+                    <com.shakticoin.app.widget.TextInputLayout
                         android:id="@+id/lastNameFieldLayout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -168,7 +168,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/firstNameFieldLayout">
 
-                        <org.shakticoin.widget.InlineLabelEditText
+                        <com.shakticoin.app.widget.InlineLabelEditText
                             android:id="@+id/lastName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -176,9 +176,9 @@
                             android:ems="10"
                             android:inputType="textPersonName"
                             android:hint="@string/hint_last_name" />
-                    </org.shakticoin.widget.TextInputLayout>
+                    </com.shakticoin.app.widget.TextInputLayout>
 
-                    <org.shakticoin.widget.TextInputLayout
+                    <com.shakticoin.app.widget.TextInputLayout
                         android:id="@+id/emailFieldLayout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -191,7 +191,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/lastNameFieldLayout">
 
-                        <org.shakticoin.widget.InlineLabelEditText
+                        <com.shakticoin.app.widget.InlineLabelEditText
                             android:id="@+id/emailAddress"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -199,9 +199,9 @@
                             android:ems="10"
                             android:inputType="textEmailAddress"
                             android:hint="@string/hint_email_address" />
-                    </org.shakticoin.widget.TextInputLayout>
+                    </com.shakticoin.app.widget.TextInputLayout>
 
-                    <org.shakticoin.widget.TextInputLayout
+                    <com.shakticoin.app.widget.TextInputLayout
                         android:id="@+id/phoneFieldLayout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -214,7 +214,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/emailFieldLayout">
 
-                        <org.shakticoin.widget.InlineLabelEditText
+                        <com.shakticoin.app.widget.InlineLabelEditText
                             android:id="@+id/phoneNumber"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -222,7 +222,7 @@
                             android:ems="10"
                             android:inputType="phone"
                             android:hint="@string/hint_mobile_number" />
-                    </org.shakticoin.widget.TextInputLayout>
+                    </com.shakticoin.app.widget.TextInputLayout>
 
                     <Button
                         android:id="@+id/button2"

@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:219442868342:android:613c92dade9b592c",
+        "mobilesdk_app_id": "1:219442868342:android:1af77da33da1bc0a",
         "android_client_info": {
-          "package_name": "org.shakticoin"
+          "package_name": "com.shakticoin.app"
         }
       },
       "oauth_client": [
@@ -25,15 +25,13 @@
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
+          "other_platform_oauth_client": [
+            {
+              "client_id": "219442868342-m836dojdg0350tv4u4pvv3tknj9as478.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

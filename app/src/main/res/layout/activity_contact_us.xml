@@ -68,7 +68,7 @@
                         app:layout_constraintStart_toEndOf="@+id/label"
                         app:layout_constraintTop_toTopOf="@+id/label" />
 
-                    <org.shakticoin.widget.SpinnerLayout
+                    <com.shakticoin.app.widget.SpinnerLayout
                         android:id="@+id/reasonLayout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -80,7 +80,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/label">
 
-                        <org.shakticoin.widget.InlineLabelSpinner
+                        <com.shakticoin.app.widget.InlineLabelSpinner
                             android:id="@+id/reason"
                             android:layout_width="match_parent"
                             android:background="@android:color/transparent"
@@ -89,9 +89,9 @@
                             app:hint="@string/hint_reason_to_contact"
                             app:textColorHint="@color/colorHint"
                             app:spinnerBorderColor="@color/colorBrand"/>
-                    </org.shakticoin.widget.SpinnerLayout>
+                    </com.shakticoin.app.widget.SpinnerLayout>
 
-                    <org.shakticoin.widget.TextInputLayout
+                    <com.shakticoin.app.widget.TextInputLayout
                         android:id="@+id/nameLayout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -103,16 +103,16 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/reasonLayout">
 
-                        <org.shakticoin.widget.InlineLabelEditText
+                        <com.shakticoin.app.widget.InlineLabelEditText
                             android:id="@+id/name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             style="@style/AppTextField"
                             android:inputType="text"
                             android:hint="@string/hint_name" />
-                    </org.shakticoin.widget.TextInputLayout>
+                    </com.shakticoin.app.widget.TextInputLayout>
 
-                    <org.shakticoin.widget.TextInputLayout
+                    <com.shakticoin.app.widget.TextInputLayout
                         android:id="@+id/emailLayout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -124,16 +124,16 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/nameLayout">
 
-                        <org.shakticoin.widget.InlineLabelEditText
+                        <com.shakticoin.app.widget.InlineLabelEditText
                             android:id="@+id/email"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             style="@style/AppTextField"
                             android:inputType="text"
                             android:hint="@string/hint_email_address" />
-                    </org.shakticoin.widget.TextInputLayout>
+                    </com.shakticoin.app.widget.TextInputLayout>
 
-                    <org.shakticoin.widget.TextInputLayout
+                    <com.shakticoin.app.widget.TextInputLayout
                         android:id="@+id/phoneLayout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -145,16 +145,16 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/emailLayout">
 
-                        <org.shakticoin.widget.InlineLabelEditText
+                        <com.shakticoin.app.widget.InlineLabelEditText
                             android:id="@+id/phone"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             style="@style/AppTextField"
                             android:inputType="text"
                             android:hint="@string/hint_mobile_number" />
-                    </org.shakticoin.widget.TextInputLayout>
+                    </com.shakticoin.app.widget.TextInputLayout>
 
-                    <org.shakticoin.widget.TextInputLayout
+                    <com.shakticoin.app.widget.TextInputLayout
                         android:id="@+id/messageLayout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -166,14 +166,14 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/phoneLayout">
 
-                        <org.shakticoin.widget.InlineLabelEditText
+                        <com.shakticoin.app.widget.InlineLabelEditText
                             android:id="@+id/message"
                             style="@style/AppTextField"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/hint_message"
                             android:inputType="textMultiLine|text|textImeMultiLine" />
-                    </org.shakticoin.widget.TextInputLayout>
+                    </com.shakticoin.app.widget.TextInputLayout>
 
                     <Button
                         android:id="@+id/doSend"

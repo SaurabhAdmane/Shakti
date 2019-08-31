@@ -5,7 +5,7 @@
     <data>
         <variable
             name="viewModel"
-            type="org.shakticoin.registration.SignUpActivityModel"/>
+            type="com.shakticoin.app.registration.SignUpActivityModel"/>
     </data>
     <ScrollView
         android:layout_width="match_parent"
@@ -46,7 +46,7 @@
                 tools:layout_conversion_absoluteHeight="1dp"
                 tools:layout_conversion_absoluteWidth="1dp" />
 
-            <org.shakticoin.widget.SpinnerLayout
+            <com.shakticoin.app.widget.SpinnerLayout
                 android:id="@+id/countriesLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -59,7 +59,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/subtitle"
                 tools:layout_conversion_absoluteHeight="1dp"
                 tools:layout_conversion_absoluteWidth="1dp">
-                <org.shakticoin.widget.InlineLabelSpinner
+                <com.shakticoin.app.widget.InlineLabelSpinner
                     android:id="@+id/countries"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -71,9 +71,9 @@
                     app:hint="@string/hint_country"
                     app:textColorHint="@color/colorHint"
                     app:spinnerBorderColor="@color/colorBrand"/>
-            </org.shakticoin.widget.SpinnerLayout>
+            </com.shakticoin.app.widget.SpinnerLayout>
 
-            <org.shakticoin.widget.SpinnerLayout
+            <com.shakticoin.app.widget.SpinnerLayout
                 android:id="@+id/citizenshipLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -84,7 +84,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/countriesLayout">
-                <org.shakticoin.widget.InlineLabelSpinner
+                <com.shakticoin.app.widget.InlineLabelSpinner
                     android:id="@+id/citizenship"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -96,9 +96,9 @@
                     app:hint="@string/hint_citizenship"
                     app:textColorHint="@color/colorHint"
                     app:spinnerBorderColor="@color/colorBrand"/>
-            </org.shakticoin.widget.SpinnerLayout>
+            </com.shakticoin.app.widget.SpinnerLayout>
 
-            <org.shakticoin.widget.TextInputLayout
+            <com.shakticoin.app.widget.TextInputLayout
                 android:id="@+id/addressLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -111,7 +111,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/citizenshipLayout"
                 tools:layout_conversion_absoluteHeight="1dp"
                 tools:layout_conversion_absoluteWidth="1dp">
-                <org.shakticoin.widget.InlineLabelEditText
+                <com.shakticoin.app.widget.InlineLabelEditText
                     android:id="@+id/address"
                     style="@style/AppTextField"
                     android:layout_width="match_parent"
@@ -120,9 +120,9 @@
                     android:hint="@string/address"
                     android:inputType="text"
                     android:text="@={viewModel.address}"/>
-            </org.shakticoin.widget.TextInputLayout>
+            </com.shakticoin.app.widget.TextInputLayout>
 
-            <org.shakticoin.widget.TextInputLayout
+            <com.shakticoin.app.widget.TextInputLayout
                 android:id="@+id/cityLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -135,7 +135,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/addressLayout"
                 tools:layout_conversion_absoluteHeight="1dp"
                 tools:layout_conversion_absoluteWidth="1dp">
-                <org.shakticoin.widget.InlineLabelEditText
+                <com.shakticoin.app.widget.InlineLabelEditText
                     android:id="@+id/city"
                     style="@style/AppTextField"
                     android:layout_width="match_parent"
@@ -144,9 +144,9 @@
                     android:hint="@string/hint_city"
                     android:inputType="text|textCapWords"
                     android:text="@={viewModel.city}"/>
-            </org.shakticoin.widget.TextInputLayout>
+            </com.shakticoin.app.widget.TextInputLayout>
 
-            <org.shakticoin.widget.TextInputLayout
+            <com.shakticoin.app.widget.TextInputLayout
                 android:id="@+id/stateLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -159,7 +159,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/cityLayout"
                 tools:layout_conversion_absoluteHeight="1dp"
                 tools:layout_conversion_absoluteWidth="1dp">
-                <org.shakticoin.widget.InlineLabelEditText
+                <com.shakticoin.app.widget.InlineLabelEditText
                     android:id="@+id/state"
                     style="@style/AppTextField"
                     android:layout_width="match_parent"
@@ -168,9 +168,9 @@
                     android:hint="@string/hint_state"
                     android:inputType="text|textCapWords"
                     android:text="@={viewModel.state}"/>
-            </org.shakticoin.widget.TextInputLayout>
+            </com.shakticoin.app.widget.TextInputLayout>
 
-            <org.shakticoin.widget.TextInputLayout
+            <com.shakticoin.app.widget.TextInputLayout
                 android:id="@+id/postalCodeLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -183,7 +183,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/stateLayout"
                 tools:layout_conversion_absoluteHeight="1dp"
                 tools:layout_conversion_absoluteWidth="1dp">
-                <org.shakticoin.widget.InlineLabelEditText
+                <com.shakticoin.app.widget.InlineLabelEditText
                     android:id="@+id/postalCode"
                     android:tag="AddressPage"
                     style="@style/AppTextField"
@@ -194,7 +194,7 @@
                     android:imeOptions="actionDone"
                     android:inputType="number"
                     android:text="@={viewModel.postalCode}"/>
-            </org.shakticoin.widget.TextInputLayout>
+            </com.shakticoin.app.widget.TextInputLayout>
 
             <Button
                 android:id="@+id/register"

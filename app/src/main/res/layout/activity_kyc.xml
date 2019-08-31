@@ -7,7 +7,7 @@
         <import type="android.view.View" alias="View"/>
         <variable
             name="viewModel"
-            type="org.shakticoin.profile.KycCommonViewModel"/>
+            type="com.shakticoin.app.profile.KycCommonViewModel"/>
     </data>
     <RelativeLayout
         android:id="@+id/profileBackground"
@@ -17,7 +17,7 @@
 
         <include layout="@layout/inline_header"/>
 
-        <org.shakticoin.widget.WalletPageIndicator
+        <com.shakticoin.app.widget.WalletPageIndicator
             android:id="@+id/pageIndicator"
             android:layout_width="match_parent"
             android:layout_height="46dp"

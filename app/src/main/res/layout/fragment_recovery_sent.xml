@@ -5,7 +5,7 @@
     <data>
         <variable
             name="viewModel"
-            type="org.shakticoin.registration.RecoveryPasswordModel"/>
+            type="com.shakticoin.app.registration.RecoveryPasswordModel"/>
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -54,7 +54,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title" />
 
-        <org.shakticoin.widget.TextInputLayout
+        <com.shakticoin.app.widget.TextInputLayout
             android:id="@+id/emailAddressLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -66,7 +66,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/subtitle">
-            <org.shakticoin.widget.InlineLabelEditText
+            <com.shakticoin.app.widget.InlineLabelEditText
                 android:id="@+id/email_address"
                 style="@style/AppTextField"
                 android:layout_width="match_parent"
@@ -76,7 +76,7 @@
                 android:hint="@string/hint_email_address"
                 android:inputType="textEmailAddress"
                 android:imeOptions="actionSend"/>
-        </org.shakticoin.widget.TextInputLayout>
+        </com.shakticoin.app.widget.TextInputLayout>
 
         <Button
             android:id="@+id/do_resend"

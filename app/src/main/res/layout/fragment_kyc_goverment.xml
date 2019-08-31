@@ -4,9 +4,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <import type="android.view.View" alias="View"/>
-        <import type="org.shakticoin.profile.KycGovermentViewModel.Options" alias="Options"/>
+        <import type="com.shakticoin.app.profile.KycGovermentViewModel.Options" alias="Options"/>
         <variable
-            name="viewModel" type="org.shakticoin.profile.KycGovermentViewModel"/>
+            name="viewModel" type="com.shakticoin.app.profile.KycGovermentViewModel"/>
     </data>
     <ScrollView
         android:layout_width="match_parent"
@@ -71,7 +71,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/label" />
 
-            <org.shakticoin.widget.CheckableRoundButton
+            <com.shakticoin.app.widget.CheckableRoundButton
                 android:id="@+id/selectPhoto"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
@@ -86,7 +86,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/description" />
 
-            <org.shakticoin.widget.CheckableRoundButton
+            <com.shakticoin.app.widget.CheckableRoundButton
                 android:id="@+id/selectUpload"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
@@ -101,7 +101,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/selectPhoto" />
 
-            <org.shakticoin.widget.CheckableRoundButton
+            <com.shakticoin.app.widget.CheckableRoundButton
                 android:id="@+id/selectSkip"
                 android:layout_width="60dp"
                 android:layout_height="60dp"

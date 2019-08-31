@@ -4,7 +4,7 @@ apply plugin: 'io.fabric'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "org.shakticoin"
+        applicationId "com.shakticoin.app"
         minSdkVersion 19
         targetSdkVersion 28
         multiDexEnabled true

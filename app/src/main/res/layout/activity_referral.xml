@@ -5,7 +5,7 @@
     <data>
         <variable
             name="viewModel"
-            type="org.shakticoin.registration.ReferralActivityModel"/>
+            type="com.shakticoin.app.registration.ReferralActivityModel"/>
     </data>
     <ScrollView
         android:layout_width="match_parent"
@@ -46,7 +46,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/title" />
 
-            <org.shakticoin.widget.ImageTextButton
+            <com.shakticoin.app.widget.ImageTextButton
                 android:id="@+id/doReadCode"
                 style="@style/AppButton.Rounded.Grey"
                 android:layout_width="0dp"
@@ -100,7 +100,7 @@
                 app:layout_constraintStart_toEndOf="@+id/line_label"
                 app:layout_constraintTop_toBottomOf="@+id/doReadCode" />
 
-            <org.shakticoin.widget.TextInputLayout
+            <com.shakticoin.app.widget.TextInputLayout
                 android:id="@+id/fullNameLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -111,7 +111,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/line_label">
-                <org.shakticoin.widget.InlineLabelEditText
+                <com.shakticoin.app.widget.InlineLabelEditText
                     android:id="@+id/fullName"
                     style="@style/AppTextField"
                     android:layout_width="match_parent"
@@ -120,9 +120,9 @@
                     android:hint="@string/hint_full_name"
                     android:text="@={viewModel.fullName}"
                     android:inputType="textCapWords|textPersonName"/>
-            </org.shakticoin.widget.TextInputLayout>
+            </com.shakticoin.app.widget.TextInputLayout>
 
-            <org.shakticoin.widget.TextInputLayout
+            <com.shakticoin.app.widget.TextInputLayout
                 android:id="@+id/emailAddressLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -134,7 +134,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/fullNameLayout">
-                <org.shakticoin.widget.InlineLabelEditText
+                <com.shakticoin.app.widget.InlineLabelEditText
                     android:id="@+id/emailAddress"
                     style="@style/AppTextField"
                     android:layout_width="match_parent"
@@ -143,9 +143,9 @@
                     android:hint="@string/hint_email_address"
                     android:text="@={viewModel.emailAddress}"
                     android:inputType="textEmailAddress"/>
-            </org.shakticoin.widget.TextInputLayout>
+            </com.shakticoin.app.widget.TextInputLayout>
 
-            <org.shakticoin.widget.TextInputLayout
+            <com.shakticoin.app.widget.TextInputLayout
                 android:id="@+id/mobileNumberLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -157,7 +157,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/emailAddressLayout">
-                <org.shakticoin.widget.InlineLabelEditText
+                <com.shakticoin.app.widget.InlineLabelEditText
                     android:id="@+id/mobileNumber"
                     style="@style/AppTextField"
                     android:layout_width="match_parent"
@@ -166,9 +166,9 @@
                     android:hint="@string/hint_mobile_number"
                     android:text="@={viewModel.mobileNumber}"
                     android:inputType="phone"/>
-            </org.shakticoin.widget.TextInputLayout>
+            </com.shakticoin.app.widget.TextInputLayout>
 
-            <org.shakticoin.widget.TextInputLayout
+            <com.shakticoin.app.widget.TextInputLayout
                 android:id="@+id/referralCodeLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -179,7 +179,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/mobileNumberLayout">
-                <org.shakticoin.widget.InlineLabelEditText
+                <com.shakticoin.app.widget.InlineLabelEditText
                     android:id="@+id/referralCode"
                     style="@style/AppTextField"
                     android:layout_width="match_parent"
@@ -189,7 +189,7 @@
                     android:text="@={viewModel.referralCode}"
                     android:imeOptions="actionDone"
                     android:inputType="text"/>
-            </org.shakticoin.widget.TextInputLayout>
+            </com.shakticoin.app.widget.TextInputLayout>
 
             <Button
                 android:id="@+id/doReward"

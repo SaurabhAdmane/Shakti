@@ -7,7 +7,7 @@
         <import type="android.view.View" alias="View"/>
         <variable
             name="viewModel"
-            type="org.shakticoin.registration.NewBonusBountyModel"/>
+            type="com.shakticoin.app.registration.NewBonusBountyModel"/>
     </data>
     <ScrollView
         android:layout_width="match_parent"

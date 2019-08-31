@@ -10,13 +10,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/email_fragment"
-        android:name="org.shakticoin.registration.RecoveryEmailFragment"
+        android:name="com.shakticoin.app.registration.RecoveryEmailFragment"
         tools:layout="@layout/fragment_recovery_email" />
     <fragment
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/sent_fragment"
-        android:name="org.shakticoin.registration.RecoverySentFragment"
+        android:name="com.shakticoin.app.registration.RecoverySentFragment"
         tools:layout="@layout/fragment_recovery_sent" />
 
     <ProgressBar

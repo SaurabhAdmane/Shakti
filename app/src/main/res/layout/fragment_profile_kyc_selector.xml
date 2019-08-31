@@ -5,7 +5,7 @@
     <data>
         <import type="android.view.View" alias="View"/>
         <variable
-            name="viewModel" type="org.shakticoin.profile.KycSelectorViewModel"/>
+            name="viewModel" type="com.shakticoin.app.profile.KycSelectorViewModel"/>
     </data>
     <ScrollView
         android:layout_width="match_parent"
@@ -70,7 +70,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/label" />
 
-            <org.shakticoin.widget.CheckableRoundButton
+            <com.shakticoin.app.widget.CheckableRoundButton
                 android:id="@+id/selectPhoto"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
@@ -86,7 +86,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/description"/>
 
-            <org.shakticoin.widget.CheckableRoundButton
+            <com.shakticoin.app.widget.CheckableRoundButton
                 android:id="@+id/selectUpload"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
@@ -102,7 +102,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/selectPhoto"/>
 
-            <org.shakticoin.widget.CheckableRoundButton
+            <com.shakticoin.app.widget.CheckableRoundButton
                 android:id="@+id/selectSkip"
                 android:layout_width="60dp"
                 android:layout_height="60dp"

@@ -1,6 +1,6 @@
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.shakticoin">
+    package="com.shakticoin.app">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -10,7 +10,7 @@
     <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
 
     <application
-        android:name="org.shakticoin.ShaktiApplication"
+        android:name=".ShaktiApplication"
         android:allowBackup="true"
         android:icon="@mipmap/launcher"
         android:label="@string/app_name"

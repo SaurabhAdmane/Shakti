@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="org.shakticoin.wallet.WalletModel"/>
+            type="com.shakticoin.app.wallet.WalletModel"/>
     </data>
     <ScrollView
         android:layout_width="match_parent"
