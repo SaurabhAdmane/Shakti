@@ -22,7 +22,7 @@ public class EffortRatesActivity extends BaseWalletActivity {
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.mainFragment, new EffortRatesListFragment())
+                .replace(R.id.mainFragment, new EffortRatesChartFragment())
                 .commit();
     }
 
