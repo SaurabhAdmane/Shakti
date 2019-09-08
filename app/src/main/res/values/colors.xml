@@ -23,4 +23,9 @@
 
     <color name="colorButtonIcon">#FF4A4A4A</color>
 
+    <!-- category colors for effort rate chart -->
+    <color name="effort_rate_converted">#FFD8C295</color>
+    <color name="effort_rate_processing">#FF898989</color>
+    <color name="effort_rate_influenced">#FF4A4A4A</color>
+
 </resources>

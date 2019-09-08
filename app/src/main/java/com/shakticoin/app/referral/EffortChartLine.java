@@ -57,6 +57,7 @@ public class EffortChartLine extends LinearLayoutCompat {
 
     @SuppressLint("SetTextI18n")
     private void updateWidget() {
+
         convertedPercentView.setLayoutParams(
                 new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, convertedPercent));
         processingPercentView.setLayoutParams(
@@ -64,13 +65,18 @@ public class EffortChartLine extends LinearLayoutCompat {
         influencedPercentView.setLayoutParams(
                 new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, influencedPercent));
         leadsNumberView.setLayoutParams(
-                new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, leadsNumber));
+                new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, 100 - convertedPercent - influencedPercent - processingPercent));
 
-        convertedPercentView.setText(convertedPercent > 0 ? convertedPercent + "%" : "");
-        processingPercentView.setText(processingPercent > 0 ? processingPercent + "%" : "");
-        influencedPercentView.setText(influencedPercent > 0 ? influencedPercent + "%" : "");
         if (leadsNumber > 0) {
+            convertedPercentView.setText("");
+            processingPercentView.setText("");
+            influencedPercentView.setText("");
             leadsNumberView.setText(getContext().getString(R.string.my_refs_referred, leadsNumber).toLowerCase());
+        } else {
+            convertedPercentView.setText(convertedPercent > 0 ? convertedPercent + "%" : "");
+            processingPercentView.setText(processingPercent > 0 ? processingPercent + "%" : "");
+            influencedPercentView.setText(influencedPercent > 0 ? influencedPercent + "%" : "");
+            leadsNumberView.setText("");
         }
     }
 

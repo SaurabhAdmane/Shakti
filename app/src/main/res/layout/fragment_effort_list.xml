@@ -23,7 +23,7 @@
                 android:tint="#FF898989"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/effort_circle_indicator" />
+                app:srcCompat="@drawable/button_effort_influenced_off" />
 
             <TextView
                 android:id="@+id/textView61"
