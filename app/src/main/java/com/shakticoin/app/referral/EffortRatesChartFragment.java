@@ -177,6 +177,7 @@ public class EffortRatesChartFragment extends Fragment implements View.OnClickLi
         }
 
         void setEffortRate(EffortRate effortRate) {
+            itemView.setTag(effortRate);
             switch (displayStage) {
                 case LEAD_STATUS_CONVERTED:
                     chartLine.setConvertedPercent(effortRate.getStagePercent(LEAD_STATUS_CONVERTED));
