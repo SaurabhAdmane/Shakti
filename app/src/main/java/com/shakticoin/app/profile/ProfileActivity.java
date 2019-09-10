@@ -36,8 +36,8 @@ public class ProfileActivity extends BaseWalletActivity {
         binding.pageIndicator.setSelectedIndex(1);
 
         Activity activity = this;
-        binding.pager.setAdapter(new ProfileFragmentAdapter(getSupportFragmentManager()));
-        binding.pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        binding.mainFragment.setAdapter(new ProfileFragmentAdapter(getSupportFragmentManager()));
+        binding.mainFragment.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int i, float v, int i1) {}
 
@@ -77,11 +77,11 @@ public class ProfileActivity extends BaseWalletActivity {
     }
 
     public void onNextPersonalInfo(View v) {
-        binding.pager.setCurrentItem(1);
+        binding.mainFragment.setCurrentItem(1);
     }
 
     public void onNextAdditionalInfo(View v) {
-        binding.pager.setCurrentItem(3);
+        binding.mainFragment.setCurrentItem(3);
     }
 
     public void onCancel(View v) {
@@ -91,7 +91,7 @@ public class ProfileActivity extends BaseWalletActivity {
     /** Collection of fragments for the activity */
     class ProfileFragmentAdapter extends FragmentPagerAdapter {
 
-        public ProfileFragmentAdapter(FragmentManager fm) {
+        ProfileFragmentAdapter(FragmentManager fm) {
             super(fm);
         }
 
