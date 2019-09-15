@@ -19,4 +19,7 @@
     <!-- Width of the drawer on the left of wallet -->
     <dimen name="drawer_width">60dp</dimen>
 
+    <dimen name="avatar_height">38dp</dimen>
+    <dimen name="avatar_width">38dp</dimen>
+
 </resources>

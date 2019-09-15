@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="57dp"
+    android:visibility="visible">
+
+    <ImageView
+        android:id="@+id/avatar"
+        style="@style/Avatar"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="4dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        tools:ignore="ContentDescription" />
+
+    <LinearLayout
+        android:id="@+id/buttonPanel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/avatar"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:orientation="horizontal"
+        android:visibility="invisible">
+
+        <Button
+            android:id="@+id/alphabetButton1"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:layout_marginStart="3dp"
+            android:layout_marginEnd="3dp"
+            android:textSize="12sp"
+            android:background="@drawable/button_rounded_transparent"
+            android:paddingStart="0dp"
+            android:paddingEnd="0dp"
+            style="@style/AppButton.Rounded.Transparent.Gold"
+            android:text="A-E"/>
+
+        <Button
+            android:id="@+id/alphabetButton2"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:layout_marginStart="3dp"
+            android:layout_marginEnd="3dp"
+            android:textSize="12sp"
+            android:background="@drawable/button_rounded_transparent"
+            android:paddingStart="0dp"
+            android:paddingEnd="0dp"
+            style="@style/AppButton.Rounded.Transparent.Gold"
+            android:text="F-J"/>
+
+        <Button
+            android:id="@+id/alphabetButton3"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:layout_marginStart="3dp"
+            android:layout_marginEnd="3dp"
+            android:textSize="12sp"
+            android:background="@drawable/button_rounded_transparent"
+            android:paddingStart="0dp"
+            android:paddingEnd="0dp"
+            style="@style/AppButton.Rounded.Transparent.Gold"
+            android:text="K-O"/>
+
+        <Button
+            android:id="@+id/alphabetButton4"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:layout_marginStart="3dp"
+            android:layout_marginEnd="3dp"
+            android:textSize="12sp"
+            android:background="@drawable/button_rounded_transparent"
+            android:paddingStart="0dp"
+            android:paddingEnd="0dp"
+            style="@style/AppButton.Rounded.Transparent.Gold"
+            android:text="P-T"/>
+
+        <Button
+            android:id="@+id/alphabetButton5"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:layout_marginStart="3dp"
+            android:layout_marginEnd="3dp"
+            android:textSize="12sp"
+            android:background="@drawable/button_rounded_transparent"
+            android:paddingStart="0dp"
+            android:paddingEnd="0dp"
+            style="@style/AppButton.Rounded.Transparent.Gold"
+            android:text="U-Z"/>
+
+    </LinearLayout>
+</RelativeLayout>

@@ -57,7 +57,7 @@ public class EffortRatesChartFragment extends Fragment implements View.OnClickLi
         Context context = getContext();
         if (context != null) {
             Resources res = context.getResources();
-            inactiveTextColor = res.getColor(R.color.effort_rate_processing);
+            inactiveTextColor = res.getColor(R.color.effortRateProcessing);
             activeTextColor = res.getColor(android.R.color.white);
         }
 
