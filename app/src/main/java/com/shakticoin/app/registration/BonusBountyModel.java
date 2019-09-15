@@ -35,11 +35,11 @@ public class BonusBountyModel extends ViewModel {
                     break;
                 case 1:
                     bountyList.add(new BountyBonus(new BigDecimal(5040.00),
-                            new BigDecimal(1108.0), 12, BountyBonusEnum.BB2));
+                            new BigDecimal(1008.0), 12, BountyBonusEnum.BB2));
                     break;
                 case 2:
                     bountyList.add(new BountyBonus(new BigDecimal(4440.00),
-                            new BigDecimal(880.0), 18, BountyBonusEnum.BB3));
+                            new BigDecimal(888.0), 18, BountyBonusEnum.BB3));
                     break;
                 case 3:
                     bountyList.add(new BountyBonus(new BigDecimal(3930.00),
@@ -141,8 +141,40 @@ public class BonusBountyModel extends ViewModel {
             this.tag = tag;
             this.priceUSD = priceUSD;
             this.priceSXE = priceSXE;
-            this.unlockDate = Calendar.getInstance();
-            unlockDate.add(Calendar.MONTH, unlockPeriod);
+            //TODO: assigned fixed dates for demo purpose, we need some other solution
+//            this.unlockDate = Calendar.getInstance();
+//            unlockDate.add(Calendar.MONTH, unlockPeriod);
+            unlockDate = Calendar.getInstance();
+            unlockDate.set(Calendar.HOUR_OF_DAY, 0);
+            unlockDate.set(Calendar.MINUTE, 0);
+            switch (tag) {
+                case BB1:
+                    unlockDate.set(Calendar.DAY_OF_MONTH, 13);
+                    unlockDate.set(Calendar.MONTH, 11);
+                    unlockDate.set(Calendar.YEAR, 2018);
+                    break;
+                case BB2:
+                    unlockDate.set(Calendar.DAY_OF_MONTH, 23);
+                    unlockDate.set(Calendar.MONTH, 11);
+                    unlockDate.set(Calendar.YEAR, 2018);
+                    break;
+                case BB3:
+                    unlockDate.set(Calendar.DAY_OF_MONTH, 14);
+                    unlockDate.set(Calendar.MONTH, 0);
+                    unlockDate.set(Calendar.YEAR, 2019);
+                    break;
+                case BB4:
+                    unlockDate.set(Calendar.DAY_OF_MONTH, 29);
+                    unlockDate.set(Calendar.MONTH, 0);
+                    unlockDate.set(Calendar.YEAR, 2019);
+                    break;
+                case BB5:
+                    unlockDate.set(Calendar.DAY_OF_MONTH, 10);
+                    unlockDate.set(Calendar.MONTH, 1);
+                    unlockDate.set(Calendar.YEAR, 2019);
+                    break;
+            }
+            // End of demo dates
         }
 
         BountyBonusEnum getTag() {
@@ -160,7 +192,20 @@ public class BonusBountyModel extends ViewModel {
         }
 
         public String formatDate() {
-            return String.format(Locale.US, "%1$tb %1tdth", unlockDate);
+            String ending = "th";
+            int lastDigit = unlockDate.get(Calendar.DAY_OF_MONTH) % 10;
+            switch (lastDigit) {
+                case 1:
+                    ending = "st";
+                    break;
+                case 2:
+                    ending = "nd";
+                    break;
+                case 3:
+                    ending = "rd";
+                    break;
+            }
+            return String.format(Locale.US, "%1$tb %1td%2$s", unlockDate, ending);
         }
 
         public String formatYear() {
