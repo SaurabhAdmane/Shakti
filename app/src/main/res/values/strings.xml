@@ -392,6 +392,9 @@
     <string name="effort_rates_progressing">Progressing</string>
     <string name="effort_rates_num_processing">%1$d Processing</string>
     <string name="effort_rates_nudge">Nudge Friends</string>
+    <string name="effort_rates_converted_accdesc">Converted leads</string>
+    <string name="effort_rates_processing_accdesc">Processing leads</string>
+    <string name="effort_rates_influenced_accadesc">Influenced leads</string>
     <string name="miner_intro_title">Become a Shakti Miner</string>
     <string name="miner_intro">Earn an additional income.</string>
     <string name="miner_intro_toolbar">Shakti Miner</string>

@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.shakticoin.app.referral.MyReferralsActivity;
 import com.shakticoin.app.settings.SettingsActivity;
@@ -250,6 +251,10 @@ public abstract class BaseWalletActivity extends AppCompatActivity {
         Intent intent = new Intent(this, WalletActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
+    }
+
+    public void onNotImplemented(View v) {
+        Toast.makeText(this, R.string.err_not_implemented, Toast.LENGTH_SHORT).show();
     }
 
     abstract protected int getCurrentDrawerSelection();

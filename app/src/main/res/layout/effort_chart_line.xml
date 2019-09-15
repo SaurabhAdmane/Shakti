@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="15dp">
+
+    <TextView
+        android:id="@+id/convertedLeadsBar"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0"
+        android:background="@color/effortRateConverted"
+        android:fontFamily="@font/lato"
+        android:gravity="center"
+        android:textColor="@android:color/black"
+        android:textSize="9sp"
+        tools:ignore="SmallSp" />
+
+    <TextView
+        android:id="@+id/progressingLeadsBar"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0"
+        android:background="@color/effortRateProcessing"
+        android:fontFamily="@font/lato"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        android:textSize="9sp"
+        tools:ignore="SmallSp" />
+
+    <TextView
+        android:id="@+id/influencedLeadsBar"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0"
+        android:background="@color/effortRateInfluenced"
+        android:fontFamily="@font/lato"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        android:textSize="9sp"
+        tools:ignore="SmallSp" />
+
+    <TextView
+        android:id="@+id/numberLeads"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:fontFamily="@font/lato"
+        android:gravity="start|center_vertical"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
+        android:textColor="@android:color/white"
+        android:textSize="12sp" />
+
+</LinearLayout>
