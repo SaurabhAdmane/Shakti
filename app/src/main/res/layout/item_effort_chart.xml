@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="33dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:onClick="onOpenLeads">
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="19dp"
+        android:layout_height="19dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginBottom="7dp"
+        android:tint="@color/colorBrand"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_media_facebook"
+        tools:ignore="ContentDescription" />
+
+    <com.shakticoin.app.referral.EffortChartLine
+        android:id="@+id/chartLine"
+        android:layout_width="0dp"
+        android:layout_height="15dp"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/divider"
+        app:layout_constraintTop_toTopOf="@+id/icon" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="2dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="15dp"
+        android:background="#ff9b9b9b"
+        app:layout_constraintBottom_toBottomOf="@+id/chartLine"
+        app:layout_constraintStart_toEndOf="@+id/icon"
+        app:layout_constraintTop_toTopOf="@+id/chartLine" />
+    <View
+        android:id="@+id/dividerTop"
+        android:layout_width="2dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="15dp"
+        android:background="#ff9b9b9b"
+        app:layout_constraintBottom_toTopOf="@+id/chartLine"
+        app:layout_constraintStart_toEndOf="@+id/icon"
+        app:layout_constraintTop_toTopOf="parent" />
+    <View
+        android:id="@+id/dividerBottom"
+        android:layout_width="2dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="15dp"
+        android:background="#ff9b9b9b"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/icon"
+        app:layout_constraintTop_toBottomOf="@+id/chartLine" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

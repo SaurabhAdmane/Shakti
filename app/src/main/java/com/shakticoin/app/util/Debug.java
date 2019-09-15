@@ -23,7 +23,11 @@ public class Debug {
     public static void logException(Throwable e) {
         if (e != null) {
             if (BuildConfig.DEBUG) {
-                Log.d("com.shakticoin.app", e.getMessage());
+                String errMsg = e.getMessage();
+                if (errMsg == null) {
+                    errMsg = e.getClass().getName();
+                }
+                Log.d("com.shakticoin.app", errMsg);
             } else {
                 Crashlytics.logException(e);
             }
