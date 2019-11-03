@@ -384,12 +384,13 @@ public class InlineLabelSpinner extends AppCompatSpinner {
         if (value != null) {
             SpinnerAdapter adapter = view.getAdapter();
             Object selectedValue = view.getSelectedItem();
-            if (selectedValue != null && !selectedValue.equals(value)) {
+            if (!value.equals(selectedValue)) {
                 // skip item at 0 as it isn't an instance of the item class, just a String
                 for (int i = 1; i < adapter.getCount(); i++) {
                     Object c = adapter.getItem(i);
                     if (c.equals(value)) {
                         view.setSelection(i);
+                        break;
                     }
                 }
             }
