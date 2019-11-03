@@ -53,6 +53,7 @@ public class SplashActivity extends AppCompatActivity {
                             if (error != null) {
                                 Toast.makeText(self, Debug.getFailureMsg(self, error), Toast.LENGTH_SHORT).show();
                                 Debug.logException(error);
+                                startActivity(new Intent(self, SignInActivity.class));
                                 return;
                             }
 
