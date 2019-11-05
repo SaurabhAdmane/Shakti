@@ -316,6 +316,15 @@ public class InlineLabelSpinner extends AppCompatSpinner {
     }
 
     /**
+     * If selection is made by pre-setting a binded value then we cannot know if selection
+     * was happen. This setter is provided for binding adapter that need to change this flag
+     * in order to make selection possible.
+     */
+    public void setChoiceMade(boolean choiceMade) {
+        this.choiceMade = choiceMade;
+    }
+
+    /**
      * Make a rip in the top edge of the border because SpinnerLayout will place a TextView
      * with transparent background over of this area.
      * @param textWidth Pixel width of the text and both horizontal padding values.
@@ -368,32 +377,6 @@ public class InlineLabelSpinner extends AppCompatSpinner {
 
     public void setOnChoiceListener(OnChoiceListener listener) {
         choiceListener = listener;
-    }
-
-    @BindingAdapter("android:entries")
-    public static void setList(Spinner view, List<?> values) {
-        InlineLabelSpinner spinner = (InlineLabelSpinner) view;
-        spinner.clear();
-        if (values != null) {
-            spinner.addAll(values);
-        }
-    }
-
-    @BindingAdapter("newValue")
-    public static void setValue(Spinner view, Object value) {
-        if (value != null) {
-            SpinnerAdapter adapter = view.getAdapter();
-            Object selectedValue = view.getSelectedItem();
-            if (selectedValue != null && !selectedValue.equals(value)) {
-                // skip item at 0 as it isn't an instance of the item class, just a String
-                for (int i = 1; i < adapter.getCount(); i++) {
-                    Object c = adapter.getItem(i);
-                    if (c.equals(value)) {
-                        view.setSelection(i);
-                    }
-                }
-            }
-        }
     }
 
     public interface OnChoiceListener {
