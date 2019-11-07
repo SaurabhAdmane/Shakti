@@ -19,6 +19,7 @@ public class BindingAdapters {
         InlineLabelSpinner spinner = (InlineLabelSpinner) view;
         spinner.clear();
         if (values != null) {
+            spinner.add("");
             spinner.addAll(values);
         }
     }
@@ -33,8 +34,9 @@ public class BindingAdapters {
             Object selectedValue = view.getSelectedItem();
             if (!value.equals(selectedValue)) {
                 // skip item at 0 as it isn't an instance of the item class, just a String
-                for (int i = 1; i < adapter.getCount(); i++) {
+                for (int i = 0; i < adapter.getCount(); i++) {
                     Object c = adapter.getItem(i);
+                    if (c instanceof String) continue; // hint, not real item
                     if (c.equals(value)) {
                         view.setSelection(i);
                     }
