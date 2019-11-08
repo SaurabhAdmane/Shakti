@@ -351,7 +351,7 @@
         Remember it is your effort that counts.
     </string>
     <string name="my_refs_unlocked_action">Start referring friends and family</string>
-    <string name="my_refs_tounlock"><u>%1$sd months to unlock</u></string>
+    <string name="my_refs_tounlock"><u>%1$d months to unlock</u></string>
     <string name="my_refs_refer_other">Refer others to unlock SXE</string>
     <string name="my_refs_referred">%1$d Referred</string>
     <string name="my_refs_refer_note">
@@ -359,7 +359,7 @@
     </string>
     <string name="my_refs_addreferral_action">Add a Referral</string>
     <string name="my_refs_myrate_action">My Effort Rates</string>
-    <string name="my_refs_import_from">Invite from:</string>
+    <string name="my_refs_import_from">Import from:</string>
     <string name="my_refs_media_facebook">Facebook</string>
     <string name="my_refs_media_instagram">Instagram</string>
     <string name="my_refs_media_plus">Google+</string>
