@@ -14,17 +14,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MiningLicenseModel extends ViewModel {
-    public enum Plan {M101, T100, T200, T300}
+    public enum Plan {M101, T100, T200, T300, T400}
 
     public ObservableBoolean onM101 = new ObservableBoolean();
     public ObservableBoolean onT100 = new ObservableBoolean();
     public ObservableBoolean onT200 = new ObservableBoolean();
     public ObservableBoolean onT300 = new ObservableBoolean();
+    public ObservableBoolean onT400 = new ObservableBoolean();
 
     public ObservableBoolean enabledM101 = new ObservableBoolean(true);
     public ObservableBoolean enabledT100 = new ObservableBoolean(true);
     public ObservableBoolean enabledT200 = new ObservableBoolean(true);
     public ObservableBoolean enabledT300 = new ObservableBoolean(true);
+    public ObservableBoolean enabledT400 = new ObservableBoolean(true);
 
     MutableLiveData<Plan> selectedPlan = new MutableLiveData<>();
 
@@ -41,6 +43,7 @@ public class MiningLicenseModel extends ViewModel {
                     if (onT100.get()) onT100.set(false);
                     if (onT200.get()) onT200.set(false);
                     if (onT300.get()) onT300.set(false);
+                    if (onT400.get()) onT400.set(false);
                     selectedPlan.setValue(Plan.M101);
                 }
             }
@@ -54,6 +57,7 @@ public class MiningLicenseModel extends ViewModel {
                     if (onM101.get()) onM101.set(false);
                     if (onT200.get()) onT200.set(false);
                     if (onT300.get()) onT300.set(false);
+                    if (onT400.get()) onT400.set(false);
                     selectedPlan.setValue(Plan.T100);
                 }
             }
@@ -67,6 +71,7 @@ public class MiningLicenseModel extends ViewModel {
                     if (onT100.get()) onT100.set(false);
                     if (onM101.get()) onM101.set(false);
                     if (onT300.get()) onT300.set(false);
+                    if (onT400.get()) onT400.set(false);
                     selectedPlan.setValue(Plan.T200);
                 }
             }
@@ -80,7 +85,22 @@ public class MiningLicenseModel extends ViewModel {
                     if (onT100.get()) onT100.set(false);
                     if (onT200.get()) onT200.set(false);
                     if (onM101.get()) onM101.set(false);
+                    if (onT400.get()) onT400.set(false);
                     selectedPlan.setValue(Plan.T300);
+                }
+            }
+        });
+        onT400.set(false);
+        onT400.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+            @Override
+            public void onPropertyChanged(Observable sender, int propertyId) {
+                boolean value = ((ObservableBoolean) sender).get();
+                if (value) {
+                    if (onT100.get()) onT100.set(false);
+                    if (onT200.get()) onT200.set(false);
+                    if (onM101.get()) onM101.set(false);
+                    if (onT400.get()) onT300.set(false);
+                    selectedPlan.setValue(Plan.T400);
                 }
             }
         });
@@ -145,6 +165,8 @@ public class MiningLicenseModel extends ViewModel {
                 enabledT200.set(isActive);
             } else if (Plan.T300.name().equals(name)) {
                 enabledT300.set(isActive);
+            } else if (Plan.T400.name().equals(name)) {
+                enabledT400.set(isActive);
             }
         }
     }

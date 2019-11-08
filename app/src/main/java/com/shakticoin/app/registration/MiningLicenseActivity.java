@@ -83,6 +83,9 @@ public class MiningLicenseActivity extends AppCompatActivity {
                 case T300:
                     updateDetailsT300();
                     break;
+                case T400:
+                    updateDetailsT400();
+                    break;
             }
         });
 
@@ -123,6 +126,12 @@ public class MiningLicenseActivity extends AppCompatActivity {
         updateDetails();
         binding.offer.setText(R.string.minerlic_bonus_bounty_t300);
         binding.features.setText(R.string.minerlic_description_t300);
+    }
+
+    private void updateDetailsT400() {
+        updateDetails();
+        binding.offer.setText(R.string.minerlic_bonus_bounty_t400);
+        binding.features.setText(R.string.minerlic_description_t400);
     }
 
     public void onApply(View view) {
