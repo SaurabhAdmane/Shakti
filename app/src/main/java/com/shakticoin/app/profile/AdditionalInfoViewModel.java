@@ -13,6 +13,22 @@ import java.util.List;
 public class AdditionalInfoViewModel extends ViewModel {
     public MutableLiveData<List<String>> educatinLevelList = new MutableLiveData<>();
     public MutableLiveData<String> selectedEducationLevel = new MutableLiveData<>();
+    public MutableLiveData<String> emailAddress = new MutableLiveData<>();
+    public MutableLiveData<String> phoneNumber = new MutableLiveData<>();
+    public MutableLiveData<String> occupation = new MutableLiveData<>();
+
+    public MutableLiveData<String> kinFullName = new MutableLiveData<>();
+    public MutableLiveData<String> kinContact = new MutableLiveData<>();
+    public MutableLiveData<String> kinRelationship = new MutableLiveData<>();
+    public MutableLiveData<String> kinSelectedEducationLevel = new MutableLiveData<>();
+
+    // validation error messages
+    public MutableLiveData<String> emailAddressErrMsg = new MutableLiveData<>();
+    public MutableLiveData<String> phoneNumberErrMsg = new MutableLiveData<>();
+    public MutableLiveData<String> occupationErrMsg = new MutableLiveData<>();
+    public MutableLiveData<String> kinFullNameErrMsg = new MutableLiveData<>();
+    public MutableLiveData<String> kinContactErrMsg = new MutableLiveData<>();
+    public MutableLiveData<String> kinRelationshipErrMsg = new MutableLiveData<>();
 
     public AdditionalInfoViewModel() {
         // TODO: replace test set of education levels with final
@@ -29,6 +45,13 @@ public class AdditionalInfoViewModel extends ViewModel {
         InlineLabelSpinner spinner = (InlineLabelSpinner) view;
         if (spinner.isChoiceMade()) {
             selectedEducationLevel.setValue((String) spinner.getAdapter().getItem(position));
+        }
+    }
+
+    public void onEducationLevelSelectedKin(View view, int position) {
+        InlineLabelSpinner spinner = (InlineLabelSpinner) view;
+        if (spinner.isChoiceMade()) {
+            kinSelectedEducationLevel.setValue((String) spinner.getAdapter().getItem(position));
         }
     }
 }

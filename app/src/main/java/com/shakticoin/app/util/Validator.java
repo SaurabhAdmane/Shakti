@@ -37,6 +37,13 @@ public class Validator {
     }
 
     /**
+     * Combines checking value being either email address or phone number.
+     */
+    public static boolean isEmailOrPhoneNumber(String value) {
+        return isPhoneNumber(value) || isEmail(value);
+    }
+
+    /**
      * Returns true if a given String might be a web address.
      * @see android.util.Patterns
      */
@@ -82,5 +89,13 @@ public class Validator {
             prevChars[1] = c;
         }
         return hasDigit && hasLetter && hasOther;
+    }
+
+    /**
+     * Return code if the given string might be a real postal code.
+     * TODO: implement postal code validation
+     */
+    public static boolean isPostalCodeValid(String postalCode) {
+        return true;
     }
 }

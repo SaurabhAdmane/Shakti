@@ -1,17 +1,14 @@
 package com.shakticoin.app.registration;
 
 import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
-
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.widget.Toast;
 
 import com.shakticoin.app.R;
 import com.shakticoin.app.api.OnCompleteListener;
@@ -30,6 +27,7 @@ import java.util.List;
 public class ReferralActivity extends AppCompatActivity {
     private ArrayList<Tier> tiers;
     private ReferralActivityModel viewModel;
+    private ActivityReferralBinding binding;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -39,7 +37,10 @@ public class ReferralActivity extends AppCompatActivity {
                 String referralCodeKey = CommonUtil.prefixed(QRScannerActivity.KEY_REFERRAL_CODE, this);
                 if (data != null && data.hasExtra(referralCodeKey)) {
                     String referralCode = data.getStringExtra(referralCodeKey);
-                    viewModel.referralCode.setValue(referralCode);
+                    // TODO: initially we put the referral code to the corresponding field but now
+                    // this field is removed, so, we probably should pass through it to API call and
+                    // close activity. Or what?
+//                    viewModel.referralCode.setValue(referralCode);
                     Toast.makeText(this, referralCode, Toast.LENGTH_SHORT).show();
                     postReferralInfo();
                 }
@@ -50,7 +51,7 @@ public class ReferralActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityReferralBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_referral);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_referral);
 
         viewModel = ViewModelProviders.of(this).get(ReferralActivityModel.class);
         binding.setLifecycleOwner(this);
@@ -71,15 +72,6 @@ public class ReferralActivity extends AppCompatActivity {
         // display a special icon if content of the field conform the target format
         binding.emailAddressLayout.setValidator((view, value) -> Validator.isEmail(value));
         binding.mobileNumberLayout.setValidator((view, value) -> Validator.isPhoneNumber(value));
-
-        // default action
-        binding.referralCode.setOnEditorActionListener((v, actionId, event) -> {
-            if (EditorInfo.IME_ACTION_DONE == actionId) {
-                postReferralInfo();
-                return true;
-            }
-            return false;
-        });
     }
 
     public void OnSkipReferral(View view) {
@@ -93,6 +85,18 @@ public class ReferralActivity extends AppCompatActivity {
     public void onReward(View view) {
         postReferralInfo();
 
+        boolean validationSuccessful = true;
+        if (!Validator.isEmail(viewModel.emailAddress.getValue())) {
+            validationSuccessful = false;
+            binding.emailAddressLayout.setError(getString(R.string.err_email_required));
+        }
+
+        if (!Validator.isPhoneNumber(viewModel.mobileNumber.getValue())) {
+            validationSuccessful = false;
+            binding.mobileNumberLayout.setError(getString(R.string.err_phone_required));
+        }
+        if (!validationSuccessful) return;
+
         //TODO: remove, was added for demo purpose
         Intent intent = new Intent(this, ReferralConfirmationActivity.class);
         startActivity(intent);
@@ -103,16 +107,6 @@ public class ReferralActivity extends AppCompatActivity {
     }
 
     private void postReferralInfo() {
-        // at least one field should have a value
-        if (TextUtils.isEmpty(viewModel.fullName.getValue()) &&
-                TextUtils.isEmpty(viewModel.emailAddress.getValue()) &&
-                TextUtils.isEmpty(viewModel.mobileNumber.getValue()) &&
-                TextUtils.isEmpty(viewModel.referralCode.getValue()))
-        {
-            Toast.makeText(this, R.string.err_atleast_one_required, Toast.LENGTH_LONG).show();
-            return;
-        }
-
         // TODO: when api is ready we should call confirmation activity if referrer found
         selectTier();
     }

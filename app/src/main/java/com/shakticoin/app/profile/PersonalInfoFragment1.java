@@ -1,6 +1,7 @@
 package com.shakticoin.app.profile;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,19 @@ public class PersonalInfoFragment1 extends Fragment {
         viewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(PersonalInfoViewModel.class);
         binding.setViewModel(viewModel);
         View v = binding.getRoot();
+
+        viewModel.firstNameErrMsg.observe(this, s -> {
+            if (!TextUtils.isEmpty(s)) {
+                binding.firstNameLayout.setError(s);
+                viewModel.lastNameErrMsg.setValue(null);
+            }
+        });
+        viewModel.lastNameErrMsg.observe(this, s -> {
+            if (!TextUtils.isEmpty(s)) {
+                binding.lastNameLayout.setError(s);
+                viewModel.lastNameErrMsg.setValue(null);
+            }
+        });
 
         return v;
     }

@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.shakticoin.app.databinding.FragmentSignupAddressBinding;
+import com.shakticoin.app.util.Validator;
 
 public class SignUpAddressFragment extends Fragment {
     private SignUpActivityModel viewModel;
@@ -42,6 +43,8 @@ public class SignUpAddressFragment extends Fragment {
         if (listener != null) {
             binding.postalCode.setOnEditorActionListener(listener);
         }
+
+        binding.postalCodeLayout.setValidator((view, value) -> Validator.isPostalCodeValid(value));
 
         // display error callout for the field if error message is set
         viewModel.countryCodeErrMsg.observe(this, s -> {

@@ -41,7 +41,6 @@
     <string name="hint_last_name">Last Name</string>
     <string name="hint_middle_name">Middle Name</string>
     <string name="hint_name">Name</string>
-    <string name="hint_referral_code">Referral Code</string>
     <string name="hint_relationship">Relationship</string>
     <string name="hint_message">Message</string>
     <string name="hint_reason_to_contact">Reason to Contact</string>
@@ -65,6 +64,9 @@
     <string name="recovery_sent_subtitle">Be sure to check spam or junkmail.</string>
     <string name="err_email_required">Please enter a valid email</string>
     <string name="err_phone_required">Please enter a valid phone number</string>
+    <string name="err_email_phone_required">Please enter a valid email address or phone number</string>
+    <string name="err_either_email_phone_required">Either email address or phone number required</string>
+    <string name="err_postalCode_requird">Plese enter a valid postal code/zip</string>
     <string name="err_unexpected">Unexpected error occurred</string>
     <string name="err_incorrect_password">Your password and confirmation password do not match</string>
     <string name="err_password_not_strong">Your password must be at least 8 chars length and contain letters, digits, and special chars. Only 2 consecutive chars allowed.</string>

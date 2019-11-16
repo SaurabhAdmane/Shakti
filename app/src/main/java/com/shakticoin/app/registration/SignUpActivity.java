@@ -14,10 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.shakticoin.app.R;
-import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.auth.AuthRepository;
 import com.shakticoin.app.api.country.Country;
-import com.shakticoin.app.util.Debug;
 import com.shakticoin.app.util.Validator;
 
 
@@ -128,8 +126,8 @@ public class SignUpActivity extends AppCompatActivity implements TextView.OnEdit
             viewModel.cityErrMsg.setValue(getString(R.string.err_required));
             hasErrors = true;
         }
-        if (TextUtils.isEmpty(viewModel.postalCode.getValue())) {
-            viewModel.postalCodeErrMsg.setValue(getString(R.string.err_required));
+        if (!Validator.isPostalCodeValid(viewModel.postalCode.getValue())) {
+            viewModel.postalCodeErrMsg.setValue(getString(R.string.err_postalCode_requird));
             hasErrors = true;
         }
         Country selectedCountry = viewModel.countryCode.get();

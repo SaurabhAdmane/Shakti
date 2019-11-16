@@ -75,7 +75,8 @@
                     android:layout_height="wrap_content"
                     style="@style/AppTextField"
                     android:inputType="textCapWords|textPersonName"
-                    android:hint="@string/hint_full_name" />
+                    android:hint="@string/hint_full_name"
+                    android:text="@={viewModel.kinFullName}"/>
             </com.shakticoin.app.widget.TextInputLayout>
 
             <com.shakticoin.app.widget.TextInputLayout
@@ -88,6 +89,7 @@
                 style="@style/AppTextLayout"
                 app:labelTextSize="11sp"
                 app:labelFontTypeface="@font/lato"
+                app:validationEnabled="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/fullNameLayout">
@@ -98,7 +100,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/hint_phone_or_email"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:text="@={viewModel.kinContact}"/>
             </com.shakticoin.app.widget.TextInputLayout>
 
             <com.shakticoin.app.widget.TextInputLayout
@@ -121,7 +124,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/hint_relationship"
-                    android:inputType="textCapSentences" />
+                    android:inputType="textCapSentences"
+                    android:text="@={viewModel.kinRelationship}"/>
             </com.shakticoin.app.widget.TextInputLayout>
 
             <com.shakticoin.app.widget.SpinnerLayout
@@ -143,8 +147,8 @@
                     android:background="@android:color/transparent"
                     android:popupBackground="@android:color/transparent"
                     android:entries="@{viewModel.educatinLevelList}"
-                    android:onItemSelected="@{(parent, view, position, id) -> viewModel.onEducationLevelSelected(view, position)}"
-                    app:newValue="@{viewModel.selectedEducationLevel}"
+                    android:onItemSelected="@{(parent, view, position, id) -> viewModel.onEducationLevelSelectedKin(view, position)}"
+                    app:newValue="@{viewModel.kinSelectedEducationLevel}"
                     app:hint="@string/education_level"
                     app:textColorHint="@color/colorHint"
                     app:spinnerBorderColor="@color/colorBrand"/>
