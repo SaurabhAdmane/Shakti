@@ -126,11 +126,12 @@ public class SignUpActivity extends AppCompatActivity implements TextView.OnEdit
             viewModel.cityErrMsg.setValue(getString(R.string.err_required));
             hasErrors = true;
         }
-        if (!Validator.isPostalCodeValid(viewModel.postalCode.getValue())) {
+        Country selectedCountry = viewModel.countryCode.get();
+        if (!Validator.isPostalCodeValid(
+                selectedCountry != null ? selectedCountry.getCode() : null, viewModel.postalCode.getValue())) {
             viewModel.postalCodeErrMsg.setValue(getString(R.string.err_postalCode_requird));
             hasErrors = true;
         }
-        Country selectedCountry = viewModel.countryCode.get();
         if (selectedCountry != null) {
             String code = selectedCountry.getCode();
             // ensure state/province is set for USA and Canada

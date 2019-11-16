@@ -184,17 +184,18 @@
                 app:layout_constraintTop_toBottomOf="@+id/stateLayout"
                 tools:layout_conversion_absoluteHeight="1dp"
                 tools:layout_conversion_absoluteWidth="1dp">
+
                 <com.shakticoin.app.widget.InlineLabelEditText
                     android:id="@+id/postalCode"
-                    android:tag="AddressPage"
                     style="@style/AppTextField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="@string/hint_postal_code"
                     android:imeOptions="actionDone"
-                    android:inputType="number"
-                    android:text="@={viewModel.postalCode}"/>
+                    android:inputType="text|textCapCharacters"
+                    android:tag="AddressPage"
+                    android:text="@={viewModel.postalCode}" />
             </com.shakticoin.app.widget.TextInputLayout>
 
             <Button

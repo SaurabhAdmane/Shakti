@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.shakticoin.app.databinding.FragmentProfilePersonalPage2Binding;
-import com.shakticoin.app.util.Validator;
+import com.shakticoin.app.util.PostalCodeValidator;
 
 import java.util.Objects;
 
@@ -31,7 +31,9 @@ public class PersonalInfoFragment2 extends Fragment {
         binding.setViewModel(viewModel);
         View v = binding.getRoot();
 
-        binding.postalCodeLayout.setValidator((view, value) -> Validator.isPostalCodeValid(value));
+        binding.postalCodeLayout.setValidator(new PostalCodeValidator(null));
+        viewModel.selectedCountry.observe(this, country ->
+                binding.postalCodeLayout.setValidator(new PostalCodeValidator(country != null ? country.getCode() : null)));
 
         viewModel.countriesErrMsg.observe(this, s -> {
             if (!TextUtils.isEmpty(s)) {

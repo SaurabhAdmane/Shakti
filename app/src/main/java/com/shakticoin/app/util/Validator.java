@@ -111,9 +111,9 @@ public class Validator {
 
     /**
      * Return code if the given string might be a real postal code.
-     * TODO: implement postal code validation
      */
-    public static boolean isPostalCodeValid(String postalCode) {
-        return true;
+    public static boolean isPostalCodeValid(String countryCode, String postalCode) {
+        PostalCodeValidator validator = new PostalCodeValidator(countryCode);
+        return validator.isValid(null, postalCode);
     }
 }

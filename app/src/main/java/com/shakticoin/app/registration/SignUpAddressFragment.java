@@ -4,6 +4,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.Observable;
+import androidx.databinding.ObservableField;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProviders;
@@ -14,7 +16,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.shakticoin.app.api.country.Country;
 import com.shakticoin.app.databinding.FragmentSignupAddressBinding;
+import com.shakticoin.app.util.PostalCodeValidator;
 import com.shakticoin.app.util.Validator;
 
 public class SignUpAddressFragment extends Fragment {
@@ -44,7 +48,14 @@ public class SignUpAddressFragment extends Fragment {
             binding.postalCode.setOnEditorActionListener(listener);
         }
 
-        binding.postalCodeLayout.setValidator((view, value) -> Validator.isPostalCodeValid(value));
+        binding.postalCodeLayout.setValidator(new PostalCodeValidator(null));
+        viewModel.countryCode.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+            @Override
+            public void onPropertyChanged(Observable sender, int propertyId) {
+                Country country = ((ObservableField<Country>) sender).get();
+                binding.postalCodeLayout.setValidator(new PostalCodeValidator(country != null ? country.getCode() : null));
+            }
+        });
 
         // display error callout for the field if error message is set
         viewModel.countryCodeErrMsg.observe(this, s -> {

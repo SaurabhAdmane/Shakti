@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
 import com.shakticoin.app.R;
+import com.shakticoin.app.api.country.Country;
 import com.shakticoin.app.databinding.ActivityProfileBinding;
 import com.shakticoin.app.util.Debug;
 import com.shakticoin.app.util.Validator;
@@ -88,7 +89,9 @@ public class ProfileActivity extends BaseWalletActivity {
             validationSuccessful = false;
             personalInfoViewModel.addressErrMsg.setValue(getString(R.string.err_required));
         }
-        if (!Validator.isPostalCodeValid(personalInfoViewModel.postalCode.getValue())) {
+        Country selectedCountry = personalInfoViewModel.selectedCountry.getValue();
+        if (!Validator.isPostalCodeValid(
+                selectedCountry != null ? selectedCountry.getCode() : null, personalInfoViewModel.postalCode.getValue())) {
             validationSuccessful = false;
             personalInfoViewModel.postalCodeErrMsg.setValue(getString(R.string.err_postalCode_requird));
         }
