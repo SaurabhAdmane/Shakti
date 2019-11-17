@@ -32,6 +32,8 @@ public class Validator {
      * @see android.util.Patterns
      */
     public static boolean isPhoneNumber(String phoneNumber) {
+        if (phoneNumber == null) return false;
+
         StringBuilder onlyDigits = new StringBuilder();
         for(int i = 0; i < phoneNumber.length(); i++){
             final char c = phoneNumber.charAt(i);
