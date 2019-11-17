@@ -5,19 +5,17 @@ import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.DataBindingUtil;
-
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.CompoundButton;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
 
 import com.shakticoin.app.R;
 import com.shakticoin.app.api.BaseUrl;
@@ -34,7 +32,6 @@ import com.shakticoin.app.util.Debug;
 import com.shakticoin.app.util.PreferenceHelper;
 import com.shakticoin.app.util.Validator;
 import com.shakticoin.app.wallet.WalletActivity;
-import com.shakticoin.app.widget.TextInputLayout;
 
 import java.util.Objects;
 
@@ -44,14 +41,11 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-
 public class SignInActivity extends AppCompatActivity {
     private ActivitySigninBinding binding;
 
     private LoginService loginService;
     private MinerRepository minerRepository;
-
-    private static final int MIN_PASSWD_LEN = 8;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,29 +61,22 @@ public class SignInActivity extends AppCompatActivity {
             return false;
         });
 
-        TextInputLayout ctrlUsernameLayout = findViewById(R.id.username_layout);
-        ctrlUsernameLayout.setValidator((view, value) -> {
-            // username must be email
-            return Validator.isEmail(value);
-        });
+        binding.usernameLayout.setValidator((view, value) -> Validator.isEmail(value));
         binding.passwordLayout.setValidator((view, value) -> {
             // password must be longer than 8 chars
-            return value != null && value.length() > MIN_PASSWD_LEN;
+            return value != null && value.length() > Validator.MIN_PASSWD_LEN;
         });
 
         final Activity self = this;
-        binding.rememberMe.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                boolean deviceSecure = false;
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    KeyguardManager keyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
-                    deviceSecure = keyguardManager != null && keyguardManager.isDeviceSecure();
-                }
-                if (buttonView.isChecked() && !deviceSecure) {
-                    buttonView.setChecked(false);
-                    Toast.makeText(self, R.string.err_device_not_secure, Toast.LENGTH_LONG).show();
-                }
+        binding.rememberMe.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            boolean deviceSecure = false;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                KeyguardManager keyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
+                deviceSecure = keyguardManager != null && keyguardManager.isDeviceSecure();
+            }
+            if (buttonView.isChecked() && !deviceSecure) {
+                buttonView.setChecked(false);
+                Toast.makeText(self, R.string.err_device_not_secure, Toast.LENGTH_LONG).show();
             }
         });
 
@@ -105,11 +92,20 @@ public class SignInActivity extends AppCompatActivity {
     public void onLogin(View view) {
 
         String username = Objects.requireNonNull(binding.username.getText()).toString();
+        boolean validationSuccessful = true;
+        if (!Validator.isEmail(username)) {
+            validationSuccessful = false;
+            binding.usernameLayout.setError(getString(R.string.err_loging_must_be_email));
+        }
         String password = Objects.requireNonNull(binding.password.getText()).toString();
-        if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
-            Toast.makeText(this, R.string.login_password_required, Toast.LENGTH_SHORT).show();
+        if (TextUtils.isEmpty(password) || password.length() < Validator.MIN_PASSWD_LEN) {
+            validationSuccessful = false;
+            binding.passwordLayout.setError(getString(R.string.err_password_invalid, Validator.MIN_PASSWD_LEN));
+        }
+        if (!validationSuccessful) {
             return;
         }
+
         boolean rememberMe = binding.rememberMe.isChecked();
 
         binding.progressBar.setVisibility(View.VISIBLE);

@@ -19,6 +19,8 @@ public class Validator {
             "884", "885", "887", "889", "967", "968", "969", "970", "978", "979", "990", "991",
             "997", "999");
 
+    public static final int MIN_PASSWD_LEN = 8;
+
     /**
      * Returns true if a given String looks like an email address.
      * @see android.util.Patterns
@@ -89,7 +91,7 @@ public class Validator {
      */
     public static boolean isPasswordStrong(String password) {
         if (password == null) return false;
-        if (password.length() < 8) return false;
+        if (password.length() < MIN_PASSWD_LEN) return false;
         boolean hasLetter = false;
         boolean hasDigit = false;
         boolean hasOther = false;
