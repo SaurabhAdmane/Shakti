@@ -134,12 +134,12 @@
 
                         <com.shakticoin.app.widget.InlineLabelEditText
                             android:id="@+id/email"
+                            style="@style/AppTextField"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            style="@style/AppTextField"
-                            android:inputType="text"
                             android:hint="@string/hint_email_address"
-                            android:text="@={viewModel.emailAddress}"/>
+                            android:inputType="textEmailAddress"
+                            android:text="@={viewModel.emailAddress}" />
                     </com.shakticoin.app.widget.TextInputLayout>
 
                     <com.shakticoin.app.widget.TextInputLayout
@@ -157,12 +157,12 @@
 
                         <com.shakticoin.app.widget.InlineLabelEditText
                             android:id="@+id/phone"
+                            style="@style/AppTextField"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            style="@style/AppTextField"
-                            android:inputType="text"
                             android:hint="@string/hint_mobile_number"
-                            android:text="@={viewModel.phoneNumber}"/>
+                            android:inputType="phone"
+                            android:text="@={viewModel.phoneNumber}" />
                     </com.shakticoin.app.widget.TextInputLayout>
 
                     <com.shakticoin.app.widget.TextInputLayout
