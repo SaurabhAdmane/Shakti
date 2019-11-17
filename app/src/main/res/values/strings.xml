@@ -18,7 +18,7 @@
     <string name="do_send">Send</string>
     <string name="do_resend">Resend</string>
     <string name="err_loging_must_be_email">Please enter an email</string>
-    <string name="err_password_invalid">Password cannot be empty and shold be longer than %1$d chars</string>
+    <string name="err_password_invalid">Password cannot be empty and should be longer than %1$d chars</string>
     <string name="tour1_title">Create your Shakti ID.</string>
     <string name="tour1_text">Say hello to new money.</string>
     <string name="tour2_title">Receive Bonus Bounty!</string>
