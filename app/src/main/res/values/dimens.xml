@@ -22,4 +22,7 @@
     <dimen name="avatar_height">38dp</dimen>
     <dimen name="avatar_width">38dp</dimen>
 
+    <dimen name="html_bullet_gap">13dp</dimen>
+    <dimen name="html_bullet_radius">3dp</dimen>
+
 </resources>

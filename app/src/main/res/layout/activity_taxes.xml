@@ -51,9 +51,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="#B3000000"
-                            android:text=""
                             android:textAppearance="@style/AppText.Body"
-                            android:textSize="13sp" />
+                            android:textSize="13sp"
+                            android:lineSpacingMultiplier="1.2"/>
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"

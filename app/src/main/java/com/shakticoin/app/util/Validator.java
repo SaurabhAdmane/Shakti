@@ -4,7 +4,22 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Patterns;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class Validator {
+    // source of country codes https://www.itu.int/oth/T0202.aspx?parent=T0202
+    /** There are no country codes started from these numbers */
+    private static List<String> emptyTwoDigitRanges = Arrays.asList("28", "80", "83", "89");
+    /** List of phone country codes that are not assigned */
+    private static List<String> treeDigitExclusions = Arrays.asList("210", "214", "215", "217",
+            "219", "259", "292", "293", "294", "295", "296", "422", "424", "425", "426", "427",
+            "428", "429", "671", "684", "693", "694", "695", "696", "697", "698", "699", "851",
+            "854", "857", "858", "859", "871", "872", "873", "874", "875", "876", "877", "879",
+            "884", "885", "887", "889", "967", "968", "969", "970", "978", "979", "990", "991",
+            "997", "999");
+
+    public static final int MIN_PASSWD_LEN = 8;
 
     /**
      * Returns true if a given String looks like an email address.
@@ -19,21 +34,35 @@ public class Validator {
      * @see android.util.Patterns
      */
     public static boolean isPhoneNumber(String phoneNumber) {
-        // 15 digits max
-        if (TextUtils.isEmpty(phoneNumber)) return false;
-        if (phoneNumber.length() > 15) return false;
+        if (phoneNumber == null) return false;
 
-        // only digits
+        StringBuilder onlyDigits = new StringBuilder();
         for(int i = 0; i < phoneNumber.length(); i++){
             final char c = phoneNumber.charAt(i);
-            if (!Character.isDigit(c)) return false;
+            if (Character.isDigit(c)) {
+                onlyDigits.append(c);
+            }
         }
 
-        //TODO: the number should start from a country code
-        // Database has PhoneCountryCode table with known country codes and they should be used
-        // either to validate users input or filling separate drop-down with countries (as a part
-        // of phone number)
+        // 15 digits max
+        if (TextUtils.isEmpty(onlyDigits)) return false;
+        if (onlyDigits.length() > 15 || onlyDigits.length() < 7) return false;
+
+        String codeCandidate = onlyDigits.substring(0,2);
+        if (emptyTwoDigitRanges.contains(codeCandidate)) return false;
+        codeCandidate = onlyDigits.substring(0, 3);
+        if (treeDigitExclusions.contains(codeCandidate)) return false;
+
+        // other combinations of leading digits are valid country codes
+
         return true;
+    }
+
+    /**
+     * Combines checking value being either email address or phone number.
+     */
+    public static boolean isEmailOrPhoneNumber(String value) {
+        return isPhoneNumber(value) || isEmail(value);
     }
 
     /**
@@ -62,7 +91,7 @@ public class Validator {
      */
     public static boolean isPasswordStrong(String password) {
         if (password == null) return false;
-        if (password.length() < 8) return false;
+        if (password.length() < MIN_PASSWD_LEN) return false;
         boolean hasLetter = false;
         boolean hasDigit = false;
         boolean hasOther = false;
@@ -82,5 +111,13 @@ public class Validator {
             prevChars[1] = c;
         }
         return hasDigit && hasLetter && hasOther;
+    }
+
+    /**
+     * Return code if the given string might be a real postal code.
+     */
+    public static boolean isPostalCodeValid(String countryCode, String postalCode) {
+        PostalCodeValidator validator = new PostalCodeValidator(countryCode);
+        return validator.isValid(null, postalCode);
     }
 }

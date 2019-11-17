@@ -130,7 +130,8 @@
                     android:layout_height="wrap_content"
                     style="@style/AppTextField"
                     android:inputType="textCapWords|textPersonName"
-                    android:hint="@string/hint_city" />
+                    android:hint="@string/hint_city"
+                    android:text="@={viewModel.city}"/>
             </com.shakticoin.app.widget.TextInputLayout>
 
             <com.shakticoin.app.widget.TextInputLayout
@@ -153,7 +154,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/hint_address1"
-                    android:inputType="textShortMessage|text|textPostalAddress" />
+                    android:text="@={viewModel.address1}"
+                    android:inputType="textPostalAddress" />
             </com.shakticoin.app.widget.TextInputLayout>
 
             <com.shakticoin.app.widget.TextInputLayout
@@ -176,6 +178,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/hint_address2"
+                    android:text="@={viewModel.address2}"
                     android:inputType="textPostalAddress" />
             </com.shakticoin.app.widget.TextInputLayout>
 
@@ -188,6 +191,7 @@
                 android:layout_marginEnd="24dp"
                 style="@style/AppTextLayout"
                 app:labelTextSize="11sp"
+                app:validationEnabled="true"
                 app:labelFontTypeface="@font/lato"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -199,6 +203,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/hint_postal_code"
+                    android:text="@={viewModel.postalCode}"
                     android:inputType="text|textCapCharacters" />
             </com.shakticoin.app.widget.TextInputLayout>
 

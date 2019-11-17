@@ -1,6 +1,7 @@
 package com.shakticoin.app.profile;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.shakticoin.app.databinding.FragmentProfilePersonalPage2Binding;
+import com.shakticoin.app.util.PostalCodeValidator;
 
 import java.util.Objects;
 
@@ -28,6 +30,35 @@ public class PersonalInfoFragment2 extends Fragment {
         viewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(PersonalInfoViewModel.class);
         binding.setViewModel(viewModel);
         View v = binding.getRoot();
+
+        binding.postalCodeLayout.setValidator(new PostalCodeValidator(null));
+        viewModel.selectedCountry.observe(this, country ->
+                binding.postalCodeLayout.setValidator(new PostalCodeValidator(country != null ? country.getCode() : null)));
+
+        viewModel.countriesErrMsg.observe(this, s -> {
+            if (!TextUtils.isEmpty(s)) {
+                binding.countriesLayout.setError(s);
+                viewModel.countriesErrMsg.setValue(null);
+            }
+        });
+        viewModel.cityErrMsg.observe(this, s -> {
+            if (!TextUtils.isEmpty(s)) {
+                binding.cityLayout.setError(s);
+                viewModel.cityErrMsg.setValue(null);
+            }
+        });
+        viewModel.addressErrMsg.observe(this, s -> {
+            if (!TextUtils.isEmpty(s)) {
+                binding.address1Layout.setError(s);
+                viewModel.addressErrMsg.setValue(null);
+            }
+        });
+        viewModel.postalCodeErrMsg.observe(this, s -> {
+            if (!TextUtils.isEmpty(s)) {
+                binding.postalCodeLayout.setError(s);
+                viewModel.postalCodeErrMsg.setValue(null);
+            }
+        });
 
         return v;
     }

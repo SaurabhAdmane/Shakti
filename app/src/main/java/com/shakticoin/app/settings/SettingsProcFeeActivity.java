@@ -2,6 +2,7 @@ package com.shakticoin.app.settings;
 
 import android.os.Bundle;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -9,6 +10,8 @@ import androidx.databinding.DataBindingUtil;
 import org.apache.commons.io.IOUtils;
 import com.shakticoin.app.R;
 import com.shakticoin.app.databinding.ActivityProcessingFeeBinding;
+import com.shakticoin.app.util.Debug;
+import com.shakticoin.app.util.HtmlUtil;
 import com.shakticoin.app.wallet.BaseWalletActivity;
 
 import java.io.IOException;
@@ -28,10 +31,12 @@ public class SettingsProcFeeActivity extends BaseWalletActivity {
         try {
             InputStream is = getResources().getAssets().open("processingFees.html");
             String helpPage = IOUtils.toString(is);
-            binding.htmlView.setText(Html.fromHtml(helpPage));
+            binding.htmlView.setText(HtmlUtil.fromHtml(helpPage, binding.htmlView));
+            binding.htmlView.setLinksClickable(true);
+            binding.htmlView.setMovementMethod(new LinkMovementMethod());
 
         } catch (IOException e) {
-            e.printStackTrace();
+            Debug.logException(e);
         }
     }
 

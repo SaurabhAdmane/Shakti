@@ -187,6 +187,7 @@
                         android:layout_marginEnd="24dp"
                         app:labelTextSize="11sp"
                         app:labelFontTypeface="@font/lato"
+                        app:validationEnabled="true"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/lastNameFieldLayout">
@@ -210,6 +211,7 @@
                         android:layout_marginEnd="24dp"
                         app:labelTextSize="11sp"
                         app:labelFontTypeface="@font/lato"
+                        app:validationEnabled="true"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/emailFieldLayout">
@@ -225,7 +227,7 @@
                     </com.shakticoin.app.widget.TextInputLayout>
 
                     <Button
-                        android:id="@+id/button2"
+                        android:id="@+id/doAddReferral"
                         style="@style/AppButton.Rounded"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -233,6 +235,7 @@
                         android:layout_marginTop="76dp"
                         android:layout_marginEnd="48dp"
                         android:text="@string/add_ref_action"
+                        android:onClick="onAddReferral"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/phoneFieldLayout" />

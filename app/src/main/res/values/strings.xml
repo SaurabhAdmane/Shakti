@@ -17,7 +17,8 @@
     <string name="go_back_for_changes"><u>Let me go back and correct something.</u></string>
     <string name="do_send">Send</string>
     <string name="do_resend">Resend</string>
-    <string name="login_password_required">Both username and password are required</string>
+    <string name="err_loging_must_be_email">Please enter an email</string>
+    <string name="err_password_invalid">Password cannot be empty and should be longer than %1$d chars</string>
     <string name="tour1_title">Create your Shakti ID.</string>
     <string name="tour1_text">Say hello to new money.</string>
     <string name="tour2_title">Receive Bonus Bounty!</string>
@@ -41,7 +42,6 @@
     <string name="hint_last_name">Last Name</string>
     <string name="hint_middle_name">Middle Name</string>
     <string name="hint_name">Name</string>
-    <string name="hint_referral_code">Referral Code</string>
     <string name="hint_relationship">Relationship</string>
     <string name="hint_message">Message</string>
     <string name="hint_reason_to_contact">Reason to Contact</string>
@@ -65,6 +65,9 @@
     <string name="recovery_sent_subtitle">Be sure to check spam or junkmail.</string>
     <string name="err_email_required">Please enter a valid email</string>
     <string name="err_phone_required">Please enter a valid phone number</string>
+    <string name="err_email_phone_required">Please enter a valid email address or phone number</string>
+    <string name="err_either_email_phone_required">Either email address or phone number required</string>
+    <string name="err_postalCode_requird">Plese enter a valid postal code/zip</string>
     <string name="err_unexpected">Unexpected error occurred</string>
     <string name="err_incorrect_password">Your password and confirmation password do not match</string>
     <string name="err_password_not_strong">Your password must be at least 8 chars length and contain letters, digits, and special chars. Only 2 consecutive chars allowed.</string>
@@ -74,13 +77,13 @@
     <string name="err_phone_exists">The phone number is already used.</string>
     <string name="err_email_phone_exists">Both the email and phone number are already used.</string>
     <string name="ref_who_referred">Who referred you?</string>
-    <string name="ref_story">Like an elephant, we never forget. Human effort is Shakti. One would always remember and reward honest effort. Please do provide and info about the person who referred you to Shakti.</string>
+    <string name="ref_story">Like an elephant, we never forget. Effort is Shakti. Always remember and reward honest human effort. Tell us who referred you.</string>
     <string name="ref_type_info">Or, type their information:</string>
     <string name="ref_scan_qr">Scan the QR Code</string>
     <string name="ref_reward">Reward your referral</string>
     <string name="ref_skip">I don\'t remember who referred me</string>
     <string name="refconfirm_story1"><b>You\'ve successfuly registered your referral.</b>\nWith your good deed, your friend is little closer to unlocking their Bonus Bounty.</string>
-    <string name="refconfirm_story2"><b>Finish your registration now to claim your Bonus Bounty.</b></string>
+    <string name="refconfirm_story2"><b>Finish your Shakti ID now to claim\nyour Bonus Bounty.</b></string>
     <string name="refconfirm_title">Thank you!</string>
     <string name="take_me_to_wallet">Cool, take me to my wallet!</string>
     <string name="remember_me">Remember me</string>
@@ -108,12 +111,14 @@
     <string name="minerlic_bonus_bounty_t100">Get an extra SXE 10,000 bonus bounty\n- that is $50,000 USD</string>
     <string name="minerlic_bonus_bounty_t200">Get an extra SXE 10,000 bonus bounty\n- that is $50,000 USD</string>
     <string name="minerlic_bonus_bounty_t300">Get an extra SXE 10,000 bonus bounty\n- that is $50,000 USD</string>
+    <string name="minerlic_bonus_bounty_t400">Get an extra SXE 10,000 bonus bounty\n- that is $50,000 USD</string>
     <string name="minerlic_one_time_payment">For a one time payment of</string>
     <string name="minerlic_action">Apply to %1$s</string>
     <string name="minerlic_description_m101"><![CDATA[M101 Features\n\n\u2022Individual Mining License\n\n\u2022Mine SXE coins from home or wherever you work from.\n\n\u2022Priority upgrade option to Power Mining License.]]></string>
     <string name="minerlic_description_t100"><![CDATA[T100 Features\n\n\u2022Exclusive limited territory access.\n\n\u2022Be among the first 20.000 Power Miners.\n\n\u2022Be the first to on-board merchants.\n\n\u2022Earn thousands of USD equivalent in SXE.]]></string>
     <string name="minerlic_description_t200"><![CDATA[T200 Features\n\n\u2022All features from M101 and T100 License.\n\n\u2022Be among the first 50.000 Power Miners.\n\n\u2022Dedicated Support.\n\n\u2022Earn thousands of USD equivalent in SXE.]]></string>
     <string name="minerlic_description_t300"><![CDATA[T300 Features\n\n\u2022Exclusive limited territory access.\n\n\u2022Be among the first 50.000 Power Miners.\n\n\u2022Be the first to on-board merchants.\n\n\u2022Earn thousands of USD equivalent in SXE.]]></string>
+    <string name="minerlic_description_t400"><![CDATA[T400 Features\n\n\u2022Be among the first 60,000 Power Miners.\n\n\u2022Be the first one to choose your data center anywhere in the world.\n\n\u2022Earn thousands of USD equivalent in SXE.]]></string>
     <string name="stripe_pay">Pay by STRIPE</string>
     <string name="stripe_cancel">Cancel</string>
     <string name="stripe_subtitle">Finish the payment to complete registration</string>
@@ -349,7 +354,7 @@
         Remember it is your effort that counts.
     </string>
     <string name="my_refs_unlocked_action">Start referring friends and family</string>
-    <string name="my_refs_tounlock"><u>%1$sd months to unlock</u></string>
+    <string name="my_refs_tounlock"><u>%1$d months to unlock</u></string>
     <string name="my_refs_refer_other">Refer others to unlock SXE</string>
     <string name="my_refs_referred">%1$d Referred</string>
     <string name="my_refs_refer_note">
@@ -357,7 +362,7 @@
     </string>
     <string name="my_refs_addreferral_action">Add a Referral</string>
     <string name="my_refs_myrate_action">My Effort Rates</string>
-    <string name="my_refs_import_from">Invite from:</string>
+    <string name="my_refs_import_from">Import from:</string>
     <string name="my_refs_media_facebook">Facebook</string>
     <string name="my_refs_media_instagram">Instagram</string>
     <string name="my_refs_media_plus">Google+</string>

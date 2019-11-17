@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-    <data />
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.shakticoin.app.settings.ContactUsViewModel" />
+    </data>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -86,6 +89,9 @@
                             android:background="@android:color/transparent"
                             android:popupBackground="@android:color/transparent"
                             android:layout_height="wrap_content"
+                            android:entries="@{viewModel.reasonList}"
+                            android:onItemSelected="@{(parent, view, position, id) -> viewModel.onReasonSelected(view, position)}"
+                            app:newValue="@{viewModel.selectedReason}"
                             app:hint="@string/hint_reason_to_contact"
                             app:textColorHint="@color/colorHint"
                             app:spinnerBorderColor="@color/colorBrand"/>
@@ -109,7 +115,8 @@
                             android:layout_height="wrap_content"
                             style="@style/AppTextField"
                             android:inputType="text"
-                            android:hint="@string/hint_name" />
+                            android:hint="@string/hint_name"
+                            android:text="@={viewModel.name}"/>
                     </com.shakticoin.app.widget.TextInputLayout>
 
                     <com.shakticoin.app.widget.TextInputLayout
@@ -120,17 +127,19 @@
                         android:layout_marginTop="15dp"
                         android:layout_marginEnd="24dp"
                         style="@style/AppTextLayout"
+                        app:validationEnabled="true"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/nameLayout">
 
                         <com.shakticoin.app.widget.InlineLabelEditText
                             android:id="@+id/email"
+                            style="@style/AppTextField"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            style="@style/AppTextField"
-                            android:inputType="text"
-                            android:hint="@string/hint_email_address" />
+                            android:hint="@string/hint_email_address"
+                            android:inputType="textEmailAddress"
+                            android:text="@={viewModel.emailAddress}" />
                     </com.shakticoin.app.widget.TextInputLayout>
 
                     <com.shakticoin.app.widget.TextInputLayout
@@ -141,17 +150,19 @@
                         android:layout_marginTop="15dp"
                         android:layout_marginEnd="24dp"
                         style="@style/AppTextLayout"
+                        app:validationEnabled="true"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/emailLayout">
 
                         <com.shakticoin.app.widget.InlineLabelEditText
                             android:id="@+id/phone"
+                            style="@style/AppTextField"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            style="@style/AppTextField"
-                            android:inputType="text"
-                            android:hint="@string/hint_mobile_number" />
+                            android:hint="@string/hint_mobile_number"
+                            android:inputType="phone"
+                            android:text="@={viewModel.phoneNumber}" />
                     </com.shakticoin.app.widget.TextInputLayout>
 
                     <com.shakticoin.app.widget.TextInputLayout
@@ -172,7 +183,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/hint_message"
-                            android:inputType="textMultiLine|text|textImeMultiLine" />
+                            android:text="@={viewModel.message}"
+                            android:inputType="textMultiLine|textImeMultiLine" />
                     </com.shakticoin.app.widget.TextInputLayout>
 
                     <Button
@@ -184,9 +196,27 @@
                         android:layout_marginTop="38dp"
                         android:layout_marginEnd="32dp"
                         android:text="@string/settings_contact_us_action"
+                        android:onClick="onSend"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/messageLayout" />
+
+                    <TextView
+                        android:id="@+id/do_cancel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginEnd="8dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:onClick="onCancel"
+                        android:text="@string/cancel"
+                        android:textAppearance="@style/AppText.Body"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.472"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/doSend" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </ScrollView>
