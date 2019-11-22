@@ -200,6 +200,14 @@
                 android:value=".settings.SettingsHelpActivity" />
         </activity>
 
+        <activity
+            android:name=".wallet.WalletAdminActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".wallet.WalletActivity"/>
+        </activity>
+
     </application>
 
 </manifest>

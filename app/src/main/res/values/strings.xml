@@ -12,6 +12,9 @@
     <string name="next">Next</string>
     <string name="cancel">Cancel</string>
     <string name="log_in">Log in</string>
+    <string name="common_wallet">Wallet</string>
+    <string name="common_vault">Vault</string>
+    <string name="common_status">Status</string>
     <string name="do_registration">Create Shakti ID</string>
     <string name="do_login"><u>Already have an account? Sign in</u></string>
     <string name="go_back_for_changes"><u>Let me go back and correct something.</u></string>
@@ -147,6 +150,21 @@
     <string name="wallet_add_vault"><b>Business Vault</b></string>
     <string name="wallet_add_vault_desc">
         Become a one-world business leader with one currency - and take your money further. <u>Learn how.</u>
+    </string>
+    <string name="wallet_admin_active">Active</string>
+    <string name="wallet_admin_inactive">Inactive</string>
+    <string name="wallet_admin_locked">Locked</string>
+    <string name="wallet_admin_bonus_bounty">Bonus Bounty</string>
+    <string name="wallet_admin_kyc_status">KYC Status</string>
+    <string name="wallet_admin_password_recovery">Password Recovery</string>
+    <string name="wallet_admin_digital_nation">Digital Nation</string>
+    <string name="wallet_admin_birthdate">Date of Birth</string>
+    <string name="wallet_admin_micro_lock">Micro Lock</string>
+    <string name="wallet_admin_age_lock">Age Lock</string>
+    <string name="wallet_admin_us_validation">US Validation</string>
+    <string name="wallet_admin_footer">
+        All wallets are locked by default. It is up to the wallet holder to successfully unlock
+        their wallets by undergoing KYC, AML &amp; CTF compliance screening.
     </string>
     <string name="dlg_business_vault_title"><![CDATA[Get the <font color="#B09C75">Business Vault</font><br/>advantage</string]]></string>
     <string name="dlg_business_vault_text"><![CDATA[

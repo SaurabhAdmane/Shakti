@@ -1,0 +1,607 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/wallet_background">
+
+        <include layout="@layout/inline_header"/>
+
+        <RelativeLayout
+            android:id="@+id/fragments"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/toolbar">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/mainFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true">
+
+                <TextView
+                    android:id="@+id/label1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginEnd="24dp"
+                    android:text="@string/wallet_current_balance"
+                    android:textAppearance="@style/AppText.Body"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/balance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="27dp"
+                    android:layout_marginEnd="24dp"
+                    android:text="SXE 0.00"
+                    android:textAppearance="@style/AppText.Body"
+                    android:textFontWeight="500"
+                    android:textSize="36sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/label1"
+                    tools:ignore="UnusedAttribute" />
+
+                <TextView
+                    android:id="@+id/doBalanceHistory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="27dp"
+                    android:layout_marginEnd="24dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:text="@string/wallet_balance_history"
+                    android:textAppearance="@style/AppButton.Link"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/balance" />
+
+                <View
+                    android:id="@+id/blackRect1"
+                    android:layout_width="0dp"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="31dp"
+                    android:background="#80000000"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/doBalanceHistory" />
+
+                <TableLayout
+                    android:id="@+id/tableLayout2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:stretchColumns="0"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/blackRect1">
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:paddingStart="6dp"
+                            android:paddingLeft="6dp"
+                            android:paddingEnd="6dp"
+                            android:paddingRight="6dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:fontFamily="@font/lato"
+                            android:gravity="start|center_vertical"
+                            android:paddingStart="6dp"
+                            android:paddingLeft="6dp"
+                            android:paddingEnd="6dp"
+                            android:paddingRight="6dp"
+                            android:text="@string/common_wallet"
+                            android:textAppearance="@style/AppText.Body"/>
+
+                        <ImageView
+                            android:layout_width="22dp"
+                            android:layout_height="18dp"
+                            android:layout_marginTop="6dp"
+                            app:srcCompat="@drawable/ic_wallet"
+                            tools:ignore="ContentDescription" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:gravity="start|center_vertical"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="6dp"
+                            android:text="@string/common_vault"
+                            android:textAppearance="@style/AppText.Body"/>
+
+                        <ImageView
+                            android:layout_width="22dp"
+                            android:layout_height="18dp"
+                            android:layout_marginTop="6dp"
+                            app:srcCompat="@drawable/ic_wallet"
+                            tools:ignore="ContentDescription" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:fontFamily="@font/lato_light"
+                            android:gravity="start|center_vertical"
+                            android:paddingStart="6dp"
+                            android:paddingEnd="6dp"
+                            android:text="@string/common_status"
+                            android:textAppearance="@style/AppText.Body"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:gravity="start|center_vertical"
+                            android:paddingStart="6dp"
+                            android:paddingLeft="6dp"
+                            android:paddingEnd="6dp"
+                            android:paddingRight="6dp"
+                            android:text="@string/wallet_admin_inactive"
+                            android:textAppearance="@style/AppText.Body"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:gravity="start|center_vertical"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="6dp"
+                            android:text="@string/wallet_admin_inactive"
+                            android:textAppearance="@style/AppText.Body"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#33000000">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:fontFamily="@font/lato_light"
+                            android:gravity="start|center_vertical"
+                            android:paddingStart="6dp"
+                            android:paddingEnd="6dp"
+                            android:text="@string/wallet_admin_bonus_bounty"
+                            android:textAppearance="@style/AppText.Body"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:gravity="start|center_vertical"
+                            android:paddingStart="6dp"
+                            android:paddingLeft="6dp"
+                            android:paddingEnd="6dp"
+                            android:paddingRight="6dp"
+                            android:text="@string/wallet_admin_locked"
+                            android:textAppearance="@style/AppText.Body"/>
+
+                        <ImageView
+                            android:layout_width="10dp"
+                            android:layout_height="16dp"
+                            android:layout_marginTop="6dp"
+                            app:srcCompat="@drawable/ic_lock"
+                            tools:ignore="ContentDescription" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:gravity="start|center_vertical"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="6dp"
+                            android:text="@string/wallet_admin_locked"
+                            android:textAppearance="@style/AppText.Body"/>
+
+                        <ImageView
+                            android:layout_width="10dp"
+                            android:layout_height="16dp"
+                            android:layout_marginTop="6dp"
+                            app:srcCompat="@drawable/ic_lock"
+                            tools:ignore="ContentDescription" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:fontFamily="@font/lato_light"
+                            android:gravity="start|center_vertical"
+                            android:paddingStart="6dp"
+                            android:paddingEnd="6dp"
+                            android:text="@string/wallet_admin_kyc_status"
+                            android:textAppearance="@style/AppText.Body"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:gravity="start|center_vertical"
+                            android:paddingStart="6dp"
+                            android:paddingLeft="6dp"
+                            android:paddingEnd="6dp"
+                            android:paddingRight="6dp"
+                            android:text="@string/wallet_admin_locked"
+                            android:textAppearance="@style/AppText.Body"/>
+
+                        <ImageView
+                            android:layout_width="10dp"
+                            android:layout_height="16dp"
+                            android:layout_marginTop="6dp"
+                            app:srcCompat="@drawable/ic_lock"
+                            tools:ignore="ContentDescription" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:gravity="start|center_vertical"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="6dp"
+                            android:text="@string/wallet_admin_locked"
+                            android:textAppearance="@style/AppText.Body"/>
+
+                        <ImageView
+                            android:layout_width="10dp"
+                            android:layout_height="16dp"
+                            android:layout_marginTop="6dp"
+                            app:srcCompat="@drawable/ic_lock"
+                            tools:ignore="ContentDescription" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#33000000">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:fontFamily="@font/lato_light"
+                            android:gravity="start|center_vertical"
+                            android:paddingStart="6dp"
+                            android:paddingEnd="6dp"
+                            android:text="@string/wallet_admin_password_recovery"
+                            android:textAppearance="@style/AppText.Body"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:gravity="start|center_vertical"
+                            android:paddingStart="6dp"
+                            android:paddingLeft="6dp"
+                            android:paddingEnd="6dp"
+                            android:paddingRight="6dp"
+                            android:text="@string/wallet_admin_locked"
+                            android:textAppearance="@style/AppText.Body"/>
+
+                        <ImageView
+                            android:layout_width="10dp"
+                            android:layout_height="16dp"
+                            android:layout_marginTop="6dp"
+                            app:srcCompat="@drawable/ic_lock"
+                            tools:ignore="ContentDescription" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:gravity="start|center_vertical"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="6dp"
+                            android:text="@string/wallet_admin_locked"
+                            android:textAppearance="@style/AppText.Body"/>
+
+                        <ImageView
+                            android:layout_width="10dp"
+                            android:layout_height="16dp"
+                            android:layout_marginTop="6dp"
+                            app:srcCompat="@drawable/ic_lock"
+                            tools:ignore="ContentDescription" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:fontFamily="@font/lato_light"
+                            android:gravity="start|center_vertical"
+                            android:paddingStart="6dp"
+                            android:paddingEnd="6dp"
+                            android:text="@string/wallet_admin_digital_nation"
+                            android:textAppearance="@style/AppText.Body"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:gravity="start|center_vertical"
+                            android:paddingStart="6dp"
+                            android:paddingLeft="6dp"
+                            android:paddingEnd="6dp"
+                            android:paddingRight="6dp"
+                            android:text="@string/wallet_admin_locked"
+                            android:textAppearance="@style/AppText.Body"/>
+
+                        <ImageView
+                            android:layout_width="10dp"
+                            android:layout_height="16dp"
+                            android:layout_marginTop="6dp"
+                            app:srcCompat="@drawable/ic_lock"
+                            tools:ignore="ContentDescription" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:gravity="start|center_vertical"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="6dp"
+                            android:text="@string/wallet_admin_locked"
+                            android:textAppearance="@style/AppText.Body"/>
+
+                        <ImageView
+                            android:layout_width="10dp"
+                            android:layout_height="16dp"
+                            android:layout_marginTop="6dp"
+                            app:srcCompat="@drawable/ic_lock"
+                            tools:ignore="ContentDescription" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#33000000">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:fontFamily="@font/lato_light"
+                            android:gravity="start|center_vertical"
+                            android:paddingStart="6dp"
+                            android:paddingEnd="6dp"
+                            android:text="@string/wallet_admin_birthdate"
+                            android:textAppearance="@style/AppText.Body"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:gravity="start|center_vertical"
+                            android:paddingStart="6dp"
+                            android:paddingLeft="6dp"
+                            android:paddingEnd="6dp"
+                            android:paddingRight="6dp"
+                            android:text="@string/wallet_admin_locked"
+                            android:textAppearance="@style/AppText.Body"/>
+
+                        <ImageView
+                            android:layout_width="10dp"
+                            android:layout_height="16dp"
+                            android:layout_marginTop="6dp"
+                            app:srcCompat="@drawable/ic_lock"
+                            tools:ignore="ContentDescription" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:gravity="start|center_vertical"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="6dp"
+                            android:text="@string/wallet_admin_locked"
+                            android:textAppearance="@style/AppText.Body"/>
+
+                        <ImageView
+                            android:layout_width="10dp"
+                            android:layout_height="16dp"
+                            android:layout_marginTop="6dp"
+                            app:srcCompat="@drawable/ic_lock"
+                            tools:ignore="ContentDescription" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:fontFamily="@font/lato_light"
+                            android:gravity="start|center_vertical"
+                            android:paddingStart="6dp"
+                            android:paddingEnd="6dp"
+                            android:text="@string/wallet_admin_micro_lock"
+                            android:textAppearance="@style/AppText.Body"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:gravity="start|center_vertical"
+                            android:paddingStart="6dp"
+                            android:paddingLeft="6dp"
+                            android:paddingEnd="6dp"
+                            android:paddingRight="6dp"
+                            android:text="@string/wallet_admin_locked"
+                            android:textAppearance="@style/AppText.Body"/>
+
+                        <ImageView
+                            android:layout_width="10dp"
+                            android:layout_height="16dp"
+                            android:layout_marginTop="6dp"
+                            app:srcCompat="@drawable/ic_lock"
+                            tools:ignore="ContentDescription" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:gravity="start|center_vertical"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="6dp"
+                            android:text="@string/wallet_admin_locked"
+                            android:textAppearance="@style/AppText.Body"/>
+
+                        <ImageView
+                            android:layout_width="10dp"
+                            android:layout_height="16dp"
+                            android:layout_marginTop="6dp"
+                            app:srcCompat="@drawable/ic_lock"
+                            tools:ignore="ContentDescription" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#33000000">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:fontFamily="@font/lato_light"
+                            android:gravity="start|center_vertical"
+                            android:paddingStart="6dp"
+                            android:paddingEnd="6dp"
+                            android:text="@string/wallet_admin_age_lock"
+                            android:textAppearance="@style/AppText.Body"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:gravity="start|center_vertical"
+                            android:paddingStart="6dp"
+                            android:paddingLeft="6dp"
+                            android:paddingEnd="6dp"
+                            android:paddingRight="6dp"
+                            android:text="@string/wallet_admin_locked"
+                            android:textAppearance="@style/AppText.Body"/>
+
+                        <ImageView
+                            android:layout_width="10dp"
+                            android:layout_height="16dp"
+                            android:layout_marginTop="6dp"
+                            app:srcCompat="@drawable/ic_lock"
+                            tools:ignore="ContentDescription" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:gravity="start|center_vertical"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="6dp"
+                            android:text="@string/wallet_admin_locked"
+                            android:textAppearance="@style/AppText.Body"/>
+
+                        <ImageView
+                            android:layout_width="10dp"
+                            android:layout_height="16dp"
+                            android:layout_marginTop="6dp"
+                            app:srcCompat="@drawable/ic_lock"
+                            tools:ignore="ContentDescription" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:fontFamily="@font/lato_light"
+                            android:gravity="start|center_vertical"
+                            android:paddingStart="6dp"
+                            android:paddingEnd="6dp"
+                            android:text="@string/wallet_admin_us_validation"
+                            android:textAppearance="@style/AppText.Body"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:gravity="start|center_vertical"
+                            android:paddingStart="6dp"
+                            android:paddingLeft="6dp"
+                            android:paddingEnd="6dp"
+                            android:paddingRight="6dp"
+                            android:text="@string/wallet_admin_locked"
+                            android:textAppearance="@style/AppText.Body"/>
+
+                        <ImageView
+                            android:layout_width="10dp"
+                            android:layout_height="16dp"
+                            android:layout_marginTop="6dp"
+                            app:srcCompat="@drawable/ic_lock"
+                            tools:ignore="ContentDescription" />
+
+                        <TextView
+                            android:id="@+id/textView60"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:gravity="start|center_vertical"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="6dp"
+                            android:text="@string/wallet_admin_locked"
+                            android:textAppearance="@style/AppText.Body"/>
+
+                        <ImageView
+                            android:id="@+id/imageView13"
+                            android:layout_width="10dp"
+                            android:layout_height="16dp"
+                            android:layout_marginTop="6dp"
+                            app:srcCompat="@drawable/ic_lock"
+                            tools:ignore="ContentDescription" />
+                    </TableRow>
+
+                </TableLayout>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="44dp"
+                    android:layout_marginTop="62dp"
+                    android:layout_marginEnd="44dp"
+                    android:text="@string/wallet_admin_footer"
+                    android:textAppearance="@style/AppText.Body"
+                    android:textSize="10sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tableLayout2" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <include layout="@layout/inline_messages"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</layout>

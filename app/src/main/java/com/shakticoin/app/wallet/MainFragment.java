@@ -49,7 +49,7 @@ public class MainFragment extends Fragment {
     }
 
     private void onAdminWallet(View v) {
-        Toast.makeText(getActivity(), R.string.err_not_implemented, Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(getActivity(), WalletAdminActivity.class));
     }
 
     private void onVerification(View v) {
