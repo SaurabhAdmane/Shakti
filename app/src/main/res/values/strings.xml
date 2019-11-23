@@ -16,7 +16,7 @@
     <string name="common_vault">Vault</string>
     <string name="common_status">Status</string>
     <string name="do_registration">Create Shakti ID</string>
-    <string name="do_login"><u>Already have an account? Sign in</u></string>
+    <string name="do_login"><u>Already have an amount? Sign in</u></string>
     <string name="go_back_for_changes"><u>Let me go back and correct something.</u></string>
     <string name="do_send">Send</string>
     <string name="do_resend">Resend</string>
@@ -128,6 +128,8 @@
     <string name="stripe_amount">$%1$.2f</string>
     <string name="err_incorrect_card">Please enter a valid card data</string>
     <string name="err_payment_cancelled">The payment was cancelled or failed</string>
+    <string name="wallet_receive_sxe">Receive SXE</string>
+    <string name="wallet_pay_sxe">Pay with SXE</string>
     <string name="wallet_toolbar_title">My Wallet</string>
     <string name="wallet_welcom">Welcome %1$s!</string>
     <string name="wallet_message">You now have a Shakti Wallet and are part of the grassroots movement for smarter money.\n\nPlease help us spread the word by letting your networks know about the Shakti Coin movement.</string>
@@ -142,7 +144,7 @@
     <string name="wallet_bonus_balance">Bonus Bounty balance:</string>
     <string name="wallet_become_miner">Become a Miner</string>
     <string name="wallet_become_miner_desc">
-        Get more from your Shakti account by earning an ongoing referral income. <u>Become a Basic
+        Get more from your Shakti amount by earning an ongoing referral income. <u>Become a Basic
         Miner</u> by signing up for a M101 License!
     </string>
     <string name="wallet_business">Gain a business advantage:</string>
@@ -166,6 +168,7 @@
         All wallets are locked by default. It is up to the wallet holder to successfully unlock
         their wallets by undergoing KYC, AML &amp; CTF compliance screening.
     </string>
+    <string name="wallet_history_main_wallet">Main Wallet</string>
     <string name="dlg_business_vault_title"><![CDATA[Get the <font color="#B09C75">Business Vault</font><br/>advantage</string]]></string>
     <string name="dlg_business_vault_text"><![CDATA[
         <p><b>As a Business Leader, you\'re eligible for SXE Vault!</b></p>
@@ -319,7 +322,7 @@
     <string name="kyc_verifying_action">Invite your friends to Shakti</string>
     <string name="kyc_verified">Your validation was a success</string>
     <string name="kyc_verified_message">
-        <b>Congratulations!</b> Your account has been verified. You\'ve passed all the compliance
+        <b>Congratulations!</b> Your amount has been verified. You\'ve passed all the compliance
         validations and you\'re on your way to a great start!\n\n
         Your wallet is now active and ready to be used.
     </string>
@@ -444,14 +447,14 @@
         SXE for early adopters.
     </string>
     <string name="miner_upg_youhave_m101">You Own a M101 License</string>
-    <string name="miner_upg_youhave">You now have a M101 Basic Miner account.</string>
+    <string name="miner_upg_youhave">You now have a M101 Basic Miner amount.</string>
     <string name="miner_upg_congrat">
         <b>Congratulations!</b> You chose to become a Shakti Miner. You\'re on your way to financial success.
     </string>
     <string name="miner_upg_next_steps">Next steps:</string>
     <string name="miner_upg_next_steps_1">Unlock your Wallet</string>
     <string name="miner_upg_next_steps_2">Install the Shakti Mining App</string>
-    <string name="miner_upg_next_steps_3">Configure your account</string>
+    <string name="miner_upg_next_steps_3">Configure your amount</string>
     <string name="miner_upg_next_steps_4">Start mining!</string>
     <string name="miner_upg_power_miner">Want to be a Power Miner and Transform the World?</string>
     <string name="miner_upg_action">Become a Power Miner</string>
@@ -494,7 +497,7 @@
         for a Bonus Bounty of 5,000 SXE.
     </string>
     <string name="vault_chs_option2_footer">
-        Upgrade your account to Power Miner. Expand your territory. This vault type is eligible
+        Upgrade your amount to Power Miner. Expand your territory. This vault type is eligible
         for a Bonus Bounty of 10,000 SXE.
     </string>
     <string name="vault_chs_option3_footer">

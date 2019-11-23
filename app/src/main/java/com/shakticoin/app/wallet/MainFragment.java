@@ -58,7 +58,7 @@ public class MainFragment extends Fragment {
     }
 
     private void onBalanceHistory(View v) {
-        Toast.makeText(getActivity(), R.string.err_not_implemented, Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(getActivity(), WalletHistoryActivity.class));
     }
 
     private void onShowBusinessVaultInfo(View v) {

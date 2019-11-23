@@ -1,10 +1,11 @@
 package com.shakticoin.app.wallet;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.shakticoin.app.R;
 import com.shakticoin.app.databinding.ActivityWalletAdminBinding;
@@ -26,5 +27,9 @@ public class WalletAdminActivity extends BaseWalletActivity {
     @Override
     protected int getCurrentDrawerSelection() {
         return 0;
+    }
+
+    public void onOpenBalanceHistory(View v) {
+        startActivity(new Intent(this, WalletHistoryActivity.class));
     }
 }

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:paddingEnd="5dp"
+    android:paddingStart="15dp"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
+    android:background="@android:color/transparent">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:scrollHorizontally="true"
+            android:maxLines="1"
+            android:gravity="start|center_vertical"
+            android:textAppearance="@style/AppText.Body"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/lato_light"
+            android:gravity="start|center_vertical"
+            android:textAppearance="@style/AppText.Body"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/amount"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:textAppearance="@style/AppText.Body"
+        android:gravity="end|center_vertical"/>
+
+    <ImageButton
+        android:id="@+id/doViewTransaction"
+        android:layout_width="40dp"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent"
+        android:tint="@android:color/white"
+        android:onClick="onShowDetails"
+        app:srcCompat="@drawable/ic_round_keyboard_arrow_right_24px"
+        tools:ignore="ContentDescription" />
+
+</LinearLayout>
