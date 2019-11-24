@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="android.view.View" alias="View"/>
+        <import type="com.shakticoin.app.payment.PaymentOptionsViewModel.Plan" alias="Plan"/>
+        <variable
+            name="viewModel"
+            type="com.shakticoin.app.payment.PaymentOptionsViewModel" />
+    </data>
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/page_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="24dp"
+            android:gravity="center_horizontal"
+            android:text="@string/pmnt_opts_title"
+            android:textAppearance="@style/AppText.Title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="24dp"
+            android:gravity="center_horizontal"
+            android:text="@string/pmnt_opts_subtitle"
+            android:textAppearance="@style/AppText.Subtitle"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title" />
+
+        <com.shakticoin.app.widget.CheckableRoundButton
+            android:id="@+id/onWeekly"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="58dp"
+            android:background="@android:color/transparent"
+            android:enabled="@{viewModel.enabledWeekly}"
+            android:src="@{viewModel.enabledWeekly ? @drawable/selector_btn_round : @drawable/ic_round_disabled}"
+            android:tag="WEEKLY"
+            app:is_checked="@={viewModel.onWeekly}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/subtitle" />
+
+        <com.shakticoin.app.widget.CheckableRoundButton
+            android:id="@+id/onMonthly"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="25dp"
+            android:background="@android:color/transparent"
+            android:enabled="@{viewModel.enabledMonthly}"
+            android:src="@{viewModel.enabledMonthly ? @drawable/selector_btn_round : @drawable/ic_round_disabled}"
+            android:tag="MONTHLY"
+            app:is_checked="@={viewModel.onMonthly}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/onWeekly" />
+
+        <com.shakticoin.app.widget.CheckableRoundButton
+            android:id="@+id/onAnnual"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="25dp"
+            android:background="@android:color/transparent"
+            android:enabled="@{viewModel.enabledAnnual}"
+            android:src="@{viewModel.enabledAnnual ? @drawable/selector_btn_round : @drawable/ic_round_disabled}"
+            android:tag="ANNUAL"
+            app:is_checked="@={viewModel.onAnnual}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/onMonthly" />
+
+        <TextView
+            android:id="@+id/weeklyLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:gravity="start|center_vertical"
+            android:text="@string/pmnt_opts_weekly"
+            android:textAppearance="@style/AppText.Title"
+            app:isPaymentOptionBold='@{viewModel.onWeekly}'
+            app:layout_constraintBottom_toBottomOf="@+id/onWeekly"
+            app:layout_constraintStart_toEndOf="@+id/onWeekly"
+            app:layout_constraintTop_toTopOf="@+id/onWeekly" />
+
+        <TextView
+            android:id="@+id/monthlyLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:gravity="start|center_vertical"
+            android:text="@string/pmnt_opts_monthly"
+            android:textAppearance="@style/AppText.Title"
+            app:isPaymentOptionBold='@{viewModel.onMonthly}'
+            app:layout_constraintBottom_toBottomOf="@+id/onMonthly"
+            app:layout_constraintStart_toEndOf="@+id/onMonthly"
+            app:layout_constraintTop_toTopOf="@+id/onMonthly" />
+
+        <TextView
+            android:id="@+id/annualLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:fontFamily="@font/lato"
+            android:gravity="start|center_vertical"
+            android:text="@string/pmnt_opts_annual"
+            android:textAppearance="@style/AppText.Title"
+            android:textStyle="bold"
+            app:isPaymentOptionBold='@{viewModel.onAnnual}'
+            app:layout_constraintBottom_toBottomOf="@+id/onAnnual"
+            app:layout_constraintStart_toEndOf="@+id/onAnnual"
+            app:layout_constraintTop_toTopOf="@+id/onAnnual" />
+
+        <TextView
+            android:id="@+id/textView117"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{@string/pmnt_opts_saving(viewModel.monthlySavingValue)}"
+            android:textAppearance="@style/AppText.Body.Petit.Branded"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/monthlyLabel"
+            app:layout_constraintTop_toBottomOf="@+id/monthlyLabel" />
+
+        <TextView
+            android:id="@+id/textView118"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{@string/pmnt_opts_saving(viewModel.annualSavingValue)}"
+            android:textAppearance="@style/AppText.Body.Petit.Branded"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/annualLabel"
+            app:layout_constraintTop_toBottomOf="@+id/annualLabel" />
+
+        <View
+            android:id="@+id/leftCircle"
+            android:layout_width="132dp"
+            android:layout_height="132dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/bg_circular"
+            app:layout_constraintBottom_toBottomOf="@+id/onAnnual"
+            app:layout_constraintEnd_toStartOf="@+id/onMonthly"
+            app:layout_constraintTop_toTopOf="@+id/onWeekly" />
+
+        <ImageView
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            app:layout_constraintBottom_toBottomOf="@+id/leftCircle"
+            app:layout_constraintEnd_toEndOf="@+id/leftCircle"
+            app:layout_constraintStart_toStartOf="@+id/leftCircle"
+            app:layout_constraintTop_toTopOf="@+id/leftCircle"
+            app:srcCompat="@drawable/ic_money" />
+
+        <TextView
+            android:id="@+id/planName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="58dp"
+            android:text="@{viewModel.selectedPlan.toString()}"
+            android:textAppearance="@style/AppText.Title"
+            android:fontFamily="@font/lato"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/textView120"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toEndOf="@+id/doGoLeft"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/onAnnual" />
+
+        <TextView
+            android:id="@+id/textView120"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/pmnt_opts_license"
+            android:textAppearance="@style/AppText.Title"
+            app:layout_constraintBaseline_toBaselineOf="@+id/planName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/planName" />
+
+        <TextView
+            android:id="@+id/textInstallment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="24dp"
+            android:gravity="center_horizontal"
+            android:text="@{viewModel.onWeekly?@string/pmnt_opts_weekly_instalments:viewModel.onMonthly?@string/pmnt_opts_monthly_instalments:@string/pmnt_opts_annual_instalments}"
+            android:textAppearance="@style/AppText.Body"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/planName" />
+
+        <TextView
+            android:id="@+id/textFullSaving"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="24dp"
+            android:gravity="center_horizontal"
+            android:text="@{@string/pmnt_opts_saving_long(viewModel.onMonthly?viewModel.monthlySavingValue:viewModel.annualSavingValue)}"
+            android:textColor="@color/colorBrand"
+            android:visibility="@{viewModel.onWeekly?View.INVISIBLE:View.VISIBLE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInstallment" />
+
+        <TextView
+            android:id="@+id/textView115"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="4dp"
+            android:fontFamily="@font/lato_light"
+            android:text="@string/pmnt_opts_foronly"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toStartOf="@+id/textAmountUSD"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textFullSaving" />
+
+        <TextView
+            android:id="@+id/textAmountUSD"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/lato_light"
+            android:text="@{@string/pmnt_opts_amount(0.0)}"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBaseline_toBaselineOf="@+id/textView115"
+            app:layout_constraintEnd_toStartOf="@+id/textPeriod"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/textView115" />
+
+        <TextView
+            android:id="@+id/textPeriod"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/lato_light"
+            android:text="@{viewModel.onWeekly?@string/pmnt_opts_week:viewModel.onMonthly?@string/pmnt_opts_month:@string/pmnt_opts_year}"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBaseline_toBaselineOf="@+id/textAmountUSD"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/textAmountUSD" />
+
+        <Button
+            android:id="@+id/doMainAction"
+            style="@style/AppButton.Rounded"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="26dp"
+            android:layout_marginEnd="48dp"
+            android:onClick="onMainAction"
+            android:text="@string/pmnt_opts_main_action"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textAmountUSD" />
+
+        <ImageButton
+            android:id="@+id/doGoLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:background="@android:color/transparent"
+            android:onClick="onPrev"
+            android:tint="@android:color/white"
+            android:visibility="@{viewModel.selectedPlan==Plan.M101?View.INVISIBLE:View.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="@+id/planName"
+            app:layout_constraintEnd_toStartOf="@+id/planName"
+            app:layout_constraintTop_toTopOf="@+id/planName"
+            app:srcCompat="@drawable/ic_round_keyboard_arrow_left_24px" />
+
+        <ImageButton
+            android:id="@+id/doGoRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:background="@android:color/transparent"
+            android:onClick="onNext"
+            android:tint="@android:color/white"
+            android:visibility="@{viewModel.selectedPlan==Plan.T400?View.INVISIBLE:View.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="@+id/planName"
+            app:layout_constraintStart_toEndOf="@+id/textView120"
+            app:layout_constraintTop_toTopOf="@+id/planName"
+            app:layout_constraintVertical_bias="0.444"
+            app:srcCompat="@drawable/ic_round_keyboard_arrow_right_24px" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
+</layout>

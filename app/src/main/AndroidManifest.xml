@@ -216,6 +216,11 @@
                 android:value=".wallet.WalletActivity"/>
         </activity>
 
+        <activity
+            android:name=".payment.PaymentOptionsActivity"
+            android:screenOrientation="portrait">
+        </activity>
+
     </application>
 
 </manifest>

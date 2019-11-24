@@ -558,5 +558,23 @@
     <string name="err_device_not_secure">
         Secure lock screen has not set up. Please set a lock screen method in the device Settings.
     </string>
+    <string name="pmnt_opts_title">Payment\nOptions</string>
+    <string name="pmnt_opts_subtitle">Choose the payment type that fits best for you.</string>
+    <string name="pmnt_opts_weekly">Weekly</string>
+    <string name="pmnt_opts_monthly">Monthly</string>
+    <string name="pmnt_opts_annual">Annual</string>
+    <string name="pmnt_opts_saving">Save %1$d%%</string>
+    <string name="pmnt_opts_saving_long">Save as much as %1$d%%</string>
+    <string name="pmnt_opts_annual_instalments">Paid in Annual installments.</string>
+    <string name="pmnt_opts_monthly_instalments">Paid in Monthly installments.</string>
+    <string name="pmnt_opts_weekly_instalments">Paid in Weekly installments.</string>
+    <string name="pmnt_opts_foronly">For only</string>
+    <string name="pmnt_opts_amount">$%1$.2f USD/</string>
+    <string name="pmnt_opts_week">Week</string>
+    <string name="pmnt_opts_month">Month</string>
+    <string name="pmnt_opts_year">Year</string>
+    <string name="pmnt_opts_main_action">Pay with One-time fee</string>
+    <string name="pmnt_opts_license">License</string>
+    <string name="pmnt_opts_plan_name">%1$s</string>
 
 </resources>
