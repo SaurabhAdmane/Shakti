@@ -1,9 +1,14 @@
 package com.shakticoin.app.widget;
 
+import android.graphics.Typeface;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
+import android.widget.TextView;
 
+import androidx.core.content.res.ResourcesCompat;
 import androidx.databinding.BindingAdapter;
+
+import com.shakticoin.app.R;
 
 import java.util.List;
 
@@ -38,4 +43,14 @@ public class BindingAdapters {
         }
     }
 
+    @BindingAdapter("isPaymentOptionBold")
+    public static void setPaymentOptionBold(TextView view, boolean isBold) {
+        if (isBold) {
+            Typeface tf = ResourcesCompat.getFont(view.getContext(), R.font.lato);
+            view.setTypeface(tf, Typeface.BOLD);
+        } else {
+            Typeface tf = ResourcesCompat.getFont(view.getContext(), R.font.lato_light);
+            view.setTypeface(tf, Typeface.NORMAL);
+        }
+    }
 }

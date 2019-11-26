@@ -201,11 +201,10 @@ public abstract class BaseWalletActivity extends AppCompatActivity {
             int currentWidth = rightDrawer.getMeasuredWidth();
             // we need close the drawer before open notification messages because main content will
             // be shifted over it
-            if (Math.abs(rightDrawer.getTranslationX() - openedWidth) < 0.1) {
-                View drawer = findViewById(R.id.drawerContainer);
-                ViewGroup.LayoutParams layoutParams = drawer.getLayoutParams();
+            if (Math.abs(rightDrawer.getTranslationX() - openedWidth) < 0.1 && leftDrawer != null) {
+                ViewGroup.LayoutParams layoutParams = leftDrawer.getLayoutParams();
                 layoutParams.width = 0;
-                drawer.setLayoutParams(layoutParams);
+                leftDrawer.setLayoutParams(layoutParams);
             }
 
             int startPosition = rightDrawer.getTranslationX() == 0 ? 0 : currentWidth;

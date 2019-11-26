@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/wallet_background">
+
+        <include layout="@layout/inline_header"/>
+
+        <RelativeLayout
+            android:id="@+id/fragments"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/toolbar">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/mainFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/label1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginEnd="24dp"
+                    android:text="@string/wallet_current_balance"
+                    android:textAppearance="@style/AppText.Body"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/balance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="27dp"
+                    android:layout_marginEnd="24dp"
+                    android:text="SXE 0.00"
+                    android:textAppearance="@style/AppText.Body"
+                    android:textFontWeight="500"
+                    android:textSize="36sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/label1"
+                    tools:ignore="UnusedAttribute" />
+
+                <TextView
+                    android:id="@+id/doMainWallet"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="27dp"
+                    android:layout_marginEnd="24dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="onOpenMainWallet"
+                    android:text="@string/wallet_history_main_wallet"
+                    android:textAppearance="@style/AppButton.Link"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/balance" />
+
+                <ImageButton
+                    android:id="@+id/doAdmin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="24dp"
+                    android:background="@drawable/button_circle_small"
+                    android:onClick="onOpenWalletAdmin"
+                    android:tint="@color/colorBrand"
+                    app:layout_constraintBottom_toBottomOf="@+id/doMainWallet"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/doMainWallet"
+                    app:srcCompat="@drawable/ic_wallet"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:id="@+id/label2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="onOpenWalletAdmin"
+                    android:text="@string/wallet_admin"
+                    android:textAppearance="@style/AppButton.Link"
+                    android:textSize="9sp"
+                    app:layout_constraintEnd_toEndOf="@+id/doAdmin"
+                    app:layout_constraintStart_toStartOf="@+id/doAdmin"
+                    app:layout_constraintTop_toBottomOf="@+id/doAdmin"
+                    tools:ignore="SmallSp" />
+
+                <View
+                    android:id="@+id/blackRect1"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="28dp"
+                    android:background="#80000000"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/doMainWallet" />
+
+                <Button
+                    android:id="@+id/doReceiveSXE"
+                    style="@style/AppButton.Rounded.Transparent.Gold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/wallet_receive_sxe"
+                    android:onClick="onReceive"
+                    app:layout_constraintBottom_toBottomOf="@+id/doPaySXE"
+                    app:layout_constraintEnd_toStartOf="@+id/doPaySXE"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/doPaySXE" />
+
+                <Button
+                    android:id="@+id/doPaySXE"
+                    style="@style/AppButton.Rounded"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:layout_marginStart="8dp"
+                    android:text="@string/wallet_pay_sxe"
+                    android:onClick="onPay"
+                    app:layout_constraintBottom_toBottomOf="@+id/blackRect1"
+                    app:layout_constraintEnd_toEndOf="@+id/blackRect1"
+                    app:layout_constraintStart_toEndOf="@+id/doReceiveSXE"
+                    app:layout_constraintTop_toTopOf="@+id/blackRect1" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/list"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="0dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/blackRect1" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <include layout="@layout/inline_messages"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</layout>

@@ -20,6 +20,8 @@ import com.shakticoin.app.api.order.OrderRepository;
 import com.shakticoin.app.api.payment.PaymentRepository;
 import com.shakticoin.app.api.tier.Tier;
 import com.shakticoin.app.databinding.ActivityMiningLicenseBinding;
+import com.shakticoin.app.payment.PaymentOptionsActivity;
+import com.shakticoin.app.payment.PaymentOptionsPlanFragment;
 import com.shakticoin.app.payment.stripe.StripeActivity;
 import com.shakticoin.app.util.CommonUtil;
 import com.shakticoin.app.util.Debug;
@@ -135,31 +137,37 @@ public class MiningLicenseActivity extends AppCompatActivity {
     }
 
     public void onApply(View view) {
-        final Activity activity = this;
-
+        Intent intent = new Intent(this, PaymentOptionsActivity.class);
         Tier tierLevel = viewModel.getSelectedPlan();
-        if (tierLevel != null) {
-            binding.progressBar.setVisibility(View.VISIBLE);
-            orderRepository.createOrder(tierLevel.getId(), new OnCompleteListener<Order>() {
-                @Override
-                public void onComplete(Order value, Throwable error) {
-                    binding.progressBar.setVisibility(View.INVISIBLE);
-                    if (error != null) {
-                        Debug.logException(error);
-                        Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-
-                    // pay the order
-                    Intent intent = new Intent(activity, StripeActivity.class);
-                    intent.putExtra(CommonUtil.prefixed(StripeActivity.KEY_ORDER_ID, activity), value.getId());
-                    intent.putExtra(CommonUtil.prefixed(StripeActivity.KEY_ORDER_AMOUNT, activity), value.getAmount());
-                    intent.putExtra(CommonUtil.prefixed(StripeActivity.KEY_ORDER_NAME, activity),
-                            String.format("%1$s - %2$s", tierLevel.getName(), tierLevel.getShort_description()));
-                    startActivityForResult(intent, STRIPE_PAYMENT);
-                }
-            });
+        if (intent != null) {
+            intent.putExtra("PLAN_ID", tierLevel.getId());
         }
+        startActivity(intent);
+//        final Activity activity = this;
+//
+//        Tier tierLevel = viewModel.getSelectedPlan();
+//        if (tierLevel != null) {
+//            binding.progressBar.setVisibility(View.VISIBLE);
+//            orderRepository.createOrder(tierLevel.getId(), new OnCompleteListener<Order>() {
+//                @Override
+//                public void onComplete(Order value, Throwable error) {
+//                    binding.progressBar.setVisibility(View.INVISIBLE);
+//                    if (error != null) {
+//                        Debug.logException(error);
+//                        Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_SHORT).show();
+//                        return;
+//                    }
+//
+//                    // pay the order
+//                    Intent intent = new Intent(activity, StripeActivity.class);
+//                    intent.putExtra(CommonUtil.prefixed(StripeActivity.KEY_ORDER_ID, activity), value.getId());
+//                    intent.putExtra(CommonUtil.prefixed(StripeActivity.KEY_ORDER_AMOUNT, activity), value.getAmount());
+//                    intent.putExtra(CommonUtil.prefixed(StripeActivity.KEY_ORDER_NAME, activity),
+//                            String.format("%1$s - %2$s", tierLevel.getName(), tierLevel.getShort_description()));
+//                    startActivityForResult(intent, STRIPE_PAYMENT);
+//                }
+//            });
+//        }
     }
 
     private void completePayment(@Nullable String token, long orderId) {

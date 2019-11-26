@@ -200,6 +200,27 @@
                 android:value=".settings.SettingsHelpActivity" />
         </activity>
 
+        <activity
+            android:name=".wallet.WalletAdminActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".wallet.WalletActivity"/>
+        </activity>
+
+        <activity
+            android:name=".wallet.WalletHistoryActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".wallet.WalletActivity"/>
+        </activity>
+
+        <activity
+            android:name=".payment.PaymentOptionsActivity"
+            android:screenOrientation="portrait">
+        </activity>
+
     </application>
 
 </manifest>

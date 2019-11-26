@@ -35,6 +35,12 @@
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textAlignment">center</item>
     </style>
+    <style name="AppText.Body.Petit">
+        <item name="android:textSize">10sp</item>
+    </style>
+    <style name="AppText.Body.Petit.Branded">
+        <item name="android:textColor">@color/colorBrand</item>
+    </style>
     <style name="AppText.DialogText">
         <item name="android:fontFamily">@font/lato</item>
         <item name="android:textSize">14sp</item>
