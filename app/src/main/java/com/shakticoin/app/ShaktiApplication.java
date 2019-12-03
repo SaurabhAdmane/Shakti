@@ -11,8 +11,7 @@ import androidx.multidex.MultiDexApplication;
 import com.shakticoin.app.api.Session;
 import com.shakticoin.app.room.AppDatabase;
 import com.shakticoin.app.util.NetworkStateReceiver;
-
-import com.shakticoin.app.R;
+import com.stripe.android.PaymentConfiguration;
 
 
 public class ShaktiApplication extends MultiDexApplication {
@@ -54,6 +53,11 @@ public class ShaktiApplication extends MultiDexApplication {
                 AppDatabase.getDatabase(getApplicationContext()).geoDao().getEmpty();
             }
         }).start();
+
+        /**
+         * Initialize Stripe
+         */
+        PaymentConfiguration.init(getApplicationContext(), getString(R.string.stripe_pub_key));
     }
 
     @Override

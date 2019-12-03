@@ -122,10 +122,6 @@
     <string name="minerlic_description_t200"><![CDATA[T200 Features\n\n\u2022All features from M101 and T100 License.\n\n\u2022Be among the first 50.000 Power Miners.\n\n\u2022Dedicated Support.\n\n\u2022Earn thousands of USD equivalent in SXE.]]></string>
     <string name="minerlic_description_t300"><![CDATA[T300 Features\n\n\u2022Exclusive limited territory access.\n\n\u2022Be among the first 50.000 Power Miners.\n\n\u2022Be the first to on-board merchants.\n\n\u2022Earn thousands of USD equivalent in SXE.]]></string>
     <string name="minerlic_description_t400"><![CDATA[T400 Features\n\n\u2022Be among the first 60,000 Power Miners.\n\n\u2022Be the first one to choose your data center anywhere in the world.\n\n\u2022Earn thousands of USD equivalent in SXE.]]></string>
-    <string name="stripe_pay">Pay by STRIPE</string>
-    <string name="stripe_cancel">Cancel</string>
-    <string name="stripe_subtitle">Finish the payment to complete registration</string>
-    <string name="stripe_amount">$%1$.2f</string>
     <string name="err_incorrect_card">Please enter a valid card data</string>
     <string name="err_payment_cancelled">The payment was cancelled or failed</string>
     <string name="wallet_receive_sxe">Receive SXE</string>
@@ -576,5 +572,12 @@
     <string name="pmnt_opts_main_action">Pay with One-time fee</string>
     <string name="pmnt_opts_license">License</string>
     <string name="pmnt_opts_plan_name">%1$s</string>
+    <string name="pmnt_stripe_pay">Pay by STRIPE</string>
+    <string name="pmnt_stripe_cancel">Cancel</string>
+    <string name="pmnt_stripe_subtitle">Finish the payment to complete registration</string>
+    <string name="pmnt_stripe_amount">$%1$.2f</string>
+    <string name="pmnt_stripe_order_name"><b>%1$s</b> License</string>
+    <string name="pmnt_stripe_hint_card_number">Card Number</string>
+    <string name="pmnt_stripe_hint_exp">MM/YY</string>
 
 </resources>
