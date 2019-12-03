@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="24dp"
+        android:orientation="vertical"
+        android:background="@drawable/dialog_background">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="90dp">
+
+            <View
+                android:id="@+id/circleBlack"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/bg_circular_black"/>
+
+            <ImageView
+                android:id="@+id/icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/circleBlack"
+                android:layout_alignTop="@+id/circleBlack"
+                android:layout_alignEnd="@+id/circleBlack"
+                android:layout_alignBottom="@+id/circleBlack"
+                android:layout_marginStart="14dp"
+                android:layout_marginTop="14dp"
+                android:layout_marginEnd="14dp"
+                android:layout_marginBottom="14dp"
+                android:tint="@color/colorBrand"
+                app:srcCompat="@drawable/ic_smartphone"
+                tools:ignore="ContentDescription" />
+
+            <ImageButton
+                android:id="@+id/doClose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="21dp"
+                android:layout_marginEnd="20dp"
+                android:layout_alignParentEnd="true"
+                android:background="@android:color/transparent"
+                android:tint="@color/colorGrey1"
+                app:srcCompat="@drawable/ic_exit"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="16dp"
+                android:layout_toStartOf="@+id/doClose"
+                android:layout_toEndOf="@+id/circleBlack"
+                android:text="@string/dlg_sxe_pay_title"
+                android:textAppearance="@style/AppText.DialogTitle" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginTop="32dp"
+            android:gravity="center_horizontal"
+            android:textAppearance="@style/AppText.Title"
+            android:textColor="@color/colorGrey3"
+            android:text="@string/dlg_sxe_pay_sendto"/>
+
+        <EditText
+            android:id="@+id/recipient"
+            style="@style/AppTextFieldDialogNoLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:inputType="textEmailAddress"
+            android:text="john.doe@email.com" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginTop="22dp"
+            android:fontFamily="@font/lato"
+            android:gravity="center_horizontal"
+            android:text="&amp;"
+            android:textAppearance="@style/AppText.Title"
+            android:textColor="@color/colorGrey3"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginTop="17dp"
+            android:gravity="center_horizontal"
+            android:textAppearance="@style/AppText.Title"
+            android:textColor="@color/colorGrey3"
+            android:text="@string/dlg_sxe_pay_amount" />
+
+        <EditText
+            android:id="@+id/amount"
+            style="@style/AppTextFieldDialogNoLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:inputType="numberDecimal"
+            android:text="00.00" />
+
+        <Button
+            android:id="@+id/doOk"
+            style="@style/AppButton.Rounded"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="71dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="4dp"
+            android:text="@string/do_send" />
+
+        <Button
+            android:id="@+id/doCancel"
+            style="@style/AppButton.Rounded"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/cancel" />
+
+    </LinearLayout>
+</ScrollView>

@@ -107,6 +107,11 @@
         <item name="labelTextSize">11sp</item>
         <item name="labelFontTypeface">@font/lato</item>
     </style>
+    <style name="AppTextFieldDialogNoLayout" parent="AppTextField">
+        <item name="android:background">@drawable/edit_bordered_branded</item>
+        <item name="android:textColor">@color/colorGrey3</item>
+        <item name="android:textColorHint">@color/colorGrey3</item>
+    </style>
 
     <style name="AppSpinner" parent="AppTheme">
         <item name="android:background">@drawable/edit_bordered</item>
