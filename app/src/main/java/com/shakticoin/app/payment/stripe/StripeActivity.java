@@ -72,6 +72,8 @@ public class StripeActivity extends BaseWalletActivity {
 //        }
 
         Activity activity = this;
+        setResult(RESULT_OK);
+        finish();
 
 //        Stripe stripe = new Stripe(getApplicationContext(), PaymentConfiguration.getInstance(getApplicationContext()).getPublishableKey());
 //        stripe.createToken(card, new ApiResultCallback<Token>() {
