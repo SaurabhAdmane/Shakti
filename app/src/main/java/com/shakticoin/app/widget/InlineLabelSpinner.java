@@ -9,6 +9,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.RectF;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -184,7 +185,8 @@ public class InlineLabelSpinner extends AppCompatSpinner {
         super.setAdapter(adapter);
 
         ArrayList<Object> arrayList = new ArrayList<>();
-        for(int i=0; i< adapter.getCount(); i++) {
+        // skip first dummy item and start from 1
+        for(int i=1; i< adapter.getCount(); i++) {
             arrayList.add(adapter.getItem(i));
         }
 
@@ -194,7 +196,8 @@ public class InlineLabelSpinner extends AppCompatSpinner {
         final InlineLabelSpinner thisSpinner = this;
         listView.setOnItemClickListener((parent, view, position, id) -> {
             choiceMade = true;
-            thisSpinner.setSelection(position);
+            // list does not contain first dummy item and this is why we need to translate the index
+            thisSpinner.setSelection(position + 1);
             thisSpinner.hideDropdown();
         });
     }
@@ -363,7 +366,10 @@ public class InlineLabelSpinner extends AppCompatSpinner {
             listAdapter = new CustomArrayAdapter<>(getContext(), new ArrayList<Object>(), adapter);
             listView.setAdapter(listAdapter);
         }
-        listAdapter.add(item);
+        // skip first dummy item that should not appear in the list
+        if (!TextUtils.isEmpty(item.toString())) {
+            listAdapter.add(item);
+        }
         adapter.add(item);
     }
 
@@ -379,8 +385,11 @@ public class InlineLabelSpinner extends AppCompatSpinner {
                 listAdapter = new CustomArrayAdapter<>(getContext(), new ArrayList<>(), adapter);
                 listView.setAdapter(listAdapter);
             }
-            listAdapter.addAll(items);
             for (Object item : items) {
+                // skip first dummy item that should not appear in the list
+                if (!TextUtils.isEmpty(item.toString())) {
+                    listAdapter.add(item);
+                }
                 adapter.add(item);
             }
         }
@@ -413,7 +422,7 @@ public class InlineLabelSpinner extends AppCompatSpinner {
         @Override
         @NonNull
         public View getView(int position, View covertView, @NonNull ViewGroup root) {
-            return  spinnerAdapter.getDropDownView(position, covertView, root);
+            return  spinnerAdapter.getDropDownView(position+1, covertView, root);
         }
     }
 }
