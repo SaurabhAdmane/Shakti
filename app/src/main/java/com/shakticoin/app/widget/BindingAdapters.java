@@ -9,6 +9,7 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.databinding.BindingAdapter;
 
 import com.shakticoin.app.R;
+import com.shakticoin.app.api.country.Country;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class BindingAdapters {
         InlineLabelSpinner spinner = (InlineLabelSpinner) view;
         spinner.clear();
         if (values != null) {
-            spinner.add("");
+            spinner.add(new Country(null, ""));
             spinner.addAll(values);
         }
     }
