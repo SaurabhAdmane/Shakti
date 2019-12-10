@@ -2,6 +2,8 @@ package com.shakticoin.app.api.country;
 
 import android.os.Build;
 
+import androidx.annotation.NonNull;
+
 import java.util.Objects;
 
 public class Country {
@@ -31,9 +33,10 @@ public class Country {
         this.name = name;
     }
 
+    @NonNull
     @Override
     public String toString() {
-        return name;
+        return name == null ? "" : name;
     }
 
     @Override

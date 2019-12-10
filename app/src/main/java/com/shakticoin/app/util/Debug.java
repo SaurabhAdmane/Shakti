@@ -27,7 +27,7 @@ public class Debug {
                 if (errMsg == null) {
                     errMsg = e.getClass().getName();
                 }
-                Log.d("com.shakticoin.app", errMsg);
+                Log.d("com.shakticoin.app", errMsg, e);
             } else {
                 Crashlytics.logException(e);
             }

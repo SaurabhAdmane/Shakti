@@ -4,22 +4,18 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.shakticoin.app.util.Debug;
 import com.shakticoin.app.api.BaseUrl;
+import com.shakticoin.app.util.Debug;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
 
 public class CountryRepository {
     private CountryService countryService;
@@ -44,24 +40,16 @@ public class CountryRepository {
          */
         liveData.setValue(Collections.singletonList(new Country(null, "")));
 
-        countryService.getCountries(locale.getLanguage()).enqueue(new Callback<Map<String, String>>() {
+        countryService.getCountries(locale.getLanguage()).enqueue(new Callback<List<Country>>() {
             @Override
-            public void onResponse(@NonNull Call<Map<String, String>> call, @NonNull Response<Map<String, String>> response) {
+            public void onResponse(@NonNull Call<List<Country>> call, @NonNull Response<List<Country>> response) {
                 if (call.isExecuted()) {
                     Debug.logDebug(response.toString());
                     if (response.isSuccessful()) {
-                        Map<String, String> countries = response.body();
+                        List<Country> countries = response.body();
                         if (countries != null && countries.size() > 0) {
-                            Set<Map.Entry<String, String>> entries = countries.entrySet();
-                            List<Country> countryList = new ArrayList<>();
-                            for (Map.Entry<String, String> entry : entries) {
-                                if (entry.getValue() != null)
-                                    countryList.add(new Country(entry.getKey(), entry.getValue()));
-                            }
-                            if (countryList.size() > 0) {
-                                Collections.sort(countryList, (o1, o2) -> o1.getName().compareToIgnoreCase(o2.getName()));
-                                liveData.setValue(countryList);
-                            }
+                            Collections.sort(countries, (o1, o2) -> o1.getName().compareToIgnoreCase(o2.getName()));
+                            liveData.setValue(countries);
                         }
                     } else {
                         Debug.logErrorResponse(response);
@@ -70,7 +58,7 @@ public class CountryRepository {
             }
 
             @Override
-            public void onFailure(Call<Map<String, String>> call, Throwable t) {
+            public void onFailure(@NonNull Call<List<Country>> call, @NonNull Throwable t) {
                 Debug.logException(t);
             }
         });
