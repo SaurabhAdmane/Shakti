@@ -6,17 +6,13 @@ import retrofit2.http.Body;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 
-
 public interface LoginService {
-    @POST("rest-auth/login/")
-    Call<LoginServiceResponse> login(@Body Credentials credentials);
+    @POST("userservice/v1/api/token/")
+    Call<TokenResponse> token(@Body Credentials credentials);
 
-    @POST("rest-auth/logout/")
-    Call<ResponseBody> logout(@Header("Authorization") String authorization);
+    @POST("userservice/v1/api/token/refresh/")
+    Call<TokenResponse> refresh(@Body TokenParameters parameters);
 
-    @POST("v1/mobile/password-reset/")
-    Call<ResponseBody> reset(@Body PasswordResetRequest request);
-
-    @POST("v1/mobile/check-email-phone/")
-    Call<ResponseBody> checkEmailPhone(@Body CheckEmailPhoneParams params);
+    @POST("/userservice/v1/api/token/verify/")
+    Call<ResponseBody> verify(@Body PasswordResetRequest request);
 }

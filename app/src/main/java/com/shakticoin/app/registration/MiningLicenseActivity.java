@@ -14,7 +14,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.shakticoin.app.R;
 import com.shakticoin.app.api.Constants;
 import com.shakticoin.app.api.OnCompleteListener;
-import com.shakticoin.app.api.miner.MinerRepository;
+import com.shakticoin.app.api.user.UserRepository;
 import com.shakticoin.app.api.order.OrderRepository;
 import com.shakticoin.app.api.payment.PaymentRepository;
 import com.shakticoin.app.api.tier.Tier;
@@ -185,8 +185,8 @@ public class MiningLicenseActivity extends AppCompatActivity {
                 }
 
                 // we can consider the registration completed at this point
-                MinerRepository minerRepository = new MinerRepository();
-                minerRepository.updateRegistrationStatus(Constants.RegistrationStatus.REGST_COMPL, new OnCompleteListener<Void>() {
+                UserRepository userRepository = new UserRepository();
+                userRepository.updateRegistrationStatus(Constants.RegistrationStatus.REGST_COMPL, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(Void value, Throwable error) {
                         binding.progressBar.setVisibility(View.INVISIBLE);

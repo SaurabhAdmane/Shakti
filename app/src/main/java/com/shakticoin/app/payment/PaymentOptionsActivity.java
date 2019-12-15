@@ -18,10 +18,8 @@ import androidx.viewpager.widget.ViewPager;
 import com.shakticoin.app.R;
 import com.shakticoin.app.api.Constants;
 import com.shakticoin.app.api.OnCompleteListener;
-import com.shakticoin.app.api.miner.MinerRepository;
-import com.shakticoin.app.api.order.Order;
+import com.shakticoin.app.api.user.UserRepository;
 import com.shakticoin.app.api.payment.PaymentRepository;
-import com.shakticoin.app.api.tier.Tier;
 import com.shakticoin.app.databinding.ActivityPaymentOptionsBinding;
 import com.shakticoin.app.payment.stripe.StripeActivity;
 import com.shakticoin.app.util.CommonUtil;
@@ -135,8 +133,8 @@ public class PaymentOptionsActivity extends BaseWalletActivity {
                 }
 
                 // we can consider the registration completed at this point
-                MinerRepository minerRepository = new MinerRepository();
-                minerRepository.updateRegistrationStatus(Constants.RegistrationStatus.REGST_COMPL, new OnCompleteListener<Void>() {
+                UserRepository userRepository = new UserRepository();
+                userRepository.updateRegistrationStatus(Constants.RegistrationStatus.REGST_COMPL, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(Void value, Throwable error) {
 //                        binding.progressBar.setVisibility(View.INVISIBLE);

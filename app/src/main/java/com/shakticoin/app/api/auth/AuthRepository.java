@@ -17,6 +17,7 @@ import com.shakticoin.app.api.Session;
 import java.io.IOException;
 
 import okhttp3.ResponseBody;
+import okhttp3.internal.annotations.EverythingIsNonNull;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -38,22 +39,22 @@ public class AuthRepository {
     /**
      * Login to the backend and return user's information if successful.
      */
-    public void login(@NonNull String username, @NonNull String password, @NonNull OnCompleteListener listener) {
+    public void login(@NonNull String username, @NonNull String password, @NonNull OnCompleteListener<Void> listener) {
         Credentials credentials = new Credentials();
         credentials.setUsername(username);
-        credentials.setEmail(username);
         credentials.setPassword(password);
 
-        Call<LoginServiceResponse> call = loginService.login(credentials);
-        call.enqueue(new Callback<LoginServiceResponse>() {
+        Call<TokenResponse> call = loginService.token(credentials);
+        call.enqueue(new Callback<TokenResponse>() {
             @Override
-            public void onResponse(@NonNull Call<LoginServiceResponse> call, @NonNull Response<LoginServiceResponse> response) {
+            public void onResponse(@NonNull Call<TokenResponse> call, @NonNull Response<TokenResponse> response) {
                 if (call.isExecuted()) {
                     Debug.logDebug(response.toString());
                     if (response.isSuccessful()) {
-                        LoginServiceResponse resp = response.body();
+                        TokenResponse resp = response.body();
                         if (resp != null) {
-                            Session.key(resp.getKey());
+                            Session.setAccessToken(resp.getAccess());
+                            Session.setRefreshToken(resp.getRefresh());
                             listener.onComplete(null,null);
                         }
                     } else {
@@ -64,58 +65,82 @@ public class AuthRepository {
             }
 
             @Override
-            public void onFailure(@NonNull Call<LoginServiceResponse> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<TokenResponse> call, @NonNull Throwable t) {
                 Debug.logException(t);
                 listener.onComplete(null, t);
             }
         });
     }
 
-    public void checkEmailPhoneExists(Context context, String emailAddress, String phoneNumber, @NonNull OnCompleteListener<Boolean> listener) {
-        if (emailAddress == null && phoneNumber == null) {
-            listener.onComplete(null, new IllegalArgumentException("Both phone number and email cannot be empty."));
-        }
-
-        Call<ResponseBody> call = loginService.checkEmailPhone(
-                new CheckEmailPhoneParams(emailAddress, phoneNumber));
-        call.enqueue(new Callback<ResponseBody>() {
+    public void refreshToken(@NonNull String refreshToken, @NonNull OnCompleteListener<TokenResponse> listener) {
+        TokenParameters parameters = new TokenParameters(null, refreshToken);
+        loginService.refresh(parameters).enqueue(new Callback<TokenResponse>() {
+            @EverythingIsNonNull
             @Override
-            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
-                if (call.isExecuted()) {
-                    Debug.logDebug(response.toString());
-                    if (response.isSuccessful()) {
-                        listener.onComplete(Boolean.TRUE, null);
-                    } else {
-                        String errMsg = null;
-                        try {
-                            ResponseBody responseBody = response.errorBody();
-                            if (responseBody != null) {
-                                JSONObject json = new JSONObject(responseBody.string());
-                                if (json.has("email") && json.has("phone_number")) {
-                                    errMsg = context.getString(R.string.err_email_phone_exists);
-                                } else if (json.has("email")) {
-                                    errMsg = context.getString(R.string.err_email_exists);
-                                } else if (json.has("phone_number")) {
-                                    errMsg = context.getString(R.string.err_phone_exists);
-                                }
-                            }
-
-                        } catch (IOException | JSONException e) {
-                            Debug.logException(e);
-                        }
-
-                        if (errMsg == null) errMsg = context.getString(R.string.err_unexpected);
-                        listener.onComplete(Boolean.FALSE, new RemoteException(errMsg));
-                    }
+            public void onResponse(Call<TokenResponse> call, Response<TokenResponse> response) {
+                if (response.isSuccessful()) {
+                    TokenResponse resp = response.body();
+                    listener.onComplete(resp, null);
+                } else {
+                    Debug.logErrorResponse(response);
+                    listener.onComplete(null, new RemoteException(response.message(), response.code()));
                 }
             }
 
+            @EverythingIsNonNull
             @Override
-            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-                Debug.logDebug(t.getMessage());
-                listener.onComplete(Boolean.FALSE, t);
+            public void onFailure(Call<TokenResponse> call, Throwable t) {
+                Debug.logException(t);
+                listener.onComplete(null, t);
             }
         });
-
     }
+
+//    public void checkEmailPhoneExists(Context context, String emailAddress, String phoneNumber, @NonNull OnCompleteListener<Boolean> listener) {
+//        if (emailAddress == null && phoneNumber == null) {
+//            listener.onComplete(null, new IllegalArgumentException("Both phone number and email cannot be empty."));
+//        }
+//
+//        Call<ResponseBody> call = loginService.checkEmailPhone(
+//                new CheckEmailPhoneParams(emailAddress, phoneNumber));
+//        call.enqueue(new Callback<ResponseBody>() {
+//            @Override
+//            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+//                if (call.isExecuted()) {
+//                    Debug.logDebug(response.toString());
+//                    if (response.isSuccessful()) {
+//                        listener.onComplete(Boolean.TRUE, null);
+//                    } else {
+//                        String errMsg = null;
+//                        try {
+//                            ResponseBody responseBody = response.errorBody();
+//                            if (responseBody != null) {
+//                                JSONObject json = new JSONObject(responseBody.string());
+//                                if (json.has("email") && json.has("phone_number")) {
+//                                    errMsg = context.getString(R.string.err_email_phone_exists);
+//                                } else if (json.has("email")) {
+//                                    errMsg = context.getString(R.string.err_email_exists);
+//                                } else if (json.has("phone_number")) {
+//                                    errMsg = context.getString(R.string.err_phone_exists);
+//                                }
+//                            }
+//
+//                        } catch (IOException | JSONException e) {
+//                            Debug.logException(e);
+//                        }
+//
+//                        if (errMsg == null) errMsg = context.getString(R.string.err_unexpected);
+//                        listener.onComplete(Boolean.FALSE, new RemoteException(errMsg));
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+//                Debug.logDebug(t.getMessage());
+//                listener.onComplete(Boolean.FALSE, t);
+//            }
+//        });
+//
+//    }
 }

@@ -85,40 +85,40 @@ public class RecoveryPasswordActivity extends AppCompatActivity {
     }
 
     public void resetPassword() {
-        String emailAddress = viewModel.getEmail();
-
-        if (!Validator.isEmail(emailAddress)) {
-            viewModel.emailAddressErrMsg.setValue(getString(R.string.err_email_required));
-            return;
-        }
-
-        final Activity self = this;
-
-        progressBar.setVisibility(View.VISIBLE);
-        Call<ResponseBody> call = loginService.reset(new PasswordResetRequest(emailAddress));
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
-                progressBar.setVisibility(View.INVISIBLE);
-                if (call.isExecuted()) {
-                    Debug.logDebug(response.toString());
-                    if (response.isSuccessful()) {
-                        if (!viewModel.isRequestSent()) nextPage();
-                    } else {
-                        Debug.logErrorResponse(response);
-                        Toast.makeText(self,
-                                BuildConfig.DEBUG ? response.message() : getString(R.string.err_unexpected),
-                                Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-                Toast.makeText(self, Debug.getFailureMsg(self, t), Toast.LENGTH_SHORT).show();
-                progressBar.setVisibility(View.INVISIBLE);
-                Debug.logException(t);
-            }
-        });
+//        String emailAddress = viewModel.getEmail();
+//
+//        if (!Validator.isEmail(emailAddress)) {
+//            viewModel.emailAddressErrMsg.setValue(getString(R.string.err_email_required));
+//            return;
+//        }
+//
+//        final Activity self = this;
+//
+//        progressBar.setVisibility(View.VISIBLE);
+//        Call<ResponseBody> call = loginService.reset(new PasswordResetRequest(emailAddress));
+//        call.enqueue(new Callback<ResponseBody>() {
+//            @Override
+//            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+//                progressBar.setVisibility(View.INVISIBLE);
+//                if (call.isExecuted()) {
+//                    Debug.logDebug(response.toString());
+//                    if (response.isSuccessful()) {
+//                        if (!viewModel.isRequestSent()) nextPage();
+//                    } else {
+//                        Debug.logErrorResponse(response);
+//                        Toast.makeText(self,
+//                                BuildConfig.DEBUG ? response.message() : getString(R.string.err_unexpected),
+//                                Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+//                Toast.makeText(self, Debug.getFailureMsg(self, t), Toast.LENGTH_SHORT).show();
+//                progressBar.setVisibility(View.INVISIBLE);
+//                Debug.logException(t);
+//            }
+//        });
     }
 }

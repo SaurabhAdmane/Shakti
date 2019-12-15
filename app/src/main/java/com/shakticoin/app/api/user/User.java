@@ -1,4 +1,4 @@
-package com.shakticoin.app.api.miner;
+package com.shakticoin.app.api.user;
 
 public class User {
     private Long id;
