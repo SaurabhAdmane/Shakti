@@ -56,6 +56,7 @@ public class SplashActivity extends AppCompatActivity {
                                 Debug.logException(error);
                                 startActivity(new Intent(self, SignInActivity.class));
                                 finish();
+                                return;
                             }
 
                             Session.setAccessToken(value.getAccess());
