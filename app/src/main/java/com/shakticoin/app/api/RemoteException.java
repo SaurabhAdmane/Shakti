@@ -6,6 +6,7 @@ import androidx.annotation.RequiresApi;
 
 public class RemoteException extends Exception {
     private int responseCode = -1;
+    private String field;
 
     public RemoteException() {
     }
@@ -17,6 +18,12 @@ public class RemoteException extends Exception {
     public RemoteException(String message, int responseCode) {
         super(message);
         this.responseCode = responseCode;
+    }
+
+    public RemoteException(String field, String message, int responseCode) {
+        super(message);
+        this.responseCode = responseCode;
+        this.field = field;
     }
 
     public RemoteException(String message, Throwable cause) {
@@ -34,5 +41,9 @@ public class RemoteException extends Exception {
 
     public int getResponseCode() {
         return this.responseCode;
+    }
+
+    public String getField() {
+        return field;
     }
 }

@@ -30,11 +30,11 @@
     <string name="tour3_text">Friends refer friends. Everyone earns money.\nLet\'s share the wealth all over the world.</string>
     <string name="hint_country">Country of Residence</string>
     <string name="hint_citizenship">Country of Citizenship</string>
+    <string name="hint_state">State/Province</string>
     <string name="hint_postal_code">Zip/Postal code</string>
     <string name="hint_address1">Address Line 1</string>
     <string name="hint_address2">Address Line 2</string>
     <string name="hint_city">City</string>
-    <string name="hint_state">State / Province</string>
     <string name="hint_select_state">Select Your State</string>
     <string name="hint_email_address">Email Address</string>
     <string name="hint_mobile_number">Mobile Number</string>
@@ -210,6 +210,7 @@
     <string name="err_no_countries">The list is empty</string>
     <string name="err_no_internet">No Internet connection. Normal operation is not possible.</string>
     <string name="err_state_reqired">A state/province is required for the country</string>
+    <string name="err_state_not_found">There are no any state or province list for the selected country</string>
     <string name="new_bounty_title">Congratulations!</string>
     <string name="new_bounty_subtitle">Your new Bonus Bounty balance is:</string>
     <string name="new_bounty_message"><b>Everyone\'s</b> a Winner</string>

@@ -11,14 +11,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.shakticoin.app.api.OnCompleteListener;
-import com.shakticoin.app.api.RemoteException;
 import com.shakticoin.app.api.Session;
 import com.shakticoin.app.api.auth.AuthRepository;
 import com.shakticoin.app.api.auth.TokenResponse;
-import com.shakticoin.app.api.user.CreateUserResponse;
+import com.shakticoin.app.api.user.User;
+import com.shakticoin.app.api.user.UserResponse;
 import com.shakticoin.app.api.user.UserRepository;
-import com.shakticoin.app.registration.DialogConfirmEmail;
-import com.shakticoin.app.registration.ReferralActivity;
 import com.shakticoin.app.registration.SignInActivity;
 import com.shakticoin.app.registration.SignUpActivity;
 import com.shakticoin.app.tour.WelcomeTourActivity;
@@ -62,10 +60,9 @@ public class SplashActivity extends AppCompatActivity {
 
                             Session.setAccessToken(value.getAccess());
                             UserRepository userRepo = new UserRepository();
-                            // FIXME: userID should not be a constant
-                            userRepo.getUserInfo(4L, new OnCompleteListener<CreateUserResponse>() {
+                            userRepo.getUserInfo(new OnCompleteListener<User>() {
                                 @Override
-                                public void onComplete(CreateUserResponse value, Throwable error) {
+                                public void onComplete(User value, Throwable error) {
                                     if (error != null) {
                                         Toast.makeText(self, Debug.getFailureMsg(self, error), Toast.LENGTH_LONG).show();
                                         Debug.logException(error);
@@ -79,9 +76,9 @@ public class SplashActivity extends AppCompatActivity {
                         }
                     });
 //                    UserRepository userRepository = new UserRepository();
-//                    userRepository.getUserInfo(new OnCompleteListener<CreateUserResponse>() {
+//                    userRepository.getUserInfo(new OnCompleteListener<UserResponse>() {
 //                        @Override
-//                        public void onComplete(CreateUserResponse value, Throwable error) {
+//                        public void onComplete(UserResponse value, Throwable error) {
 //                            if (error != null) {
 //                                Toast.makeText(self, Debug.getFailureMsg(self, error), Toast.LENGTH_SHORT).show();
 //                                Debug.logException(error);

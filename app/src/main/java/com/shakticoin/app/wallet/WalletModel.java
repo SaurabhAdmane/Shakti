@@ -4,11 +4,7 @@ import androidx.databinding.ObservableBoolean;
 import androidx.databinding.ObservableField;
 import androidx.lifecycle.ViewModel;
 
-import com.shakticoin.app.api.BaseUrl;
-import com.shakticoin.app.api.OnCompleteListener;
-import com.shakticoin.app.api.user.CreateUserResponse;
 import com.shakticoin.app.api.user.UserRepository;
-import com.shakticoin.app.api.user.User;
 
 import java.math.BigDecimal;
 import java.util.Locale;
@@ -26,9 +22,9 @@ public class WalletModel extends ViewModel {
     public WalletModel() {
         progressBarTrigger.set(true);
         UserRepository userRepository = new UserRepository();
-//        userRepository.getUserInfo(new OnCompleteListener<CreateUserResponse>() {
+//        userRepository.getUserInfo(new OnCompleteListener<UserResponse>() {
 //            @Override
-//            public void onComplete(CreateUserResponse value, Throwable error) {
+//            public void onComplete(UserResponse value, Throwable error) {
 //                progressBarTrigger.set(false);
 //                if (error == null && value != null) {
 //                    // build full name

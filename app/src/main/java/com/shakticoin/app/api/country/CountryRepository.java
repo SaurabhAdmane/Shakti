@@ -1,10 +1,15 @@
 package com.shakticoin.app.api.country;
 
+import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.shakticoin.app.R;
 import com.shakticoin.app.api.BaseUrl;
+import com.shakticoin.app.api.OnCompleteListener;
+import com.shakticoin.app.api.RemoteException;
 import com.shakticoin.app.util.Debug;
 
 import java.util.Collections;
@@ -16,6 +21,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.internal.EverythingIsNonNull;
 
 public class CountryRepository {
     private CountryService countryService;
@@ -64,5 +70,39 @@ public class CountryRepository {
         });
 
         return liveData;
+    }
+
+    public void getSubdivisionsByCountry(@NonNull String countryCode,
+                                         OnCompleteListener<List<Subdivision>> listener,
+                                         Context context) {
+        Locale locale = context.getResources().getConfiguration().locale;
+        countryService.getSubdivisions(locale.getLanguage(), countryCode).enqueue(new Callback<List<Subdivision>>() {
+            @EverythingIsNonNull
+            @Override
+            public void onResponse(Call<List<Subdivision>> call, Response<List<Subdivision>> response) {
+                Debug.logDebug(response.toString());
+                if (response.isSuccessful()) {
+                    List<Subdivision> subdivisions = response.body();
+                    if (listener != null) {
+                        listener.onComplete(subdivisions, null);
+                    }
+                } else {
+                    Debug.logErrorResponse(response);
+                    if (listener != null) {
+                        String message = response.message();
+                        if (response.code() == 404) {
+                            message = context.getString(R.string.err_state_not_found);
+                        }
+                        listener.onComplete(null, new RemoteException(message, response.code()));
+                    }
+                }
+            }
+
+            @EverythingIsNonNull
+            @Override
+            public void onFailure(Call<List<Subdivision>> call, Throwable t) {
+                Debug.logException(t);
+            }
+        });
     }
 }

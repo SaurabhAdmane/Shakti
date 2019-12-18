@@ -14,9 +14,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.shakticoin.app.R;
+import com.shakticoin.app.api.OnCompleteListener;
+import com.shakticoin.app.api.Session;
 import com.shakticoin.app.api.auth.AuthRepository;
 import com.shakticoin.app.api.country.Country;
+import com.shakticoin.app.api.country.Subdivision;
+import com.shakticoin.app.api.user.User;
+import com.shakticoin.app.api.user.UserRepository;
+import com.shakticoin.app.util.Debug;
 import com.shakticoin.app.util.Validator;
+
+import java.util.Arrays;
+import java.util.List;
 
 
 public class SignUpActivity extends AppCompatActivity implements TextView.OnEditorActionListener {
@@ -52,22 +61,23 @@ public class SignUpActivity extends AppCompatActivity implements TextView.OnEdit
 
     public void startRegistration() {
         final Activity activity = this;
-        /* TODO: SHAK-105 temporarily disabled until new API takes the shape */
-//        viewModel.createUser(new OnCompleteListener<Void>() {
-//            @Override
-//            public void onComplete(Void value, Throwable error) {
-//                if (error != null) {
-//                    Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
-//                DialogConfirmEmail.getInstance(false)
-//                        .show(getSupportFragmentManager(), DialogConfirmEmail.class.getSimpleName());
-//            }
-//        });
-        DialogConfirmEmail.getInstance(false)
-                .show(getSupportFragmentManager(), DialogConfirmEmail.class.getSimpleName());
-        // End
+        viewModel.createUser(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(Void value, Throwable error) {
+                if (error != null) {
+                    Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
+                    Debug.logException(error);
+                    return;
+                }
 
+                User user = Session.getUser();
+                Long userId = user.getId();
+                // TODO: confirmation in email does not work yet
+
+                DialogConfirmEmail.getInstance(false)
+                        .show(getSupportFragmentManager(), DialogConfirmEmail.class.getSimpleName());
+            }
+        });
     }
 
     public void onGoBack(View view) {
@@ -135,10 +145,13 @@ public class SignUpActivity extends AppCompatActivity implements TextView.OnEdit
         if (selectedCountry != null) {
             String code = selectedCountry.getCode();
             // ensure state/province is set for USA and Canada
-            if (("US".equals(code) || "CA".equals(code))
-                    && TextUtils.isEmpty(viewModel.state.getValue())) {
-                viewModel.stateErrMsg.setValue(getString(R.string.err_state_reqired));
-                hasErrors = true;
+            List<String> stateRequiredContries = Arrays.asList("US", "CA");
+            if (stateRequiredContries.contains(code)) {
+                Subdivision subdivision = viewModel.stateProvinceCode.get();
+                if (subdivision == null || !subdivision.getCountry().equals(code)) {
+                    viewModel.stateErrMsg.setValue(getString(R.string.err_state_reqired));
+                    hasErrors = true;
+                }
             }
         }
         return !hasErrors;

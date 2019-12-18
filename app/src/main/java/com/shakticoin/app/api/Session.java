@@ -143,7 +143,8 @@ public class Session {
 
     public static synchronized void clean(Context context) {
         accessToken = null;
-        user = user;
+        refreshToken = null;
+        user = null;
         SharedPreferences prefs = context.getSharedPreferences(PreferenceHelper.GENERAL_PREFERENCES, Context.MODE_PRIVATE);
         prefs.edit().remove(PreferenceHelper.PREF_KEY_TOKEN).apply();
     }

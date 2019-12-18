@@ -1,24 +1,31 @@
 package com.shakticoin.app.api.user;
 
+import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 
 import com.shakticoin.app.util.Debug;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 import com.shakticoin.app.api.BaseUrl;
 import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.RemoteException;
 import com.shakticoin.app.api.Session;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.Iterator;
+
 import okhttp3.MediaType;
-import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.internal.EverythingIsNonNull;
 
 
 public class UserRepository {
@@ -33,57 +40,84 @@ public class UserRepository {
         userService = retrofit.create(UserService.class);
     }
 
-    public void createUser(CreateUserParameters parameters, OnCompleteListener<Void> listener) {
-        Call<CreateUserResponse> call = userService.createUser(parameters);
-        call.enqueue(new Callback<CreateUserResponse>() {
+    /**
+     * Adds a new user.
+     */
+    public void createUser(CreateUserParameters parameters, @NonNull OnCompleteListener<User> listener) {
+        Call<User> call = userService.createUser(parameters);
+        call.enqueue(new Callback<User>() {
             @Override
-            public void onResponse(@NonNull Call<CreateUserResponse> call, @NonNull Response<CreateUserResponse> response) {
+            public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
                 if (call.isExecuted()) {
                     Debug.logDebug(response.toString());
                     if (response.isSuccessful()) {
-                        CreateUserResponse userData = response.body();
-                        if (userData != null) {
-                            User user = new User();
-                            user.setId(userData.getId());
-                            user.setFirst_name(userData.getFirst_name());
-                            user.setLast_name(userData.getLast_name());
-                            user.setEmail(userData.getEmail());
+                        User user = response.body();
+                        if (user != null) {
                             Session.setUser(user);
-                            if (listener != null) listener.onComplete(null,null);
                         }
+                        listener.onComplete(null,null);
                     } else {
-                        Debug.logErrorResponse(response);
-                        if (listener != null) listener.onComplete(null, new RemoteException(response.message(), response.code()));
+                        try {
+                            // TODO: we need an universal way to parce error responsed
+                            // currently it can be
+                            // {"email":["This email already exists."],"profile":{"mobile":["This mobile number already exists."]}}
+                            ResponseBody errorBody = response.errorBody();
+                            if (errorBody != null) {
+                                String errorResponse = errorBody.string();
+                                Debug.logDebug(errorResponse);
+                                if (!TextUtils.isEmpty(errorResponse)) {
+                                    JSONObject json = new JSONObject(errorResponse);
+                                    if (json.has("email")) {
+                                        JSONArray emailMessages = json.getJSONArray("email");
+                                        listener.onComplete(null, new RemoteException("email", emailMessages.getString(0), response.code()));
+                                        return;
+                                    }
+                                    if (json.has("profile")) {
+                                        JSONObject jsonProfile = json.getJSONObject("profile");
+                                        Iterator<String> iter = jsonProfile.keys();
+                                        if (iter.hasNext()) {
+                                            String name = iter.next();
+                                            JSONArray messages = jsonProfile.getJSONArray(name);
+                                            listener.onComplete(null,
+                                                    new RemoteException(name, messages.getString(0), response.code()));
+                                            return;
+                                        }
+                                    }
+                                }
+                            }
+
+                        } catch (IOException | JSONException e) {
+                            Debug.logException(e);
+                        }
+                        listener.onComplete(null, new RemoteException(response.message(), response.code()));
                     }
                 }
             }
 
             @Override
-            public void onFailure(@NonNull Call<CreateUserResponse> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
                 Debug.logException(t);
-                if (listener != null) listener.onComplete(null, t);
+                listener.onComplete(null, t);
             }
         });
 
     }
 
-    public void getUserInfo(Long userId, OnCompleteListener<CreateUserResponse> listener) {
-        Call<CreateUserResponse> call = userService.getUserByID(Session.getAuthorizationHeader(), userId);
-        call.enqueue(new Callback<CreateUserResponse>() {
+    /**
+     * Retrieve a user by ID
+     */
+    public void getUserInfo(Long userId, OnCompleteListener<User> listener) {
+        Call<User> call = userService.getUserByID(Session.getAuthorizationHeader(), userId);
+        call.enqueue(new Callback<User>() {
             @Override
-            public void onResponse(@NonNull Call<CreateUserResponse> call, @NonNull Response<CreateUserResponse> response) {
+            public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
                 if (call.isExecuted()) {
                     Debug.logDebug(response.toString());
                     if (response.isSuccessful()) {
-                        CreateUserResponse body = response.body();
-                        if (body != null) {
-                            User user = new User();
-                            user.setId(body.getId());
-                            user.setFirst_name(body.getFirst_name());
-                            user.setLast_name(body.getLast_name());
-                            user.setEmail(body.getEmail());
+                        User user = response.body();
+                        if (user != null) {
                             Session.setUser(user);
-                            if (listener != null) listener.onComplete(body, null);
+                            if (listener != null) listener.onComplete(user, null);
                         }
                     } else {
                         Debug.logErrorResponse(response);
@@ -94,7 +128,71 @@ public class UserRepository {
             }
 
             @Override
-            public void onFailure(@NonNull Call<CreateUserResponse> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
+                Debug.logException(t);
+                if (listener != null) listener.onComplete(null, t);
+            }
+        });
+    }
+
+    /**
+     * Retrieve a user by authorization token
+     */
+    public void getUserInfo(OnCompleteListener<User> listener) {
+        userService.getUser(Session.getAuthorizationHeader()).enqueue(new Callback<User>() {
+            @EverythingIsNonNull
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                Debug.logDebug(response.toString());
+                if (response.isSuccessful()) {
+                    User user = response.body();
+                    if (user != null) {
+                        Session.setUser(user);
+                        if (listener != null) listener.onComplete(user, null);
+                    }
+                } else {
+                    Debug.logErrorResponse(response);
+                    if (listener != null) listener.onComplete(null,
+                            new RemoteException(response.message(), response.code()));
+                }
+            }
+
+            @EverythingIsNonNull
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+               Debug.logException(t);
+               if (listener != null) listener.onComplete(null, t);
+            }
+        });
+    }
+
+    /**
+     * Activates a new user.
+     * @param userId User ID
+     * @param confirmatonToken A token from the link in email confirmation message
+     */
+    public void acvivateUser(@NonNull Long userId, @NonNull String confirmatonToken, OnCompleteListener<Void> listener) {
+
+        UserActivateParameters parameters = new UserActivateParameters();
+        parameters.setToken(confirmatonToken);
+
+        userService.activateUser(userId, parameters).enqueue(new Callback<Void>() {
+            @EverythingIsNonNull
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    if (listener != null) listener.onComplete(null, null);
+                } else {
+                    Debug.logErrorResponse(response);
+                    if (listener != null) {
+                        listener.onComplete(null, new RemoteException(response.message(), response.code()));
+                    }
+                }
+            }
+
+            @EverythingIsNonNull
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
                 Debug.logException(t);
                 if (listener != null) listener.onComplete(null, t);
             }

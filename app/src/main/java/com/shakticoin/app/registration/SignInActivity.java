@@ -24,7 +24,7 @@ import com.shakticoin.app.api.Session;
 import com.shakticoin.app.api.auth.Credentials;
 import com.shakticoin.app.api.auth.LoginService;
 import com.shakticoin.app.api.auth.TokenResponse;
-import com.shakticoin.app.api.user.CreateUserResponse;
+import com.shakticoin.app.api.user.User;
 import com.shakticoin.app.api.user.UserRepository;
 import com.shakticoin.app.databinding.ActivitySigninBinding;
 import com.shakticoin.app.util.CommonUtil;
@@ -129,10 +129,9 @@ public class SignInActivity extends AppCompatActivity {
                             SharedPreferences prefs = getSharedPreferences(PreferenceHelper.GENERAL_PREFERENCES, Context.MODE_PRIVATE);
                             prefs.edit().putBoolean(PreferenceHelper.PREF_KEY_HAS_ACCOUNT, true).apply();
 
-                            // FIXME: userID should not be a constant
-                            userRepository.getUserInfo(4L, new OnCompleteListener<CreateUserResponse>() {
+                            userRepository.getUserInfo(new OnCompleteListener<User>() {
                                 @Override
-                                public void onComplete(CreateUserResponse value, Throwable error) {
+                                public void onComplete(User value, Throwable error) {
                                     binding.progressBar.setVisibility(View.INVISIBLE);
 
                                     if (error != null) {

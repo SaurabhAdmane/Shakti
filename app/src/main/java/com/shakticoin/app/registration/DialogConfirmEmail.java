@@ -52,14 +52,9 @@ public class DialogConfirmEmail extends DialogFragment implements View.OnClickLi
     @Override
     public void onClick(View v) {
         if (!dismissOnlyOnAction) {
-            /* TODO: SHAK-105 temporarily disabled until new API takes the shape */
-//            Intent intent = new Intent(getActivity(), SignInActivity.class);
-//            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//            startActivity(intent);
-            Intent intent = new Intent(getActivity(), BonusBountyActivity.class);
+            Intent intent = new Intent(getActivity(), SignInActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
-            // End
         } else {
             getDialog().dismiss();
         }

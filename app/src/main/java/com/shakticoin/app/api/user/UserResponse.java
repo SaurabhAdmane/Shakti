@@ -1,7 +1,8 @@
 package com.shakticoin.app.api.user;
 
-public class CreateUserResponse extends CreateUserParameters {
+public class UserResponse extends CreateUserParameters {
     private Long id;
+    private String email;
     private String username;
 
     public Long getId() {
