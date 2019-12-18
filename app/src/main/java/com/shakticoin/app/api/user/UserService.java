@@ -1,6 +1,5 @@
 package com.shakticoin.app.api.user;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -45,4 +44,10 @@ public interface UserService {
      */
     @POST("userservice/v1/api/users/{id}/status/activate")
     Call<Void> activateUser(@Path("id") Long id, @Body UserActivateParameters parameters);
+
+    /**
+     * Reset user password.
+     */
+    @POST("userservice/v1/api/users/password/reset")
+    Call<Void> resetPassword(@Body ResetPasswordParameters parameters);
 }

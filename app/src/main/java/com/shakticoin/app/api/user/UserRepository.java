@@ -4,12 +4,11 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
-import com.shakticoin.app.util.Debug;
-
 import com.shakticoin.app.api.BaseUrl;
 import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.RemoteException;
 import com.shakticoin.app.api.Session;
+import com.shakticoin.app.util.Debug;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -195,6 +194,35 @@ public class UserRepository {
             public void onFailure(Call<Void> call, Throwable t) {
                 Debug.logException(t);
                 if (listener != null) listener.onComplete(null, t);
+            }
+        });
+    }
+
+    /**
+     * Reset user password
+     */
+    public void resetPassword(String emailAddress, @NonNull OnCompleteListener<Void> listener) {
+        ResetPasswordParameters parameters = new ResetPasswordParameters();
+        parameters.setEmail(emailAddress);
+
+        userService.resetPassword(parameters).enqueue(new Callback<Void>() {
+            @EverythingIsNonNull
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                Debug.logDebug(response.toString());
+                if (response.isSuccessful()) {
+                    listener.onComplete(null, null);
+                } else {
+                    Debug.logErrorResponse(response);
+                    listener.onComplete(null, new RemoteException(response.message(), response.code()));
+                }
+            }
+
+            @EverythingIsNonNull
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Debug.logException(t);
+                listener.onComplete(null, t);
             }
         });
     }
