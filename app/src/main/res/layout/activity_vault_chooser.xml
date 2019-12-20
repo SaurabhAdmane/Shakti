@@ -215,226 +215,44 @@
                         tools:ignore="ContentDescription" />
 
                     <TextView
+                        android:id="@+id/optionFeatures"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
                         android:layout_marginEnd="24dp"
-                        android:text="@string/vault_chs_option1_advantages"
+                        android:text=""
                         android:textAppearance="@style/AppText.Body"
                         android:textColor="#FFD9D9DA"
                         android:textSize="12sp"
-                        android:visibility="@{viewModel.selectedVaultType==Options.MERCHANT?View.VISIBLE:View.INVISIBLE}"
                         app:layout_constraintBottom_toBottomOf="@+id/option3"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/option3"
                         app:layout_constraintTop_toTopOf="@+id/option3" />
 
                     <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginEnd="24dp"
-                        android:text="@string/vault_chs_option2_advantages"
-                        android:textAppearance="@style/AppText.Body"
-                        android:textColor="#FFD9D9DA"
-                        android:textSize="12sp"
-                        android:visibility="@{viewModel.selectedVaultType==Options.POWER_MINER?View.VISIBLE:View.INVISIBLE}"
-                        app:layout_constraintBottom_toBottomOf="@+id/option3"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/option3"
-                        app:layout_constraintTop_toTopOf="@+id/option3" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginEnd="24dp"
-                        android:text="@string/vault_chs_option3_advantages"
-                        android:textAppearance="@style/AppText.Body"
-                        android:textColor="#FFD9D9DA"
-                        android:textSize="12sp"
-                        android:visibility="@{viewModel.selectedVaultType==Options.FEDUCIA?View.VISIBLE:View.INVISIBLE}"
-                        app:layout_constraintBottom_toBottomOf="@+id/option3"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/option3"
-                        app:layout_constraintTop_toTopOf="@+id/option3" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginEnd="24dp"
-                        android:text="@string/vault_chs_option4_advantages"
-                        android:textAppearance="@style/AppText.Body"
-                        android:textColor="#FFD9D9DA"
-                        android:textSize="12sp"
-                        android:visibility="@{viewModel.selectedVaultType==Options.EXPRESS?View.VISIBLE:View.INVISIBLE}"
-                        app:layout_constraintBottom_toBottomOf="@+id/option3"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/option3"
-                        app:layout_constraintTop_toTopOf="@+id/option3" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginEnd="24dp"
-                        android:text="@string/vault_chs_option5_advantages"
-                        android:textAppearance="@style/AppText.Body"
-                        android:textColor="#FFD9D9DA"
-                        android:textSize="12sp"
-                        android:visibility="@{viewModel.selectedVaultType==Options.DEVDOT?View.VISIBLE:View.INVISIBLE}"
-                        app:layout_constraintBottom_toBottomOf="@+id/option3"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/option3"
-                        app:layout_constraintTop_toTopOf="@+id/option3" />
-
-                    <TextView
-                        android:id="@+id/option1Title"
+                        android:id="@+id/optionName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
                         android:layout_marginTop="27dp"
                         android:layout_marginEnd="24dp"
-                        android:text="@string/vault_chs_option1_title"
+                        android:text="@{viewModel.selectedVault.name}"
                         android:textAppearance="@style/AppText.Title"
-                        android:visibility="@{viewModel.selectedVaultType==Options.MERCHANT?View.VISIBLE:View.INVISIBLE}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/option5" />
 
                     <TextView
-                        android:id="@+id/option2Title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginTop="27dp"
-                        android:layout_marginEnd="24dp"
-                        android:text="@string/vault_chs_option2_title"
-                        android:textAppearance="@style/AppText.Title"
-                        android:visibility="@{viewModel.selectedVaultType==Options.POWER_MINER?View.VISIBLE:View.INVISIBLE}"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/option5" />
-
-                    <TextView
-                        android:id="@+id/option3Title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginTop="27dp"
-                        android:layout_marginEnd="24dp"
-                        android:text="@string/vault_chs_option3_title"
-                        android:textAppearance="@style/AppText.Title"
-                        android:visibility="@{viewModel.selectedVaultType==Options.FEDUCIA?View.VISIBLE:View.INVISIBLE}"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/option5" />
-
-                    <TextView
-                        android:id="@+id/option4Title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginTop="27dp"
-                        android:layout_marginEnd="24dp"
-                        android:text="@string/vault_chs_option4_title"
-                        android:textAppearance="@style/AppText.Title"
-                        android:visibility="@{viewModel.selectedVaultType==Options.EXPRESS?View.VISIBLE:View.INVISIBLE}"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/option5" />
-
-                    <TextView
-                        android:id="@+id/option5Title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginTop="27dp"
-                        android:layout_marginEnd="24dp"
-                        android:text="@string/vault_chs_option5_title"
-                        android:textAppearance="@style/AppText.Title"
-                        android:visibility="@{viewModel.selectedVaultType==Options.DEVDOT?View.VISIBLE:View.INVISIBLE}"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/option5" />
-
-                    <TextView
-                        android:id="@+id/option1Note"
+                        android:id="@+id/optionNote"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
                         android:layout_marginTop="84dp"
                         android:layout_marginEnd="24dp"
                         android:gravity="center_horizontal"
-                        android:text="@string/vault_chs_option1_footer"
+                        android:text="@{viewModel.selectedVault.bonus.description}"
                         android:textAppearance="@style/AppText.Body"
                         android:textSize="13sp"
-                        android:visibility="@{viewModel.selectedVaultType==Options.MERCHANT?View.VISIBLE:View.INVISIBLE}"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/option5" />
-
-                    <TextView
-                        android:id="@+id/option2Note"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginTop="84dp"
-                        android:layout_marginEnd="24dp"
-                        android:gravity="center_horizontal"
-                        android:text="@string/vault_chs_option2_footer"
-                        android:textAppearance="@style/AppText.Body"
-                        android:textSize="13sp"
-                        android:visibility="@{viewModel.selectedVaultType==Options.POWER_MINER?View.VISIBLE:View.INVISIBLE}"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/option5" />
-
-                    <TextView
-                        android:id="@+id/option3Note"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginTop="84dp"
-                        android:layout_marginEnd="24dp"
-                        android:gravity="center_horizontal"
-                        android:text="@string/vault_chs_option3_footer"
-                        android:textAppearance="@style/AppText.Body"
-                        android:textSize="13sp"
-                        android:visibility="@{viewModel.selectedVaultType==Options.FEDUCIA?View.VISIBLE:View.INVISIBLE}"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/option5" />
-
-                    <TextView
-                        android:id="@+id/option4Note"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginTop="84dp"
-                        android:layout_marginEnd="24dp"
-                        android:gravity="center_horizontal"
-                        android:text="@string/vault_chs_option4_footer"
-                        android:textAppearance="@style/AppText.Body"
-                        android:textSize="13sp"
-                        android:visibility="@{viewModel.selectedVaultType==Options.EXPRESS?View.VISIBLE:View.INVISIBLE}"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/option5" />
-
-                    <TextView
-                        android:id="@+id/option5Note"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginTop="84dp"
-                        android:layout_marginEnd="24dp"
-                        android:gravity="center_horizontal"
-                        android:text="@string/vault_chs_option5_footer"
-                        android:textAppearance="@style/AppText.Body"
-                        android:textSize="13sp"
-                        android:visibility="@{viewModel.selectedVaultType==Options.DEVDOT?View.VISIBLE:View.INVISIBLE}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/option5" />
