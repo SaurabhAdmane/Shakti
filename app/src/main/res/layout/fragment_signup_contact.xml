@@ -72,20 +72,35 @@
                         android:text="@={viewModel.lastName}"/>
             </com.shakticoin.app.widget.TextInputLayout>
 
+            <Switch
+                android:id="@+id/contactMechSelector"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="18dp"
+                android:layout_marginEnd="24dp"
+                android:showText="false"
+                android:track="@drawable/switch_track"
+                android:thumb="@drawable/switch_thumb"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lastNameLayout" />
+
             <com.shakticoin.app.widget.TextInputLayout
                 android:id="@+id/emailAddressLayout"
+                style="@style/AppTextLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="18dp"
                 android:layout_marginEnd="24dp"
-                style="@style/AppTextLayout"
-                app:validationEnabled="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/lastNameLayout"
+                app:layout_constraintTop_toBottomOf="@+id/contactMechSelector"
+                app:validationEnabled="true"
                 tools:layout_conversion_absoluteHeight="1dp"
                 tools:layout_conversion_absoluteWidth="1dp">
+
                 <com.shakticoin.app.widget.InlineLabelEditText
                     android:id="@+id/email_address"
                     style="@style/AppTextField"
@@ -93,8 +108,9 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="@string/hint_email_address"
+                    android:imeOptions="actionDone"
                     android:inputType="textEmailAddress"
-                    android:text="@={viewModel.emailAddress}"/>
+                    android:text="@={viewModel.emailAddress}" />
             </com.shakticoin.app.widget.TextInputLayout>
 
             <com.shakticoin.app.widget.TextInputLayout
@@ -102,13 +118,14 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="18dp"
                 android:layout_marginEnd="24dp"
+                android:visibility="gone"
                 style="@style/AppTextLayout"
                 app:validationEnabled="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/emailAddressLayout"
+                app:layout_constraintTop_toBottomOf="@+id/contactMechSelector"
                 tools:layout_conversion_absoluteHeight="1dp"
                 tools:layout_conversion_absoluteWidth="1dp">
                 <com.shakticoin.app.widget.InlineLabelEditText
@@ -118,7 +135,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="@string/hint_mobile_number"
+                    android:hint="@string/hint_phone_number"
                     android:imeOptions="actionDone"
                     android:inputType="phone"
                     android:text="@={viewModel.phoneNumber}"/>
@@ -126,18 +143,18 @@
 
             <Button
                 android:id="@+id/register"
-                style="@style/AppButton.Rounded"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                style="@style/AppButton.Circle"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="80dp"
+                android:layout_marginTop="100dp"
                 android:layout_marginEnd="24dp"
                 android:onClick="onMainAction"
                 android:tag="ContactsPage"
                 android:text="@string/next"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/phoneNumberLayout"
+                app:layout_constraintTop_toBottomOf="@+id/contactMechSelector"
                 tools:layout_conversion_absoluteHeight="1dp"
                 tools:layout_conversion_absoluteWidth="1dp" />
 
@@ -200,6 +217,36 @@
                     android:inputType="textCapWords|textPersonName"
                     android:text="@={viewModel.firstName}"/>
             </com.shakticoin.app.widget.TextInputLayout>
+
+            <TextView
+                android:id="@+id/emailLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="8dp"
+                android:gravity="center"
+                android:text="@string/hint_email_address"
+                android:textAppearance="@style/AppText.Body"
+                android:textColor="@android:color/white"
+                app:layout_constraintBottom_toBottomOf="@+id/contactMechSelector"
+                app:layout_constraintEnd_toStartOf="@+id/contactMechSelector"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/contactMechSelector" />
+
+            <TextView
+                android:id="@+id/phoneLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="24dp"
+                android:gravity="center"
+                android:text="@string/hint_phone_number"
+                android:textAppearance="@style/AppText.Body"
+                android:textColor="@color/colorAppGrey"
+                app:layout_constraintBottom_toBottomOf="@+id/contactMechSelector"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/contactMechSelector"
+                app:layout_constraintTop_toTopOf="@+id/contactMechSelector" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

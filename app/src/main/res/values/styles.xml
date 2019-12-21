@@ -71,6 +71,9 @@
     <style name="AppButton.Rounded">
         <item name="android:background">@drawable/button_rounded</item>
     </style>
+    <style name="AppButton.Circle">
+        <item name="android:background">@drawable/button_circle</item>
+    </style>
     <style name="AppButton.Rounded.Grey">
         <item name="android:background">@drawable/button_rounded_grey</item>
         <item name="android:textColor">@android:color/black</item>

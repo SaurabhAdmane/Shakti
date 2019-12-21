@@ -1,6 +1,12 @@
 package com.shakticoin.app.registration;
 
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -8,12 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProviders;
 
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-
+import com.shakticoin.app.R;
 import com.shakticoin.app.databinding.FragmentSignupContactBinding;
 import com.shakticoin.app.util.Validator;
 
@@ -40,9 +41,26 @@ public class SignUpContactsFragment extends Fragment {
             binding.setViewModel(viewModel);
         }
 
+        binding.contactMechSelector.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    binding.emailAddressLayout.setVisibility(View.GONE);
+                    binding.phoneNumberLayout.setVisibility(View.VISIBLE);
+                    binding.phoneLabel.setTextColor(getResources().getColor(android.R.color.white));
+                    binding.emailLabel.setTextColor(getResources().getColor(R.color.colorAppGrey));
+                } else {
+                    binding.emailAddressLayout.setVisibility(View.VISIBLE);
+                    binding.phoneNumberLayout.setVisibility(View.GONE);
+                    binding.emailLabel.setTextColor(getResources().getColor(android.R.color.white));
+                    binding.phoneLabel.setTextColor(getResources().getColor(R.color.colorAppGrey));
+                }
+            }
+        });
         TextView.OnEditorActionListener listener = (TextView.OnEditorActionListener) getActivity();
         if (listener != null) {
             binding.phoneNumber.setOnEditorActionListener(listener);
+            binding.emailAddress.setOnEditorActionListener(listener);
         }
 
         // display a special icon if content of the field conform the target format
