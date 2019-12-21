@@ -3,6 +3,7 @@ package com.shakticoin.app.registration;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -65,6 +66,23 @@ public class ReferralActivity extends AppCompatActivity {
             public void onComplete(List<Tier> value, Throwable error) {
                 if (error == null) {
                     tiers = new ArrayList<>(value);
+                }
+            }
+        });
+
+        binding.contactMechSelector.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    binding.emailAddressLayout.setVisibility(View.GONE);
+                    binding.mobileNumberLayout.setVisibility(View.VISIBLE);
+                    binding.phoneLabel.setTextColor(getResources().getColor(android.R.color.white));
+                    binding.emailLabel.setTextColor(getResources().getColor(R.color.colorAppGrey));
+                } else {
+                    binding.emailAddressLayout.setVisibility(View.VISIBLE);
+                    binding.mobileNumberLayout.setVisibility(View.GONE);
+                    binding.emailLabel.setTextColor(getResources().getColor(android.R.color.white));
+                    binding.phoneLabel.setTextColor(getResources().getColor(R.color.colorAppGrey));
                 }
             }
         });
