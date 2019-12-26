@@ -20,7 +20,7 @@
 
             <ImageView
                 android:id="@+id/logo"
-                android:layout_width="wrap_content"
+                android:layout_width="77dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="70dp"
                 app:layout_constraintDimensionRatio="w,1:1"
