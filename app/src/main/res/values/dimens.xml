@@ -17,7 +17,8 @@
     <!-- Width of the list of notifications on the right of wallet -->
     <dimen name="notifications_list_width">200dp</dimen>
     <!-- Width of the drawer on the left of wallet -->
-    <dimen name="drawer_width">60dp</dimen>
+    <dimen name="drawer_width">300dp</dimen>
+    <dimen name="drawer_item_height">60dp</dimen>
 
     <dimen name="avatar_height">38dp</dimen>
     <dimen name="avatar_width">38dp</dimen>

@@ -100,6 +100,14 @@ public abstract class BaseWalletActivity extends AppCompatActivity {
                     drawerIconId = R.id.settingsMenuIcon;
                     drawerTextId = R.id.settingsMenuText;
                     break;
+                case 5:
+                    drawerIconId = R.id.homeMenuIcon;
+                    drawerTextId = R.id.homeMenuText;
+                    break;
+                case 6:
+                    drawerIconId = R.id.familyTreeMenuIcon;
+                    drawerTextId = R.id.familyTreeMenuText;
+                    break;
             }
             int selectedButtonColor = ContextCompat.getColor(this, R.color.drawerButtonSelected);
             ImageView drawerIcon = leftDrawer.findViewById(drawerIconId);
@@ -250,6 +258,14 @@ public abstract class BaseWalletActivity extends AppCompatActivity {
         Intent intent = new Intent(this, WalletActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
+    }
+
+    public void onOpenHome(View v) {
+
+    }
+
+    public void onOpenFamilyTree(View v) {
+
     }
 
     public void onNotImplemented(View v) {

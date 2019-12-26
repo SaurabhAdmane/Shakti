@@ -222,6 +222,8 @@
     <string name="drawer_miner">Miner</string>
     <string name="drawer_referrals">Referrals</string>
     <string name="drawer_settings">Settings</string>
+    <string name="drawer_home">Home</string>
+    <string name="drawer_family_tree">Family Tree</string>
     <string name="profile_personal_title">Personal info</string>
     <string name="profile_personal_whoyou">Who are you?</string>
     <string name="profile_personal_whereyou">Where do you live?</string>
