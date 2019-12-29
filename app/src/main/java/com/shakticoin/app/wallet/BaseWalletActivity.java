@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.shakticoin.app.profile.FamilyTreeActivity;
 import com.shakticoin.app.referral.MyReferralsActivity;
 import com.shakticoin.app.settings.SettingsActivity;
 
@@ -265,7 +266,8 @@ public abstract class BaseWalletActivity extends AppCompatActivity {
     }
 
     public void onOpenFamilyTree(View v) {
-
+        Intent intent = new Intent(this, FamilyTreeActivity.class);
+        startActivity(intent);
     }
 
     public void onNotImplemented(View v) {

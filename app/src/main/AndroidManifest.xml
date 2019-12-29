@@ -222,6 +222,14 @@
         </activity>
 
         <activity
+            android:name=".profile.FamilyTreeActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".wallet.WalletActivity"/>
+        </activity>
+
+        <activity
             android:name=".registration.ActivationActivity"
             android:screenOrientation="portrait">
             <intent-filter android:name="Activation">
