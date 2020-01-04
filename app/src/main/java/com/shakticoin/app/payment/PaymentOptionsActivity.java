@@ -70,30 +70,13 @@ public class PaymentOptionsActivity extends BaseWalletActivity {
     public void onMainAction(View v) {
         final Activity activity = this;
 
-//        Tier tierLevel = viewModel.getSelectedPlan();
-//        if (tierLevel != null) {
-//            binding.progressBar.setVisibility(View.VISIBLE);
-//            orderRepository.createOrder(tierLevel.getId(), new OnCompleteListener<Order>() {
-//                @Override
-//                public void onComplete(Order value, Throwable error) {
-////                    binding.progressBar.setVisibility(View.INVISIBLE);
-//                    if (error != null) {
-//                        Debug.logException(error);
-//                        Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_SHORT).show();
-//                        return;
-//                    }
-
-                    // pay the order
-                    Intent intent = new Intent(activity, StripeActivity.class);
-                    intent.putExtra(CommonUtil.prefixed(StripeActivity.KEY_ORDER_ID, activity), "XXX"/*value.getId()*/);
-                    intent.putExtra(CommonUtil.prefixed(StripeActivity.KEY_ORDER_AMOUNT, activity), 10.0/*value.getAmount()*/);
-                    intent.putExtra(CommonUtil.prefixed(StripeActivity.KEY_ORDER_NAME, activity),
-                            String.format("%1$s - %2$s", "M101"/*tierLevel.getName()*/, "Tier description"/*tierLevel.getShort_description()*/));
-                    startActivityForResult(intent, STRIPE_PAYMENT);
-//                }
-//            });
-//        }
-
+        // pay the order
+        Intent intent = new Intent(activity, StripeActivity.class);
+        intent.putExtra(CommonUtil.prefixed(StripeActivity.KEY_ORDER_ID, activity), "XXX"/*value.getId()*/);
+        intent.putExtra(CommonUtil.prefixed(StripeActivity.KEY_ORDER_AMOUNT, activity), 10.0/*value.getAmount()*/);
+        intent.putExtra(CommonUtil.prefixed(StripeActivity.KEY_ORDER_NAME, activity),
+                String.format("%1$s - %2$s", "M101", "Tier description"));
+        startActivityForResult(intent, STRIPE_PAYMENT);
     }
 
     @Override

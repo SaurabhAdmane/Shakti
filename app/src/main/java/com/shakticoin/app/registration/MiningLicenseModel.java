@@ -5,11 +5,8 @@ import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.shakticoin.app.api.tier.Tier;
 import com.shakticoin.app.api.vault.PackageExtended;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 public class MiningLicenseModel extends ViewModel {
@@ -30,8 +27,6 @@ public class MiningLicenseModel extends ViewModel {
     public ObservableBoolean enabledT400 = new ObservableBoolean(true);
 
     MutableLiveData<PackageType> selectedPlan = new MutableLiveData<>();
-
-    private List<Tier> tiers = new ArrayList<>();
 
     public MiningLicenseModel() {
         onM101.set(true);
@@ -121,50 +116,4 @@ public class MiningLicenseModel extends ViewModel {
         }
         return null;
     }
-
-    public BigDecimal getPaymentAmount() {
-        PackageType packageType = selectedPlan.getValue();
-        if (packageType != null) {
-            String planName = packageType.name();
-            for (Tier tier : tiers) {
-                if (planName.equalsIgnoreCase(tier.getName())) {
-                    return BigDecimal.valueOf(tier.getPrice());
-                }
-            }
-        }
-        return null;
-    }
-
-    Tier getSelectedPlan() {
-        PackageType packageType = selectedPlan.getValue();
-        if (packageType != null) {
-            String planName = packageType.name();
-            for (Tier tier : tiers) {
-                if (planName.equalsIgnoreCase(tier.getName())) {
-                    return tier;
-                }
-            }
-        }
-        return null;
-    }
-
-    private void disableInactivePlans() {
-        if (tiers == null) return;
-        for (Tier tier : tiers) {
-            Boolean isActive = tier.getIs_active();
-            String name = tier.getName();
-            if (PackageType.M101.name().equals(name)) {
-                enabledM101.set(isActive);
-            } else if (PackageType.T100.name().equals(name)) {
-                enabledT100.set(isActive);
-            } else if (PackageType.T200.name().equals(name)) {
-                enabledT200.set(isActive);
-            } else if (PackageType.T300.name().equals(name)) {
-                enabledT300.set(isActive);
-            } else if (PackageType.T400.name().equals(name)) {
-                enabledT400.set(isActive);
-            }
-        }
-    }
-
 }

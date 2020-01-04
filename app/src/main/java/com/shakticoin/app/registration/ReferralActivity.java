@@ -11,21 +11,14 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.shakticoin.app.R;
-import com.shakticoin.app.api.OnCompleteListener;
-import com.shakticoin.app.api.tier.Tier;
-import com.shakticoin.app.api.tier.TierRepository;
 import com.shakticoin.app.databinding.ActivityReferralBinding;
 import com.shakticoin.app.util.CommonUtil;
 import com.shakticoin.app.util.Validator;
 import com.shakticoin.app.wallet.WalletActivity;
 import com.shakticoin.app.widget.qr.QRScannerActivity;
 
-import java.util.ArrayList;
-import java.util.List;
-
 
 public class ReferralActivity extends AppCompatActivity {
-    private ArrayList<Tier> tiers;
     private ReferralActivityModel viewModel;
     private ActivityReferralBinding binding;
 
@@ -57,18 +50,6 @@ public class ReferralActivity extends AppCompatActivity {
         binding.setLifecycleOwner(this);
         binding.setViewModel(viewModel);
 
-        // grab tiers in advance
-        //FIXME: Replace hardcoded country code with one selected by user
-        TierRepository repository = new TierRepository();
-        repository.getTiers("AF", new OnCompleteListener<List<Tier>>() {
-            @Override
-            public void onComplete(List<Tier> value, Throwable error) {
-                if (error == null) {
-                    tiers = new ArrayList<>(value);
-                }
-            }
-        });
-
         // display a special icon if content of the field conform the target format
         binding.emailAddressLayout.setValidator((view, value) -> Validator.isEmail(value));
         binding.mobileNumberLayout.setValidator((view, value) -> Validator.isPhoneNumber(value));
@@ -78,8 +59,6 @@ public class ReferralActivity extends AppCompatActivity {
         //TODO: remove, was added for demo purpose
         Intent intent = new Intent(this, WalletActivity.class);
         startActivity(intent);
-
-//        selectTier();
     }
 
     public void onReward(View view) {
@@ -107,16 +86,6 @@ public class ReferralActivity extends AppCompatActivity {
     }
 
     private void postReferralInfo() {
-        // TODO: when api is ready we should call confirmation activity if referrer found
-        selectTier();
     }
 
-    private void selectTier() {
-
-//        Intent intent = new Intent(this, MiningLicenseActivity.class);
-//        if (tiers != null) {
-//            intent.putParcelableArrayListExtra(CommonUtil.prefixed("tiersList", this), tiers);
-//        }
-//        startActivity(intent);
-    }
 }

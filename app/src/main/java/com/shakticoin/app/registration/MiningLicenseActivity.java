@@ -15,9 +15,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.shakticoin.app.R;
 import com.shakticoin.app.api.Constants;
 import com.shakticoin.app.api.OnCompleteListener;
-import com.shakticoin.app.api.order.OrderRepository;
 import com.shakticoin.app.api.payment.PaymentRepository;
-import com.shakticoin.app.api.tier.Tier;
 import com.shakticoin.app.api.user.UserRepository;
 import com.shakticoin.app.api.vault.Bonus;
 import com.shakticoin.app.api.vault.PackageExtended;
@@ -37,7 +35,6 @@ public class MiningLicenseActivity extends AppCompatActivity {
 
     private ActivityMiningLicenseBinding binding;
     private MiningLicenseModel viewModel;
-    private OrderRepository orderRepository;
     private VaultRepository vaultRepository;
 
     @Override
@@ -95,8 +92,6 @@ public class MiningLicenseActivity extends AppCompatActivity {
                 });
             }
         });
-
-        orderRepository = new OrderRepository();
     }
 
     private void updateDetails(PackageExtended packageExtended) {
@@ -114,45 +109,17 @@ public class MiningLicenseActivity extends AppCompatActivity {
             Bonus bonus = packageExtended.getBonus();
             if (bonus != null) {
                 binding.offer.setText(bonus.getDescription());
-                BigDecimal price = viewModel.getPaymentAmount();
-                binding.paymentAmount.setText(price != null ?
-                        String.format(getResources().getConfiguration().locale, "$%1$.2f", price) : "");
+                // FIXME: where to get payment amount?
+//                BigDecimal price = viewModel.getPaymentAmount();
+//                binding.paymentAmount.setText(price != null ?
+//                        String.format(getResources().getConfiguration().locale, "$%1$.2f", price) : "");
             }
         }
     }
 
     public void onApply(View view) {
         Intent intent = new Intent(this, PaymentOptionsActivity.class);
-        Tier tierLevel = viewModel.getSelectedPlan();
-        if (intent != null) {
-            intent.putExtra("PLAN_ID", tierLevel.getId());
-        }
         startActivity(intent);
-//        final Activity activity = this;
-//
-//        Tier tierLevel = viewModel.getSelectedPlan();
-//        if (tierLevel != null) {
-//            binding.progressBar.setVisibility(View.VISIBLE);
-//            orderRepository.createOrder(tierLevel.getId(), new OnCompleteListener<Order>() {
-//                @Override
-//                public void onComplete(Order value, Throwable error) {
-//                    binding.progressBar.setVisibility(View.INVISIBLE);
-//                    if (error != null) {
-//                        Debug.logException(error);
-//                        Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_SHORT).show();
-//                        return;
-//                    }
-//
-//                    // pay the order
-//                    Intent intent = new Intent(activity, StripeActivity.class);
-//                    intent.putExtra(CommonUtil.prefixed(StripeActivity.KEY_ORDER_ID, activity), value.getId());
-//                    intent.putExtra(CommonUtil.prefixed(StripeActivity.KEY_ORDER_AMOUNT, activity), value.getAmount());
-//                    intent.putExtra(CommonUtil.prefixed(StripeActivity.KEY_ORDER_NAME, activity),
-//                            String.format("%1$s - %2$s", tierLevel.getName(), tierLevel.getShort_description()));
-//                    startActivityForResult(intent, STRIPE_PAYMENT);
-//                }
-//            });
-//        }
     }
 
     private void completePayment(@Nullable String token, long orderId) {
