@@ -57,4 +57,116 @@ public class VaultRepository {
             }
         });
     }
+
+    public void getVault(Integer vaultId, @NonNull OnCompleteListener<VaultExtended> listener) {
+        service.getVault(Session.getAuthorizationHeader(), vaultId).enqueue(new Callback<VaultExtended>() {
+
+            @EverythingIsNonNull
+            @Override
+            public void onResponse(Call<VaultExtended> call, Response<VaultExtended> response) {
+                Debug.logDebug(response.toString());
+                if (response.isSuccessful()) {
+                    VaultExtended vault = response.body();
+                    listener.onComplete(vault, null);
+                } else {
+                    if (response.code() == 401) {
+                        listener.onComplete(null, new UnauthorizedException(response.message(), response.code()));
+                    } else {
+                        listener.onComplete(null, new RemoteException(response.message(), response.code()));
+                    }
+                }
+            }
+
+            @EverythingIsNonNull
+            @Override
+            public void onFailure(Call<VaultExtended> call, Throwable t) {
+                Debug.logException(t);
+                listener.onComplete(null, t);
+            }
+        });
+    }
+
+    public void getVaultPackages(@NonNull Integer vaultId, @NonNull OnCompleteListener<List<PackageExtended>> listener) {
+        service.getVaultPackages(Session.getAuthorizationHeader(), vaultId).enqueue(new Callback<List<PackageExtended>>() {
+            @EverythingIsNonNull
+            @Override
+            public void onResponse(Call<List<PackageExtended>> call, Response<List<PackageExtended>> response) {
+                Debug.logDebug(response.toString());
+                if (response.isSuccessful()) {
+                    List<PackageExtended> packages = response.body();
+                    listener.onComplete(packages, null);
+                } else {
+                    if (response.code() == 401) {
+                        listener.onComplete(null, new UnauthorizedException(response.message(), response.code()));
+                    } else {
+                        listener.onComplete(null, new RemoteException(response.message(), response.code()));
+                    }
+                }
+            }
+
+            @EverythingIsNonNull
+            @Override
+            public void onFailure(Call<List<PackageExtended>> call, Throwable t) {
+                Debug.logException(t);
+                listener.onComplete(null, t);
+            }
+        });
+    }
+
+    public void getVaultPackage(@NonNull Integer vaultId, @NonNull Integer packageId,
+                                @NonNull OnCompleteListener<PackageExtended> listener) {
+        service.getVaultPackage(Session.getAuthorizationHeader(), vaultId, packageId).enqueue(new Callback<PackageExtended>() {
+            @EverythingIsNonNull
+            @Override
+            public void onResponse(Call<PackageExtended> call, Response<PackageExtended> response) {
+                Debug.logDebug(response.toString());
+                if (response.isSuccessful()) {
+                    PackageExtended pkg = response.body();
+                    listener.onComplete(pkg, null);
+                } else {
+                    if (response.code() == 401) {
+                        listener.onComplete(null, new UnauthorizedException(response.message(), response.code()));
+                    } else {
+                        listener.onComplete(null, new RemoteException(response.message(), response.code()));
+                    }
+                }
+            }
+
+            @EverythingIsNonNull
+            @Override
+            public void onFailure(Call<PackageExtended> call, Throwable t) {
+                Debug.logException(t);
+                listener.onComplete(null, t);
+            }
+        });
+    }
+
+    public void getPackagePlans(@NonNull Integer vaultId, @NonNull Integer packageId,
+                         @NonNull OnCompleteListener<List<PackagePlanExtended>> listener) {
+        service.getVaultPackagePlans(Session.getAuthorizationHeader(),
+                vaultId, packageId).enqueue(new Callback<List<PackagePlanExtended>>() {
+            @EverythingIsNonNull
+            @Override
+            public void onResponse(Call<List<PackagePlanExtended>> call, Response<List<PackagePlanExtended>> response) {
+                Debug.logDebug(response.toString());
+                if (response.isSuccessful()) {
+                    List<PackagePlanExtended> plans = response.body();
+                    listener.onComplete(plans, null);
+                } else {
+                    if (response.code() == 401) {
+                        listener.onComplete(null, new UnauthorizedException(response.message(), response.code()));
+                    } else {
+                        listener.onComplete(null, new RemoteException(response.message(), response.code()));
+                    }
+                }
+            }
+
+            @EverythingIsNonNull
+            @Override
+            public void onFailure(Call<List<PackagePlanExtended>> call, Throwable t) {
+                Debug.logException(t);
+                listener.onComplete(null, t);
+            }
+        });
+    }
 }
