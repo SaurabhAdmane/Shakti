@@ -206,11 +206,13 @@ public class MiningLicenseActivity extends AppCompatActivity {
     private String formatFeatureList(MiningLicenseModel.PackageType packageType, PackageExtended packageExtended) {
         List<String> features = packageExtended.getFeatures();
         StringBuilder sb = new StringBuilder();
+        sb.append("<p><b>");
         if (packageType != null) {
-            sb.append("<p><b>").append(getString(R.string.minerlic_package_features, packageType.name())).append("</b></p>");
+            sb.append(getString(R.string.minerlic_package_features, packageType.name()));
         } else {
             sb.append(getString(R.string.minerlic_features));
         }
+        sb.append("</b></p>");
         if (features != null && features.size() > 0) {
             for (String feature : features) {
                 sb.append("<p>").append("\u2022 ").append(feature).append("</p>");

@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.text.HtmlCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.Observable;
 import androidx.databinding.ObservableField;
@@ -64,27 +65,29 @@ public class VaultChooserActivity extends BaseWalletActivity {
         Toast.makeText(this, R.string.err_not_implemented, Toast.LENGTH_SHORT).show();
     }
 
+    private String formatFeatureList(List<String> features) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("<p><b>").append(getString(R.string.minerlic_features)).append("</b></p>");
+        if (features != null && features.size() > 0) {
+            for (String feature : features) {
+                sb.append("<p>").append("\u2022 ").append(feature).append("</p>");
+            }
+        }
+        return sb.toString();
+
+    }
+
     class OnOptionChanged extends Observable.OnPropertyChangedCallback {
 
         @Override
         public void onPropertyChanged(Observable sender, int propertyId) {
             VaultExtended vault = ((ObservableField<VaultExtended>) sender).get();
             if (vault != null) {
-                List<String> features = vault.getFeatures();
-                if (features != null && features.size() > 0) {
-                    StringBuilder sb = new StringBuilder(getString(R.string.vault_chs_features) + "\n\n");
-                    for (int i = 0; i < features.size(); i++) {
-                        String featureText = features.get(i);
-                        sb.append("\u2022 ").append(featureText);
-                        if (i < features.size() - 1) {
-                            sb.append("\n\n");
-                        }
-                    }
-                    binding.optionFeatures.setText(sb.toString());
-                    return;
-                }
+                    binding.optionFeatures.setText(
+                            HtmlCompat.fromHtml(formatFeatureList(vault.getFeatures()), HtmlCompat.FROM_HTML_MODE_LEGACY));
+            } else {
+                binding.optionFeatures.setText(null);
             }
-            binding.optionFeatures.setText(null);
         }
     }
 }
