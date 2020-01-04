@@ -40,9 +40,11 @@ public class VaultChooserActivity extends BaseWalletActivity {
 
         final AppCompatActivity self = this;
         VaultRepository vaultRepo = new VaultRepository();
+        binding.progressBar.setVisibility(View.VISIBLE);
         vaultRepo.getVaults(new OnCompleteListener<List<VaultExtended>>() {
             @Override
             public void onComplete(List<VaultExtended> value, Throwable error) {
+                binding.progressBar.setVisibility(View.INVISIBLE);
                 if (error != null) {
                     Toast.makeText(self, Debug.getFailureMsg(self, error), Toast.LENGTH_LONG).show();
                     return;
