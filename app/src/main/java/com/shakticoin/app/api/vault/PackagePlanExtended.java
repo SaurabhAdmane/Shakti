@@ -4,8 +4,12 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public class PackagePlanExtended {
+    public static final int WEEKLY  = 1;
+    public static final int MONTHLY = 2;
+    public static final int ANNUAL  = 3;
+
     private String id;
-    private String period;
+    private Integer period;
     private String description;
     private BigDecimal fiat_price;
     private String zoho_plan_code;
@@ -19,11 +23,11 @@ public class PackagePlanExtended {
         this.id = id;
     }
 
-    public String getPeriod() {
+    public Integer getPeriod() {
         return period;
     }
 
-    public void setPeriod(String period) {
+    public void setPeriod(Integer period) {
         this.period = period;
     }
 

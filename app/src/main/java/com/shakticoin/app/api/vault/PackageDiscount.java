@@ -39,4 +39,14 @@ public class PackageDiscount {
     public void setSaving_percentage(BigDecimal saving_percentage) {
         this.saving_percentage = saving_percentage;
     }
+
+    /**
+     * Format short discount message, e.g. "Save 19%".
+     */
+    public String formatSavingMsg(String fmt) {
+        if (saving_percentage != null) {
+            return String.format(fmt, saving_percentage.doubleValue());
+        }
+        return null;
+    }
 }
