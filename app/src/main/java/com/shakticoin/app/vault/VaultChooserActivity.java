@@ -14,6 +14,8 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.shakticoin.app.R;
 import com.shakticoin.app.api.OnCompleteListener;
+import com.shakticoin.app.api.Session;
+import com.shakticoin.app.api.UnauthorizedException;
 import com.shakticoin.app.api.vault.VaultExtended;
 import com.shakticoin.app.api.vault.VaultRepository;
 import com.shakticoin.app.databinding.ActivityVaultChooserBinding;
@@ -46,7 +48,11 @@ public class VaultChooserActivity extends BaseWalletActivity {
             public void onComplete(List<VaultExtended> value, Throwable error) {
                 binding.progressBar.setVisibility(View.INVISIBLE);
                 if (error != null) {
-                    Toast.makeText(self, Debug.getFailureMsg(self, error), Toast.LENGTH_LONG).show();
+                    if (error instanceof UnauthorizedException) {
+                        startActivity(Session.unauthorizedIntent(self));
+                    } else {
+                        Toast.makeText(self, Debug.getFailureMsg(self, error), Toast.LENGTH_LONG).show();
+                    }
                     return;
                 }
 

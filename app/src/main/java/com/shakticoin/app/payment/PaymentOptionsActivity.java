@@ -18,6 +18,8 @@ import androidx.viewpager.widget.ViewPager;
 import com.shakticoin.app.R;
 import com.shakticoin.app.api.Constants;
 import com.shakticoin.app.api.OnCompleteListener;
+import com.shakticoin.app.api.Session;
+import com.shakticoin.app.api.UnauthorizedException;
 import com.shakticoin.app.api.payment.PaymentRepository;
 import com.shakticoin.app.api.user.UserRepository;
 import com.shakticoin.app.api.vault.PackageExtended;
@@ -51,6 +53,8 @@ public class PaymentOptionsActivity extends BaseWalletActivity {
 
         super.onInitView(binding.getRoot(), getString(R.string.miner_intro_toolbar));
 
+        final Activity self = this;
+
         vaultRepository = new VaultRepository();
         binding.progressBar.setVisibility(View.VISIBLE);
         vaultRepository.getVaultPackages(2, new OnCompleteListener<List<PackageExtended>>() {
@@ -58,6 +62,9 @@ public class PaymentOptionsActivity extends BaseWalletActivity {
             public void onComplete(List<PackageExtended> value, Throwable error) {
                 binding.progressBar.setVisibility(View.INVISIBLE);
                 if (error != null) {
+                    if (error instanceof UnauthorizedException) {
+                        startActivity(Session.unauthorizedIntent(self));
+                    }
                     return;
                 }
 

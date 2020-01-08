@@ -32,7 +32,7 @@ public class VaultRepository {
 
     public void getVaults(@NonNull OnCompleteListener<List<VaultExtended>> listener) {
 
-        service.getVaults(Session.getAuthorizationHeader()).enqueue(new Callback<List<VaultExtended>>() {
+        service.getVaults(Session.getAuthorizationHeader(), Session.getLanguageHeader()).enqueue(new Callback<List<VaultExtended>>() {
             @EverythingIsNonNull
             @Override
             public void onResponse(Call<List<VaultExtended>> call, Response<List<VaultExtended>> response) {
@@ -42,7 +42,7 @@ public class VaultRepository {
                     listener.onComplete(vaults, null);
                 } else {
                     if (response.code() == 401) {
-                        listener.onComplete(null, new UnauthorizedException(response.message(), response.code()));
+                        listener.onComplete(null, new UnauthorizedException());
                     } else {
                         listener.onComplete(null, new RemoteException(response.message(), response.code()));
                     }
@@ -59,7 +59,7 @@ public class VaultRepository {
     }
 
     public void getVault(Integer vaultId, @NonNull OnCompleteListener<VaultExtended> listener) {
-        service.getVault(Session.getAuthorizationHeader(), vaultId).enqueue(new Callback<VaultExtended>() {
+        service.getVault(Session.getAuthorizationHeader(), Session.getLanguageHeader(), vaultId).enqueue(new Callback<VaultExtended>() {
 
             @EverythingIsNonNull
             @Override
@@ -70,7 +70,7 @@ public class VaultRepository {
                     listener.onComplete(vault, null);
                 } else {
                     if (response.code() == 401) {
-                        listener.onComplete(null, new UnauthorizedException(response.message(), response.code()));
+                        listener.onComplete(null, new UnauthorizedException());
                     } else {
                         listener.onComplete(null, new RemoteException(response.message(), response.code()));
                     }
@@ -87,7 +87,8 @@ public class VaultRepository {
     }
 
     public void getVaultPackages(@NonNull Integer vaultId, @NonNull OnCompleteListener<List<PackageExtended>> listener) {
-        service.getVaultPackages(Session.getAuthorizationHeader(), vaultId).enqueue(new Callback<List<PackageExtended>>() {
+        service.getVaultPackages(Session.getAuthorizationHeader(), Session.getLanguageHeader(), vaultId)
+                .enqueue(new Callback<List<PackageExtended>>() {
             @EverythingIsNonNull
             @Override
             public void onResponse(Call<List<PackageExtended>> call, Response<List<PackageExtended>> response) {
@@ -97,7 +98,7 @@ public class VaultRepository {
                     listener.onComplete(packages, null);
                 } else {
                     if (response.code() == 401) {
-                        listener.onComplete(null, new UnauthorizedException(response.message(), response.code()));
+                        listener.onComplete(null, new UnauthorizedException());
                     } else {
                         listener.onComplete(null, new RemoteException(response.message(), response.code()));
                     }
@@ -115,7 +116,8 @@ public class VaultRepository {
 
     public void getVaultPackage(@NonNull Integer vaultId, @NonNull Integer packageId,
                                 @NonNull OnCompleteListener<PackageExtended> listener) {
-        service.getVaultPackage(Session.getAuthorizationHeader(), vaultId, packageId).enqueue(new Callback<PackageExtended>() {
+        service.getVaultPackage(Session.getAuthorizationHeader(), Session.getLanguageHeader(), vaultId, packageId)
+                .enqueue(new Callback<PackageExtended>() {
             @EverythingIsNonNull
             @Override
             public void onResponse(Call<PackageExtended> call, Response<PackageExtended> response) {
@@ -125,7 +127,7 @@ public class VaultRepository {
                     listener.onComplete(pkg, null);
                 } else {
                     if (response.code() == 401) {
-                        listener.onComplete(null, new UnauthorizedException(response.message(), response.code()));
+                        listener.onComplete(null, new UnauthorizedException());
                     } else {
                         listener.onComplete(null, new RemoteException(response.message(), response.code()));
                     }
@@ -143,7 +145,7 @@ public class VaultRepository {
 
     public void getPackagePlans(@NonNull Integer vaultId, @NonNull Integer packageId,
                          @NonNull OnCompleteListener<List<PackagePlanExtended>> listener) {
-        service.getVaultPackagePlans(Session.getAuthorizationHeader(),
+        service.getVaultPackagePlans(Session.getAuthorizationHeader(), Session.getLanguageHeader(),
                 vaultId, packageId).enqueue(new Callback<List<PackagePlanExtended>>() {
             @EverythingIsNonNull
             @Override
@@ -154,7 +156,7 @@ public class VaultRepository {
                     listener.onComplete(plans, null);
                 } else {
                     if (response.code() == 401) {
-                        listener.onComplete(null, new UnauthorizedException(response.message(), response.code()));
+                        listener.onComplete(null, new UnauthorizedException());
                     } else {
                         listener.onComplete(null, new RemoteException(response.message(), response.code()));
                     }

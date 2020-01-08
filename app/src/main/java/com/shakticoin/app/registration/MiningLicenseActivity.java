@@ -15,6 +15,8 @@ import androidx.lifecycle.ViewModelProviders;
 import com.shakticoin.app.R;
 import com.shakticoin.app.api.Constants;
 import com.shakticoin.app.api.OnCompleteListener;
+import com.shakticoin.app.api.Session;
+import com.shakticoin.app.api.UnauthorizedException;
 import com.shakticoin.app.api.payment.PaymentRepository;
 import com.shakticoin.app.api.user.UserRepository;
 import com.shakticoin.app.api.vault.Bonus;
@@ -69,7 +71,7 @@ public class MiningLicenseActivity extends AppCompatActivity {
         viewModel = ViewModelProviders.of(this).get(MiningLicenseModel.class);
         binding.setViewModel(viewModel);
 
-        AppCompatActivity self = this;
+        final AppCompatActivity self = this;
 
         vaultRepository = new VaultRepository();
         binding.progressBar.setVisibility(View.VISIBLE);
@@ -79,6 +81,9 @@ public class MiningLicenseActivity extends AppCompatActivity {
             public void onComplete(List<PackageExtended> packages, Throwable error) {
                 binding.progressBar.setVisibility(View.INVISIBLE);
                 if (error != null) {
+                    if (error instanceof UnauthorizedException) {
+                        startActivity(Session.unauthorizedIntent(self));
+                    }
                     return;
                 }
 

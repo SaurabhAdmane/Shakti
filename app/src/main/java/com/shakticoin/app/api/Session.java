@@ -1,12 +1,15 @@
 package com.shakticoin.app.api;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.LocaleList;
 
 import com.shakticoin.app.ShaktiApplication;
 import com.shakticoin.app.api.user.User;
+import com.shakticoin.app.registration.SignInActivity;
 import com.shakticoin.app.util.PreferenceHelper;
+import com.shakticoin.app.wallet.WalletActivity;
 
 import java.util.Locale;
 
@@ -160,6 +163,12 @@ public class Session {
         return sb.toString();
     }
 
+    public static Intent unauthorizedIntent(Context context) {
+        Session.clean(context);
+        Intent intent = new Intent(context, SignInActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        return intent;
+    }
     /**
      * Provide access to the flat that indicates current network availability.
      */

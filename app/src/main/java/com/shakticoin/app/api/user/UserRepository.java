@@ -8,6 +8,7 @@ import com.shakticoin.app.api.BaseUrl;
 import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.RemoteException;
 import com.shakticoin.app.api.Session;
+import com.shakticoin.app.api.UnauthorizedException;
 import com.shakticoin.app.util.Debug;
 
 import org.json.JSONArray;
@@ -103,7 +104,7 @@ public class UserRepository {
     /**
      * Retrieve a user by ID
      */
-    public void getUserInfo(Integer userId, OnCompleteListener<User> listener) {
+    public void getUserInfo(Integer userId, @NonNull OnCompleteListener<User> listener) {
         Call<User> call = userService.getUserByID(Session.getAuthorizationHeader(), Session.getLanguageHeader(), userId);
         call.enqueue(new Callback<User>() {
             @Override
@@ -114,12 +115,15 @@ public class UserRepository {
                         User user = response.body();
                         if (user != null) {
                             Session.setUser(user);
-                            if (listener != null) listener.onComplete(user, null);
+                            listener.onComplete(user, null);
                         }
                     } else {
-                        Debug.logErrorResponse(response);
-                        if (listener != null) listener.onComplete(null,
-                                new RemoteException(response.message(), response.code()));
+                        if (response.code() == 401) {
+                            listener.onComplete(null, new UnauthorizedException());
+                        } else {
+                            Debug.logErrorResponse(response);
+                            listener.onComplete(null, new RemoteException(response.message(), response.code()));
+                        }
                     }
                 }
             }
@@ -127,7 +131,7 @@ public class UserRepository {
             @Override
             public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
                 Debug.logException(t);
-                if (listener != null) listener.onComplete(null, t);
+                listener.onComplete(null, t);
             }
         });
     }
@@ -135,7 +139,7 @@ public class UserRepository {
     /**
      * Retrieve a user by authorization token
      */
-    public void getUserInfo(OnCompleteListener<User> listener) {
+    public void getUserInfo(@NonNull OnCompleteListener<User> listener) {
         userService.getUser(Session.getAuthorizationHeader(), Session.getLanguageHeader()).enqueue(new Callback<User>() {
             @EverythingIsNonNull
             @Override
@@ -145,12 +149,15 @@ public class UserRepository {
                     User user = response.body();
                     if (user != null) {
                         Session.setUser(user);
-                        if (listener != null) listener.onComplete(user, null);
+                        listener.onComplete(user, null);
                     }
                 } else {
-                    Debug.logErrorResponse(response);
-                    if (listener != null) listener.onComplete(null,
-                            new RemoteException(response.message(), response.code()));
+                    if (response.code() == 401) {
+                        listener.onComplete(null, new UnauthorizedException());
+                    } else {
+                        Debug.logErrorResponse(response);
+                        listener.onComplete(null, new RemoteException(response.message(), response.code()));
+                    }
                 }
             }
 
@@ -158,7 +165,7 @@ public class UserRepository {
             @Override
             public void onFailure(Call<User> call, Throwable t) {
                Debug.logException(t);
-               if (listener != null) listener.onComplete(null, t);
+               listener.onComplete(null, t);
             }
         });
     }
@@ -168,7 +175,7 @@ public class UserRepository {
      * @param userId User ID
      * @param confirmatonToken A token from the link in email confirmation message
      */
-    public void acvivateUser(@NonNull Integer userId, @NonNull String confirmatonToken, OnCompleteListener<Void> listener) {
+    public void acvivateUser(@NonNull Integer userId, @NonNull String confirmatonToken, @NonNull OnCompleteListener<Void> listener) {
 
         UserActivateParameters parameters = new UserActivateParameters();
         parameters.setToken(confirmatonToken);
@@ -178,12 +185,10 @@ public class UserRepository {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
-                    if (listener != null) listener.onComplete(null, null);
+                    listener.onComplete(null, null);
                 } else {
                     Debug.logErrorResponse(response);
-                    if (listener != null) {
-                        listener.onComplete(null, new RemoteException(response.message(), response.code()));
-                    }
+                    listener.onComplete(null, new RemoteException(response.message(), response.code()));
                 }
             }
 
@@ -191,7 +196,7 @@ public class UserRepository {
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
                 Debug.logException(t);
-                if (listener != null) listener.onComplete(null, t);
+                listener.onComplete(null, t);
             }
         });
     }

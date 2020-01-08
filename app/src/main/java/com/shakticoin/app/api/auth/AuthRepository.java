@@ -4,6 +4,7 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
+import com.shakticoin.app.api.UnauthorizedException;
 import com.shakticoin.app.util.Debug;
 
 import org.json.JSONException;
@@ -48,15 +49,17 @@ public class AuthRepository {
         call.enqueue(new Callback<TokenResponse>() {
             @Override
             public void onResponse(@NonNull Call<TokenResponse> call, @NonNull Response<TokenResponse> response) {
-                if (call.isExecuted()) {
-                    Debug.logDebug(response.toString());
-                    if (response.isSuccessful()) {
-                        TokenResponse resp = response.body();
-                        if (resp != null) {
-                            Session.setAccessToken(resp.getAccess());
-                            Session.setRefreshToken(resp.getRefresh());
-                            listener.onComplete(null,null);
-                        }
+                Debug.logDebug(response.toString());
+                if (response.isSuccessful()) {
+                    TokenResponse resp = response.body();
+                    if (resp != null) {
+                        Session.setAccessToken(resp.getAccess());
+                        Session.setRefreshToken(resp.getRefresh());
+                        listener.onComplete(null,null);
+                    }
+                } else {
+                    if (response.code() == 401) {
+                        listener.onComplete(null, new UnauthorizedException(response.message(), response.code()));
                     } else {
                         Debug.logErrorResponse(response);
                         listener.onComplete(null, new RemoteException(response.message(), response.code()));
@@ -82,8 +85,12 @@ public class AuthRepository {
                     TokenResponse resp = response.body();
                     listener.onComplete(resp, null);
                 } else {
-                    Debug.logErrorResponse(response);
-                    listener.onComplete(null, new RemoteException(response.message(), response.code()));
+                    if (response.code() == 401) {
+                        listener.onComplete(null, new UnauthorizedException());
+                    } else {
+                        Debug.logErrorResponse(response);
+                        listener.onComplete(null, new RemoteException(response.message(), response.code()));
+                    }
                 }
             }
 

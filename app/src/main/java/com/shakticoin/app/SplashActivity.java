@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.Session;
+import com.shakticoin.app.api.UnauthorizedException;
 import com.shakticoin.app.api.auth.AuthRepository;
 import com.shakticoin.app.api.auth.TokenResponse;
 import com.shakticoin.app.api.user.User;
@@ -65,8 +66,12 @@ public class SplashActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(User value, Throwable error) {
                                     if (error != null) {
-                                        Toast.makeText(self, Debug.getFailureMsg(self, error), Toast.LENGTH_LONG).show();
-                                        Debug.logException(error);
+                                        if (error instanceof UnauthorizedException) {
+                                            startActivity(Session.unauthorizedIntent(self));
+                                        } else {
+                                            Toast.makeText(self, Debug.getFailureMsg(self, error), Toast.LENGTH_LONG).show();
+                                            Debug.logException(error);
+                                        }
                                         return;
                                     }
 

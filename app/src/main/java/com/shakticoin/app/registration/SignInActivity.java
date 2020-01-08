@@ -21,6 +21,7 @@ import com.shakticoin.app.R;
 import com.shakticoin.app.api.BaseUrl;
 import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.Session;
+import com.shakticoin.app.api.UnauthorizedException;
 import com.shakticoin.app.api.auth.Credentials;
 import com.shakticoin.app.api.auth.LoginService;
 import com.shakticoin.app.api.auth.TokenResponse;
@@ -135,8 +136,12 @@ public class SignInActivity extends AppCompatActivity {
                                     binding.progressBar.setVisibility(View.INVISIBLE);
 
                                     if (error != null) {
-                                        Toast.makeText(self, Debug.getFailureMsg(self, error), Toast.LENGTH_LONG).show();
-                                        Debug.logException(error);
+                                        if (error instanceof UnauthorizedException) {
+                                            startActivity(Session.unauthorizedIntent(self));
+                                        } else {
+                                            Toast.makeText(self, Debug.getFailureMsg(self, error), Toast.LENGTH_LONG).show();
+                                            Debug.logException(error);
+                                        }
                                         return;
                                     }
 

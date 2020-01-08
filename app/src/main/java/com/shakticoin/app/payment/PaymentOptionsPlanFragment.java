@@ -17,6 +17,8 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.shakticoin.app.R;
 import com.shakticoin.app.api.OnCompleteListener;
+import com.shakticoin.app.api.Session;
+import com.shakticoin.app.api.UnauthorizedException;
 import com.shakticoin.app.api.vault.PackageDiscount;
 import com.shakticoin.app.api.vault.PackageExtended;
 import com.shakticoin.app.api.vault.PackagePlanExtended;
@@ -64,6 +66,9 @@ public class PaymentOptionsPlanFragment extends Fragment {
                 public void onComplete(List<PackagePlanExtended> plans, Throwable error) {
                     if (progressBar != null) progressBar.setVisibility(View.INVISIBLE);
                     if (error != null) {
+                        if (error instanceof UnauthorizedException) {
+                            startActivity(Session.unauthorizedIntent(getContext()));
+                        }
                         return;
                     }
 
