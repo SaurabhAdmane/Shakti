@@ -109,19 +109,10 @@
     <string name="dlg_confirm_email_action">Got it! Take me to sign in.</string>
     <string name="minerlic_title">Power Miner\nMover. Shaker. Digital Banker.</string>
     <string name="minerlic_choose">Choose your license type:</string>
-    <string name="minerlic_license"><b>%1$s</b> License</string>
-    <string name="minerlic_bonus_bounty_m101">Get an extra SXE 1,000 bonus bounty\n- that is $5,000 USD</string>
-    <string name="minerlic_bonus_bounty_t100">Get an extra SXE 10,000 bonus bounty\n- that is $50,000 USD</string>
-    <string name="minerlic_bonus_bounty_t200">Get an extra SXE 10,000 bonus bounty\n- that is $50,000 USD</string>
-    <string name="minerlic_bonus_bounty_t300">Get an extra SXE 10,000 bonus bounty\n- that is $50,000 USD</string>
-    <string name="minerlic_bonus_bounty_t400">Get an extra SXE 10,000 bonus bounty\n- that is $50,000 USD</string>
     <string name="minerlic_one_time_payment">For a one time payment of</string>
     <string name="minerlic_action">Apply to %1$s</string>
-    <string name="minerlic_description_m101"><![CDATA[M101 Features\n\n\u2022Individual Mining License\n\n\u2022Mine SXE coins from home or wherever you work from.\n\n\u2022Priority upgrade option to Power Mining License.]]></string>
-    <string name="minerlic_description_t100"><![CDATA[T100 Features\n\n\u2022Exclusive limited territory access.\n\n\u2022Be among the first 20.000 Power Miners.\n\n\u2022Be the first to on-board merchants.\n\n\u2022Earn thousands of USD equivalent in SXE.]]></string>
-    <string name="minerlic_description_t200"><![CDATA[T200 Features\n\n\u2022All features from M101 and T100 License.\n\n\u2022Be among the first 50.000 Power Miners.\n\n\u2022Dedicated Support.\n\n\u2022Earn thousands of USD equivalent in SXE.]]></string>
-    <string name="minerlic_description_t300"><![CDATA[T300 Features\n\n\u2022Exclusive limited territory access.\n\n\u2022Be among the first 50.000 Power Miners.\n\n\u2022Be the first to on-board merchants.\n\n\u2022Earn thousands of USD equivalent in SXE.]]></string>
-    <string name="minerlic_description_t400"><![CDATA[T400 Features\n\n\u2022Be among the first 60,000 Power Miners.\n\n\u2022Be the first one to choose your data center anywhere in the world.\n\n\u2022Earn thousands of USD equivalent in SXE.]]></string>
+    <string name="minerlic_package_features">%1$s Features</string>
+    <string name="minerlic_features">Features</string>
     <string name="err_incorrect_card">Please enter a valid card data</string>
     <string name="err_payment_cancelled">The payment was cancelled or failed</string>
     <string name="wallet_receive_sxe">Receive SXE</string>
@@ -404,7 +395,7 @@
         gift to you.</p>
         <p><b>To get it faster, refer friends.</b><br/>
         Each friend you refer reduces the waiting time by one month.</p>
-        <p>If you plan to reduce your waiting time strictly through referrals, your Bonus Bounty
+        <p>If you packageType to reduce your waiting time strictly through referrals, your Bonus Bounty
         will be unlocked on your next birthday.</p>
     ]]></string>
     <string name="dlg_howto_action">Refer a friend</string>
@@ -481,36 +472,7 @@
         adopters. The Shakti Foundation may end this promotional offer without any notice.
     </string>
     <string name="vault_chs_subtitle">Choose your vault type:</string>
-    <string name="vault_chs_option1_title">Merchant</string>
-    <string name="vault_chs_option2_title">Power Miner</string>
-    <string name="vault_chs_option3_title">Feducia</string>
-    <string name="vault_chs_option4_title">Shakti Express</string>
-    <string name="vault_chs_option5_title">DevDot</string>
-    <string name="vault_chs_option1_advantages"><![CDATA[Merchant Features\n\n\u2022 Reduce banking charges.\n\n\u2022 Eliminate banking time.\n\n\u2022 Sell goods and services using universal currency.\n\n\u2022 Track tax obligations in real-time.]]></string>
-    <string name="vault_chs_option2_advantages"><![CDATA[Power Miner Features\n\n\u2022 Limited number of node operators.\n\n\u2022 Node Operator.]]></string>
-    <string name="vault_chs_option3_advantages"><![CDATA[Feducia Features\n\n\u2022 Tripartite custody of SXE assets.\n\n\u2022 Sale of asset recorded in blockchain.\n\n\u2022 Worry-free, paper-less back-office.\n\n\u2022 Instant generation of accounting records at the time of settlor executing the TRUST Deed.]]></string>
-    <string name="vault_chs_option4_advantages"><![CDATA[Shakti Express Features\n\n\u2022 Move money instantly for cents worldwide.\n\n\u2022 Built-in KYC, AML and CFT compliance.\n\n\u2022 You just UBER the money.\n\n\u2022 In-built trace path eliminates fraud.\n\n\u2022 Save time and money in cumbersome paperwork.]]></string>
-    <string name="vault_chs_option5_advantages"><![CDATA[DevDot Features\n\n\u2022 Get selected and be paid to code.\n\n\u2022 Annual tenure.\n\n\u2022 Evaluated by peers.\n\n\u2022 It’s time to reward and value the Open Source Community.]]></string>
-    <string name="vault_chs_option1_footer">
-        Improve your business with a Merchant Vault, a value of $25,000 USD. You will be eligible
-        for a Bonus Bounty of 5,000 SXE.
-    </string>
-    <string name="vault_chs_option2_footer">
-        Upgrade your amount to Power Miner. Expand your territory. This vault type is eligible
-        for a Bonus Bounty of 10,000 SXE.
-    </string>
-    <string name="vault_chs_option3_footer">
-        Become a Shakti World Trustee. A Feducia vault is eligible for a Bonus Bounty up to
-        10,000 SXE. - a value of $50,000 USD!
-    </string>
-    <string name="vault_chs_option4_footer">
-        Say hello to new way to move money. No office. No staff. No paperwork. No fraud. Bonus
-        Bounty of up to SXE 20,000 - a value of $100,000 USD for early adopters.
-    </string>
-    <string name="vault_chs_option5_footer">
-        This wallet comes with Bonus Bounty of 30,000 SXE - a value of $150,000 USD. Amazing
-        opportunity for OSC developers to get their hands-dirty.
-    </string>
+    <string name="vault_chs_features">Features</string>
     <string name="vault_chs_action">Let\'s get started</string>
     <string name="vault_chs_action1">Qualified for DevDot?</string>
     <string name="settings_title">Settings</string>
@@ -562,7 +524,7 @@
     <string name="pmnt_opts_weekly">Weekly</string>
     <string name="pmnt_opts_monthly">Monthly</string>
     <string name="pmnt_opts_annual">Annual</string>
-    <string name="pmnt_opts_saving">Save %1$d%%</string>
+    <string name="pmnt_opts_saving">Save %1$.0f%%</string>
     <string name="pmnt_opts_saving_long">Save as much as %1$d%%</string>
     <string name="pmnt_opts_annual_instalments">Paid in Annual installments.</string>
     <string name="pmnt_opts_monthly_instalments">Paid in Monthly installments.</string>

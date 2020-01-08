@@ -26,9 +26,19 @@
                 <androidx.viewpager.widget.ViewPager
                     android:id="@+id/mainFragment"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content">
+
+                </androidx.viewpager.widget.ViewPager>
 
             <include layout="@layout/inline_messages"/>
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:visibility="invisible"/>
 
         </RelativeLayout>
 
