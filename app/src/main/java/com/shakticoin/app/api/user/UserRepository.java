@@ -17,7 +17,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.Iterator;
 
-import okhttp3.MediaType;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -28,7 +27,6 @@ import retrofit2.internal.EverythingIsNonNull;
 
 
 public class UserRepository {
-    private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     private UserService userService;
 
     public UserRepository() {
@@ -105,8 +103,8 @@ public class UserRepository {
     /**
      * Retrieve a user by ID
      */
-    public void getUserInfo(Long userId, OnCompleteListener<User> listener) {
-        Call<User> call = userService.getUserByID(Session.getAuthorizationHeader(), userId);
+    public void getUserInfo(Integer userId, OnCompleteListener<User> listener) {
+        Call<User> call = userService.getUserByID(Session.getAuthorizationHeader(), Session.getLanguageHeader(), userId);
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
@@ -138,7 +136,7 @@ public class UserRepository {
      * Retrieve a user by authorization token
      */
     public void getUserInfo(OnCompleteListener<User> listener) {
-        userService.getUser(Session.getAuthorizationHeader()).enqueue(new Callback<User>() {
+        userService.getUser(Session.getAuthorizationHeader(), Session.getLanguageHeader()).enqueue(new Callback<User>() {
             @EverythingIsNonNull
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
@@ -170,7 +168,7 @@ public class UserRepository {
      * @param userId User ID
      * @param confirmatonToken A token from the link in email confirmation message
      */
-    public void acvivateUser(@NonNull Long userId, @NonNull String confirmatonToken, OnCompleteListener<Void> listener) {
+    public void acvivateUser(@NonNull Integer userId, @NonNull String confirmatonToken, OnCompleteListener<Void> listener) {
 
         UserActivateParameters parameters = new UserActivateParameters();
         parameters.setToken(confirmatonToken);

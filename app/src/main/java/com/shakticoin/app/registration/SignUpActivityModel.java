@@ -62,7 +62,7 @@ public class SignUpActivityModel extends ViewModel {
     void initCountryList(Locale locale) {
         if (countryList == null) {
             CountryRepository repository = new CountryRepository();
-            countryList = repository.getCountries(locale);
+            countryList = repository.getCountries();
         }
     }
 

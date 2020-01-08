@@ -10,6 +10,7 @@ import com.shakticoin.app.R;
 import com.shakticoin.app.api.BaseUrl;
 import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.RemoteException;
+import com.shakticoin.app.api.Session;
 import com.shakticoin.app.util.Debug;
 
 import java.util.Collections;
@@ -35,7 +36,7 @@ public class CountryRepository {
         countryService = retrofit.create(CountryService.class);
     }
 
-    public LiveData<List<Country>> getCountries(@NonNull Locale locale) {
+    public LiveData<List<Country>> getCountries() {
 
         final MutableLiveData<List<Country>> liveData = new MutableLiveData<>();
         /*
@@ -46,7 +47,7 @@ public class CountryRepository {
          */
         liveData.setValue(Collections.singletonList(new Country(null, "")));
 
-        countryService.getCountries(locale.getLanguage()).enqueue(new Callback<List<Country>>() {
+        countryService.getCountries(Session.getLanguageHeader()).enqueue(new Callback<List<Country>>() {
             @Override
             public void onResponse(@NonNull Call<List<Country>> call, @NonNull Response<List<Country>> response) {
                 if (call.isExecuted()) {
@@ -75,8 +76,7 @@ public class CountryRepository {
     public void getSubdivisionsByCountry(@NonNull String countryCode,
                                          OnCompleteListener<List<Subdivision>> listener,
                                          Context context) {
-        Locale locale = context.getResources().getConfiguration().locale;
-        countryService.getSubdivisions(locale.getLanguage(), countryCode).enqueue(new Callback<List<Subdivision>>() {
+        countryService.getSubdivisions(Session.getLanguageHeader(), countryCode).enqueue(new Callback<List<Subdivision>>() {
             @EverythingIsNonNull
             @Override
             public void onResponse(Call<List<Subdivision>> call, Response<List<Subdivision>> response) {

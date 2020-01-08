@@ -1,23 +1,14 @@
 package com.shakticoin.app.api;
 
-import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Build;
+import android.os.LocaleList;
 
+import com.shakticoin.app.ShaktiApplication;
 import com.shakticoin.app.api.user.User;
-import com.shakticoin.app.util.CryptoUtil;
-import com.shakticoin.app.util.Debug;
 import com.shakticoin.app.util.PreferenceHelper;
 
-import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.KeyPair;
-import java.security.NoSuchAlgorithmException;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
+import java.util.Locale;
 
 public class Session {
     private static String accessToken;
@@ -151,6 +142,22 @@ public class Session {
 
     public static String getAuthorizationHeader() {
         return accessToken != null ? "Bearer " + accessToken : null;
+    }
+
+    public static String getLanguageHeader() {
+        StringBuilder sb = new StringBuilder();
+        Context context = ShaktiApplication.getContext();
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            LocaleList localeList = context.getResources().getConfiguration().getLocales();
+            for (int i = 0; i < localeList.size(); i++) {
+                Locale locale = localeList.get(i);
+                if (sb.length() > 0) sb.append(", ");
+                sb.append(locale.toLanguageTag());
+            }
+        } else {
+            sb.append(context.getResources().getConfiguration().locale.toString());
+        }
+        return sb.toString();
     }
 
     /**

@@ -15,6 +15,7 @@ import com.stripe.android.PaymentConfiguration;
 
 
 public class ShaktiApplication extends MultiDexApplication {
+    private static Context context;
 
     // The BroadcastReceiver that tracks network connectivity changes.
     private NetworkStateReceiver receiver;
@@ -22,6 +23,8 @@ public class ShaktiApplication extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        context = getApplicationContext();
 
         /*
          * Check the current network connectivity.
@@ -66,5 +69,9 @@ public class ShaktiApplication extends MultiDexApplication {
 
         // unregisters BroadcastReceiver when app is destroyed.
         if (receiver != null) unregisterReceiver(receiver);
+    }
+
+    public static Context getContext() {
+        return context;
     }
 }

@@ -12,26 +12,37 @@ public interface VaultService {
 
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @GET("vaultservice/v1/api/vaults/")
-    Call<List<VaultExtended>> getVaults(@Header("Authorization") String authorization);
+    Call<List<VaultExtended>> getVaults(
+            @Header("Authorization") String authorization,
+            @Header("Accept-Language") String language);
 
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @GET("vaultservice/v1/api/vaults/{id}")
-    Call<VaultExtended> getVault(@Header("Authorization") String authorization, @Path("id") Integer id);
+    Call<VaultExtended> getVault(
+            @Header("Authorization") String authorization,
+            @Header("Accept-Language") String language,
+            @Path("id") Integer id);
 
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @GET("vaultservice/v1/api/vaults/{id}/packages/")
-    Call<List<PackageExtended>> getVaultPackages(@Header("Authorization") String authorization,
-                                                 @Path("id") Integer vaultId);
+    Call<List<PackageExtended>> getVaultPackages(
+            @Header("Authorization") String authorization,
+            @Header("Accept-Language") String language,
+            @Path("id") Integer vaultId);
 
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @GET("vaultservice/v1/api/vaults/{id}/packages/{package_id}/")
-    Call<PackageExtended> getVaultPackage(@Header("Authorization") String authorization,
-                                          @Path("id") Integer vaultId,
-                                          @Path("package_id") Integer packageId);
+    Call<PackageExtended> getVaultPackage(
+            @Header("Authorization") String authorization,
+            @Header("Accept-Language") String language,
+            @Path("id") Integer vaultId,
+            @Path("package_id") Integer packageId);
 
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @GET("vaultservice/v1/api/vaults/{id}/packages/{package_id}/plans/")
-    Call<List<PackagePlanExtended>> getVaultPackagePlans(@Header("Authorization") String authorization,
-                                                         @Path("id") Integer vaultId,
-                                                         @Path("package_id") Integer packageId);
+    Call<List<PackagePlanExtended>> getVaultPackagePlans(
+            @Header("Authorization") String authorization,
+            @Header("Accept-Language") String language,
+            @Path("id") Integer vaultId,
+            @Path("package_id") Integer packageId);
 }

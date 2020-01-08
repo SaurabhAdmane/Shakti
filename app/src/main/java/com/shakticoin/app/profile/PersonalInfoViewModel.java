@@ -39,7 +39,7 @@ public class PersonalInfoViewModel extends ViewModel {
     public PersonalInfoViewModel() {
         if (countryList == null) {
             CountryRepository repository = new CountryRepository();
-            countryList = repository.getCountries(Locale.getDefault());
+            countryList = repository.getCountries();
         }
 
         stateProvinceList = new MutableLiveData<>();
