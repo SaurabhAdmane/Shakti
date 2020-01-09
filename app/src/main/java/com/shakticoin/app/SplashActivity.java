@@ -53,9 +53,11 @@ public class SplashActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(TokenResponse value, Throwable error) {
                             if (error != null) {
-                                Toast.makeText(self, Debug.getFailureMsg(getApplicationContext(), error), Toast.LENGTH_LONG).show();
                                 Debug.logException(error);
-                                startActivity(new Intent(self, SignInActivity.class));
+                                if (!(error instanceof UnauthorizedException)) {
+                                    Toast.makeText(self, Debug.getFailureMsg(getApplicationContext(), error), Toast.LENGTH_LONG).show();
+                                }
+                                startActivity(Session.unauthorizedIntent(self));
                                 finish();
                                 return;
                             }
