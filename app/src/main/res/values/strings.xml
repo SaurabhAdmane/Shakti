@@ -16,7 +16,7 @@
     <string name="common_vault">Vault</string>
     <string name="common_status">Status</string>
     <string name="do_registration">Create Shakti ID</string>
-    <string name="do_login"><u>Already have an amount? Sign in</u></string>
+    <string name="do_login"><u>Already have an account? Sign in</u></string>
     <string name="go_back_for_changes"><u>Let me go back and correct something.</u></string>
     <string name="do_send">Send</string>
     <string name="do_resend">Resend</string>
