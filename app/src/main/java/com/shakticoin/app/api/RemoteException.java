@@ -2,11 +2,18 @@ package com.shakticoin.app.api;
 
 import android.os.Build;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 public class RemoteException extends Exception {
     private int responseCode = -1;
     private String field;
+
+    @Nullable
+    @Override
+    public String getMessage() {
+        return field == null ? super.getMessage() : (field + ": " + super.getMessage());
+    }
 
     public RemoteException() {
     }
