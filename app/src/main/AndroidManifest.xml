@@ -221,6 +221,20 @@
             android:screenOrientation="portrait">
         </activity>
 
+        <activity
+            android:name=".registration.ActivationActivity"
+            android:screenOrientation="portrait">
+            <intent-filter android:name="Activation">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="http"
+                    android:host="0.0.0.0"
+                    android:port="8080"
+                    android:pathPrefix="/auth/activate" />
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>

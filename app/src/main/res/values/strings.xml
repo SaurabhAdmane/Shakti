@@ -547,5 +547,8 @@
     <string name="dlg_sxe_pay_title"><![CDATA[Pay with<br/><font color="#B09C75"><b>SXE</b></font>]]></string>
     <string name="dlg_sxe_pay_sendto">Send to</string>
     <string name="dlg_sxe_pay_amount">SXE amount</string>
+    <string name="activation_activating">Activating your account</string>
+    <string name="activation_failed">An error happen</string>
+    <string name="activation_active">You account is active and you can log in</string>
 
 </resources>
