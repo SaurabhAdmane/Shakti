@@ -66,7 +66,7 @@ public class SignUpActivity extends AppCompatActivity implements TextView.OnEdit
                 }
 
                 User user = Session.getUser();
-                Long userId = user.getId();
+                Integer userId = user.getId();
                 // TODO: confirmation in email does not work yet
 
                 DialogConfirmEmail.getInstance(false)

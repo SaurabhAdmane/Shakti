@@ -3,7 +3,7 @@ package com.shakticoin.app.api.user;
 import java.util.List;
 
 public class User {
-    private Long id;
+    private Integer id;
     private String email;
     private String first_name;
     private String middle_name;
@@ -16,11 +16,11 @@ public class User {
     private List<Residence> residence;
     private List<Kinship> kinship;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
