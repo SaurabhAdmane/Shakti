@@ -104,6 +104,7 @@
 
                 <com.shakticoin.app.widget.InlineLabelEditText
                     android:id="@+id/email_address"
+                    android:tag="ContactsPage"
                     style="@style/AppTextField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
