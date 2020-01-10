@@ -85,7 +85,7 @@ public class SignUpActivity extends AppCompatActivity implements TextView.OnEdit
     }
 
     public void onCancel(View view) {
-        // TODO: if user cancel registration we probable must return to login screen instead of finishing the activity
+        startActivity(Session.unauthorizedIntent(this));
         finish();
     }
 
