@@ -1,5 +1,6 @@
 package com.shakticoin.app.registration;
 
+import androidx.databinding.ObservableBoolean;
 import androidx.databinding.ObservableField;
 import androidx.databinding.ObservableInt;
 import androidx.lifecycle.LiveData;
@@ -59,6 +60,8 @@ public class SignUpActivityModel extends ViewModel {
     /** A trigger for progress indicator */
     public ObservableInt progressBarVisibility = new ObservableInt(View.INVISIBLE);
 
+    public ObservableBoolean isPhoneNumberChecked = new ObservableBoolean(false);
+
     void initCountryList(Locale locale) {
         if (countryList == null) {
             CountryRepository repository = new CountryRepository();
@@ -96,8 +99,11 @@ public class SignUpActivityModel extends ViewModel {
         CreateUserParameters request = new CreateUserParameters();
         request.setFirst_name(firstName.getValue());
         request.setLast_name(lastName.getValue());
-        request.setEmail(emailAddress.getValue());
-        request.setMobile(phoneNumber.getValue());
+        if (isPhoneNumberChecked.get()) {
+            request.setMobile(phoneNumber.getValue());
+        } else {
+            request.setEmail(emailAddress.getValue());
+        }
         request.setPassword(newPassword.getValue());
 
         Country currentCountry = countryCode.get();

@@ -45,11 +45,13 @@ public class SignUpContactsFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
+                    viewModel.isPhoneNumberChecked.set(true);
                     binding.emailAddressLayout.setVisibility(View.GONE);
                     binding.phoneNumberLayout.setVisibility(View.VISIBLE);
                     binding.phoneLabel.setTextColor(getResources().getColor(android.R.color.white));
                     binding.emailLabel.setTextColor(getResources().getColor(R.color.colorAppGrey));
                 } else {
+                    viewModel.isPhoneNumberChecked.set(false);
                     binding.emailAddressLayout.setVisibility(View.VISIBLE);
                     binding.phoneNumberLayout.setVisibility(View.GONE);
                     binding.emailLabel.setTextColor(getResources().getColor(android.R.color.white));

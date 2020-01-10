@@ -105,13 +105,17 @@ public class SignUpActivity extends AppCompatActivity implements TextView.OnEdit
             viewModel.lastNameErrMsg.setValue(getString(R.string.err_required));
             hasErrors = true;
         }
-        if (!Validator.isEmail(viewModel.emailAddress.getValue())) {
-            viewModel.emailAddressErrMsg.setValue(getString(R.string.err_email_required));
-            hasErrors = true;
-        }
-        if (!Validator.isPhoneNumber(viewModel.phoneNumber.getValue())) {
-            viewModel.phoneNumberErrMsg.setValue(getString(R.string.err_phone_required));
-            hasErrors = true;
+
+        if (viewModel.isPhoneNumberChecked.get()) {
+            if (!Validator.isPhoneNumber(viewModel.phoneNumber.getValue())) {
+                viewModel.phoneNumberErrMsg.setValue(getString(R.string.err_phone_required));
+                hasErrors = true;
+            }
+        } else {
+            if (!Validator.isEmail(viewModel.emailAddress.getValue())) {
+                viewModel.emailAddressErrMsg.setValue(getString(R.string.err_email_required));
+                hasErrors = true;
+            }
         }
 
         return !hasErrors;
