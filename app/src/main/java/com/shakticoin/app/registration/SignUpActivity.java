@@ -16,11 +16,9 @@ import androidx.lifecycle.ViewModelProviders;
 import com.shakticoin.app.R;
 import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.Session;
-import com.shakticoin.app.api.auth.AuthRepository;
 import com.shakticoin.app.api.country.Country;
 import com.shakticoin.app.api.country.Subdivision;
 import com.shakticoin.app.api.user.User;
-import com.shakticoin.app.api.user.UserRepository;
 import com.shakticoin.app.util.Debug;
 import com.shakticoin.app.util.Validator;
 
@@ -31,14 +29,11 @@ import java.util.List;
 public class SignUpActivity extends AppCompatActivity implements TextView.OnEditorActionListener {
 
     private SignUpActivityModel viewModel;
-    private AuthRepository authRepository;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
-
-        authRepository = new AuthRepository();
 
         viewModel = ViewModelProviders.of(this).get(SignUpActivityModel.class);
         viewModel.initCountryList(getResources().getConfiguration().locale);
@@ -202,28 +197,11 @@ public class SignUpActivity extends AppCompatActivity implements TextView.OnEdit
      * Check if we can use entered email and phone for a new account and switch to the next page.
      */
     private void onAddressPageSelected() {
-        String emailAddress = viewModel.emailAddress.getValue();
-        String phoneNumber = viewModel.phoneNumber.getValue();
-        Activity activity = this;
-        //TODO: temprorarily disable for purpose of testing
-//        authRepository.checkEmailPhoneExists(this, emailAddress, phoneNumber, new OnCompleteListener<Boolean>() {
-//            @Override
-//            public void onComplete(Boolean value, Throwable error) {
-//                if (error != null) {
-//                    Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
-//
-//                if (value) {
-                    // success means neither email nor phone number used in the database
-                    getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.frame, new SignUpAddressFragment())
-                            .addToBackStack(null)
-                            .commit();
-//                }
-//            }
-//        });
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frame, new SignUpAddressFragment())
+                .addToBackStack(null)
+                .commit();
     }
 
     private void onPasswordPageSelected() {
