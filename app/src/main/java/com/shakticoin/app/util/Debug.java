@@ -7,6 +7,7 @@ import com.crashlytics.android.Crashlytics;
 
 import com.shakticoin.app.BuildConfig;
 import com.shakticoin.app.R;
+import com.shakticoin.app.api.RemoteException;
 import com.shakticoin.app.api.Session;
 
 import java.io.IOException;
@@ -27,7 +28,7 @@ public class Debug {
                 if (errMsg == null) {
                     errMsg = e.getClass().getName();
                 }
-                Log.d("com.shakticoin.app", errMsg);
+                Log.d("com.shakticoin.app", errMsg, e);
             } else {
                 Crashlytics.logException(e);
             }
@@ -65,6 +66,10 @@ public class Debug {
         if (e != null) {
             if (BuildConfig.DEBUG) {
                 return e.getMessage();
+            } else {
+                if (e instanceof RemoteException) {
+                    return e.getMessage();
+                }
             }
 
             if (e instanceof java.io.IOException && !Session.isNetworkConnected()) {

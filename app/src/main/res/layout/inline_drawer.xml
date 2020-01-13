@@ -20,29 +20,33 @@
         <RelativeLayout
             android:id="@+id/walletMenu"
             android:layout_width="@dimen/drawer_width"
-            android:layout_height="@dimen/drawer_width"
+            android:layout_height="@dimen/drawer_item_height"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
             android:clickable="true"
             android:focusable="true"
             android:onClick="onOpenWallet">
             <ImageView
                 android:id="@+id/walletMenuIcon"
                 android:layout_width="24dp"
-                android:layout_height="22dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="13dp"
+                android:layout_height="24dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
                 android:tint="@color/drawerButtonNormal"
                 app:srcCompat="@drawable/ic_wallet"
                 tools:ignore="ContentDescription" />
+
             <TextView
                 android:id="@+id/walletMenuText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@id/walletMenuIcon"
-                android:layout_marginTop="2dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="20dp"
+                android:layout_toEndOf="@id/walletMenuIcon"
+                android:fontFamily="@font/lato_light"
                 android:text="@string/drawer_wallet"
-                android:textSize="9sp"
                 android:textColor="@color/drawerButtonNormal"
+                android:textSize="18sp"
                 tools:ignore="SmallSp" />
         </RelativeLayout>
 
@@ -54,7 +58,9 @@
         <RelativeLayout
             android:id="@+id/vaultMenu"
             android:layout_width="@dimen/drawer_width"
-            android:layout_height="@dimen/drawer_width"
+            android:layout_height="@dimen/drawer_item_height"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
             android:clickable="true"
             android:focusable="true"
             android:onClick="onOpenVault">
@@ -62,21 +68,23 @@
                 android:id="@+id/vaultMenuIcon"
                 android:layout_width="24dp"
                 android:layout_height="22dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="13dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
                 android:tint="@color/drawerButtonNormal"
                 app:srcCompat="@drawable/ic_vault"
                 tools:ignore="ContentDescription" />
+
             <TextView
                 android:id="@+id/vaultMenuText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@id/vaultMenuIcon"
-                android:layout_marginTop="2dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="20dp"
+                android:layout_toEndOf="@id/vaultMenuIcon"
+                android:fontFamily="@font/lato_light"
                 android:text="@string/drawer_vault"
-                android:textSize="9sp"
                 android:textColor="@color/drawerButtonNormal"
+                android:textSize="18sp"
                 tools:ignore="SmallSp" />
         </RelativeLayout>
 
@@ -88,7 +96,9 @@
         <RelativeLayout
             android:id="@+id/minerMenu"
             android:layout_width="@dimen/drawer_width"
-            android:layout_height="@dimen/drawer_width"
+            android:layout_height="@dimen/drawer_item_height"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
             android:clickable="true"
             android:focusable="true"
             android:onClick="onOpenMiner">
@@ -96,21 +106,23 @@
                 android:id="@+id/minerMenuIcon"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="13dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
                 android:tint="@color/drawerButtonNormal"
                 app:srcCompat="@drawable/ic_miner"
                 tools:ignore="ContentDescription" />
+
             <TextView
                 android:id="@+id/minerMenuText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@id/minerMenuIcon"
-                android:layout_marginTop="2dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="20dp"
+                android:layout_toEndOf="@id/minerMenuIcon"
+                android:fontFamily="@font/lato_light"
                 android:text="@string/drawer_miner"
-                android:textSize="9sp"
                 android:textColor="@color/drawerButtonNormal"
+                android:textSize="18sp"
                 tools:ignore="SmallSp" />
         </RelativeLayout>
 
@@ -122,7 +134,9 @@
         <RelativeLayout
             android:id="@+id/referralsMenu"
             android:layout_width="@dimen/drawer_width"
-            android:layout_height="@dimen/drawer_width"
+            android:layout_height="@dimen/drawer_item_height"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
             android:clickable="true"
             android:focusable="true"
             android:onClick="onOpenReferrals">
@@ -130,8 +144,8 @@
                 android:id="@+id/referralsMenuIcon"
                 android:layout_width="24dp"
                 android:layout_height="23dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="13dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
                 android:tint="@color/drawerButtonNormal"
                 app:srcCompat="@drawable/ic_referral"
                 tools:ignore="ContentDescription" />
@@ -139,12 +153,13 @@
                 android:id="@+id/referralsMenuText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@id/referralsMenuIcon"
-                android:layout_marginTop="2dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="20dp"
+                android:layout_toEndOf="@id/referralsMenuIcon"
+                android:fontFamily="@font/lato_light"
                 android:text="@string/drawer_referrals"
-                android:textSize="9sp"
                 android:textColor="@color/drawerButtonNormal"
+                android:textSize="18sp"
                 tools:ignore="SmallSp" />
         </RelativeLayout>
 
@@ -156,7 +171,9 @@
         <RelativeLayout
             android:id="@+id/settingsMenu"
             android:layout_width="@dimen/drawer_width"
-            android:layout_height="@dimen/drawer_width"
+            android:layout_height="@dimen/drawer_item_height"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
             android:clickable="true"
             android:focusable="true"
             android:onClick="onOpenSettings">
@@ -164,21 +181,97 @@
                 android:id="@+id/settingsMenuIcon"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="13dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
                 android:tint="@color/drawerButtonNormal"
                 app:srcCompat="@drawable/ic_setting"
                 tools:ignore="ContentDescription" />
+
             <TextView
                 android:id="@+id/settingsMenuText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@id/settingsMenuIcon"
-                android:layout_marginTop="2dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="20dp"
+                android:layout_toEndOf="@id/settingsMenuIcon"
+                android:fontFamily="@font/lato_light"
                 android:text="@string/drawer_settings"
-                android:textSize="9sp"
                 android:textColor="@color/drawerButtonNormal"
+                android:textSize="18sp"
+                tools:ignore="SmallSp" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#FF4A4A4A"/>
+
+        <RelativeLayout
+            android:id="@+id/homeMenu"
+            android:layout_width="@dimen/drawer_width"
+            android:layout_height="@dimen/drawer_item_height"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="onOpenHome">
+            <ImageView
+                android:id="@+id/homeMenuIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:tint="@color/drawerButtonNormal"
+                app:srcCompat="@drawable/ic_home"
+                tools:ignore="ContentDescription" />
+            <TextView
+                android:id="@+id/homeMenuText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="20dp"
+                android:layout_toEndOf="@id/homeMenuIcon"
+                android:fontFamily="@font/lato_light"
+                android:text="@string/drawer_home"
+                android:textColor="@color/drawerButtonNormal"
+                android:textSize="18sp"
+                tools:ignore="SmallSp" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#FF4A4A4A"/>
+
+        <RelativeLayout
+            android:id="@+id/familyTreeMenu"
+            android:layout_width="@dimen/drawer_width"
+            android:layout_height="@dimen/drawer_item_height"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="onOpenFamilyTree">
+            <ImageView
+                android:id="@+id/familyTreeMenuIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:tint="@color/drawerButtonNormal"
+                app:srcCompat="@drawable/ic_family"
+                tools:ignore="ContentDescription" />
+            <TextView
+                android:id="@+id/familyTreeMenuText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="20dp"
+                android:layout_toEndOf="@id/familyTreeMenuIcon"
+                android:fontFamily="@font/lato_light"
+                android:text="@string/drawer_family_tree"
+                android:textColor="@color/drawerButtonNormal"
+                android:textSize="18sp"
                 tools:ignore="SmallSp" />
         </RelativeLayout>
 

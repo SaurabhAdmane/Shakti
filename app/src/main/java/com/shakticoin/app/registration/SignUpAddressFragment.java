@@ -15,15 +15,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.country.Country;
+import com.shakticoin.app.api.country.CountryRepository;
+import com.shakticoin.app.api.country.Subdivision;
 import com.shakticoin.app.databinding.FragmentSignupAddressBinding;
 import com.shakticoin.app.util.PostalCodeValidator;
 import com.shakticoin.app.util.Validator;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+
 public class SignUpAddressFragment extends Fragment {
     private SignUpActivityModel viewModel;
     private FragmentSignupAddressBinding binding;
+    private CountryRepository countryRepo;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -32,6 +41,7 @@ public class SignUpAddressFragment extends Fragment {
         if (activity != null) {
             viewModel = ViewModelProviders.of(activity).get(SignUpActivityModel.class);
         }
+        countryRepo = new CountryRepository();
     }
 
     @Nullable
@@ -53,7 +63,24 @@ public class SignUpAddressFragment extends Fragment {
             @Override
             public void onPropertyChanged(Observable sender, int propertyId) {
                 Country country = ((ObservableField<Country>) sender).get();
-                binding.postalCodeLayout.setValidator(new PostalCodeValidator(country != null ? country.getCode() : null));
+                if (country != null) {
+                    binding.postalCodeLayout.setValidator(new PostalCodeValidator(country.getCode()));
+                    countryRepo.getSubdivisionsByCountry(country.getCode(), new OnCompleteListener<List<Subdivision>>() {
+                        @Override
+                        public void onComplete(List<Subdivision> value, Throwable error) {
+                            if (error != null) {
+                                Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+                                return;
+                            }
+                            viewModel.stateProvinceList.setValue(value);
+                            binding.stateLayout.setVisibility(value != null && value.size() > 0 ? View.VISIBLE : View.GONE);
+                        }
+                    }, Objects.requireNonNull(getActivity()));
+                } else {
+                    binding.postalCodeLayout.setValidator(new PostalCodeValidator(null));
+                    viewModel.stateProvinceList.setValue(Collections.emptyList());
+                    binding.stateLayout.setVisibility(View.GONE);
+                }
             }
         });
 

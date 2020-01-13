@@ -21,11 +21,12 @@ import com.shakticoin.app.R;
 import com.shakticoin.app.api.BaseUrl;
 import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.Session;
+import com.shakticoin.app.api.UnauthorizedException;
 import com.shakticoin.app.api.auth.Credentials;
 import com.shakticoin.app.api.auth.LoginService;
-import com.shakticoin.app.api.auth.LoginServiceResponse;
-import com.shakticoin.app.api.miner.MinerDataResponse;
-import com.shakticoin.app.api.miner.MinerRepository;
+import com.shakticoin.app.api.auth.TokenResponse;
+import com.shakticoin.app.api.user.User;
+import com.shakticoin.app.api.user.UserRepository;
 import com.shakticoin.app.databinding.ActivitySigninBinding;
 import com.shakticoin.app.util.CommonUtil;
 import com.shakticoin.app.util.Debug;
@@ -45,7 +46,7 @@ public class SignInActivity extends AppCompatActivity {
     private ActivitySigninBinding binding;
 
     private LoginService loginService;
-    private MinerRepository minerRepository;
+    private UserRepository userRepository;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -85,7 +86,7 @@ public class SignInActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         loginService = retrofit.create(LoginService.class);
-        minerRepository = new MinerRepository();
+        userRepository = new UserRepository();
 
     }
 
@@ -115,51 +116,40 @@ public class SignInActivity extends AppCompatActivity {
         credentials.setPassword(password);
 
         final Activity self = this;
-        Call<LoginServiceResponse> call = loginService.login(credentials);
-        call.enqueue(new Callback<LoginServiceResponse>() {
+        Call<TokenResponse> call = loginService.token(credentials);
+        call.enqueue(new Callback<TokenResponse>() {
             @Override
-            public void onResponse(@NonNull Call<LoginServiceResponse> call, @NonNull Response<LoginServiceResponse> response) {
+            public void onResponse(@NonNull Call<TokenResponse> call, @NonNull Response<TokenResponse> response) {
                 if (call.isExecuted()) {
                     Debug.logDebug(response.toString());
                     if (response.isSuccessful()) {
-                        LoginServiceResponse resp = response.body();
+                        TokenResponse resp = response.body();
                         if (resp != null) {
-                            Session.key(resp.getKey(), rememberMe, self);
+                            Session.setAccessToken(resp.getAccess());
+                            Session.setRefreshToken(resp.getRefresh(), rememberMe, self);
                             SharedPreferences prefs = getSharedPreferences(PreferenceHelper.GENERAL_PREFERENCES, Context.MODE_PRIVATE);
                             prefs.edit().putBoolean(PreferenceHelper.PREF_KEY_HAS_ACCOUNT, true).apply();
 
-                            minerRepository.getUserInfo(new OnCompleteListener<MinerDataResponse>() {
+                            userRepository.getUserInfo(new OnCompleteListener<User>() {
                                 @Override
-                                public void onComplete(MinerDataResponse value, Throwable error) {
+                                public void onComplete(User value, Throwable error) {
                                     binding.progressBar.setVisibility(View.INVISIBLE);
+
                                     if (error != null) {
-                                        Toast.makeText(self, Debug.getFailureMsg(self, error), Toast.LENGTH_SHORT).show();
-                                        Debug.logException(error);
+                                        if (error instanceof UnauthorizedException) {
+                                            startActivity(Session.unauthorizedIntent(self));
+                                        } else {
+                                            Toast.makeText(self, Debug.getFailureMsg(self, error), Toast.LENGTH_LONG).show();
+                                            Debug.logException(error);
+                                        }
                                         return;
                                     }
 
-                                    if (value != null) {
-                                        Session.setUser(value.getUser());
-
-                                        int registrationStatus = value.getRegistration_status();
-                                        if (registrationStatus < 3/*not verified*/) {
-                                            // we cannot continue before email is confirmed and
-                                            // just display an information in a popup window
-                                            showNotConfirmed();
-
-                                        } else if (registrationStatus == 3) {
-                                            // add referral code if exists and pay the enter fee
-                                            startActivity(new Intent(self, ReferralActivity.class));
-
-                                        } else {
-                                            // go to the wallet
-                                            startActivity(new Intent(self, WalletActivity.class));
-
-                                        }
-                                    }
-
+                                    // go to the wallet
+                                    startActivity(new Intent(self, WalletActivity.class));
                                 }
                             });
+
                         }
                     } else {
                         Debug.logErrorResponse(response);
@@ -170,7 +160,7 @@ public class SignInActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(@NonNull Call<LoginServiceResponse> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<TokenResponse> call, @NonNull Throwable t) {
                 binding.progressBar.setVisibility(View.INVISIBLE);
                 Toast.makeText(self, Debug.getFailureMsg(self, t), Toast.LENGTH_SHORT).show();
                 Debug.logException(t);

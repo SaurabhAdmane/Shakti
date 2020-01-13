@@ -19,8 +19,11 @@ import android.widget.Toast;
 import com.shakticoin.app.BuildConfig;
 import com.shakticoin.app.R;
 import com.shakticoin.app.api.BaseUrl;
+import com.shakticoin.app.api.OnCompleteListener;
+import com.shakticoin.app.api.RemoteException;
 import com.shakticoin.app.api.auth.LoginService;
 import com.shakticoin.app.api.auth.PasswordResetRequest;
+import com.shakticoin.app.api.user.UserRepository;
 import com.shakticoin.app.util.CommonUtil;
 import com.shakticoin.app.util.Debug;
 import com.shakticoin.app.util.Validator;
@@ -95,29 +98,16 @@ public class RecoveryPasswordActivity extends AppCompatActivity {
         final Activity self = this;
 
         progressBar.setVisibility(View.VISIBLE);
-        Call<ResponseBody> call = loginService.reset(new PasswordResetRequest(emailAddress));
-        call.enqueue(new Callback<ResponseBody>() {
+        UserRepository userRepo = new UserRepository();
+        userRepo.resetPassword(emailAddress, new OnCompleteListener<Void>() {
             @Override
-            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+            public void onComplete(Void value, Throwable error) {
                 progressBar.setVisibility(View.INVISIBLE);
-                if (call.isExecuted()) {
-                    Debug.logDebug(response.toString());
-                    if (response.isSuccessful()) {
-                        if (!viewModel.isRequestSent()) nextPage();
-                    } else {
-                        Debug.logErrorResponse(response);
-                        Toast.makeText(self,
-                                BuildConfig.DEBUG ? response.message() : getString(R.string.err_unexpected),
-                                Toast.LENGTH_SHORT).show();
-                    }
+                if (error != null) {
+                    Toast.makeText(self, Debug.getFailureMsg(self, error), Toast.LENGTH_LONG).show();
+                    return;
                 }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-                Toast.makeText(self, Debug.getFailureMsg(self, t), Toast.LENGTH_SHORT).show();
-                progressBar.setVisibility(View.INVISIBLE);
-                Debug.logException(t);
+                if (!viewModel.isRequestSent()) nextPage();
             }
         });
     }

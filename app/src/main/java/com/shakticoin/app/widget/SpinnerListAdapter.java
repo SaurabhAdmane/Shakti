@@ -49,7 +49,9 @@ public class SpinnerListAdapter<T> extends ArrayAdapter<T> {
 
         TextView textView = view.findViewById(R.id.text);
         T item = getItem(position);
-        textView.setText(item != null ? item.toString() : null);
+        if (item != null) {
+            textView.setText(item.toString());
+        }
 
         return view;
     }

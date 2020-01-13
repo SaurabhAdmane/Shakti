@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingBottom="@dimen/scrollable_bottom_padding"
-        android:background="@drawable/referral_background">
+        android:background="@drawable/my_referrals_background">
 
         <include layout="@layout/inline_header"/>
 

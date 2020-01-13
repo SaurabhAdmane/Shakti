@@ -28,6 +28,7 @@ import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.wallet.Transaction;
 import com.shakticoin.app.api.wallet.WalletRepository;
 import com.shakticoin.app.databinding.ActivityWalletHistoryBinding;
+import com.shakticoin.app.payment.DialogPaySXE;
 import com.shakticoin.app.util.Debug;
 import com.shakticoin.app.util.RecyclerViewHeader;
 import com.shakticoin.app.util.RecyclerViewItem;
@@ -88,7 +89,7 @@ public class WalletHistoryActivity extends BaseWalletActivity {
     }
 
     public void onPay(View v) {
-        Toast.makeText(this, R.string.err_not_implemented, Toast.LENGTH_SHORT).show();
+        DialogPaySXE.getInstance().show(getSupportFragmentManager(), DialogPaySXE.class.getSimpleName());
     }
 
     public void onReceive(View v) {

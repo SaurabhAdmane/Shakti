@@ -18,16 +18,20 @@ import androidx.viewpager.widget.ViewPager;
 import com.shakticoin.app.R;
 import com.shakticoin.app.api.Constants;
 import com.shakticoin.app.api.OnCompleteListener;
-import com.shakticoin.app.api.miner.MinerRepository;
-import com.shakticoin.app.api.order.Order;
+import com.shakticoin.app.api.Session;
+import com.shakticoin.app.api.UnauthorizedException;
 import com.shakticoin.app.api.payment.PaymentRepository;
-import com.shakticoin.app.api.tier.Tier;
+import com.shakticoin.app.api.user.UserRepository;
+import com.shakticoin.app.api.vault.PackageExtended;
+import com.shakticoin.app.api.vault.VaultRepository;
 import com.shakticoin.app.databinding.ActivityPaymentOptionsBinding;
 import com.shakticoin.app.payment.stripe.StripeActivity;
 import com.shakticoin.app.util.CommonUtil;
 import com.shakticoin.app.util.Debug;
 import com.shakticoin.app.wallet.BaseWalletActivity;
 import com.shakticoin.app.wallet.WalletActivity;
+
+import java.util.List;
 
 public class PaymentOptionsActivity extends BaseWalletActivity {
     public static final int STRIPE_PAYMENT  = 100;
@@ -36,6 +40,8 @@ public class PaymentOptionsActivity extends BaseWalletActivity {
     private PaymentOptionsViewModel viewModel;
     private PageAdapter pages;
 
+    private VaultRepository vaultRepository;
+    private List<PackageExtended> packages;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,21 +53,45 @@ public class PaymentOptionsActivity extends BaseWalletActivity {
 
         super.onInitView(binding.getRoot(), getString(R.string.miner_intro_toolbar));
 
-        pages = new PageAdapter(getSupportFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-        binding.mainFragment.setAdapter(pages);
+        final Activity self = this;
+
+        vaultRepository = new VaultRepository();
+        binding.progressBar.setVisibility(View.VISIBLE);
+        vaultRepository.getVaultPackages(2, new OnCompleteListener<List<PackageExtended>>() {
+            @Override
+            public void onComplete(List<PackageExtended> value, Throwable error) {
+                binding.progressBar.setVisibility(View.INVISIBLE);
+                if (error != null) {
+                    if (error instanceof UnauthorizedException) {
+                        startActivity(Session.unauthorizedIntent(self));
+                    }
+                    return;
+                }
+
+                packages = value;
+                pages = new PageAdapter(getSupportFragmentManager(),
+                        FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,
+                        packages);
+                binding.mainFragment.setAdapter(pages);
+                viewModel.selectedPackage.setValue(packages.get(0));
+                viewModel.selectedPackageType.setValue(PaymentOptionsViewModel.PackageType.M101);
+            }
+        });
+
         binding.mainFragment.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
 
             @Override
             public void onPageSelected(int position) {
-                viewModel.selectedPlan.setValue(PaymentOptionsViewModel.Plan.values()[position]);
+                viewModel.selectedPackage.setValue(packages.get(position));
+                PaymentOptionsViewModel.PackageType[] packageTypes = PaymentOptionsViewModel.PackageType.values();
+                viewModel.selectedPackageType.setValue(packageTypes[position]);
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {}
         });
-        viewModel.selectedPlan.setValue(PaymentOptionsViewModel.Plan.values()[0]);
     }
 
     @Override
@@ -72,30 +102,13 @@ public class PaymentOptionsActivity extends BaseWalletActivity {
     public void onMainAction(View v) {
         final Activity activity = this;
 
-//        Tier tierLevel = viewModel.getSelectedPlan();
-//        if (tierLevel != null) {
-//            binding.progressBar.setVisibility(View.VISIBLE);
-//            orderRepository.createOrder(tierLevel.getId(), new OnCompleteListener<Order>() {
-//                @Override
-//                public void onComplete(Order value, Throwable error) {
-////                    binding.progressBar.setVisibility(View.INVISIBLE);
-//                    if (error != null) {
-//                        Debug.logException(error);
-//                        Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_SHORT).show();
-//                        return;
-//                    }
-
-                    // pay the order
-                    Intent intent = new Intent(activity, StripeActivity.class);
-                    intent.putExtra(CommonUtil.prefixed(StripeActivity.KEY_ORDER_ID, activity), "XXX"/*value.getId()*/);
-                    intent.putExtra(CommonUtil.prefixed(StripeActivity.KEY_ORDER_AMOUNT, activity), 10.0/*value.getAmount()*/);
-                    intent.putExtra(CommonUtil.prefixed(StripeActivity.KEY_ORDER_NAME, activity),
-                            String.format("%1$s - %2$s", "M101"/*tierLevel.getName()*/, "Tier description"/*tierLevel.getShort_description()*/));
-                    startActivityForResult(intent, STRIPE_PAYMENT);
-//                }
-//            });
-//        }
-
+        // pay the order
+        Intent intent = new Intent(activity, StripeActivity.class);
+        intent.putExtra(CommonUtil.prefixed(StripeActivity.KEY_ORDER_ID, activity), "XXX"/*value.getId()*/);
+        intent.putExtra(CommonUtil.prefixed(StripeActivity.KEY_ORDER_AMOUNT, activity), 10.0/*value.getAmount()*/);
+        intent.putExtra(CommonUtil.prefixed(StripeActivity.KEY_ORDER_NAME, activity),
+                String.format("%1$s - %2$s", "M101", "Tier description"));
+        startActivityForResult(intent, STRIPE_PAYMENT);
     }
 
     @Override
@@ -135,8 +148,8 @@ public class PaymentOptionsActivity extends BaseWalletActivity {
                 }
 
                 // we can consider the registration completed at this point
-                MinerRepository minerRepository = new MinerRepository();
-                minerRepository.updateRegistrationStatus(Constants.RegistrationStatus.REGST_COMPL, new OnCompleteListener<Void>() {
+                UserRepository userRepository = new UserRepository();
+                userRepository.updateRegistrationStatus(Constants.RegistrationStatus.REGST_COMPL, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(Void value, Throwable error) {
 //                        binding.progressBar.setVisibility(View.INVISIBLE);
@@ -165,7 +178,7 @@ public class PaymentOptionsActivity extends BaseWalletActivity {
 
     public void onNext(View v) {
         int currentIndex = binding.mainFragment.getCurrentItem();
-        if (currentIndex < (PaymentOptionsViewModel.Plan.values().length - 1)) {
+        if (currentIndex < (PaymentOptionsViewModel.PackageType.values().length - 1)) {
             binding.mainFragment.setCurrentItem(currentIndex + 1, true);
         }
     }
@@ -178,21 +191,23 @@ public class PaymentOptionsActivity extends BaseWalletActivity {
     }
 
     class PageAdapter extends FragmentStatePagerAdapter {
+        private List<PackageExtended> packages;
 
-        public PageAdapter(@NonNull FragmentManager fm, int behavior) {
+        PageAdapter(@NonNull FragmentManager fm, int behavior, List<PackageExtended> packages) {
             super(fm, behavior);
+            this.packages = packages;
         }
 
         @NonNull
         @Override
         public Fragment getItem(int position) {
-            PaymentOptionsViewModel.Plan[] miningPlan = PaymentOptionsViewModel.Plan.values();
-            return PaymentOptionsPlanFragment.getInstance(miningPlan[position].name());
+            PaymentOptionsViewModel.PackageType[] miningPlan = PaymentOptionsViewModel.PackageType.values();
+            return PaymentOptionsPlanFragment.getInstance(miningPlan[position].name(), packages.get(position));
         }
 
         @Override
         public int getCount() {
-            return PaymentOptionsViewModel.Plan.values().length;
+            return packages.size();
         }
     }
 }

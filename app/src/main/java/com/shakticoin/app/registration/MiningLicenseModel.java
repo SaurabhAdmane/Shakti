@@ -5,16 +5,14 @@ import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.shakticoin.app.api.OnCompleteListener;
-import com.shakticoin.app.api.tier.Tier;
-import com.shakticoin.app.api.tier.TierRepository;
+import com.shakticoin.app.api.vault.PackageExtended;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 public class MiningLicenseModel extends ViewModel {
-    public enum Plan {M101, T100, T200, T300, T400}
+    public enum PackageType {M101, T100, T200, T300, T400}
+
+    public List<PackageExtended> packages;
 
     public ObservableBoolean onM101 = new ObservableBoolean();
     public ObservableBoolean onT100 = new ObservableBoolean();
@@ -28,13 +26,11 @@ public class MiningLicenseModel extends ViewModel {
     public ObservableBoolean enabledT300 = new ObservableBoolean(true);
     public ObservableBoolean enabledT400 = new ObservableBoolean(true);
 
-    MutableLiveData<Plan> selectedPlan = new MutableLiveData<>();
-
-    private List<Tier> tiers = new ArrayList<>();
+    MutableLiveData<PackageType> selectedPlan = new MutableLiveData<>();
 
     public MiningLicenseModel() {
         onM101.set(true);
-        selectedPlan.setValue(Plan.M101);
+        selectedPlan.setValue(PackageType.M101);
         onM101.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
             @Override
             public void onPropertyChanged(Observable sender, int propertyId) {
@@ -44,7 +40,7 @@ public class MiningLicenseModel extends ViewModel {
                     if (onT200.get()) onT200.set(false);
                     if (onT300.get()) onT300.set(false);
                     if (onT400.get()) onT400.set(false);
-                    selectedPlan.setValue(Plan.M101);
+                    selectedPlan.setValue(PackageType.M101);
                 }
             }
         });
@@ -58,7 +54,7 @@ public class MiningLicenseModel extends ViewModel {
                     if (onT200.get()) onT200.set(false);
                     if (onT300.get()) onT300.set(false);
                     if (onT400.get()) onT400.set(false);
-                    selectedPlan.setValue(Plan.T100);
+                    selectedPlan.setValue(PackageType.T100);
                 }
             }
         });
@@ -72,7 +68,7 @@ public class MiningLicenseModel extends ViewModel {
                     if (onM101.get()) onM101.set(false);
                     if (onT300.get()) onT300.set(false);
                     if (onT400.get()) onT400.set(false);
-                    selectedPlan.setValue(Plan.T200);
+                    selectedPlan.setValue(PackageType.T200);
                 }
             }
         });
@@ -86,7 +82,7 @@ public class MiningLicenseModel extends ViewModel {
                     if (onT200.get()) onT200.set(false);
                     if (onM101.get()) onM101.set(false);
                     if (onT400.get()) onT400.set(false);
-                    selectedPlan.setValue(Plan.T300);
+                    selectedPlan.setValue(PackageType.T300);
                 }
             }
         });
@@ -100,75 +96,24 @@ public class MiningLicenseModel extends ViewModel {
                     if (onT200.get()) onT200.set(false);
                     if (onM101.get()) onM101.set(false);
                     if (onT400.get()) onT300.set(false);
-                    selectedPlan.setValue(Plan.T400);
+                    selectedPlan.setValue(PackageType.T400);
                 }
             }
         });
     }
 
-    void init(List<Tier> tiersList) {
-        if (tiersList != null) {
-            tiers = tiersList;
-            disableInactivePlans();
-        } else {
-            // grab tiers in advance
-            TierRepository repository = new TierRepository();
-            repository.getTiers("AF", new OnCompleteListener<List<Tier>>() {
-                @Override
-                public void onComplete(List<Tier> value, Throwable error) {
-                    if (error == null) {
-                        tiers = new ArrayList<>(value);
-                        selectedPlan.setValue(selectedPlan.getValue());
-                        disableInactivePlans();
-                    }
-                }
-            });
-        }
+    void init(List<PackageExtended> packages) {
+        this.packages = packages;
     }
 
-    public BigDecimal getPaymentAmount() {
-        Plan plan = selectedPlan.getValue();
-        if (plan != null) {
-            String planName = plan.name();
-            for (Tier tier : tiers) {
-                if (planName.equalsIgnoreCase(tier.getName())) {
-                    return BigDecimal.valueOf(tier.getPrice());
-                }
-            }
+    /**
+     * Returns package related data that we received from the server.
+     */
+    public PackageExtended getSelectedPackage() {
+        PackageType packageType = selectedPlan.getValue();
+        if (packageType != null && packageType.ordinal() < packages.size()) {
+            return packages.get(packageType.ordinal());
         }
         return null;
     }
-
-    Tier getSelectedPlan() {
-        Plan plan = selectedPlan.getValue();
-        if (plan != null) {
-            String planName = plan.name();
-            for (Tier tier : tiers) {
-                if (planName.equalsIgnoreCase(tier.getName())) {
-                    return tier;
-                }
-            }
-        }
-        return null;
-    }
-
-    private void disableInactivePlans() {
-        if (tiers == null) return;
-        for (Tier tier : tiers) {
-            Boolean isActive = tier.getIs_active();
-            String name = tier.getName();
-            if (Plan.M101.name().equals(name)) {
-                enabledM101.set(isActive);
-            } else if (Plan.T100.name().equals(name)) {
-                enabledT100.set(isActive);
-            } else if (Plan.T200.name().equals(name)) {
-                enabledT200.set(isActive);
-            } else if (Plan.T300.name().equals(name)) {
-                enabledT300.set(isActive);
-            } else if (Plan.T400.name().equals(name)) {
-                enabledT400.set(isActive);
-            }
-        }
-    }
-
 }

@@ -20,7 +20,7 @@
 
             <ImageView
                 android:id="@+id/logo"
-                android:layout_width="wrap_content"
+                android:layout_width="77dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="70dp"
                 app:layout_constraintDimensionRatio="w,1:1"
@@ -146,29 +146,31 @@
                     android:text="@={viewModel.city}"/>
             </com.shakticoin.app.widget.TextInputLayout>
 
-            <com.shakticoin.app.widget.TextInputLayout
+            <com.shakticoin.app.widget.SpinnerLayout
                 android:id="@+id/stateLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="24dp"
+                android:visibility="gone"
                 style="@style/AppTextLayout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cityLayout"
-                tools:layout_conversion_absoluteHeight="1dp"
-                tools:layout_conversion_absoluteWidth="1dp">
-                <com.shakticoin.app.widget.InlineLabelEditText
+                app:layout_constraintTop_toBottomOf="@+id/cityLayout">
+                <com.shakticoin.app.widget.InlineLabelSpinner
                     android:id="@+id/state"
-                    style="@style/AppTextField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="@string/hint_state"
-                    android:inputType="text|textCapWords"
-                    android:text="@={viewModel.state}"/>
-            </com.shakticoin.app.widget.TextInputLayout>
+                    android:background="@android:color/transparent"
+                    android:popupBackground="@android:color/transparent"
+                    android:entries="@{viewModel.stateProvinceList}"
+                    android:onItemSelected="@{(parent, view, position, id) -> viewModel.onStateProvinceSelected(view, position)}"
+                    app:newValue="@{viewModel.stateProvinceCode}"
+                    app:hint="@string/hint_state"
+                    app:textColorHint="@color/colorHint"
+                    app:spinnerBorderColor="@color/colorBrand"/>
+            </com.shakticoin.app.widget.SpinnerLayout>
 
             <com.shakticoin.app.widget.TextInputLayout
                 android:id="@+id/postalCodeLayout"

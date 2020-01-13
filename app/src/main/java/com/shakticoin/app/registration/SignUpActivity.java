@@ -14,22 +14,26 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.shakticoin.app.R;
-import com.shakticoin.app.api.auth.AuthRepository;
+import com.shakticoin.app.api.OnCompleteListener;
+import com.shakticoin.app.api.Session;
 import com.shakticoin.app.api.country.Country;
+import com.shakticoin.app.api.country.Subdivision;
+import com.shakticoin.app.api.user.User;
+import com.shakticoin.app.util.Debug;
 import com.shakticoin.app.util.Validator;
+
+import java.util.Arrays;
+import java.util.List;
 
 
 public class SignUpActivity extends AppCompatActivity implements TextView.OnEditorActionListener {
 
     private SignUpActivityModel viewModel;
-    private AuthRepository authRepository;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
-
-        authRepository = new AuthRepository();
 
         viewModel = ViewModelProviders.of(this).get(SignUpActivityModel.class);
         viewModel.initCountryList(getResources().getConfiguration().locale);
@@ -52,22 +56,23 @@ public class SignUpActivity extends AppCompatActivity implements TextView.OnEdit
 
     public void startRegistration() {
         final Activity activity = this;
-        /* TODO: SHAK-105 temporarily disabled until new API takes the shape */
-//        viewModel.createUser(new OnCompleteListener<Void>() {
-//            @Override
-//            public void onComplete(Void value, Throwable error) {
-//                if (error != null) {
-//                    Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
-//                DialogConfirmEmail.getInstance(false)
-//                        .show(getSupportFragmentManager(), DialogConfirmEmail.class.getSimpleName());
-//            }
-//        });
-        DialogConfirmEmail.getInstance(false)
-                .show(getSupportFragmentManager(), DialogConfirmEmail.class.getSimpleName());
-        // End
+        viewModel.createUser(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(Void value, Throwable error) {
+                if (error != null) {
+                    Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
+                    Debug.logException(error);
+                    return;
+                }
 
+                User user = Session.getUser();
+                Integer userId = user.getId();
+                // TODO: confirmation in email does not work yet
+
+                DialogConfirmEmail.getInstance(false)
+                        .show(getSupportFragmentManager(), DialogConfirmEmail.class.getSimpleName());
+            }
+        });
     }
 
     public void onGoBack(View view) {
@@ -80,7 +85,7 @@ public class SignUpActivity extends AppCompatActivity implements TextView.OnEdit
     }
 
     public void onCancel(View view) {
-        // TODO: if user cancel registration we probable must return to login screen instead of finishing the activity
+        startActivity(Session.unauthorizedIntent(this));
         finish();
     }
 
@@ -95,13 +100,17 @@ public class SignUpActivity extends AppCompatActivity implements TextView.OnEdit
             viewModel.lastNameErrMsg.setValue(getString(R.string.err_required));
             hasErrors = true;
         }
-        if (!Validator.isEmail(viewModel.emailAddress.getValue())) {
-            viewModel.emailAddressErrMsg.setValue(getString(R.string.err_email_required));
-            hasErrors = true;
-        }
-        if (!Validator.isPhoneNumber(viewModel.phoneNumber.getValue())) {
-            viewModel.phoneNumberErrMsg.setValue(getString(R.string.err_phone_required));
-            hasErrors = true;
+
+        if (viewModel.isPhoneNumberChecked.get()) {
+            if (!Validator.isPhoneNumber(viewModel.phoneNumber.getValue())) {
+                viewModel.phoneNumberErrMsg.setValue(getString(R.string.err_phone_required));
+                hasErrors = true;
+            }
+        } else {
+            if (!Validator.isEmail(viewModel.emailAddress.getValue())) {
+                viewModel.emailAddressErrMsg.setValue(getString(R.string.err_email_required));
+                hasErrors = true;
+            }
         }
 
         return !hasErrors;
@@ -135,10 +144,13 @@ public class SignUpActivity extends AppCompatActivity implements TextView.OnEdit
         if (selectedCountry != null) {
             String code = selectedCountry.getCode();
             // ensure state/province is set for USA and Canada
-            if (("US".equals(code) || "CA".equals(code))
-                    && TextUtils.isEmpty(viewModel.state.getValue())) {
-                viewModel.stateErrMsg.setValue(getString(R.string.err_state_reqired));
-                hasErrors = true;
+            List<String> stateRequiredContries = Arrays.asList("US", "CA");
+            if (stateRequiredContries.contains(code)) {
+                Subdivision subdivision = viewModel.stateProvinceCode.get();
+                if (subdivision == null || !subdivision.getCountry().equals(code)) {
+                    viewModel.stateErrMsg.setValue(getString(R.string.err_state_reqired));
+                    hasErrors = true;
+                }
             }
         }
         return !hasErrors;
@@ -185,28 +197,11 @@ public class SignUpActivity extends AppCompatActivity implements TextView.OnEdit
      * Check if we can use entered email and phone for a new account and switch to the next page.
      */
     private void onAddressPageSelected() {
-        String emailAddress = viewModel.emailAddress.getValue();
-        String phoneNumber = viewModel.phoneNumber.getValue();
-        Activity activity = this;
-        //TODO: temprorarily disable for purpose of testing
-//        authRepository.checkEmailPhoneExists(this, emailAddress, phoneNumber, new OnCompleteListener<Boolean>() {
-//            @Override
-//            public void onComplete(Boolean value, Throwable error) {
-//                if (error != null) {
-//                    Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
-//
-//                if (value) {
-                    // success means neither email nor phone number used in the database
-                    getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.frame, new SignUpAddressFragment())
-                            .addToBackStack(null)
-                            .commit();
-//                }
-//            }
-//        });
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frame, new SignUpAddressFragment())
+                .addToBackStack(null)
+                .commit();
     }
 
     private void onPasswordPageSelected() {

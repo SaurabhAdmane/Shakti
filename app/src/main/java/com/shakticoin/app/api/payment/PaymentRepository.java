@@ -2,6 +2,7 @@ package com.shakticoin.app.api.payment;
 
 import androidx.annotation.NonNull;
 
+import com.shakticoin.app.api.UnauthorizedException;
 import com.shakticoin.app.util.Debug;
 import com.shakticoin.app.api.BaseUrl;
 import com.shakticoin.app.api.OnCompleteListener;
@@ -26,7 +27,7 @@ public class PaymentRepository {
         stripeService = retrofit.create(StripePaymentService.class);
     }
 
-    public void makeStripePayment(long orderId, String token, OnCompleteListener<Void> listener) {
+    public void makeStripePayment(long orderId, String token, @NonNull OnCompleteListener<Void> listener) {
         Call<ResponseBody> call = stripeService.makePayment(
                 Session.getAuthorizationHeader(), new StripePaymentRequest(orderId, token));
         call.enqueue(new Callback<ResponseBody>() {
@@ -36,11 +37,15 @@ public class PaymentRepository {
                     Debug.logDebug(response.toString());
                     if (response.isSuccessful()) {
                         // real response data are not important
-                        if (listener != null) listener.onComplete(null, null);
+                        listener.onComplete(null, null);
                     } else {
-                        Debug.logErrorResponse(response);
-                        if (listener != null) listener.onComplete(null,
-                                new RemoteException(response.message(), response.code()));
+                        if (response.code() == 401) {
+                            listener.onComplete(null, new UnauthorizedException());
+                        } else {
+                            Debug.logErrorResponse(response);
+                            listener.onComplete(null,
+                                    new RemoteException(response.message(), response.code()));
+                        }
                     }
                 }
             }
@@ -48,7 +53,7 @@ public class PaymentRepository {
             @Override
             public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
                 Debug.logException(t);
-                if (listener != null) listener.onComplete(null, t);
+                listener.onComplete(null, t);
             }
         });
     }

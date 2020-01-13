@@ -4,17 +4,12 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatSpinner;
-import androidx.databinding.BindingAdapter;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.RectF;
-import androidx.core.content.ContextCompat;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -26,10 +21,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.PopupWindow;
-import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatSpinner;
+import androidx.core.content.ContextCompat;
 
 import com.shakticoin.app.R;
 
@@ -57,6 +56,9 @@ public class InlineLabelSpinner extends AppCompatSpinner {
     private Paint borderPaint;
     private int offset = 0;
 
+    private RectF closedBorder;
+    private float closedBorderCornerRadius = 0;
+
     private Point textStart;
     private Point textEnd;
 
@@ -74,7 +76,7 @@ public class InlineLabelSpinner extends AppCompatSpinner {
 
     private Path borderPath = new Path();
 
-    private float textWidth = 0f;
+    private Float textWidth = 0f;
 
     public InlineLabelSpinner(Context context) {
         super(context);
@@ -125,16 +127,17 @@ public class InlineLabelSpinner extends AppCompatSpinner {
 
         // prepare to draw border
         DisplayMetrics metrics = getContext().getResources().getDisplayMetrics();
-        Float strokeWidth = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1f/*1dp*/, metrics);
+        float singleDpWidth = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1f/*1dp*/, metrics);
+        closedBorderCornerRadius = singleDpWidth * 3; // 3dp
 
         borderPaint = new Paint();
         borderPaint.setColor(borderColor);
-        borderPaint.setStrokeWidth(strokeWidth);
+        borderPaint.setStrokeWidth(singleDpWidth);
         borderPaint.setStyle(Paint.Style.STROKE);
 
         // we draw rectangle around the EditText but since the stroke width is a few pixels we
         // must ensure all of them are inside visible area
-        offset = Double.valueOf(Math.ceil(strokeWidth/2)).intValue();
+        offset = Double.valueOf(Math.ceil(singleDpWidth/2)).intValue();
 
         @SuppressLint("InflateParams")
         View view = LayoutInflater.from(context).inflate(R.layout.widget_inlinelnl_spinner_dropdown, null);
@@ -182,7 +185,8 @@ public class InlineLabelSpinner extends AppCompatSpinner {
         super.setAdapter(adapter);
 
         ArrayList<Object> arrayList = new ArrayList<>();
-        for(int i=0; i< adapter.getCount(); i++) {
+        // skip first dummy item and start from 1
+        for(int i=1; i< adapter.getCount(); i++) {
             arrayList.add(adapter.getItem(i));
         }
 
@@ -192,7 +196,8 @@ public class InlineLabelSpinner extends AppCompatSpinner {
         final InlineLabelSpinner thisSpinner = this;
         listView.setOnItemClickListener((parent, view, position, id) -> {
             choiceMade = true;
-            thisSpinner.setSelection(position);
+            // list does not contain first dummy item and this is why we need to translate the index
+            thisSpinner.setSelection(position + 1);
             thisSpinner.hideDropdown();
         });
     }
@@ -223,7 +228,15 @@ public class InlineLabelSpinner extends AppCompatSpinner {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        textEnd.x = textStart.x + Float.valueOf(textWidth).intValue();
+        if (textWidth.compareTo(1f) > 0) {
+            drawOpenBorder(canvas);
+        } else {
+            drawClosedBorder(canvas);
+        }
+    }
+
+    private void drawOpenBorder(Canvas canvas) {
+        textEnd.x = textStart.x + textWidth.intValue();
 
         borderPath.rewind();
         borderPath.moveTo(textEnd.x, textEnd.y);
@@ -239,6 +252,10 @@ public class InlineLabelSpinner extends AppCompatSpinner {
         canvas.drawPath(borderPath, borderPaint);
     }
 
+    private void drawClosedBorder(Canvas canvas) {
+        canvas.drawRoundRect(closedBorder, closedBorderCornerRadius, closedBorderCornerRadius,  borderPaint);
+    }
+
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
@@ -246,15 +263,17 @@ public class InlineLabelSpinner extends AppCompatSpinner {
         DisplayMetrics metrics = getContext().getResources().getDisplayMetrics();
         int radius = Float.valueOf(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 6f, metrics)).intValue();
 
+        closedBorder = new RectF();
+
         // calculate left corner
         Point leftTop = new Point(offset, offset);
+        closedBorder.left = leftTop.x;
+        closedBorder.top = leftTop.y;
         leftTopStart = new Point(leftTop);
         leftTopStart.offset(0, radius);
         Point leftTopEnd = new Point(leftTop);
         leftTopEnd.offset(radius, 0);
         leftTopArc = new RectF(leftTopStart.x, leftTopEnd.y, leftTopEnd.x, leftTopStart.y);
-        leftTopArc.left -= 1f; // TODO: in theory these corrections does not necessary but in practice the arc does not feet well with borders
-        leftTopArc.top += 1f;
 
         // calculate left bottom corner
         Point leftBottom = new Point(offset, h - offset * 2);
@@ -274,6 +293,8 @@ public class InlineLabelSpinner extends AppCompatSpinner {
 
         // calculate right bottom corner
         Point rightBottom = new Point(w - offset * 2, h - offset * 2);
+        closedBorder.right = rightBottom.x;
+        closedBorder.bottom = rightBottom.y;
         rightBottomStart = new Point(rightBottom);
         rightBottomStart.offset(0, -radius);
         Point rightBottomEnd = new Point(rightBottom);
@@ -284,7 +305,7 @@ public class InlineLabelSpinner extends AppCompatSpinner {
         textStart = new Point(leftTop);
         textStart.offset(Float.valueOf(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 11f, metrics)).intValue(), 0);
         textEnd = new Point(textStart);
-        textEnd.offset(Float.valueOf(textWidth).intValue(), 0);
+        textEnd.offset(textWidth.intValue(), 0);
     }
 
     public boolean isDropdownOpened() {
@@ -345,7 +366,10 @@ public class InlineLabelSpinner extends AppCompatSpinner {
             listAdapter = new CustomArrayAdapter<>(getContext(), new ArrayList<Object>(), adapter);
             listView.setAdapter(listAdapter);
         }
-        listAdapter.add(item);
+        // skip first dummy item that should not appear in the list
+        if (!TextUtils.isEmpty(item.toString())) {
+            listAdapter.add(item);
+        }
         adapter.add(item);
     }
 
@@ -361,8 +385,11 @@ public class InlineLabelSpinner extends AppCompatSpinner {
                 listAdapter = new CustomArrayAdapter<>(getContext(), new ArrayList<>(), adapter);
                 listView.setAdapter(listAdapter);
             }
-            listAdapter.addAll(items);
             for (Object item : items) {
+                // skip first dummy item that should not appear in the list
+                if (!TextUtils.isEmpty(item.toString())) {
+                    listAdapter.add(item);
+                }
                 adapter.add(item);
             }
         }
@@ -395,7 +422,7 @@ public class InlineLabelSpinner extends AppCompatSpinner {
         @Override
         @NonNull
         public View getView(int position, View covertView, @NonNull ViewGroup root) {
-            return  spinnerAdapter.getDropDownView(position, covertView, root);
+            return  spinnerAdapter.getDropDownView(position+1, covertView, root);
         }
     }
 }
