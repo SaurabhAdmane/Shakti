@@ -111,12 +111,12 @@
 
                         <com.shakticoin.app.widget.InlineLabelEditText
                             android:id="@+id/name"
+                            style="@style/AppTextField"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            style="@style/AppTextField"
-                            android:inputType="text"
                             android:hint="@string/hint_name"
-                            android:text="@={viewModel.name}"/>
+                            android:inputType="text|textCapSentences"
+                            android:text="@={viewModel.name}" />
                     </com.shakticoin.app.widget.TextInputLayout>
 
                     <com.shakticoin.app.widget.TextInputLayout
@@ -183,8 +183,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/hint_message"
-                            android:text="@={viewModel.message}"
-                            android:inputType="textMultiLine|textImeMultiLine" />
+                            android:inputType="textMultiLine|textCapSentences|textImeMultiLine"
+                            android:text="@={viewModel.message}" />
                     </com.shakticoin.app.widget.TextInputLayout>
 
                     <Button
