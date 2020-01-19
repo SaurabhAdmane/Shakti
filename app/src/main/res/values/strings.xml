@@ -2,6 +2,13 @@
 
     <string name="stripe_pub_key" translatable="false">pk_test_wMi9qDrafbnRQfmWEGv4etOD</string>
 
+    <string-array name="education_levels">
+        <string>Associate degree</string>
+        <string>Bachelor\'s degree</string>
+        <string>Master\'s degree</string>
+        <string>Doctoral degree</string>
+    </string-array>
+
     <string name="app_name" translatable="false">Shakti Coin</string>
     <string name="err_not_implemented">Not implemented yet</string>
     <string name="welcom_message">Welcome to Shakti Coin</string>

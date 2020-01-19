@@ -141,13 +141,15 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/lastNameLayout">
 
-                <com.shakticoin.app.widget.InlineLabelEditText
+                <com.shakticoin.app.widget.InlineLabelTextView
                     android:id="@+id/birthDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/AppTextField"
-                    android:inputType="date"
-                    android:hint="@string/birthdate" />
+                    android:hint="@string/birthdate"
+                    android:onClick="onSetBirthDate"
+                    app:localizedDate="@{viewModel.birthDate}"/>
+
             </com.shakticoin.app.widget.TextInputLayout>
 
             <Button
