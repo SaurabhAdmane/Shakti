@@ -17,6 +17,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -266,5 +267,61 @@ public class UserRepository {
 //                if (listener != null) listener.onComplete(null, t);
 //            }
 //        });
+    }
+
+    public void addFamilyMember(@NonNull FamilyMember familyMemeber, @NonNull OnCompleteListener<FamilyMember> listener) {
+        userService.addFamilyMember(Session.getAuthorizationHeader(), Session.getLanguageHeader(), familyMemeber)
+                .enqueue(new Callback<FamilyMember>() {
+                    @EverythingIsNonNull
+                    @Override
+                    public void onResponse(Call<FamilyMember> call, Response<FamilyMember> response) {
+                        Debug.logDebug(response.toString());
+                        if (response.isSuccessful()) {
+                            FamilyMember familyMember = response.body();
+                            listener.onComplete(familyMember, null);
+                        } else {
+                            if (response.code() == 401) {
+                                listener.onComplete(null, new UnauthorizedException());
+                            } else {
+                                listener.onComplete(null, new RemoteException(response.message(), response.code()));
+                            }
+                        }
+                    }
+
+                    @EverythingIsNonNull
+                    @Override
+                    public void onFailure(Call<FamilyMember> call, Throwable t) {
+                        Debug.logException(t);
+                        listener.onComplete(null, t);
+                    }
+                });
+    }
+
+    public void getFamilyMembers(@NonNull OnCompleteListener<List<FamilyMember>> listener) {
+        userService.getFamilyMembers(Session.getAuthorizationHeader(), Session.getLanguageHeader()).enqueue(new Callback<List<FamilyMember>>() {
+            @EverythingIsNonNull
+            @Override
+            public void onResponse(Call<List<FamilyMember>> call, Response<List<FamilyMember>> response) {
+                Debug.logDebug(response.toString());
+                if (response.isSuccessful()) {
+                    List<FamilyMember> members = response.body();
+                    listener.onComplete(members, null);
+                } else {
+                    if (response.code() == 401) {
+                        listener.onComplete(null, new UnauthorizedException());
+                    } else {
+                        listener.onComplete(null, new RemoteException(response.message(), response.code()));
+                    }
+                }
+            }
+
+            @EverythingIsNonNull
+            @Override
+            public void onFailure(Call<List<FamilyMember>> call, Throwable t) {
+                Debug.logException(t);
+                listener.onComplete(null, t);
+            }
+        });
+
     }
 }
