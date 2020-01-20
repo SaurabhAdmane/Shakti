@@ -1,5 +1,7 @@
 package com.shakticoin.app.api.user;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -85,4 +87,21 @@ public interface UserService {
     @POST("userservice/v1/api/users/password/reset/confirm/")
     Call<Void> confirmResetPassword(@Body ConfirmResetPasswordParameters parameters);
 
+
+    /**
+     * Retrieve family members.
+     */
+    @Headers("Accept: application/json")
+    @GET("/userservice/v1/api/families/")
+    Call<List<FamilyMember>> getFamilyMembers(@Header("Authorization") String authorization,
+                                              @Header("Accept-Language") String language);
+
+    /**
+     * Add a family member.
+     */
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("/userservice/v1/api/families/")
+    Call<FamilyMember> addFamilyMember(@Header("Authorization") String authorization,
+                                       @Header("Accept-Language") String language,
+                                       @Body FamilyMember member);
 }

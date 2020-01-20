@@ -11,6 +11,7 @@
     <string name="register_now">Create your Shakti ID now</string>
     <string name="next">Next</string>
     <string name="cancel">Cancel</string>
+    <string name="common_add">Add</string>
     <string name="log_in">Log in</string>
     <string name="common_wallet">Wallet</string>
     <string name="common_vault">Vault</string>
@@ -555,5 +556,6 @@
     <string name="family_title">@string/drawer_family_tree</string>
     <string name="family_members">Family Members</string>
     <string name="family_action">Add a Family Member</string>
+    <string name="dlg_family_title"><![CDATA[Add a<br/><font color="#B09C75"><b>Family Member</b></font>]]></string>
 
 </resources>
