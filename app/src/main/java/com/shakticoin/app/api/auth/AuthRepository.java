@@ -103,6 +103,30 @@ public class AuthRepository {
         });
     }
 
+    /**
+     * Call backend to refresh token in synchronous mode.
+     * @return Returns true if the tokens are updated
+     */
+    public boolean refreshTokenSync() {
+        TokenParameters parameters = new TokenParameters();
+        parameters.setRefresh(Session.getRefreshToken());
+        try {
+            Response<TokenResponse> response = loginService.refresh(parameters).execute();
+            if (response.isSuccessful()) {
+                TokenResponse tokenResponse = response.body();
+                if (tokenResponse != null) {
+                    Session.setAccessToken(tokenResponse.getAccess());
+                    Session.setRefreshToken(tokenResponse.getRefresh());
+                    return true;
+                }
+            }
+
+        } catch (IOException e) {
+            Debug.logException(e);
+        }
+        return false;
+    }
+
 //    public void checkEmailPhoneExists(Context context, String emailAddress, String phoneNumber, @NonNull OnCompleteListener<Boolean> listener) {
 //        if (emailAddress == null && phoneNumber == null) {
 //            listener.onComplete(null, new IllegalArgumentException("Both phone number and email cannot be empty."));

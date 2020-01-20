@@ -7,13 +7,16 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.shakticoin.app.R;
+import com.shakticoin.app.api.BackendRepository;
 import com.shakticoin.app.api.BaseUrl;
 import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.RemoteException;
 import com.shakticoin.app.api.Session;
 import com.shakticoin.app.api.UnauthorizedException;
+import com.shakticoin.app.api.auth.AuthRepository;
 import com.shakticoin.app.util.Debug;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -25,7 +28,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.internal.EverythingIsNonNull;
 
-public class CountryRepository {
+public class CountryRepository extends BackendRepository {
     private CountryService countryService;
 
     public CountryRepository() {
@@ -106,28 +109,56 @@ public class CountryRepository {
     public void getSubdivisionsByCountry(@NonNull String countryCode,
                                          OnCompleteListener<List<Subdivision>> listener,
                                          Context context) {
-        countryService.getSubdivisions(Session.getAuthorizationHeader(), Session.getLanguageHeader(), countryCode)
-                .enqueue(new Callback<List<Subdivision>>() {
-                    @EverythingIsNonNull
-                    @Override
-                    public void onResponse(Call<List<Subdivision>> call, Response<List<Subdivision>> response) {
-                        Debug.logDebug(response.toString());
-                        if (response.isSuccessful()) {
-                            List<Subdivision> subdivisions = response.body();
-                            if (listener != null) {
-                                listener.onComplete(subdivisions, null);
+        countryService.getSubdivisions(Session.getLanguageHeader(), countryCode).enqueue(new Callback<List<Subdivision>>() {
+            @EverythingIsNonNull
+            @Override
+            public void onResponse(Call<List<Subdivision>> call, Response<List<Subdivision>> response) {
+                Debug.logDebug(response.toString());
+                if (response.isSuccessful()) {
+                    List<Subdivision> subdivisions = response.body();
+                    if (listener != null) {
+                        listener.onComplete(subdivisions, null);
+                    }
+                } else {
+                    // 401 is handled completely inside this branch
+                    if (response.code() == 401) {
+                        AuthRepository auth = new AuthRepository();
+                        if (auth.refreshTokenSync()) {
+                            try {
+                                Response<List<Subdivision>> syncResp =
+                                        countryService.getSubdivisions(Session.getLanguageHeader(), countryCode).execute();
+                                if (syncResp.isSuccessful()) {
+                                    listener.onComplete(syncResp.body(), null);
+                                    return;
+                                } else {
+                                    if (syncResp.code() == 401) {
+                                        listener.onComplete(null, new UnauthorizedException());
+                                    } else {
+                                        listener.onComplete(null, new RemoteException(syncResp.message(), syncResp.code()));
+                                    }
+                                }
+                            } catch (IOException e) {
+                                Debug.logException(e);
+                                listener.onComplete(null, e);
+                                return;
                             }
                         } else {
-                            Debug.logErrorResponse(response);
-                            if (listener != null) {
-                                String message = response.message();
-                                if (response.code() == 404) {
-                                    message = context.getString(R.string.err_state_not_found);
-                                }
-                                listener.onComplete(null, new RemoteException(message, response.code()));
-                            }
+                            // not able to refresh the token
+                            return;
                         }
+                    } else {
+
                     }
+                    Debug.logErrorResponse(response);
+                    if (listener != null) {
+                        String message = response.message();
+                        if (response.code() == 404) {
+                            message = context.getString(R.string.err_state_not_found);
+                        }
+                        listener.onComplete(null, new RemoteException(message, response.code()));
+                    }
+                }
+            }
 
                     @EverythingIsNonNull
                     @Override
