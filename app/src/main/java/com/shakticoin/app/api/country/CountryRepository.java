@@ -14,12 +14,11 @@ import com.shakticoin.app.api.RemoteException;
 import com.shakticoin.app.api.Session;
 import com.shakticoin.app.api.UnauthorizedException;
 import com.shakticoin.app.api.auth.AuthRepository;
+import com.shakticoin.app.api.auth.TokenResponse;
 import com.shakticoin.app.util.Debug;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,6 +29,7 @@ import retrofit2.internal.EverythingIsNonNull;
 
 public class CountryRepository extends BackendRepository {
     private CountryService countryService;
+    private AuthRepository authRepository;
 
     public CountryRepository() {
         Retrofit retrofit = new Retrofit.Builder()
@@ -38,6 +38,7 @@ public class CountryRepository extends BackendRepository {
                 .build();
 
         countryService = retrofit.create(CountryService.class);
+        authRepository = new AuthRepository();
     }
 
     public LiveData<List<Country>> getCountries() {
@@ -86,13 +87,22 @@ public class CountryRepository extends BackendRepository {
                     public void onResponse(Call<Country> call, Response<Country> response) {
                         Debug.logDebug(response.toString());
                         if (response.isSuccessful()) {
-                            Country country = response.body();
-                            listener.onComplete(country, null);
+                            listener.onComplete(response.body(), null);
                         } else {
                             if (response.code() == 401) {
-                                listener.onComplete(null, new UnauthorizedException());
+                                authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
+                                    @Override
+                                    public void onComplete(TokenResponse value, Throwable error) {
+                                        if (error != null) {
+                                            listener.onComplete(null, new UnauthorizedException());
+                                            return;
+                                        }
+                                        getCountry(countryCode, listener);
+                                    }
+                                });
                             } else {
-                                listener.onComplete(null, new RemoteException(response.message(), response.code()));
+                                Debug.logErrorResponse(response);
+                                returnError(listener, response);
                             }
                         }
                     }
@@ -107,63 +117,42 @@ public class CountryRepository extends BackendRepository {
     }
 
     public void getSubdivisionsByCountry(@NonNull String countryCode,
-                                         OnCompleteListener<List<Subdivision>> listener,
-                                         Context context) {
-        countryService.getSubdivisions(Session.getLanguageHeader(), countryCode).enqueue(new Callback<List<Subdivision>>() {
-            @EverythingIsNonNull
-            @Override
-            public void onResponse(Call<List<Subdivision>> call, Response<List<Subdivision>> response) {
-                Debug.logDebug(response.toString());
-                if (response.isSuccessful()) {
-                    List<Subdivision> subdivisions = response.body();
-                    if (listener != null) {
-                        listener.onComplete(subdivisions, null);
-                    }
-                } else {
-                    // 401 is handled completely inside this branch
-                    if (response.code() == 401) {
-                        AuthRepository auth = new AuthRepository();
-                        if (auth.refreshTokenSync()) {
-                            try {
-                                Response<List<Subdivision>> syncResp =
-                                        countryService.getSubdivisions(Session.getLanguageHeader(), countryCode).execute();
-                                if (syncResp.isSuccessful()) {
-                                    listener.onComplete(syncResp.body(), null);
-                                    return;
-                                } else {
-                                    if (syncResp.code() == 401) {
-                                        listener.onComplete(null, new UnauthorizedException());
-                                    } else {
-                                        listener.onComplete(null, new RemoteException(syncResp.message(), syncResp.code()));
-                                    }
-                                }
-                            } catch (IOException e) {
-                                Debug.logException(e);
-                                listener.onComplete(null, e);
-                                return;
-                            }
+                                         @NonNull OnCompleteListener<List<Subdivision>> listener,
+                                         @NonNull Context context) {
+        countryService.getSubdivisions(Session.getAuthorizationHeader(), Session.getLanguageHeader(), countryCode)
+                .enqueue(new Callback<List<Subdivision>>() {
+                    @EverythingIsNonNull
+                    @Override
+                    public void onResponse(Call<List<Subdivision>> call, Response<List<Subdivision>> response) {
+                        Debug.logDebug(response.toString());
+                        if (response.isSuccessful()) {
+                            listener.onComplete(response.body(), null);
                         } else {
-                            // not able to refresh the token
-                            return;
+                            if (response.code() == 401) {
+                                authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
+                                    @Override
+                                    public void onComplete(TokenResponse value, Throwable error) {
+                                        if (error != null) {
+                                            listener.onComplete(null, new UnauthorizedException());
+                                            return;
+                                        }
+                                        getSubdivisionsByCountry(countryCode, listener, context);
+                                    }
+                                });
+                            } else {
+                                String message = response.message();
+                                if (response.code() == 404) {
+                                    message = context.getString(R.string.err_state_not_found);
+                                }
+                                listener.onComplete(null, new RemoteException(message, response.code()));
+                            }
                         }
-                    } else {
-
                     }
-                    Debug.logErrorResponse(response);
-                    if (listener != null) {
-                        String message = response.message();
-                        if (response.code() == 404) {
-                            message = context.getString(R.string.err_state_not_found);
-                        }
-                        listener.onComplete(null, new RemoteException(message, response.code()));
-                    }
-                }
-            }
 
                     @EverythingIsNonNull
                     @Override
                     public void onFailure(Call<List<Subdivision>> call, Throwable t) {
-                        Debug.logException(t);
+                        returnError(listener, t);
                     }
                 });
     }
@@ -177,13 +166,22 @@ public class CountryRepository extends BackendRepository {
             public void onResponse(Call<Subdivision> call, Response<Subdivision> response) {
                 Debug.logDebug(response.toString());
                 if (response.isSuccessful()) {
-                    Subdivision subdivision = response.body();
-                    listener.onComplete(subdivision, null);
+                    listener.onComplete(response.body(), null);
                 } else {
                     if (response.code() == 401) {
-                        listener.onComplete(null, new UnauthorizedException());
+                        authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
+                            @Override
+                            public void onComplete(TokenResponse value, Throwable error) {
+                                if (error != null) {
+                                    listener.onComplete(null, new UnauthorizedException());
+                                    return;
+                                }
+                                getSubdivision(countryCode, subdivisionId, listener);
+                            }
+                        });
                     } else {
-                        listener.onComplete(null, new RemoteException(response.message(), response.code()));
+                        Debug.logErrorResponse(response);
+                        returnError(listener, response);
                     }
                 }
             }

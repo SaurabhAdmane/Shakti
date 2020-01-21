@@ -145,18 +145,18 @@ public class MiningLicenseActivity extends AppCompatActivity {
 
                 // we can consider the registration completed at this point
                 UserRepository userRepository = new UserRepository();
-                userRepository.updateRegistrationStatus(Constants.RegistrationStatus.REGST_COMPL, new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(Void value, Throwable error) {
-                        binding.progressBar.setVisibility(View.INVISIBLE);
-                        if (error != null) {
-                            Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-
-                        openWallet();
-                    }
-                });
+//                userRepository.updateRegistrationStatus(Constants.RegistrationStatus.REGST_COMPL, new OnCompleteListener<Void>() {
+//                    @Override
+//                    public void onComplete(Void value, Throwable error) {
+//                        binding.progressBar.setVisibility(View.INVISIBLE);
+//                        if (error != null) {
+//                            Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_SHORT).show();
+//                            return;
+//                        }
+//
+//                        openWallet();
+//                    }
+//                });
             }
         });
     }

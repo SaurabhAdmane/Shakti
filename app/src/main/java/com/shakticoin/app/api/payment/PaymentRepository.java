@@ -2,6 +2,7 @@ package com.shakticoin.app.api.payment;
 
 import androidx.annotation.NonNull;
 
+import com.shakticoin.app.api.BackendRepository;
 import com.shakticoin.app.api.UnauthorizedException;
 import com.shakticoin.app.util.Debug;
 import com.shakticoin.app.api.BaseUrl;
@@ -16,7 +17,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class PaymentRepository {
+public class PaymentRepository extends BackendRepository {
     private StripePaymentService stripeService;
 
     public PaymentRepository() {
@@ -52,8 +53,7 @@ public class PaymentRepository {
 
             @Override
             public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-                Debug.logException(t);
-                listener.onComplete(null, t);
+                returnError(listener, t);
             }
         });
     }
