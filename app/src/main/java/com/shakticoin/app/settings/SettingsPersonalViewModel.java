@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.shakticoin.app.api.user.User;
 
-public class SettingsViewModel extends ViewModel {
+public class SettingsPersonalViewModel extends ViewModel {
 
     public MutableLiveData<User> user = new MutableLiveData<>();
 

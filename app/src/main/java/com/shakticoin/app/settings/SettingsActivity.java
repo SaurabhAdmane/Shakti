@@ -54,8 +54,9 @@ public class SettingsActivity extends BaseWalletActivity {
                 if (error != null) {
                     if (error instanceof UnauthorizedException) {
                         startActivity(Session.unauthorizedIntent(self));
+                    } else {
+                        Toast.makeText(self, Debug.getFailureMsg(self, error), Toast.LENGTH_LONG).show();
                     }
-                    Toast.makeText(self, Debug.getFailureMsg(self, error), Toast.LENGTH_LONG).show();
                     return;
                 }
 

@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-    <data />
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.shakticoin.app.settings.SettingsPersonalViewModel" />
+    </data>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -30,15 +33,17 @@
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:id="@+id/textView95"
+                        android:id="@+id/textFullName"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
                         android:layout_marginTop="34dp"
                         android:layout_marginEnd="24dp"
-                        android:text="William Almundson"
                         android:textAppearance="@style/AppText.Body"
                         android:textSize="16sp"
+                        app:firstName="@{viewModel.user.first_name}"
+                        app:middleName="@{viewModel.user.middle_name}"
+                        app:lastName="@{viewModel.user.last_name}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -55,16 +60,16 @@
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView95" />
+                        app:layout_constraintTop_toBottomOf="@+id/textFullName" />
 
                     <TextView
-                        android:id="@+id/textView97"
+                        android:id="@+id/textBirthDate"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
                         android:layout_marginTop="5dp"
                         android:layout_marginEnd="24dp"
-                        android:text="May 16, 1980 "
+                        app:localizedDate="@{viewModel.user.date_of_birth}"
                         android:textAppearance="@style/AppText.Body"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -82,17 +87,22 @@
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView97" />
+                        app:layout_constraintTop_toBottomOf="@+id/textBirthDate" />
 
                     <TextView
-                        android:id="@+id/textView99"
+                        android:id="@+id/textAddress"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
                         android:layout_marginTop="5dp"
                         android:layout_marginEnd="24dp"
-                        android:text="19892 84th St N\nScottsdale, AZ\n85255 - United States"
                         android:textAppearance="@style/AppText.Body"
+                        app:addressLine1="@{viewModel.user.residence[0].address_line_1}"
+                        app:addressLine2="@{viewModel.user.residence[0].address_line_2}"
+                        app:city="@{viewModel.user.residence[0].city}"
+                        app:subdivision="@{viewModel.user.residence[0].subdivision_name}"
+                        app:postalCode="@{viewModel.user.residence[0].zip_code}"
+                        app:country="@{viewModel.user.residence[0].country_name}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView98" />
@@ -109,16 +119,16 @@
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView99" />
+                        app:layout_constraintTop_toBottomOf="@+id/textAddress" />
 
                     <TextView
-                        android:id="@+id/textView101"
+                        android:id="@+id/textEmail"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
                         android:layout_marginTop="5dp"
                         android:layout_marginEnd="24dp"
-                        android:text="walmun@gmail.com"
+                        android:text="@{viewModel.user.email}"
                         android:textAppearance="@style/AppText.Body"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -136,16 +146,16 @@
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView101" />
+                        app:layout_constraintTop_toBottomOf="@+id/textEmail" />
 
                     <TextView
-                        android:id="@+id/textView103"
+                        android:id="@+id/textPhoneNumber"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
                         android:layout_marginTop="5dp"
                         android:layout_marginEnd="24dp"
-                        android:text="+1 577 454 4458"
+                        android:text="@{viewModel.user.mobile}"
                         android:textAppearance="@style/AppText.Body"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -163,16 +173,16 @@
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView103" />
+                        app:layout_constraintTop_toBottomOf="@+id/textPhoneNumber" />
 
                     <TextView
-                        android:id="@+id/textView105"
+                        android:id="@+id/textOccupation"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
                         android:layout_marginTop="5dp"
                         android:layout_marginEnd="24dp"
-                        android:text="Instructional Designer"
+                        android:text="@{viewModel.user.occupation}"
                         android:textAppearance="@style/AppText.Body"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -190,16 +200,16 @@
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView105" />
+                        app:layout_constraintTop_toBottomOf="@+id/textOccupation" />
 
                     <TextView
-                        android:id="@+id/textView107"
+                        android:id="@+id/textEducation"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
                         android:layout_marginTop="5dp"
                         android:layout_marginEnd="24dp"
-                        android:text="College Degree"
+                        android:text="@{viewModel.user.highest_level_of_education}"
                         android:textAppearance="@style/AppText.Body"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -218,16 +228,16 @@
                         android:textSize="24sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView107" />
+                        app:layout_constraintTop_toBottomOf="@+id/textEducation" />
 
                     <TextView
-                        android:id="@+id/textView109"
+                        android:id="@+id/textKinFullName"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
                         android:layout_marginTop="16dp"
                         android:layout_marginEnd="24dp"
-                        android:text="Biance Almundson "
+                        android:text="@{viewModel.user.kinship[0].full_name}"
                         android:textAppearance="@style/AppText.Body"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -235,33 +245,41 @@
                         app:layout_constraintTop_toBottomOf="@+id/textView108" />
 
                     <TextView
-                        android:id="@+id/textView110"
+                        android:id="@+id/textKinEmail"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
                         android:layout_marginTop="5dp"
                         android:layout_marginEnd="24dp"
-                        android:text="bmiraflores@gmail.com"
+                        android:text="@{viewModel.user.kinship[0].email}"
                         android:textAppearance="@style/AppText.Body"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView109" />
+                        app:layout_constraintTop_toBottomOf="@+id/textKinFullName" />
 
                     <TextView
-                        android:id="@+id/textView111"
+                        android:id="@+id/textKinship"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
                         android:layout_marginTop="5dp"
                         android:layout_marginEnd="24dp"
-                        android:text="Wife"
+                        android:text="@{viewModel.user.kinship[0].relation}"
                         android:textAppearance="@style/AppText.Body"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView110" />
+                        app:layout_constraintTop_toBottomOf="@+id/textKinEmail" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </ScrollView>
             <include layout="@layout/inline_messages"/>
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyle"
+                android:visibility="invisible"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"/>
 
         </RelativeLayout>
 

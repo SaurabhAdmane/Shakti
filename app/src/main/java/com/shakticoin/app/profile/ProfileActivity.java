@@ -1,6 +1,7 @@
 package com.shakticoin.app.profile;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -8,24 +9,46 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ObservableField;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
 import com.shakticoin.app.R;
+import com.shakticoin.app.api.OnCompleteListener;
+import com.shakticoin.app.api.Session;
+import com.shakticoin.app.api.UnauthorizedException;
 import com.shakticoin.app.api.country.Country;
+import com.shakticoin.app.api.country.CountryRepository;
+import com.shakticoin.app.api.country.Subdivision;
+import com.shakticoin.app.api.user.Kinship;
+import com.shakticoin.app.api.user.Residence;
+import com.shakticoin.app.api.user.User;
+import com.shakticoin.app.api.user.UserRepository;
 import com.shakticoin.app.databinding.ActivityProfileBinding;
 import com.shakticoin.app.util.Debug;
+import com.shakticoin.app.util.PostalCodeValidator;
 import com.shakticoin.app.util.Validator;
 import com.shakticoin.app.wallet.BaseWalletActivity;
+import com.shakticoin.app.widget.DatePicker;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
 public class ProfileActivity extends BaseWalletActivity {
     private ActivityProfileBinding binding;
     private PersonalViewModel viewModel;
     private PersonalInfoViewModel personalInfoViewModel;
     private AdditionalInfoViewModel additionInfoViewModel;
+
+    private UserRepository userRepo = new UserRepository();
+    private CountryRepository countryRepo = new CountryRepository();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,6 +64,74 @@ public class ProfileActivity extends BaseWalletActivity {
         onInitView(binding.getRoot(), getString(R.string.profile_personal_title));
 
         binding.pageIndicator.setSelectedIndex(1);
+
+        viewModel.progressBarTrigger.set(true);
+        final Activity self = this;
+        userRepo.getUserInfo(Session.getUser().getId(), new OnCompleteListener<User>() {
+            @Override
+            public void onComplete(User user, Throwable error) {
+                viewModel.progressBarTrigger.set(false);
+                if (error != null) {
+                    if (error instanceof UnauthorizedException) {
+                        startActivity(Session.unauthorizedIntent(self));
+                    }
+                    return;
+                }
+
+                List<Residence> residences = user.getResidence();
+                if (residences != null && residences.size() > 0) {
+                    Residence residence = residences.get(0);
+                    countryRepo.getCountry(residence.getCountry_code(), new OnCompleteListener<Country>() {
+                        @Override
+                        public void onComplete(Country value, Throwable error) {
+                            if (error != null) {
+                                if (error instanceof UnauthorizedException) {
+                                    startActivity(Session.unauthorizedIntent(self));
+                                }
+                                return;
+                            }
+                            personalInfoViewModel.selectedCountry.setValue(value);
+                        }
+                    });
+                    if (residence.getSubdivision_id() != null) {
+                        countryRepo.getSubdivision(residence.getCountry_code(), residence.getSubdivision_id(),
+                                new OnCompleteListener<Subdivision>() {
+                                    @Override
+                                    public void onComplete(Subdivision value, Throwable error) {
+                                        if (error != null) {
+                                            if (error instanceof UnauthorizedException) {
+                                                startActivity(Session.unauthorizedIntent(self));
+                                            }
+                                            return;
+                                        }
+                                        personalInfoViewModel.selectedState.setValue(value);
+                                    }
+                                });
+                    }
+                    personalInfoViewModel.address1.setValue(residence.getAddress_line_1());
+                    personalInfoViewModel.address2.setValue(residence.getAddress_line_2());
+                    personalInfoViewModel.city.setValue(residence.getCity());
+                    personalInfoViewModel.postalCode.setValue(residence.getZip_code());
+                }
+
+                personalInfoViewModel.firstName.setValue(user.getFirst_name());
+                personalInfoViewModel.middleName.setValue(user.getMiddle_name());
+                personalInfoViewModel.lastName.setValue(user.getLast_name());
+                personalInfoViewModel.birthDate.setValue(user.getDate_of_birth());
+                personalInfoViewModel.emailAddress.setValue(user.getEmail());
+                personalInfoViewModel.phoneNumber.setValue(user.getMobile());
+                personalInfoViewModel.occupation.setValue(user.getOccupation());
+                personalInfoViewModel.selectedEducationLevel.setValue(user.getHighest_level_of_education());
+
+                List<Kinship> kindships = user.getKinship();
+                if (kindships != null && kindships.size() > 0) {
+                    Kinship kinship = kindships.get(0);
+                    personalInfoViewModel.kinFullName.setValue(kinship.getFull_name());
+                    personalInfoViewModel.kinContact.setValue(kinship.getEmail() != null ? kinship.getEmail() : kinship.getMobile());
+                    personalInfoViewModel.kinRelationship.setValue(kinship.getRelation());
+                }
+            }
+        });
 
         Activity activity = this;
         binding.mainFragment.setAdapter(new ProfileFragmentAdapter(getSupportFragmentManager()));
@@ -159,6 +250,26 @@ public class ProfileActivity extends BaseWalletActivity {
 
     public void onCancel(View v) {
         finish();
+    }
+
+    public void onSetBirthDate(View v) {
+        DatePicker picker = new DatePicker(new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(android.widget.DatePicker view, int year, int month, int dayOfMonth) {
+                Calendar cal = Calendar.getInstance();
+                cal.set(Calendar.YEAR, year);
+                cal.set(Calendar.MONTH, month);
+                cal.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                cal.set(Calendar.HOUR_OF_DAY, 0);
+                cal.set(Calendar.MINUTE, 0);
+                cal.set(Calendar.SECOND, 0);
+                cal.set(Calendar.MILLISECOND, 0);
+
+                SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+                personalInfoViewModel.birthDate.setValue(fmt.format(cal.getTime()));
+            }
+        });
+        picker.show(getSupportFragmentManager(), "date-picker");
     }
 
     /** Collection of fragments for the activity */
