@@ -1,12 +1,17 @@
 package com.shakticoin.app.api.user;
 
-public class FamilyMember {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class FamilyMember implements Parcelable {
     private Integer id;
     private String first_name;
     private String last_name;
     private String relationship;
     private String email;
     private String phone;
+
+    public FamilyMember() {}
 
     public Integer getId() {
         return id;
@@ -55,4 +60,47 @@ public class FamilyMember {
     public void setPhone(String phone) {
         this.phone = phone;
     }
+
+    protected FamilyMember(Parcel in) {
+        id = in.readByte() == 0x00 ? null : in.readInt();
+        first_name = in.readString();
+        last_name = in.readString();
+        relationship = in.readString();
+        email = in.readString();
+        phone = in.readString();
+    }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        if (id == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeInt(id);
+        }
+        dest.writeString(first_name);
+        dest.writeString(last_name);
+        dest.writeString(relationship);
+        dest.writeString(email);
+        dest.writeString(phone);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<FamilyMember> CREATOR = new Parcelable.Creator<FamilyMember>() {
+        @Override
+        public FamilyMember createFromParcel(Parcel in) {
+            return new FamilyMember(in);
+        }
+
+        @Override
+        public FamilyMember[] newArray(int size) {
+            return new FamilyMember[size];
+        }
+    };
 }

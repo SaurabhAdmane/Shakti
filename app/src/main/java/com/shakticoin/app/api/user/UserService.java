@@ -100,6 +100,7 @@ public interface UserService {
      * Add a family member.
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("/userservice/v1/api/families/")
     Call<FamilyMember> addFamilyMember(@Header("Authorization") String authorization,
                                        @Header("Accept-Language") String language,
                                        @Body FamilyMember member);

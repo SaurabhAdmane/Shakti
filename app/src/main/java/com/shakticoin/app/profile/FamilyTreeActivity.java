@@ -1,10 +1,12 @@
 package com.shakticoin.app.profile;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,10 +25,11 @@ import com.shakticoin.app.wallet.BaseWalletActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FamilyTreeActivity extends BaseWalletActivity {
+public class FamilyTreeActivity extends BaseWalletActivity implements DialogInterface.OnDismissListener {
     private UserRepository userRepository = new UserRepository();
 
     private FamilyMembersAdapter adapter;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,22 +39,34 @@ public class FamilyTreeActivity extends BaseWalletActivity {
         onInitView(findViewById(R.id.container), getString(R.string.family_title), true);
 
         RecyclerView members = findViewById(R.id.membersList);
+        progressBar = findViewById(R.id.progressBar);
 
         members.setHasFixedSize(true);
         members.setLayoutManager(new LinearLayoutManager(this));
         adapter = new FamilyMembersAdapter();
         members.setAdapter(adapter);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateList();
+    }
+
+    private void updateList() {
         final Activity activity = this;
+        progressBar.setVisibility(View.VISIBLE);
         userRepository.getFamilyMembers(new OnCompleteListener<List<FamilyMember>>() {
             @Override
             public void onComplete(List<FamilyMember> value, Throwable error) {
+                progressBar.setVisibility(View.INVISIBLE);
                 if (error != null) {
                     if (error instanceof UnauthorizedException) {
                         startActivity(Session.unauthorizedIntent(activity));
                     }
                     return;
                 }
+                adapter.clear();
                 adapter.addAll(value);
             }
         });
@@ -60,6 +75,16 @@ public class FamilyTreeActivity extends BaseWalletActivity {
     @Override
     protected int getCurrentDrawerSelection() {
         return 6;
+    }
+
+    public void onAddFamilyMember(View v) {
+        DialogAddFamilyMember addMemberDialog = DialogAddFamilyMember.getInstance();
+        addMemberDialog.show(getSupportFragmentManager(), DialogAddFamilyMember.class.getSimpleName());
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        updateList();
     }
 
     class FamilyMembersAdapter extends RecyclerView.Adapter<FamilyMembersAdapter.ViewHolder> {
@@ -128,6 +153,13 @@ public class FamilyTreeActivity extends BaseWalletActivity {
                 for (FamilyMember item : items) {
                     add(item);
                 }
+            }
+        }
+
+        void clear() {
+            if (dataset.size() > 0) {
+                dataset.clear();
+                notifyDataSetChanged();
             }
         }
     }
