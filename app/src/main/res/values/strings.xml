@@ -481,8 +481,6 @@
     </string>
     <string name="vault_chs_subtitle">Choose your vault type:</string>
     <string name="vault_chs_features">Features</string>
-    <string name="vault_chs_action">Let\'s get started</string>
-    <string name="vault_chs_action1">Qualified for DevDot?</string>
     <string name="settings_title">Settings</string>
     <string name="settings_account">Account</string>
     <string name="settings_security">Security</string>
