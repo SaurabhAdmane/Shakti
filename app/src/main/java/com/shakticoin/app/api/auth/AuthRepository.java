@@ -77,6 +77,7 @@ public class AuthRepository extends BackendRepository {
             @EverythingIsNonNull
             @Override
             public void onResponse(Call<TokenResponse> call, Response<TokenResponse> response) {
+                Debug.logDebug(response.toString());
                 if (response.isSuccessful()) {
                     TokenResponse resp = response.body();
                     if (resp != null) {
