@@ -5,6 +5,7 @@ public class PackageFeature {
     private String feature;
     private Boolean is_active;
     private Package _package;
+    private Integer order_no;
 
     public Integer getId() {
         return id;
@@ -36,5 +37,13 @@ public class PackageFeature {
 
     public void setPackage(Package _package) {
         this._package = _package;
+    }
+
+    public Integer getOrder_no() {
+        return order_no;
+    }
+
+    public void setOrder_no(Integer order_no) {
+        this.order_no = order_no;
     }
 }

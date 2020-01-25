@@ -51,6 +51,14 @@ public class PackagePlan {
         this.zoho_plan_code = zoho_plan_code;
     }
 
+    public Integer getOrder_no() {
+        return order_no;
+    }
+
+    public void setOrder_no(Integer order_no) {
+        this.order_no = order_no;
+    }
+
     public enum Period {Weekly, Monthly, Yearly}
     private Integer id;
     private Package _package;
@@ -58,4 +66,5 @@ public class PackagePlan {
     private String description;
     private BigDecimal fiat_price;
     private String zoho_plan_code;
+    private Integer order_no;
 }

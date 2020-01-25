@@ -12,6 +12,7 @@ public class PackageExtended implements Parcelable {
     private String description;
     private List<String> features;
     private Bonus bonus;
+    private Integer order_no;
 
     public Integer getId() {
         return id;
@@ -102,4 +103,12 @@ public class PackageExtended implements Parcelable {
             return new PackageExtended[size];
         }
     };
+
+    public Integer getOrder_no() {
+        return order_no;
+    }
+
+    public void setOrder_no(Integer order_no) {
+        this.order_no = order_no;
+    }
 }

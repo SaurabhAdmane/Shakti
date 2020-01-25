@@ -41,6 +41,14 @@ public class Package {
         this.specificity = specificity;
     }
 
+    public Integer getOrder_no() {
+        return order_no;
+    }
+
+    public void setOrder_no(Integer order_no) {
+        this.order_no = order_no;
+    }
+
     public enum Specificity {General, Country, Subdivision}
 
     private Integer id;
@@ -48,4 +56,5 @@ public class Package {
     private String description;
     private Vault vault;
     private Integer specificity;
+    private Integer order_no;
 }
