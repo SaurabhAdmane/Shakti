@@ -36,6 +36,9 @@ public class StripeActivity extends BaseWalletActivity {
 
     private ActivityPmntStripeBinding binding;
 
+    private int period = -1;
+    private String packageName;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,16 +48,30 @@ public class StripeActivity extends BaseWalletActivity {
         super.onInitView(binding.getRoot(), getString(R.string.miner_intro_toolbar), true);
 
         Intent intent = getIntent();
+        period = intent.getIntExtra(CommonUtil.prefixed("period", this), -1);
+        packageName = intent.getStringExtra(CommonUtil.prefixed("packageName", this));
         String orderName = intent.getStringExtra(CommonUtil.prefixed(KEY_ORDER_NAME, this));
         // TODO: test stuff - remove when data is available
         orderName = getString(R.string.pmnt_stripe_order_name, "M101");
-        binding.orderName.setText(orderName);
-        binding.orderPeriod.setText(R.string.pmnt_opts_weekly);
+        binding.orderName.setText(packageName);
         Double orderAmount = intent.getDoubleExtra(CommonUtil.prefixed(KEY_ORDER_AMOUNT, this), 0.0);
         // always format money according to US rules and currency
         NumberFormat formater = NumberFormat.getCurrencyInstance(Locale.US);
         formater.setCurrency(Currency.getInstance("USD"));
-        binding.orderAmount.setText(formater.format(orderAmount) + "/" + getString(R.string.pmnt_opts_week));
+        switch (period) {
+            case 1:
+                binding.orderPeriod.setText(R.string.pmnt_opts_weekly);
+                binding.orderAmount.setText(formater.format(orderAmount) + "/" + getString(R.string.pmnt_opts_week));
+                break;
+            case 2:
+                binding.orderPeriod.setText(R.string.pmnt_opts_monthly);
+                binding.orderAmount.setText(formater.format(orderAmount) + "/" + getString(R.string.pmnt_opts_month));
+                break;
+            case 3:
+                binding.orderPeriod.setText(R.string.pmnt_opts_annual);
+                binding.orderAmount.setText(formater.format(orderAmount) + "/" + getString(R.string.pmnt_opts_year));
+                break;
+        }
     }
 
     @Override

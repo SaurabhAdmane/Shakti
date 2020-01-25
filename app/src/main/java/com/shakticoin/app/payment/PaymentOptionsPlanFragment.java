@@ -34,6 +34,9 @@ public class PaymentOptionsPlanFragment extends Fragment {
     PaymentOptionsViewModel viewModel;
     private VaultRepository vaultRepository;
     private ProgressBar progressBar;
+    private int vaultId = -1;
+    private PackageExtended packageExtended;
+    private PaymentOptionsViewModel.PackageType packageType;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -57,11 +60,14 @@ public class PaymentOptionsPlanFragment extends Fragment {
         View v = binding.getRoot();
 
         Bundle args = getArguments();
-        PaymentOptionsViewModel.PackageType packageType = PaymentOptionsViewModel.PackageType.valueOf(args.getString("packageType"));
-        PackageExtended packageExtended = args.getParcelable("package");
+        if (args != null) {
+            vaultId = args.getInt("vaultId", -1);
+            packageType = PaymentOptionsViewModel.PackageType.valueOf(args.getString("packageType"));
+            packageExtended = args.getParcelable("package");
+        }
         if (packageExtended != null) {
             if (progressBar != null) progressBar.setVisibility(View.VISIBLE);
-            vaultRepository.getPackagePlans(2, packageExtended.getId(), new OnCompleteListener<List<PackagePlanExtended>>() {
+            vaultRepository.getPackagePlans(vaultId, packageExtended.getId(), new OnCompleteListener<List<PackagePlanExtended>>() {
                 @Override
                 public void onComplete(List<PackagePlanExtended> plans, Throwable error) {
                     if (progressBar != null) progressBar.setVisibility(View.INVISIBLE);
@@ -91,6 +97,7 @@ public class PaymentOptionsPlanFragment extends Fragment {
                                 break;
                             case PackagePlanExtended.ANNUAL:
                                 viewModel.annualPlan.set(plan);
+                                viewModel.selectedPlan.set(plan);
 //                                if (discount != null) {
 //                                    binding.annualDiscountText.setText(discount.getDescription());
 //                                }
@@ -110,11 +117,12 @@ public class PaymentOptionsPlanFragment extends Fragment {
         super.onDetach();
     }
 
-    public static PaymentOptionsPlanFragment getInstance(String packageTypeId, PackageExtended packageExtended) {
+    public static PaymentOptionsPlanFragment getInstance(int vaultId, String packageTypeId, PackageExtended packageExtended) {
         PaymentOptionsPlanFragment fragment = new PaymentOptionsPlanFragment();
         Bundle args = new Bundle();
         args.putString("packageType", packageTypeId);
         args.putParcelable("package", packageExtended);
+        args.putInt("vaultId", vaultId);
         fragment.setArguments(args);
         return fragment;
     }

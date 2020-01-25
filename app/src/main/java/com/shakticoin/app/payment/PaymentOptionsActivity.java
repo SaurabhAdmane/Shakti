@@ -16,13 +16,13 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
 import com.shakticoin.app.R;
-import com.shakticoin.app.api.Constants;
 import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.Session;
 import com.shakticoin.app.api.UnauthorizedException;
 import com.shakticoin.app.api.payment.PaymentRepository;
 import com.shakticoin.app.api.user.UserRepository;
 import com.shakticoin.app.api.vault.PackageExtended;
+import com.shakticoin.app.api.vault.PackagePlanExtended;
 import com.shakticoin.app.api.vault.VaultRepository;
 import com.shakticoin.app.databinding.ActivityPaymentOptionsBinding;
 import com.shakticoin.app.payment.stripe.StripeActivity;
@@ -40,8 +40,11 @@ public class PaymentOptionsActivity extends BaseWalletActivity {
     private PaymentOptionsViewModel viewModel;
     private PageAdapter pages;
 
-    private VaultRepository vaultRepository;
+    private VaultRepository vaultRepository = new VaultRepository();
     private List<PackageExtended> packages;
+
+    private int vaultId = -1;
+    private int packageId = -1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,9 +58,17 @@ public class PaymentOptionsActivity extends BaseWalletActivity {
 
         final Activity self = this;
 
-        vaultRepository = new VaultRepository();
+        if (savedInstanceState == null) {
+            Intent intent = getIntent();
+            vaultId = intent.getIntExtra(CommonUtil.prefixed("vaultId", this), -1);
+            packageId = intent.getIntExtra(CommonUtil.prefixed("packageId", this), -1);
+        } else {
+            vaultId = savedInstanceState.getInt("vaultId", -1);
+            packageId = savedInstanceState.getInt("packageId", -1);
+        }
+
         binding.progressBar.setVisibility(View.VISIBLE);
-        vaultRepository.getVaultPackages(2, new OnCompleteListener<List<PackageExtended>>() {
+        vaultRepository.getVaultPackages(vaultId, new OnCompleteListener<List<PackageExtended>>() {
             @Override
             public void onComplete(List<PackageExtended> value, Throwable error) {
                 binding.progressBar.setVisibility(View.INVISIBLE);
@@ -73,8 +84,15 @@ public class PaymentOptionsActivity extends BaseWalletActivity {
                         FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,
                         packages);
                 binding.mainFragment.setAdapter(pages);
-                viewModel.selectedPackage.setValue(packages.get(0));
-                viewModel.selectedPackageType.setValue(PaymentOptionsViewModel.PackageType.M101);
+                PaymentOptionsViewModel.PackageType[] packageTypes = PaymentOptionsViewModel.PackageType.values();
+                for (int i = 0; i < packages.size(); i++) {
+                    PackageExtended pkg = packages.get(i);
+                    if (packageId == pkg.getId()) {
+                        viewModel.selectedPackage.setValue(pkg);
+                        viewModel.selectedPackageType.setValue(packageTypes[i]);
+                        break;
+                    }
+                }
             }
         });
 
@@ -95,6 +113,13 @@ public class PaymentOptionsActivity extends BaseWalletActivity {
     }
 
     @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putInt("vaultId", vaultId);
+        outState.putInt("packageId", packageId);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     protected int getCurrentDrawerSelection() {
         return 2;
     }
@@ -102,12 +127,15 @@ public class PaymentOptionsActivity extends BaseWalletActivity {
     public void onMainAction(View v) {
         final Activity activity = this;
 
+        PackagePlanExtended plan = viewModel.selectedPlan.get();
+        PackageExtended pkg = viewModel.selectedPackage.getValue();
         // pay the order
         Intent intent = new Intent(activity, StripeActivity.class);
-        intent.putExtra(CommonUtil.prefixed(StripeActivity.KEY_ORDER_ID, activity), "XXX"/*value.getId()*/);
-        intent.putExtra(CommonUtil.prefixed(StripeActivity.KEY_ORDER_AMOUNT, activity), 10.0/*value.getAmount()*/);
+        intent.putExtra(CommonUtil.prefixed(StripeActivity.KEY_ORDER_AMOUNT, activity), plan.getFiat_price());
         intent.putExtra(CommonUtil.prefixed(StripeActivity.KEY_ORDER_NAME, activity),
                 String.format("%1$s - %2$s", "M101", "Tier description"));
+        intent.putExtra(CommonUtil.prefixed("packageName", this), pkg.getName());
+        intent.putExtra(CommonUtil.prefixed("period", this), plan.getPeriod());
         startActivityForResult(intent, STRIPE_PAYMENT);
     }
 
@@ -202,7 +230,7 @@ public class PaymentOptionsActivity extends BaseWalletActivity {
         @Override
         public Fragment getItem(int position) {
             PaymentOptionsViewModel.PackageType[] miningPlan = PaymentOptionsViewModel.PackageType.values();
-            return PaymentOptionsPlanFragment.getInstance(miningPlan[position].name(), packages.get(position));
+            return PaymentOptionsPlanFragment.getInstance(vaultId, miningPlan[position].name(), packages.get(position));
         }
 
         @Override

@@ -90,6 +90,7 @@ public class AuthRepository extends BackendRepository {
                     }
                     listener.onComplete(resp, null);
                 } else {
+                    Debug.logErrorResponse(response);
                     Session.clean(ShaktiApplication.getContext());
                     listener.onComplete(null, new UnauthorizedException());
                 }

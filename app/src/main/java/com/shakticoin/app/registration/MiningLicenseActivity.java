@@ -7,13 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.text.HtmlCompat;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.shakticoin.app.R;
-import com.shakticoin.app.api.Constants;
 import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.Session;
 import com.shakticoin.app.api.UnauthorizedException;
@@ -24,40 +24,19 @@ import com.shakticoin.app.api.vault.PackageExtended;
 import com.shakticoin.app.api.vault.VaultRepository;
 import com.shakticoin.app.databinding.ActivityMiningLicenseBinding;
 import com.shakticoin.app.payment.PaymentOptionsActivity;
-import com.shakticoin.app.payment.stripe.StripeActivity;
 import com.shakticoin.app.util.CommonUtil;
 import com.shakticoin.app.util.Debug;
 import com.shakticoin.app.wallet.WalletActivity;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 public class MiningLicenseActivity extends AppCompatActivity {
-    public static final int STRIPE_PAYMENT  = 100;
 
     private ActivityMiningLicenseBinding binding;
     private MiningLicenseModel viewModel;
-    private VaultRepository vaultRepository;
+    private VaultRepository vaultRepository = new VaultRepository();
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == STRIPE_PAYMENT) {
-            switch (resultCode) {
-                case RESULT_OK:
-                    if (data != null) {
-                        long orderId = data.getLongExtra(CommonUtil.prefixed(StripeActivity.KEY_ORDER_ID, this), -1);
-                        completePayment(data.getStringExtra(CommonUtil.prefixed(StripeActivity.KEY_TOKEN, this)), orderId);
-                    }
-                    break;
-                case RESULT_CANCELED:
-                    Toast.makeText(this, R.string.err_payment_cancelled, Toast.LENGTH_SHORT).show();
-                    openWallet();
-                    break;
-            }
-        } else {
-            super.onActivityResult(requestCode, resultCode, data);
-        }
-    }
+    private int vaultId = -1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,30 +52,42 @@ public class MiningLicenseActivity extends AppCompatActivity {
 
         final AppCompatActivity self = this;
 
-        vaultRepository = new VaultRepository();
-        binding.progressBar.setVisibility(View.VISIBLE);
-        // FIXME: vault ID should not be a constant here
-        vaultRepository.getVaultPackages(2, new OnCompleteListener<List<PackageExtended>>() {
-            @Override
-            public void onComplete(List<PackageExtended> packages, Throwable error) {
-                binding.progressBar.setVisibility(View.INVISIBLE);
-                if (error != null) {
-                    if (error instanceof UnauthorizedException) {
-                        startActivity(Session.unauthorizedIntent(self));
+        if (savedInstanceState != null) {
+            vaultId = savedInstanceState.getInt("vaultId", -1);
+        } else {
+            Intent intent = getIntent();
+            vaultId = intent.getIntExtra(CommonUtil.prefixed("vaultId", this), -1);
+        }
+        if (vaultId > -1) {
+            binding.progressBar.setVisibility(View.VISIBLE);
+            vaultRepository.getVaultPackages(vaultId, new OnCompleteListener<List<PackageExtended>>() {
+                @Override
+                public void onComplete(List<PackageExtended> packages, Throwable error) {
+                    binding.progressBar.setVisibility(View.INVISIBLE);
+                    if (error != null) {
+                        if (error instanceof UnauthorizedException) {
+                            startActivity(Session.unauthorizedIntent(self));
+                        }
+                        return;
                     }
-                    return;
-                }
 
-                viewModel.init(packages);
-                viewModel.selectedPlan.observe(self, packageType -> {
-                    if (packageType == null) return;
-                    PackageExtended packageExtended = viewModel.getSelectedPackage();
-                    if (packageExtended != null) {
-                        updateDetails(packageExtended);
-                    }
-                });
-            }
-        });
+                    viewModel.init(packages);
+                    viewModel.selectedPlan.observe(self, packageType -> {
+                        if (packageType == null) return;
+                        PackageExtended packageExtended = viewModel.getSelectedPackage();
+                        if (packageExtended != null) {
+                            updateDetails(packageExtended);
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putInt("vaultId", vaultId);
+        super.onSaveInstanceState(outState);
     }
 
     private void updateDetails(PackageExtended packageExtended) {
@@ -124,6 +115,9 @@ public class MiningLicenseActivity extends AppCompatActivity {
 
     public void onApply(View view) {
         Intent intent = new Intent(this, PaymentOptionsActivity.class);
+        intent.putExtra(CommonUtil.prefixed("vaultId", this), vaultId);
+        PackageExtended pkg = viewModel.getSelectedPackage();
+        intent.putExtra(CommonUtil.prefixed("packageId", this), pkg.getId());
         startActivity(intent);
     }
 
