@@ -22,7 +22,9 @@ import com.shakticoin.app.registration.SignUpActivity;
 
 import com.shakticoin.app.R;
 
+import com.shakticoin.app.util.CommonUtil;
 import com.shakticoin.app.util.PreferenceHelper;
+import com.shakticoin.app.wallet.WalletActivity;
 
 
 public class WelcomeTourActivity extends AppCompatActivity {
@@ -104,7 +106,15 @@ public class WelcomeTourActivity extends AppCompatActivity {
     public void onEndTour(View view) {
         SharedPreferences prefs = getSharedPreferences(PreferenceHelper.GENERAL_PREFERENCES, Context.MODE_PRIVATE);
         prefs.edit().putBoolean(PreferenceHelper.PREF_KEY_TOUR_DONE, true).apply();
-        startActivity(new Intent(this, SignUpActivity.class));
+
+        Intent intent = getIntent();
+        String finalDestination = intent.getStringExtra(CommonUtil.prefixed("finalDestination", this));
+        if (WalletActivity.class.getName().equals(finalDestination)) {
+            startActivity(new Intent(this, WalletActivity.class));
+        } else {
+            startActivity(new Intent(this, SignUpActivity.class));
+        }
+
         finish();
     }
 

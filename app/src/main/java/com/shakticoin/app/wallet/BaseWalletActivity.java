@@ -29,6 +29,8 @@ import com.shakticoin.app.settings.SettingsActivity;
 
 import com.shakticoin.app.R;
 import com.shakticoin.app.miner.BecomeMinerActivity;
+import com.shakticoin.app.tour.WelcomeTourActivity;
+import com.shakticoin.app.util.CommonUtil;
 import com.shakticoin.app.vault.VaultAdvantageActivity;
 
 import java.text.DateFormat;
@@ -262,7 +264,9 @@ public abstract class BaseWalletActivity extends AppCompatActivity {
     }
 
     public void onOpenHome(View v) {
-
+        Intent intent = new Intent(this, WelcomeTourActivity.class);
+        intent.putExtra(CommonUtil.prefixed("finalDestination", this), WalletActivity.class.getName());
+        startActivity(intent);
     }
 
     public void onOpenFamilyTree(View v) {
