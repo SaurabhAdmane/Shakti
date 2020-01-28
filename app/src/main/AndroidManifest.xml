@@ -74,7 +74,8 @@
 
         <activity
             android:name=".wallet.WalletActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop"/>
 
         <activity
             android:name=".widget.qr.QRScannerActivity"

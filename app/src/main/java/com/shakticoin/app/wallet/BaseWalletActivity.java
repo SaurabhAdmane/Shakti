@@ -246,20 +246,17 @@ public abstract class BaseWalletActivity extends AppCompatActivity {
     }
 
     public void onOpenMiner(View v) {
-        Intent intent = new Intent(this, BecomeMinerActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        Intent intent = new Intent(this, WalletActivity.class);
         startActivity(intent);
     }
 
     public void onOpenVault(View v) {
-        Intent intent = new Intent(this, VaultAdvantageActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        Intent intent = new Intent(this, WalletActivity.class);
         startActivity(intent);
     }
 
     public void onOpenWallet(View v) {
         Intent intent = new Intent(this, WalletActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
     }
 
