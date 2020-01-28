@@ -32,6 +32,7 @@
     <string name="err_password_invalid">Password cannot be empty and should be longer than %1$d chars</string>
     <string name="tour1_title">Create your Shakti ID.</string>
     <string name="tour1_text">Say hello to new money.</string>
+    <string name="tour1_skip">Skip</string>
     <string name="tour2_title">Receive Bonus Bounty!</string>
     <string name="tour2_text">When people you invite join,\neveryone earns money.</string>
     <string name="tour3_title">Refer Friends.</string>
