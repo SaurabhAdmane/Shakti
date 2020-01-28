@@ -39,9 +39,11 @@ public class SettingsContactUsActivity extends BaseWalletActivity {
 
         onInitView(binding.getRoot(), getString(R.string.settings_contact_us_title), true);
 
+        binding.progressBar.setVisibility(View.VISIBLE);
         commonRepository.getRequestReasons(new OnCompleteListener<List<RequestReason>>() {
             @Override
             public void onComplete(List<RequestReason> value, Throwable error) {
+                binding.progressBar.setVisibility(View.INVISIBLE);
                 if (error != null) {
                     return;
                 }
@@ -94,9 +96,11 @@ public class SettingsContactUsActivity extends BaseWalletActivity {
         messagePayload.setMessage(viewModel.message.getValue());
 
         final Activity self = this;
+        binding.progressBar.setVisibility(View.VISIBLE);
         commonRepository.sendSupportMessage(messagePayload, new OnCompleteListener<ContactUs>() {
             @Override
             public void onComplete(ContactUs value, Throwable error) {
+                binding.progressBar.setVisibility(View.INVISIBLE);
                 if (error != null) {
                     if (error instanceof UnauthorizedException) {
                         startActivity(Session.unauthorizedIntent(self));
