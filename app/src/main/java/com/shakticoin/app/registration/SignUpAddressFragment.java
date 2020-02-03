@@ -75,7 +75,7 @@ public class SignUpAddressFragment extends Fragment {
                             viewModel.stateProvinceList.setValue(value);
                             binding.stateLayout.setVisibility(value != null && value.size() > 0 ? View.VISIBLE : View.GONE);
                         }
-                    }, Objects.requireNonNull(getActivity()));
+                    });
                 } else {
                     binding.postalCodeLayout.setValidator(new PostalCodeValidator(null));
                     viewModel.stateProvinceList.setValue(Collections.emptyList());

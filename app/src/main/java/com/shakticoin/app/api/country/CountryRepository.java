@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.shakticoin.app.R;
+import com.shakticoin.app.ShaktiApplication;
 import com.shakticoin.app.api.BackendRepository;
 import com.shakticoin.app.api.BaseUrl;
 import com.shakticoin.app.api.OnCompleteListener;
@@ -117,8 +118,7 @@ public class CountryRepository extends BackendRepository {
     }
 
     public void getSubdivisionsByCountry(@NonNull String countryCode,
-                                         @NonNull OnCompleteListener<List<Subdivision>> listener,
-                                         @NonNull Context context) {
+                                         @NonNull OnCompleteListener<List<Subdivision>> listener) {
         countryService.getSubdivisions(Session.getAuthorizationHeader(), Session.getLanguageHeader(), countryCode)
                 .enqueue(new Callback<List<Subdivision>>() {
                     @EverythingIsNonNull
@@ -136,13 +136,13 @@ public class CountryRepository extends BackendRepository {
                                             listener.onComplete(null, new UnauthorizedException());
                                             return;
                                         }
-                                        getSubdivisionsByCountry(countryCode, listener, context);
+                                        getSubdivisionsByCountry(countryCode, listener);
                                     }
                                 });
                             } else {
                                 String message = response.message();
                                 if (response.code() == 404) {
-                                    message = context.getString(R.string.err_state_not_found);
+                                    message = ShaktiApplication.getContext().getString(R.string.err_state_not_found);
                                 }
                                 listener.onComplete(null, new RemoteException(message, response.code()));
                             }

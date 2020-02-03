@@ -3,18 +3,22 @@ package com.shakticoin.app.wallet;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import com.shakticoin.app.widget.PanelDialog;
-
 import com.shakticoin.app.R;
+import com.shakticoin.app.widget.PanelDialog;
 
 public class DialogBecomeMiner extends DialogFragment implements View.OnClickListener {
     public static final String TAG = DialogBecomeMiner.class.getSimpleName();
+
+    private View.OnClickListener listener;
+
+    private DialogBecomeMiner(@NonNull View.OnClickListener listener) {
+        this.listener = listener;
+    }
 
     @NonNull
     @Override
@@ -29,15 +33,11 @@ public class DialogBecomeMiner extends DialogFragment implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
-        Toast.makeText(getActivity(), R.string.err_not_implemented, Toast.LENGTH_SHORT).show();
+        listener.onClick(v);
+        dismiss();
     }
 
-    public static DialogBecomeMiner newInstance() {
-
-        Bundle args = new Bundle();
-
-        DialogBecomeMiner fragment = new DialogBecomeMiner();
-        fragment.setArguments(args);
-        return fragment;
+    static DialogBecomeMiner newInstance(@NonNull View.OnClickListener listener) {
+        return new DialogBecomeMiner(listener);
     }
 }

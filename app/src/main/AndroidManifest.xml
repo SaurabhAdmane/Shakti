@@ -244,6 +244,10 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".profile.CompanyProfileActivity"
+            android:screenOrientation="portrait"/>
+
     </application>
 
 </manifest>

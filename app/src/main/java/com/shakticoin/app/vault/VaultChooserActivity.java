@@ -20,7 +20,9 @@ import com.shakticoin.app.api.UnauthorizedException;
 import com.shakticoin.app.api.vault.VaultExtended;
 import com.shakticoin.app.api.vault.VaultRepository;
 import com.shakticoin.app.databinding.ActivityVaultChooserBinding;
+import com.shakticoin.app.profile.CompanyProfileActivity;
 import com.shakticoin.app.registration.MiningLicenseActivity;
+import com.shakticoin.app.settings.SettingsContactUsActivity;
 import com.shakticoin.app.util.CommonUtil;
 import com.shakticoin.app.util.Debug;
 import com.shakticoin.app.wallet.BaseWalletActivity;
@@ -80,6 +82,16 @@ public class VaultChooserActivity extends BaseWalletActivity {
 
                 Intent intent = new Intent(this, MiningLicenseActivity.class);
                 intent.putExtra(CommonUtil.prefixed("vaultId", this), selectedVault.getId());
+                startActivity(intent);
+
+            } if (VaultExtended.COMPANY_INFO_VIEW.equals(transition)) {
+
+                Intent intent = new Intent(this, CompanyProfileActivity.class);
+                startActivity(intent);
+
+            } else if (VaultExtended.CONTACT_US_VIEW.equals(transition)) {
+
+                Intent intent = new Intent(this, SettingsContactUsActivity.class);
                 startActivity(intent);
 
             } else {

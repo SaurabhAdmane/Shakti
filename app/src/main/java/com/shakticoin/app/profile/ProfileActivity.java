@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -50,6 +51,8 @@ public class ProfileActivity extends BaseWalletActivity {
     private UserRepository userRepo = new UserRepository();
     private CountryRepository countryRepo = new CountryRepository();
 
+    private TextView toolbarTitle;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +65,8 @@ public class ProfileActivity extends BaseWalletActivity {
         additionInfoViewModel = ViewModelProviders.of(this).get(AdditionalInfoViewModel.class);
 
         onInitView(binding.getRoot(), getString(R.string.profile_personal_title));
+
+        toolbarTitle = binding.getRoot().findViewById(R.id.toolbarTitle);
 
         binding.pageIndicator.setSelectedIndex(1);
 
@@ -133,7 +138,6 @@ public class ProfileActivity extends BaseWalletActivity {
             }
         });
 
-        Activity activity = this;
         binding.mainFragment.setAdapter(new ProfileFragmentAdapter(getSupportFragmentManager()));
         binding.mainFragment.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -141,13 +145,15 @@ public class ProfileActivity extends BaseWalletActivity {
 
             @Override
             public void onPageSelected(int i) {
-                Debug.logDebug(Integer.toString(i));
                 binding.pageIndicator.setSelectedIndex(i+1);
                 if (i == 0 || i == 1) {
+                    toolbarTitle.setText(R.string.wallet_page_personal);
                     binding.profileBackground.setBackgroundResource(R.drawable.personal_background);
                 } else if (i == 2 || i == 3) {
+                    toolbarTitle.setText(R.string.wallet_page_additional);
                     binding.profileBackground.setBackgroundResource(R.drawable.additional_background);
                 } else {
+                    toolbarTitle.setText(R.string.wallet_page_kyc);
                     binding.profileBackground.setBackgroundResource(R.drawable.kyc_validation_background);
                 }
             }
@@ -276,7 +282,7 @@ public class ProfileActivity extends BaseWalletActivity {
     class ProfileFragmentAdapter extends FragmentPagerAdapter {
 
         ProfileFragmentAdapter(FragmentManager fm) {
-            super(fm);
+            super(fm, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         }
 
         @Override

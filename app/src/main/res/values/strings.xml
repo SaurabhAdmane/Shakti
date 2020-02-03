@@ -23,6 +23,8 @@
     <string name="common_wallet">Wallet</string>
     <string name="common_vault">Vault</string>
     <string name="common_status">Status</string>
+    <string name="common_yes">Yes</string>
+    <string name="common_no">No</string>
     <string name="do_registration">Create Shakti ID</string>
     <string name="do_login"><u>Already have an account? Sign in</u></string>
     <string name="go_back_for_changes"><u>Let me go back and correct something.</u></string>
@@ -254,6 +256,28 @@
         Submit a school or Gov or other body, that has issued an ID with your name and address.
     </string>
     <string name="profile_kyc_choosed_of_three">Choose of any three categories.</string>
+    <string name="profile_company_title">Company info</string>
+    <string name="profile_company_domiciled_info">Domiciled Information</string>
+    <string name="profile_company_affiliates">Affiliated companies</string>
+    <string name="profile_company_hint_name">Company Name</string>
+    <string name="profile_company_hint_trade">Trade Name</string>
+    <string name="profile_company_hint_structure">Company Structure</string>
+    <string name="profile_company_hint_established">Date of Establishment</string>
+    <string name="profile_company_hint_code">Industry Code</string>
+    <string name="profile_company_hint_vault">Vault ID</string>
+    <string name="profile_company_bind">Bind Trade Name</string>
+    <string name="profile_company_domiciled_country">Domiciled Country</string>
+    <string name="profile_company_domiciled_state">Domiciled State</string>
+    <string name="profile_company_update">Update company information</string>
+    <string name="profile_company_type">Company Type</string>
+    <string name="profile_company_corporation">Corporate Name</string>
+    <string name="profile_company_relationship">Type of relationship</string>
+    <string name="profile_company_company_type">Type of company</string>
+    <string name="profile_company_permit_devid">
+        <![CDATA[I authorize Shakti network to enhance my Wallet security by accessing device <u>UDIDs</u>]]>
+    </string>
+    <string name="profile_company_alerts">I consent to receiving alerts from the Shakti Network</string>
+    <string name="profile_company_update_adds">Update Additional Info</string>
     <string name="wallet_page_personal">Personal Info</string>
     <string name="wallet_page_additional">Additional Info</string>
     <string name="wallet_page_kyc">KYC Validation</string>
