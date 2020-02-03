@@ -1,8 +1,11 @@
 package com.shakticoin.app.api.vault;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.math.BigDecimal;
 
-public class Bonus {
+public class Bonus implements Parcelable {
     private Integer id;
     private String description;
     private BigDecimal fiat_bonus;
@@ -48,4 +51,44 @@ public class Bonus {
     public void setExpiry_date(String expiry_date) {
         this.expiry_date = expiry_date;
     }
+
+    protected Bonus(Parcel in) {
+        id = in.readByte() == 0x00 ? null : in.readInt();
+        description = in.readString();
+        fiat_bonus = (BigDecimal) in.readValue(BigDecimal.class.getClassLoader());
+        sxe_bonus = (BigDecimal) in.readValue(BigDecimal.class.getClassLoader());
+        expiry_date = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        if (id == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeInt(id);
+        }
+        dest.writeString(description);
+        dest.writeValue(fiat_bonus);
+        dest.writeValue(sxe_bonus);
+        dest.writeString(expiry_date);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Bonus> CREATOR = new Parcelable.Creator<Bonus>() {
+        @Override
+        public Bonus createFromParcel(Parcel in) {
+            return new Bonus(in);
+        }
+
+        @Override
+        public Bonus[] newArray(int size) {
+            return new Bonus[size];
+        }
+    };
 }

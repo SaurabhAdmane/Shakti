@@ -5,17 +5,18 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.shakticoin.app.profile.ProfileActivity;
-
-import com.shakticoin.app.R;
 import com.shakticoin.app.databinding.FragmentWalletMainBinding;
+import com.shakticoin.app.profile.ProfileActivity;
+import com.shakticoin.app.registration.MiningLicenseActivity;
+import com.shakticoin.app.util.CommonUtil;
+import com.shakticoin.app.vault.VaultChooserActivity;
 
 import java.util.Objects;
 
@@ -62,14 +63,27 @@ public class MainFragment extends Fragment {
     }
 
     private void onShowBusinessVaultInfo(View v) {
-        DialogBusinessVault.newInstance().show(getFragmentManager(), DialogBusinessVault.TAG);
+        FragmentManager fragmentManager = getFragmentManager();
+        assert fragmentManager != null;
+        DialogBusinessVault.newInstance(v1 -> {
+            Intent intent = new Intent(getActivity(), VaultChooserActivity.class);
+            startActivity(intent);
+        }).show(fragmentManager, DialogBusinessVault.TAG);
     }
 
     private void onShowMinerInfo(View v) {
-        DialogBecomeMiner.newInstance().show(getFragmentManager(), DialogBecomeMiner.TAG);
+        FragmentManager fragmentManager = getFragmentManager();
+        assert fragmentManager != null;
+        DialogBecomeMiner.newInstance(v1 -> {
+            Intent intent = new Intent(getActivity(), MiningLicenseActivity.class);
+            intent.putExtra(CommonUtil.prefixed("vaultId", getActivity()), 2 /*FIXME: hardcoded vault ID*/);
+            startActivity(intent);
+        }).show(fragmentManager, DialogBecomeMiner.TAG);
     }
 
     private void onShowUnlockInfo(View v) {
-        DialogGrabWallet.newInstance().show(getFragmentManager(), DialogGrabWallet.TAG);
+        FragmentManager fragmentManager = getFragmentManager();
+        assert fragmentManager != null;
+        DialogGrabWallet.newInstance().show(fragmentManager, DialogGrabWallet.TAG);
     }
 }

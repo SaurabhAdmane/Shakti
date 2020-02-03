@@ -53,7 +53,7 @@ public class TextInputLayout extends RelativeLayout {
      * for making validation mark invisible when user erase all chars.*/
     private boolean validationFieldEmpty = true;
 
-    private EditText editTextView;
+    private TextView editTextView;
     private TextView labelView;
     private CheckableImageButton passwordToggleView;
 
@@ -119,8 +119,8 @@ public class TextInputLayout extends RelativeLayout {
 
     @Override
     public void addView(View child, int index, final ViewGroup.LayoutParams params) {
-        if (child instanceof EditText) {
-            editTextView = (EditText) child;
+        if (child instanceof TextView) {
+            editTextView = (TextView) child;
 
             // adjust layout attributes for EditText control
             RelativeLayout.LayoutParams newParams = new RelativeLayout.LayoutParams(params);
@@ -223,8 +223,8 @@ public class TextInputLayout extends RelativeLayout {
             @Override
             public void afterTextChanged(Editable s) {
                 updateLabelState();
-                if (validationEnabled && validationListener != null) {
-                    setInputValid(validationListener.isValid(editTextView, s.toString()));
+                if (editTextView instanceof EditText && validationEnabled && validationListener != null) {
+                    setInputValid(validationListener.isValid((EditText)editTextView, s.toString()));
                 }
             }
         });
@@ -242,7 +242,7 @@ public class TextInputLayout extends RelativeLayout {
         if (hasFocus || hasContent) {
             editTextView.setHint(null);
             labelView.setVisibility(View.VISIBLE);
-            if (editTextView instanceof InlineLabelEditText) {
+            if (editTextView instanceof InlineLabelEditText || editTextView instanceof InlineLabelTextView) {
                 // calculate width of the label TextView and pass it to the EditText
                 // in order to change the border
                 Paint textPaint = new Paint();
@@ -255,7 +255,11 @@ public class TextInputLayout extends RelativeLayout {
                 Float textWidth = textPaint.measureText((String) hint);
                 int paddingTotal = labelView.getPaddingLeft() + labelView.getPaddingRight();
                 textWidth = textWidth + paddingTotal;
-                ((InlineLabelEditText) editTextView).setLabelWidth(textWidth);
+                if (editTextView instanceof InlineLabelEditText) {
+                    ((InlineLabelEditText) editTextView).setLabelWidth(textWidth);
+                } else if (editTextView instanceof InlineLabelTextView) {
+                    ((InlineLabelTextView) editTextView).setLabelWidth(textWidth);
+                }
             }
         } else {
             labelView.setVisibility(View.GONE);
@@ -351,7 +355,9 @@ public class TextInputLayout extends RelativeLayout {
             }
 
             // And restore the cursor position
-            editTextView.setSelection(selection);
+            if (editTextView instanceof EditText) {
+                ((EditText) editTextView).setSelection(selection);
+            }
         }
     }
 

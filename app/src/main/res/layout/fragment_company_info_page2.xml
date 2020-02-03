@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.shakticoin.app.profile.CompanyProfileViewModel" />
+    </data>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/scrollable_bottom_padding">
+
+            <TextView
+                android:id="@+id/label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="35dp"
+                android:layout_marginEnd="8dp"
+                android:gravity="center_horizontal"
+                android:text="@string/profile_company_domiciled_info"
+                android:textAppearance="@style/AppText.Body"
+                android:textColor="@color/colorBrand"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="16dp"
+                android:background="@color/colorBrand"
+                app:layout_constraintBottom_toBottomOf="@+id/label"
+                app:layout_constraintEnd_toStartOf="@+id/label"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/label" />
+
+            <View
+                android:id="@+id/divider2"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="24dp"
+                android:background="@color/colorBrand"
+                app:layout_constraintBottom_toBottomOf="@+id/label"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/label"
+                app:layout_constraintTop_toTopOf="@+id/label" />
+
+            <com.shakticoin.app.widget.SpinnerLayout
+                android:id="@+id/countriesLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="24dp"
+                style="@style/AppTextLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/label">
+
+                <com.shakticoin.app.widget.InlineLabelSpinner
+                    android:id="@+id/contries"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:popupBackground="@android:color/transparent"
+                    android:entries="@{viewModel.countryList}"
+                    android:onItemSelected="@{(parent, view, position, id) -> viewModel.onCountrySelected(view, position)}"
+                    app:newValue="@{viewModel.selectedCountry}"
+                    app:hint="@string/profile_company_domiciled_country"
+                    app:textColorHint="@color/colorHint"
+                    app:spinnerBorderColor="@color/colorBrand"/>
+            </com.shakticoin.app.widget.SpinnerLayout>
+
+            <com.shakticoin.app.widget.SpinnerLayout
+                android:id="@+id/statesLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="24dp"
+                android:visibility="gone"
+                style="@style/AppTextLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/countriesLayout">
+
+                <com.shakticoin.app.widget.InlineLabelSpinner
+                    android:id="@+id/states"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:popupBackground="@android:color/transparent"
+                    android:entries="@{viewModel.stateProvinceList}"
+                    android:onItemSelected="@{(parent, view, position, id) -> viewModel.onStateProvinceSelected(view, position)}"
+                    app:newValue="@{viewModel.selectedStateProvince}"
+                    app:hint="@string/profile_company_domiciled_state"
+                    app:textColorHint="@color/colorHint"
+                    app:spinnerBorderColor="@color/colorBrand"/>
+            </com.shakticoin.app.widget.SpinnerLayout>
+
+            <com.shakticoin.app.widget.TextInputLayout
+                android:id="@+id/cityLayout"
+                style="@style/AppTextLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="24dp"
+                app:labelFontTypeface="@font/lato"
+                app:labelTextSize="11sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/statesLayout">
+
+                <com.shakticoin.app.widget.InlineLabelEditText
+                    android:id="@+id/city"
+                    style="@style/AppTextField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_city"
+                    android:inputType="text|textCapWords"
+                    android:text="" />
+            </com.shakticoin.app.widget.TextInputLayout>
+
+            <com.shakticoin.app.widget.TextInputLayout
+                android:id="@+id/address1Layout"
+                style="@style/AppTextLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="24dp"
+                app:labelFontTypeface="@font/lato"
+                app:labelTextSize="11sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cityLayout">
+
+                <com.shakticoin.app.widget.InlineLabelEditText
+                    android:id="@+id/address1"
+                    style="@style/AppTextField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_address1"
+                    android:inputType="text|textCapSentences|textPostalAddress"
+                    android:text="" />
+            </com.shakticoin.app.widget.TextInputLayout>
+
+            <com.shakticoin.app.widget.TextInputLayout
+                android:id="@+id/address2Layout"
+                style="@style/AppTextLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="24dp"
+                app:labelFontTypeface="@font/lato"
+                app:labelTextSize="11sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/address1Layout">
+
+                <com.shakticoin.app.widget.InlineLabelEditText
+                    android:id="@+id/address2"
+                    style="@style/AppTextField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_address2"
+                    android:inputType="text|textCapSentences|textPostalAddress"
+                    android:text="" />
+            </com.shakticoin.app.widget.TextInputLayout>
+
+            <com.shakticoin.app.widget.TextInputLayout
+                android:id="@+id/postalCodeLayout"
+                style="@style/AppTextLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="24dp"
+                app:labelFontTypeface="@font/lato"
+                app:labelTextSize="11sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/address2Layout">
+
+                <com.shakticoin.app.widget.InlineLabelEditText
+                    android:id="@+id/postalCode"
+                    style="@style/AppTextField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_postal_code"
+                    android:inputType="text|textCapCharacters"
+                    android:text="" />
+            </com.shakticoin.app.widget.TextInputLayout>
+
+            <Button
+                android:id="@+id/doNext"
+                style="@style/AppButton.Rounded"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="51dp"
+                android:layout_marginEnd="24dp"
+                android:text="@string/profile_company_update"
+                android:onClick="onUpdateCompanyInfo"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/postalCodeLayout" />
+
+            <TextView
+                android:id="@+id/doCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="8dp"
+                android:text="@string/cancel"
+                android:textAppearance="@style/AppButton.Link"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onCancel"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/doNext" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>

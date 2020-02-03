@@ -14,10 +14,23 @@
         android:layout_height="match_parent" />
 
     <RelativeLayout
+        android:id="@id/pageIndicator"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:layout_alignParentBottom="true"
         android:background="@android:color/black">
+
+        <Button
+            android:id="@+id/doSkip"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="@font/futura_medium"
+            android:onClick="onEndTour"
+            android:text="@string/tour1_skip"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white" />
 
         <ImageView
             android:id="@+id/tickmark2"
@@ -26,6 +39,7 @@
             android:layout_marginBottom="46dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
+            android:visibility="invisible"
             app:srcCompat="@drawable/tickmark"
             tools:ignore="ContentDescription"/>
         <ImageView
@@ -37,6 +51,7 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_toStartOf="@+id/tickmark2"
+            android:visibility="invisible"
             app:srcCompat="@drawable/tickmark"
             tools:ignore="ContentDescription"/>
         <ImageView
@@ -47,6 +62,7 @@
             android:layout_marginStart="20dp"
             android:layout_alignParentBottom="true"
             android:layout_toEndOf="@+id/tickmark2"
+            android:visibility="invisible"
             app:srcCompat="@drawable/tickmark"
             tools:ignore="ContentDescription"/>
 

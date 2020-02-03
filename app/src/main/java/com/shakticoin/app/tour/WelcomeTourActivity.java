@@ -7,8 +7,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -18,11 +20,11 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import com.shakticoin.app.registration.SignUpActivity;
-
 import com.shakticoin.app.R;
-
+import com.shakticoin.app.registration.SignUpActivity;
+import com.shakticoin.app.util.CommonUtil;
 import com.shakticoin.app.util.PreferenceHelper;
+import com.shakticoin.app.wallet.WalletActivity;
 
 
 public class WelcomeTourActivity extends AppCompatActivity {
@@ -31,6 +33,7 @@ public class WelcomeTourActivity extends AppCompatActivity {
 
     private ViewPager pager;
     private ImageView[] tickmarks = new ImageView[3];
+    private Button skip;
     private WelcomeTourModel viewModel;
 
     @Override
@@ -53,6 +56,7 @@ public class WelcomeTourActivity extends AppCompatActivity {
         tickmarks[0] = findViewById(R.id.tickmark1);
         tickmarks[1] = findViewById(R.id.tickmark2);
         tickmarks[2] = findViewById(R.id.tickmark3);
+        skip = findViewById(R.id.doSkip);
 
         pager = findViewById(R.id.pager);
         PagerAdapter pagerAdapter = new WelcomeTourAdapter(getSupportFragmentManager());
@@ -92,11 +96,20 @@ public class WelcomeTourActivity extends AppCompatActivity {
     }
 
     private void setPageIndicator(int page) {
-        for (int i = 0; i < tickmarks.length; i++) {
-            if (i == page) {
-                tickmarks[i].setImageAlpha(0xFF);
-            } else {
-                tickmarks[i].setImageAlpha(0x4D);
+        if (page == 0) {
+            skip.setVisibility(View.VISIBLE);
+            for (ImageView tickmark : tickmarks) tickmark.setVisibility(View.INVISIBLE);
+        } else {
+            skip.setVisibility(View.INVISIBLE);
+            for (ImageView tickmark : tickmarks) tickmark.setVisibility(View.VISIBLE);
+        }
+        if (page > 0) {
+            for (int i = 0; i < tickmarks.length; i++) {
+                if (i == page) {
+                    tickmarks[i].setImageAlpha(0xFF);
+                } else {
+                    tickmarks[i].setImageAlpha(0x4D);
+                }
             }
         }
     }
@@ -104,7 +117,15 @@ public class WelcomeTourActivity extends AppCompatActivity {
     public void onEndTour(View view) {
         SharedPreferences prefs = getSharedPreferences(PreferenceHelper.GENERAL_PREFERENCES, Context.MODE_PRIVATE);
         prefs.edit().putBoolean(PreferenceHelper.PREF_KEY_TOUR_DONE, true).apply();
-        startActivity(new Intent(this, SignUpActivity.class));
+
+        Intent intent = getIntent();
+        String finalDestination = intent.getStringExtra(CommonUtil.prefixed("finalDestination", this));
+        if (WalletActivity.class.getName().equals(finalDestination)) {
+            startActivity(new Intent(this, WalletActivity.class));
+        } else {
+            startActivity(new Intent(this, SignUpActivity.class));
+        }
+
         finish();
     }
 
@@ -114,6 +135,7 @@ public class WelcomeTourActivity extends AppCompatActivity {
             super(fm);
         }
 
+        @NonNull
         @Override
         public Fragment getItem(int i) {
             switch (i) {
@@ -121,10 +143,8 @@ public class WelcomeTourActivity extends AppCompatActivity {
                     return new StepOneFragment();
                 case 1:
                     return new StepTwoFragment();
-                case 2:
-                    return new StepThreeFragment();
                 default:
-                    return null;
+                    return new StepThreeFragment();
             }
         }
 

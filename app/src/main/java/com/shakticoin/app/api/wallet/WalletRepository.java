@@ -2,6 +2,7 @@ package com.shakticoin.app.api.wallet;
 
 import androidx.annotation.NonNull;
 
+import com.shakticoin.app.api.BackendRepository;
 import com.shakticoin.app.api.OnCompleteListener;
 
 import java.math.BigDecimal;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class WalletRepository {
+public class WalletRepository extends BackendRepository {
 
     /**
      * Returns list of transactions on an account

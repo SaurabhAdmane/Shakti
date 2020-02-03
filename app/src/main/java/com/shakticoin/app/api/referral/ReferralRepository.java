@@ -2,6 +2,7 @@ package com.shakticoin.app.api.referral;
 
 import androidx.annotation.NonNull;
 
+import com.shakticoin.app.api.BackendRepository;
 import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.referral.model.EffortRate;
 import com.shakticoin.app.api.referral.model.Referral;
@@ -13,7 +14,7 @@ import java.util.List;
 
 import static com.shakticoin.app.api.referral.model.EffortRate.*;
 
-public class ReferralRepository {
+public class ReferralRepository extends BackendRepository {
 
     /**
      * Returns summary of the effort rate data.

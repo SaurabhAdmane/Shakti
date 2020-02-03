@@ -265,7 +265,7 @@
                         android:layout_marginStart="32dp"
                         android:layout_marginTop="160dp"
                         android:layout_marginEnd="32dp"
-                        android:text="@{viewModel.selectedVaultType==Options.DEVDOT?@string/vault_chs_action1:@string/vault_chs_action}"
+                        android:text="@{viewModel.selectedVault.transition_button_label}"
                         android:onClick="onProceedWithVault"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"

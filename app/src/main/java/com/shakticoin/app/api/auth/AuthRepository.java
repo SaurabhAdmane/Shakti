@@ -4,6 +4,8 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
+import com.shakticoin.app.ShaktiApplication;
+import com.shakticoin.app.api.BackendRepository;
 import com.shakticoin.app.api.UnauthorizedException;
 import com.shakticoin.app.util.Debug;
 
@@ -25,7 +27,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class AuthRepository {
+public class AuthRepository extends BackendRepository {
     public LoginService loginService;
 
     public AuthRepository() {
@@ -58,19 +60,13 @@ public class AuthRepository {
                         listener.onComplete(null,null);
                     }
                 } else {
-                    if (response.code() == 401) {
-                        listener.onComplete(null, new UnauthorizedException(response.message(), response.code()));
-                    } else {
-                        Debug.logErrorResponse(response);
-                        listener.onComplete(null, new RemoteException(response.message(), response.code()));
-                    }
+                    returnError(listener, response);
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<TokenResponse> call, @NonNull Throwable t) {
-                Debug.logException(t);
-                listener.onComplete(null, t);
+                returnError(listener, t);
             }
         });
     }
@@ -81,73 +77,30 @@ public class AuthRepository {
             @EverythingIsNonNull
             @Override
             public void onResponse(Call<TokenResponse> call, Response<TokenResponse> response) {
+                Debug.logDebug(response.toString());
                 if (response.isSuccessful()) {
                     TokenResponse resp = response.body();
+                    if (resp != null) {
+                        Session.setAccessToken(resp.getAccess());
+                        if (resp.getRefresh() != null) {
+                            Session.setRefreshToken(resp.getRefresh());
+                        }
+                        listener.onComplete(resp, null);
+                        return;
+                    }
                     listener.onComplete(resp, null);
                 } else {
-                    if (response.code() == 401) {
-                        listener.onComplete(null, new UnauthorizedException());
-                    } else {
-                        Debug.logErrorResponse(response);
-                        listener.onComplete(null, new RemoteException(response.message(), response.code()));
-                    }
+                    Debug.logErrorResponse(response);
+                    Session.clean(ShaktiApplication.getContext());
+                    listener.onComplete(null, new UnauthorizedException());
                 }
             }
 
             @EverythingIsNonNull
             @Override
             public void onFailure(Call<TokenResponse> call, Throwable t) {
-                Debug.logException(t);
-                listener.onComplete(null, t);
+                returnError(listener, t);
             }
         });
     }
-
-//    public void checkEmailPhoneExists(Context context, String emailAddress, String phoneNumber, @NonNull OnCompleteListener<Boolean> listener) {
-//        if (emailAddress == null && phoneNumber == null) {
-//            listener.onComplete(null, new IllegalArgumentException("Both phone number and email cannot be empty."));
-//        }
-//
-//        Call<ResponseBody> call = loginService.checkEmailPhone(
-//                new CheckEmailPhoneParams(emailAddress, phoneNumber));
-//        call.enqueue(new Callback<ResponseBody>() {
-//            @Override
-//            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
-//                if (call.isExecuted()) {
-//                    Debug.logDebug(response.toString());
-//                    if (response.isSuccessful()) {
-//                        listener.onComplete(Boolean.TRUE, null);
-//                    } else {
-//                        String errMsg = null;
-//                        try {
-//                            ResponseBody responseBody = response.errorBody();
-//                            if (responseBody != null) {
-//                                JSONObject json = new JSONObject(responseBody.string());
-//                                if (json.has("email") && json.has("phone_number")) {
-//                                    errMsg = context.getString(R.string.err_email_phone_exists);
-//                                } else if (json.has("email")) {
-//                                    errMsg = context.getString(R.string.err_email_exists);
-//                                } else if (json.has("phone_number")) {
-//                                    errMsg = context.getString(R.string.err_phone_exists);
-//                                }
-//                            }
-//
-//                        } catch (IOException | JSONException e) {
-//                            Debug.logException(e);
-//                        }
-//
-//                        if (errMsg == null) errMsg = context.getString(R.string.err_unexpected);
-//                        listener.onComplete(Boolean.FALSE, new RemoteException(errMsg));
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-//                Debug.logDebug(t.getMessage());
-//                listener.onComplete(Boolean.FALSE, t);
-//            }
-//        });
-//
-//    }
 }

@@ -14,6 +14,7 @@ public class PackagePlanExtended {
     private BigDecimal fiat_price;
     private String zoho_plan_code;
     private List<PackageDiscount> discount;
+    private Integer order_no;
 
     public String getId() {
         return id;
@@ -61,5 +62,13 @@ public class PackagePlanExtended {
 
     public void setDiscount(List<PackageDiscount> discount) {
         this.discount = discount;
+    }
+
+    public Integer getOrder_no() {
+        return order_no;
+    }
+
+    public void setOrder_no(Integer order_no) {
+        this.order_no = order_no;
     }
 }

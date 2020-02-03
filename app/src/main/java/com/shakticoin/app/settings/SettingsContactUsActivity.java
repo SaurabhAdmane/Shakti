@@ -1,21 +1,33 @@
 package com.shakticoin.app.settings;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.shakticoin.app.R;
+import com.shakticoin.app.api.OnCompleteListener;
+import com.shakticoin.app.api.Session;
+import com.shakticoin.app.api.UnauthorizedException;
+import com.shakticoin.app.api.common.CommonRepository;
+import com.shakticoin.app.api.common.ContactUs;
+import com.shakticoin.app.api.common.RequestReason;
 import com.shakticoin.app.databinding.ActivityContactUsBinding;
+import com.shakticoin.app.util.Debug;
 import com.shakticoin.app.util.Validator;
 import com.shakticoin.app.wallet.BaseWalletActivity;
+
+import java.util.List;
 
 public class SettingsContactUsActivity extends BaseWalletActivity {
     private ActivityContactUsBinding binding;
     private ContactUsViewModel viewModel;
+    private CommonRepository commonRepository = new CommonRepository();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -27,8 +39,20 @@ public class SettingsContactUsActivity extends BaseWalletActivity {
 
         onInitView(binding.getRoot(), getString(R.string.settings_contact_us_title), true);
 
+        binding.progressBar.setVisibility(View.VISIBLE);
+        commonRepository.getRequestReasons(new OnCompleteListener<List<RequestReason>>() {
+            @Override
+            public void onComplete(List<RequestReason> value, Throwable error) {
+                binding.progressBar.setVisibility(View.INVISIBLE);
+                if (error != null) {
+                    return;
+                }
+                viewModel.reasonList.setValue(value);
+            }
+        });
+
         binding.emailLayout.setValidator((view, value) -> Validator.isEmail(value));
-        binding.emailLayout.setValidator((view, value) -> Validator.isPhoneNumber(value));
+        binding.phoneLayout.setValidator((view, value) -> Validator.isPhoneNumber(value));
     }
 
     @Override
@@ -55,9 +79,41 @@ public class SettingsContactUsActivity extends BaseWalletActivity {
             binding.messageLayout.setError(getString(R.string.err_required));
         }
 
-        if (validationSuccessful) {
-            finish();
+        if (viewModel.selectedReason.getValue() == null) {
+            validationSuccessful = false;
+            binding.reasonLayout.setError(getString(R.string.settings_contact_us_err_reason));
         }
+        if (!validationSuccessful) return;
+
+        ContactUs messagePayload = new ContactUs();
+        RequestReason reason = viewModel.selectedReason.getValue();
+        if (reason != null) {
+            messagePayload.setReason(reason.getId());
+        }
+        messagePayload.setEmail(viewModel.emailAddress.getValue());
+        messagePayload.setMobile(viewModel.phoneNumber.getValue());
+        messagePayload.setName(viewModel.name.getValue());
+        messagePayload.setMessage(viewModel.message.getValue());
+
+        final Activity self = this;
+        binding.progressBar.setVisibility(View.VISIBLE);
+        commonRepository.sendSupportMessage(messagePayload, new OnCompleteListener<ContactUs>() {
+            @Override
+            public void onComplete(ContactUs value, Throwable error) {
+                binding.progressBar.setVisibility(View.INVISIBLE);
+                if (error != null) {
+                    if (error instanceof UnauthorizedException) {
+                        startActivity(Session.unauthorizedIntent(self));
+                    } else {
+                        Toast.makeText(self, Debug.getFailureMsg(self, error), Toast.LENGTH_LONG).show();
+                    }
+                    return;
+                }
+
+                Toast.makeText(self, R.string.settings_contact_us_success, Toast.LENGTH_SHORT).show();
+            }
+        });
+        finish();
     }
 
     public void onCancel(View v) {

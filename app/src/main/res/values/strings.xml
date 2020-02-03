@@ -2,6 +2,13 @@
 
     <string name="stripe_pub_key" translatable="false">pk_test_wMi9qDrafbnRQfmWEGv4etOD</string>
 
+    <string-array name="education_levels">
+        <item>Associate degree</item>
+        <item>Bachelor\'s degree</item>
+        <item>Master\'s degree</item>
+        <item>Doctoral degree</item>
+    </string-array>
+
     <string name="app_name" translatable="false">Shakti Coin</string>
     <string name="err_not_implemented">Not implemented yet</string>
     <string name="welcom_message">Welcome to Shakti Coin</string>
@@ -11,10 +18,13 @@
     <string name="register_now">Create your Shakti ID now</string>
     <string name="next">Next</string>
     <string name="cancel">Cancel</string>
+    <string name="common_add">Add</string>
     <string name="log_in">Log in</string>
     <string name="common_wallet">Wallet</string>
     <string name="common_vault">Vault</string>
     <string name="common_status">Status</string>
+    <string name="common_yes">Yes</string>
+    <string name="common_no">No</string>
     <string name="do_registration">Create Shakti ID</string>
     <string name="do_login"><u>Already have an account? Sign in</u></string>
     <string name="go_back_for_changes"><u>Let me go back and correct something.</u></string>
@@ -24,6 +34,7 @@
     <string name="err_password_invalid">Password cannot be empty and should be longer than %1$d chars</string>
     <string name="tour1_title">Create your Shakti ID.</string>
     <string name="tour1_text">Say hello to new money.</string>
+    <string name="tour1_skip">Skip</string>
     <string name="tour2_title">Receive Bonus Bounty!</string>
     <string name="tour2_text">When people you invite join,\neveryone earns money.</string>
     <string name="tour3_title">Refer Friends.</string>
@@ -245,6 +256,28 @@
         Submit a school or Gov or other body, that has issued an ID with your name and address.
     </string>
     <string name="profile_kyc_choosed_of_three">Choose of any three categories.</string>
+    <string name="profile_company_title">Company info</string>
+    <string name="profile_company_domiciled_info">Domiciled Information</string>
+    <string name="profile_company_affiliates">Affiliated companies</string>
+    <string name="profile_company_hint_name">Company Name</string>
+    <string name="profile_company_hint_trade">Trade Name</string>
+    <string name="profile_company_hint_structure">Company Structure</string>
+    <string name="profile_company_hint_established">Date of Establishment</string>
+    <string name="profile_company_hint_code">Industry Code</string>
+    <string name="profile_company_hint_vault">Vault ID</string>
+    <string name="profile_company_bind">Bind Trade Name</string>
+    <string name="profile_company_domiciled_country">Domiciled Country</string>
+    <string name="profile_company_domiciled_state">Domiciled State</string>
+    <string name="profile_company_update">Update company information</string>
+    <string name="profile_company_type">Company Type</string>
+    <string name="profile_company_corporation">Corporate Name</string>
+    <string name="profile_company_relationship">Type of relationship</string>
+    <string name="profile_company_company_type">Type of company</string>
+    <string name="profile_company_permit_devid">
+        <![CDATA[I authorize Shakti network to enhance my Wallet security by accessing device <u>UDIDs</u>]]>
+    </string>
+    <string name="profile_company_alerts">I consent to receiving alerts from the Shakti Network</string>
+    <string name="profile_company_update_adds">Update Additional Info</string>
     <string name="wallet_page_personal">Personal Info</string>
     <string name="wallet_page_additional">Additional Info</string>
     <string name="wallet_page_kyc">KYC Validation</string>
@@ -395,7 +428,7 @@
         gift to you.</p>
         <p><b>To get it faster, refer friends.</b><br/>
         Each friend you refer reduces the waiting time by one month.</p>
-        <p>If you packageType to reduce your waiting time strictly through referrals, your Bonus Bounty
+        <p>If you package type to reduce your waiting time strictly through referrals, your Bonus Bounty
         will be unlocked on your next birthday.</p>
     ]]></string>
     <string name="dlg_howto_action">Refer a friend</string>
@@ -473,8 +506,6 @@
     </string>
     <string name="vault_chs_subtitle">Choose your vault type:</string>
     <string name="vault_chs_features">Features</string>
-    <string name="vault_chs_action">Let\'s get started</string>
-    <string name="vault_chs_action1">Qualified for DevDot?</string>
     <string name="settings_title">Settings</string>
     <string name="settings_account">Account</string>
     <string name="settings_security">Security</string>
@@ -513,6 +544,8 @@
     <string name="settings_contact_us_title">Contact Us</string>
     <string name="settings_contact_us_subtitle">What would you like to say?</string>
     <string name="settings_contact_us_action">Send Message</string>
+    <string name="settings_contact_us_success">The message is sent.</string>
+    <string name="settings_contact_us_err_reason">Please select of the reasons</string>
     <string name="settings_password_title">Password Reset</string>
     <string name="settings_password_message">Keep your password safe &amp; and secret.</string>
     <string name="settings_password_action">Reset Password</string>
@@ -550,5 +583,9 @@
     <string name="activation_activating">Activating your account</string>
     <string name="activation_failed">An error happen</string>
     <string name="activation_active">You account is active and you can log in</string>
+    <string name="family_title">@string/drawer_family_tree</string>
+    <string name="family_members">Family Members</string>
+    <string name="family_action">Add a Family Member</string>
+    <string name="dlg_family_title"><![CDATA[Add a<br/><font color="#B09C75"><b>Family Member</b></font>]]></string>
 
 </resources>

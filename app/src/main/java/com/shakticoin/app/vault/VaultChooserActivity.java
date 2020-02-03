@@ -1,5 +1,6 @@
 package com.shakticoin.app.vault;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -19,6 +20,10 @@ import com.shakticoin.app.api.UnauthorizedException;
 import com.shakticoin.app.api.vault.VaultExtended;
 import com.shakticoin.app.api.vault.VaultRepository;
 import com.shakticoin.app.databinding.ActivityVaultChooserBinding;
+import com.shakticoin.app.profile.CompanyProfileActivity;
+import com.shakticoin.app.registration.MiningLicenseActivity;
+import com.shakticoin.app.settings.SettingsContactUsActivity;
+import com.shakticoin.app.util.CommonUtil;
 import com.shakticoin.app.util.Debug;
 import com.shakticoin.app.wallet.BaseWalletActivity;
 
@@ -45,7 +50,7 @@ public class VaultChooserActivity extends BaseWalletActivity {
         binding.progressBar.setVisibility(View.VISIBLE);
         vaultRepo.getVaults(new OnCompleteListener<List<VaultExtended>>() {
             @Override
-            public void onComplete(List<VaultExtended> value, Throwable error) {
+            public void onComplete(List<VaultExtended> vaults, Throwable error) {
                 binding.progressBar.setVisibility(View.INVISIBLE);
                 if (error != null) {
                     if (error instanceof UnauthorizedException) {
@@ -59,7 +64,7 @@ public class VaultChooserActivity extends BaseWalletActivity {
                 optionChangedListener = new OnOptionChanged();
                 viewModel.selectedVault.addOnPropertyChangedCallback(optionChangedListener);
 
-                viewModel.init(value);
+                viewModel.init(vaults);
             }
         });
     }
@@ -70,7 +75,30 @@ public class VaultChooserActivity extends BaseWalletActivity {
     }
 
     public void onProceedWithVault(View v) {
-        Toast.makeText(this, R.string.err_not_implemented, Toast.LENGTH_SHORT).show();
+        VaultExtended selectedVault = viewModel.selectedVault.get();
+        if (selectedVault != null) {
+            String transition = selectedVault.getTransition_to_view();
+            if (VaultExtended.PACKAGE_VIEW.equals(transition)) {
+
+                Intent intent = new Intent(this, MiningLicenseActivity.class);
+                intent.putExtra(CommonUtil.prefixed("vaultId", this), selectedVault.getId());
+                startActivity(intent);
+
+            } if (VaultExtended.COMPANY_INFO_VIEW.equals(transition)) {
+
+                Intent intent = new Intent(this, CompanyProfileActivity.class);
+                startActivity(intent);
+
+            } else if (VaultExtended.CONTACT_US_VIEW.equals(transition)) {
+
+                Intent intent = new Intent(this, SettingsContactUsActivity.class);
+                startActivity(intent);
+
+            } else {
+                // other transitions are not implemented yet
+                Toast.makeText(this, R.string.err_not_implemented, Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private String formatFeatureList(List<String> features) {

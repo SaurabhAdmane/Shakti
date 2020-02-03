@@ -139,8 +139,10 @@ public class Session {
         accessToken = null;
         refreshToken = null;
         user = null;
-        SharedPreferences prefs = context.getSharedPreferences(PreferenceHelper.GENERAL_PREFERENCES, Context.MODE_PRIVATE);
-        prefs.edit().remove(PreferenceHelper.PREF_KEY_TOKEN).apply();
+        if (context != null) {
+            SharedPreferences prefs = context.getSharedPreferences(PreferenceHelper.GENERAL_PREFERENCES, Context.MODE_PRIVATE);
+            prefs.edit().remove(PreferenceHelper.PREF_KEY_TOKEN).apply();
+        }
     }
 
     public static String getAuthorizationHeader() {

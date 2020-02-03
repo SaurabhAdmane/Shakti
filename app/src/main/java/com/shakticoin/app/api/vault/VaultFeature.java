@@ -5,6 +5,7 @@ public class VaultFeature {
     private String feature;
     private Boolean is_active;
     private Integer vault_id;
+    private Integer order_no;
 
     public Integer getId() {
         return id;
@@ -36,5 +37,13 @@ public class VaultFeature {
 
     public void setVault_id(Integer vault_id) {
         this.vault_id = vault_id;
+    }
+
+    public Integer getOrder_no() {
+        return order_no;
+    }
+
+    public void setOrder_no(Integer order_no) {
+        this.order_no = order_no;
     }
 }

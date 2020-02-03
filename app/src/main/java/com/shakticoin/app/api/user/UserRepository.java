@@ -4,11 +4,14 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
+import com.shakticoin.app.api.BackendRepository;
 import com.shakticoin.app.api.BaseUrl;
 import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.RemoteException;
 import com.shakticoin.app.api.Session;
 import com.shakticoin.app.api.UnauthorizedException;
+import com.shakticoin.app.api.auth.AuthRepository;
+import com.shakticoin.app.api.auth.TokenResponse;
 import com.shakticoin.app.util.Debug;
 
 import org.json.JSONArray;
@@ -17,6 +20,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -27,8 +31,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.internal.EverythingIsNonNull;
 
 
-public class UserRepository {
+public class UserRepository extends BackendRepository {
     private UserService userService;
+    private AuthRepository authRepository;
 
     public UserRepository() {
         Retrofit retrofit = new Retrofit.Builder()
@@ -36,6 +41,7 @@ public class UserRepository {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         userService = retrofit.create(UserService.class);
+        authRepository = new AuthRepository();
     }
 
     /**
@@ -94,8 +100,7 @@ public class UserRepository {
 
             @Override
             public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
-                Debug.logException(t);
-                listener.onComplete(null, t);
+                returnError(listener, t);
             }
         });
 
@@ -119,10 +124,19 @@ public class UserRepository {
                         }
                     } else {
                         if (response.code() == 401) {
-                            listener.onComplete(null, new UnauthorizedException());
+                            authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
+                                @Override
+                                public void onComplete(TokenResponse value, Throwable error) {
+                                    if (error != null) {
+                                        listener.onComplete(null, new UnauthorizedException());
+                                        return;
+                                    }
+                                    getUserInfo(userId, listener);
+                                }
+                            });
                         } else {
                             Debug.logErrorResponse(response);
-                            listener.onComplete(null, new RemoteException(response.message(), response.code()));
+                            returnError(listener, response);
                         }
                     }
                 }
@@ -130,8 +144,7 @@ public class UserRepository {
 
             @Override
             public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
-                Debug.logException(t);
-                listener.onComplete(null, t);
+                returnError(listener, t);
             }
         });
     }
@@ -153,10 +166,19 @@ public class UserRepository {
                     }
                 } else {
                     if (response.code() == 401) {
-                        listener.onComplete(null, new UnauthorizedException());
+                        authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
+                            @Override
+                            public void onComplete(TokenResponse value, Throwable error) {
+                                if (error != null) {
+                                    listener.onComplete(null, new UnauthorizedException());
+                                    return;
+                                }
+                                getUserInfo(listener);
+                            }
+                        });
                     } else {
                         Debug.logErrorResponse(response);
-                        listener.onComplete(null, new RemoteException(response.message(), response.code()));
+                        returnError(listener, response);
                     }
                 }
             }
@@ -164,8 +186,7 @@ public class UserRepository {
             @EverythingIsNonNull
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-               Debug.logException(t);
-               listener.onComplete(null, t);
+                returnError(listener, t);
             }
         });
     }
@@ -195,8 +216,7 @@ public class UserRepository {
             @EverythingIsNonNull
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                Debug.logException(t);
-                listener.onComplete(null, t);
+                returnError(listener, t);
             }
         });
     }
@@ -230,41 +250,75 @@ public class UserRepository {
         });
     }
 
-    /**
-     * Change registration status.
-     * @param status One of RegistrationStatus constants
-     */
-    public void updateRegistrationStatus(int status, OnCompleteListener<Void> listener) {
-//        JSONObject jsonObject = new JSONObject();
-//        try {
-//            jsonObject.put("registration_status", status);
-//        } catch (JSONException e) {
-//            Debug.logException(e);
-//            if (listener != null) listener.onComplete(null, e);
-//            return;
-//        }
-//        RequestBody body = RequestBody.create(JSON, jsonObject.toString());
-//        Call<ResponseBody> call = userService.updateUser(
-//                Session.getAuthorizationHeader(), Long.toString(Session.getUser().getId()), body);
-//        call.enqueue(new Callback<ResponseBody>() {
-//            @Override
-//            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
-//                if (call.isExecuted()) {
-//                    if (response.isSuccessful()) {
-//                        if (listener != null) listener.onComplete(null, null);
-//                    } else {
-//                        Debug.logErrorResponse(response);
-//                        if (listener != null) listener.onComplete(null,
-//                                new RemoteException(response.message(), response.code()));
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<ResponseBody> call, Throwable t) {
-//                Debug.logException(t);
-//                if (listener != null) listener.onComplete(null, t);
-//            }
-//        });
+    public void addFamilyMember(@NonNull FamilyMember familyMemeber, @NonNull OnCompleteListener<FamilyMember> listener) {
+        userService.addFamilyMember(Session.getAuthorizationHeader(), Session.getLanguageHeader(), familyMemeber)
+                .enqueue(new Callback<FamilyMember>() {
+                    @EverythingIsNonNull
+                    @Override
+                    public void onResponse(Call<FamilyMember> call, Response<FamilyMember> response) {
+                        Debug.logDebug(response.toString());
+                        if (response.isSuccessful()) {
+                            listener.onComplete(response.body(), null);
+                        } else {
+                            if (response.code() == 401) {
+                                authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
+                                    @Override
+                                    public void onComplete(TokenResponse value, Throwable error) {
+                                        if (error != null) {
+                                            listener.onComplete(null, new UnauthorizedException());
+                                            return;
+                                        }
+                                        addFamilyMember(familyMemeber, listener);
+                                    }
+                                });
+                            } else {
+                                Debug.logErrorResponse(response);
+                                returnError(listener, response);
+                            }
+                        }
+                    }
+
+                    @EverythingIsNonNull
+                    @Override
+                    public void onFailure(Call<FamilyMember> call, Throwable t) {
+                        returnError(listener, t);
+                    }
+                });
+    }
+
+    public void getFamilyMembers(@NonNull OnCompleteListener<List<FamilyMember>> listener) {
+        userService.getFamilyMembers(Session.getAuthorizationHeader(), Session.getLanguageHeader()).enqueue(new Callback<List<FamilyMember>>() {
+            @EverythingIsNonNull
+            @Override
+            public void onResponse(Call<List<FamilyMember>> call, Response<List<FamilyMember>> response) {
+                Debug.logDebug(response.toString());
+                if (response.isSuccessful()) {
+                    listener.onComplete(response.body(), null);
+                } else {
+                    if (response.code() == 401) {
+                        authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
+                            @Override
+                            public void onComplete(TokenResponse value, Throwable error) {
+                                if (error != null) {
+                                    listener.onComplete(null, new UnauthorizedException());
+                                    return;
+                                }
+                                getFamilyMembers(listener);
+                            }
+                        });
+                    } else {
+                        Debug.logErrorResponse(response);
+                        returnError(listener, response);
+                    }
+                }
+            }
+
+            @EverythingIsNonNull
+            @Override
+            public void onFailure(Call<List<FamilyMember>> call, Throwable t) {
+                returnError(listener, t);
+            }
+        });
+
     }
 }

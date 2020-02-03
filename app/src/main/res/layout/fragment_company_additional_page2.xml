@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+
+    </data>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/scrollable_bottom_padding">
+
+            <TextView
+                android:id="@+id/label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="35dp"
+                android:layout_marginEnd="8dp"
+                android:gravity="center_horizontal"
+                android:text="@string/profile_company_affiliates"
+                android:textAppearance="@style/AppText.Body"
+                android:textColor="@color/colorBrand"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="16dp"
+                android:background="@color/colorBrand"
+                app:layout_constraintBottom_toBottomOf="@+id/label"
+                app:layout_constraintEnd_toStartOf="@+id/label"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/label" />
+
+            <View
+                android:id="@+id/divider2"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="24dp"
+                android:background="@color/colorBrand"
+                app:layout_constraintBottom_toBottomOf="@+id/label"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/label"
+                app:layout_constraintTop_toTopOf="@+id/label" />
+
+            <com.shakticoin.app.widget.TextInputLayout
+                android:id="@+id/corpNameLayout"
+                style="@style/AppTextLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="24dp"
+                app:labelFontTypeface="@font/lato"
+                app:labelTextSize="11sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/label">
+
+                <com.shakticoin.app.widget.InlineLabelEditText
+                    android:id="@+id/corpName"
+                    style="@style/AppTextField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/profile_company_corporation"
+                    android:inputType="text|textCapSentences"
+                    android:text="" />
+            </com.shakticoin.app.widget.TextInputLayout>
+
+            <com.shakticoin.app.widget.TextInputLayout
+                android:id="@+id/emailAddressLayout"
+                style="@style/AppTextLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="24dp"
+                app:labelFontTypeface="@font/lato"
+                app:labelTextSize="11sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/corpNameLayout">
+
+                <com.shakticoin.app.widget.InlineLabelEditText
+                    android:id="@+id/emailAddress"
+                    style="@style/AppTextField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_email_address"
+                    android:inputType="textEmailAddress"
+                    android:text="" />
+            </com.shakticoin.app.widget.TextInputLayout>
+
+            <com.shakticoin.app.widget.SpinnerLayout
+                android:id="@+id/relationshipLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="24dp"
+                style="@style/AppTextLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/emailAddressLayout">
+
+                <com.shakticoin.app.widget.InlineLabelSpinner
+                    android:id="@+id/relationship"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:popupBackground="@android:color/transparent"
+                    app:hint="@string/profile_company_relationship"
+                    app:textColorHint="@color/colorHint"
+                    app:spinnerBorderColor="@color/colorBrand"/>
+            </com.shakticoin.app.widget.SpinnerLayout>
+
+            <com.shakticoin.app.widget.SpinnerLayout
+                android:id="@+id/companyTypeLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="24dp"
+                style="@style/AppTextLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/relationshipLayout">
+
+                <com.shakticoin.app.widget.InlineLabelSpinner
+                    android:id="@+id/companyType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:popupBackground="@android:color/transparent"
+                    app:hint="@string/profile_company_company_type"
+                    app:textColorHint="@color/colorHint"
+                    app:spinnerBorderColor="@color/colorBrand"/>
+            </com.shakticoin.app.widget.SpinnerLayout>
+
+            <CheckBox
+                android:id="@+id/devIdAuth"
+                style="@style/AppCheckbox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="29dp"
+                android:layout_marginEnd="24dp"
+                android:button="@drawable/checkbox_states"
+                android:paddingStart="8dp"
+                android:text="@string/profile_company_permit_devid"
+                android:textAppearance="@style/AppText.Body"
+                android:textColor="@color/colorGrey2"
+                android:textSize="12sp"
+                android:checked="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/companyTypeLayout"
+                tools:ignore="RtlSymmetry" />
+
+            <CheckBox
+                android:id="@+id/alertsAuth"
+                style="@style/AppCheckbox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="21dp"
+                android:layout_marginEnd="24dp"
+                android:button="@drawable/checkbox_states"
+                android:paddingStart="8dp"
+                android:text="@string/profile_company_alerts"
+                android:textAppearance="@style/AppText.Body"
+                android:textColor="@color/colorGrey2"
+                android:textSize="12sp"
+                android:checked="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/devIdAuth"
+                tools:ignore="RtlSymmetry" />
+
+            <Button
+                android:id="@+id/doUpdateAdds"
+                style="@style/AppButton.Rounded"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="72dp"
+                android:layout_marginEnd="24dp"
+                android:text="@string/profile_company_update_adds"
+                android:onClick="onUpdateCompanyAdditionalInfo"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/alertsAuth" />
+
+            <TextView
+                android:id="@+id/doCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="8dp"
+                android:text="@string/cancel"
+                android:textAppearance="@style/AppButton.Link"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onCancel"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/doUpdateAdds" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>

@@ -12,6 +12,7 @@ public class PackageExtended implements Parcelable {
     private String description;
     private List<String> features;
     private Bonus bonus;
+    private Integer order_no;
 
     public Integer getId() {
         return id;
@@ -53,6 +54,14 @@ public class PackageExtended implements Parcelable {
         this.bonus = bonus;
     }
 
+    public Integer getOrder_no() {
+        return order_no;
+    }
+
+    public void setOrder_no(Integer order_no) {
+        this.order_no = order_no;
+    }
+
     protected PackageExtended(Parcel in) {
         id = in.readByte() == 0x00 ? null : in.readInt();
         name = in.readString();
@@ -64,6 +73,7 @@ public class PackageExtended implements Parcelable {
             features = null;
         }
         bonus = (Bonus) in.readValue(Bonus.class.getClassLoader());
+        order_no = in.readByte() == 0x00 ? null : in.readInt();
     }
 
     @Override
@@ -88,6 +98,12 @@ public class PackageExtended implements Parcelable {
             dest.writeList(features);
         }
         dest.writeValue(bonus);
+        if (order_no == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeInt(order_no);
+        }
     }
 
     @SuppressWarnings("unused")

@@ -3,18 +3,22 @@ package com.shakticoin.app.wallet;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import com.shakticoin.app.widget.PanelDialog;
-
 import com.shakticoin.app.R;
+import com.shakticoin.app.widget.PanelDialog;
 
 public class DialogBusinessVault extends DialogFragment implements View.OnClickListener {
     public static final String TAG = DialogBusinessVault.class.getSimpleName();
+
+    private View.OnClickListener listener;
+
+    private DialogBusinessVault(@NonNull View.OnClickListener listener) {
+        this.listener = listener;
+    }
 
     @NonNull
     @Override
@@ -27,15 +31,16 @@ public class DialogBusinessVault extends DialogFragment implements View.OnClickL
                 .create();
     }
 
-    @Override
-    public void onClick(View v) {
-        Toast.makeText(getActivity(), R.string.err_not_implemented, Toast.LENGTH_SHORT).show();
-    }
-
-    public static DialogBusinessVault newInstance() {
+    static DialogBusinessVault newInstance(@NonNull View.OnClickListener listener) {
         Bundle args = new Bundle();
-        DialogBusinessVault fragment = new DialogBusinessVault();
+        DialogBusinessVault fragment = new DialogBusinessVault(listener);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onClick(View v) {
+        listener.onClick(v);
+        dismiss();
     }
 }
