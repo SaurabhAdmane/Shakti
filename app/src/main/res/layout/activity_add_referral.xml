@@ -2,7 +2,11 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-    <data />
+    <data>
+        <variable
+            name="referral"
+            type="com.shakticoin.app.api.referral.ReferralParameters" />
+    </data>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -152,7 +156,8 @@
                             style="@style/AppTextField"
                             android:ems="10"
                             android:inputType="textPersonName"
-                            android:hint="@string/hint_first_name" />
+                            android:hint="@string/hint_first_name"
+                            android:text="@={referral.firstName}"/>
                     </com.shakticoin.app.widget.TextInputLayout>
 
                     <com.shakticoin.app.widget.TextInputLayout
@@ -175,7 +180,9 @@
                             style="@style/AppTextField"
                             android:ems="10"
                             android:inputType="textPersonName"
-                            android:hint="@string/hint_last_name" />
+                            android:hint="@string/hint_last_name"
+                            android:text="@={referral.lastName}"/>
+
                     </com.shakticoin.app.widget.TextInputLayout>
 
                     <com.shakticoin.app.widget.TextInputLayout
@@ -199,7 +206,8 @@
                             style="@style/AppTextField"
                             android:ems="10"
                             android:inputType="textEmailAddress"
-                            android:hint="@string/hint_email_address" />
+                            android:hint="@string/hint_email_address"
+                            android:text="@={referral.email}"/>
                     </com.shakticoin.app.widget.TextInputLayout>
 
                     <com.shakticoin.app.widget.TextInputLayout
@@ -223,7 +231,9 @@
                             style="@style/AppTextField"
                             android:ems="10"
                             android:inputType="phone"
-                            android:hint="@string/hint_mobile_number" />
+                            android:imeOptions="actionGo"
+                            android:hint="@string/hint_mobile_number"
+                            android:text="@={referral.phone}"/>
                     </com.shakticoin.app.widget.TextInputLayout>
 
                     <Button
@@ -239,6 +249,17 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/phoneFieldLayout" />
+
+                    <ProgressBar
+                        android:id="@+id/progressBar"
+                        style="?android:attr/progressBarStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

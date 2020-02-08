@@ -3,18 +3,62 @@ package com.shakticoin.app.api.referral;
 import androidx.annotation.NonNull;
 
 import com.shakticoin.app.api.BackendRepository;
+import com.shakticoin.app.api.BaseUrl;
 import com.shakticoin.app.api.OnCompleteListener;
+import com.shakticoin.app.api.RemoteMessageException;
+import com.shakticoin.app.api.Session;
+import com.shakticoin.app.api.UnauthorizedException;
+import com.shakticoin.app.api.auth.AuthRepository;
+import com.shakticoin.app.api.auth.TokenResponse;
 import com.shakticoin.app.api.referral.model.EffortRate;
 import com.shakticoin.app.api.referral.model.Referral;
+import com.shakticoin.app.util.Debug;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
-import static com.shakticoin.app.api.referral.model.EffortRate.*;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.internal.EverythingIsNonNull;
+
+import static com.shakticoin.app.api.referral.model.EffortRate.LEAD_SOURCE_EMAIL;
+import static com.shakticoin.app.api.referral.model.EffortRate.LEAD_SOURCE_FACEBOOK;
+import static com.shakticoin.app.api.referral.model.EffortRate.LEAD_SOURCE_INSTAGRAM;
+import static com.shakticoin.app.api.referral.model.EffortRate.LEAD_SOURCE_LINKEDIN;
+import static com.shakticoin.app.api.referral.model.EffortRate.LEAD_SOURCE_PINTEREST;
+import static com.shakticoin.app.api.referral.model.EffortRate.LEAD_SOURCE_PLUS;
+import static com.shakticoin.app.api.referral.model.EffortRate.LEAD_SOURCE_SKYPE;
+import static com.shakticoin.app.api.referral.model.EffortRate.LEAD_SOURCE_TUMBLR;
+import static com.shakticoin.app.api.referral.model.EffortRate.LEAD_SOURCE_TWITTER;
+import static com.shakticoin.app.api.referral.model.EffortRate.LEAD_SOURCE_UNKNOWN;
+import static com.shakticoin.app.api.referral.model.EffortRate.LEAD_SOURCE_VK;
+import static com.shakticoin.app.api.referral.model.EffortRate.LEAD_SOURCE_WECHAT;
 
 public class ReferralRepository extends BackendRepository {
+    private ReferralService service;
+    private AuthRepository authRepository;
+
+    public ReferralRepository() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BaseUrl.get())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        service = retrofit.create(ReferralService.class);
+        authRepository = new AuthRepository();
+
+    }
 
     /**
      * Returns summary of the effort rate data.
@@ -41,57 +85,152 @@ public class ReferralRepository extends BackendRepository {
     }
 
     /**
-     * Return personal data for user's referrals.
-     * @param status One of the EffortRate LEAD_STATUS constants.
+     * Add new referral.
      */
-    public void getReferrals(Integer status, @NonNull OnCompleteListener<List<Referral>> listener) {
-        // TODO: return real data when API is ready
-        // mockup data
-        ArrayList<Referral> referrals = new ArrayList<>();
-        referrals.add(new Referral("Veera", "Frye", "frye@example.com", "1 (333)9999999", LEAD_STATUS_CONVERTED));
-        referrals.add(new Referral("Gilberte", "Van Dalen", "dalen@example.com", "1 (333)9999999", LEAD_STATUS_INFLUENCED));
-        referrals.add(new Referral("Tito", "Arnolfi", "arnlfi@example.com", "1 (333)9999999", LEAD_STATUS_PROGRESSING));
-        referrals.add(new Referral("Widad", "O\'Hanigan", "ohanigan@example.com", "1 (333)9999999", LEAD_STATUS_INFLUENCED));
-        referrals.add(new Referral("Arnie", "Olguín", "olguin@example.com", "1 (333)9999999", LEAD_STATUS_CONVERTED));
-        referrals.add(new Referral("Achim", "Ingesson", "ingesson@example.com", "1 (333)9999999", LEAD_STATUS_PROGRESSING));
-        referrals.add(new Referral("Julinha", "MacDermott", "dermott@example.com", "1 (333)9999999", LEAD_STATUS_INFLUENCED));
-        referrals.add(new Referral("Yvonne", "DeGarmo", "degarmo@example.com", "1 (333)9999999", LEAD_STATUS_INFLUENCED));
-        referrals.add(new Referral("Oddvar", "Rivers", "rivers@example.com", "1 (333)9999999", LEAD_STATUS_PROGRESSING));
-        referrals.add(new Referral("Taťána", "Antonsen", "antonsen@example.com", "1(333)9999999", LEAD_STATUS_CONVERTED));
-        referrals.add(new Referral("Áine", "Cummins", "cummins@example.com", "1 (333)9999999", LEAD_STATUS_CONVERTED));
-        referrals.add(new Referral("Odhiambo", "Mandel", "mandel@example.com", "1(333)9999999", LEAD_STATUS_PROGRESSING));
-        referrals.add(new Referral("Marcas", "Giunta", "guinta@example.com", "1 (333)9999999", LEAD_STATUS_INFLUENCED));
-        referrals.add(new Referral("Freya", "Janda", "janda@example.com", "1 (333)9999999", LEAD_STATUS_INFLUENCED));
-        referrals.add(new Referral("Gracja", "Kron", "kron@example.com", "1 (333)9999999", LEAD_STATUS_PROGRESSING));
-        referrals.add(new Referral("Anwer", "Gaspari", "gaspari@example.com", "1 (333)9999999", LEAD_STATUS_CONVERTED));
-        referrals.add(new Referral("Rachel", "Habicht", "habiht@example.com", "1 (333)9999999", LEAD_STATUS_PROGRESSING));
-        referrals.add(new Referral("Niklas", "Kaube", "kaube@example.com", "1 (333)9999999", LEAD_STATUS_PROGRESSING));
-        referrals.add(new Referral("Krzyś", "Tang", "tang@example.com", "1 (333)9999999", LEAD_STATUS_PROGRESSING));
-        referrals.add(new Referral("Elisabeth", "Norwood", "norwood@example.com", "1 (333)9999999", LEAD_STATUS_CONVERTED));
-        referrals.add(new Referral("Alois", "Jonkheer", "jankheer@example.com", "1 (333)9999999", LEAD_STATUS_CONVERTED));
-        referrals.add(new Referral("Ariella", "Pellegrino", "pellegrino@example.com", "1 (333)9999999", LEAD_STATUS_PROGRESSING));
-        referrals.add(new Referral("Willemijn", "Rademakers", "rademakers@example.com", "1 (333)9999999", LEAD_STATUS_PROGRESSING));
-        referrals.add(new Referral("Esmail", "Eccleston", "eccleston@example.com", "1 (333)9999999", LEAD_STATUS_PROGRESSING));
-        referrals.add(new Referral("Hector", "Ó Baoghill", "baoghill@example.com", "1 (333)9999999", LEAD_STATUS_CONVERTED));
-
-        // sort them by name
-        Collections.sort(referrals, new Comparator<Referral>() {
+    public void addReferral(@NonNull ReferralParameters parameters, @NonNull OnCompleteListener<Referral> listener) {
+        service.addReferral(Session.getAuthorizationHeader(), parameters).enqueue(new Callback<Referral>() {
+            @EverythingIsNonNull
             @Override
-            public int compare(Referral o1, Referral o2) {
-                StringBuilder sb1 = new StringBuilder();
-                if (o1.getFirstName() != null) {
-                    sb1.append(o1.getFirstName()).append(" ");
+            public void onResponse(Call<Referral> call, Response<Referral> response) {
+                Debug.logDebug(response.toString());
+                if (response.isSuccessful()) {
+                    listener.onComplete(response.body(), null);
+                } else {
+                    switch (response.code()) {
+                        case 401:
+                            authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
+                                @Override
+                                public void onComplete(TokenResponse value, Throwable error) {
+                                    if (error != null) {
+                                        listener.onComplete(null, new UnauthorizedException());
+                                        return;
+                                    }
+                                    addReferral(parameters, listener);
+                                }
+                            });
+                            break;
+                        case 400:
+                            ResponseBody errorBody = response.errorBody();
+                            if (errorBody != null) {
+                                try {
+                                    RemoteMessageException e = new RemoteMessageException(response.message(), response.code());
+                                    JSONObject errorResponse = new JSONObject(errorBody.string());
+                                    Iterator<String> keys = errorResponse.keys();
+                                    while (keys.hasNext()) {
+                                        String key = keys.next();
+                                        JSONArray errorMessageList = errorResponse.getJSONArray(key);
+                                        String errorMessage = (String) errorMessageList.get(0);
+                                        e.addValidationError(key, errorMessage);
+                                    }
+                                    listener.onComplete(null, e);
+                                } catch (IOException | JSONException e) {
+                                    listener.onComplete(null, e);
+                                }
+                            }
+                            break;
+                        default:
+                            Debug.logErrorResponse(response);
+                            returnError(listener, response);
+                    }
                 }
-                sb1.append(o1.getLastName());
-                StringBuilder sb2 = new StringBuilder();
-                if (o2.getFirstName() != null) {
-                    sb2.append(o2.getFirstName()).append(" ");
-                }
-                sb2.append(o2.getLastName());
-                return sb1.toString().compareTo(sb2.toString());
+            }
+
+            @EverythingIsNonNull
+            @Override
+            public void onFailure(Call<Referral> call, Throwable t) {
+                returnError(listener, t);
             }
         });
+    }
 
-        listener.onComplete(referrals, null);
+    /**
+     * Return personal data for user's referrals.
+     */
+    public void getReferrals(String status, @NonNull OnCompleteListener<List<Referral>> listener) {
+        service.getReferrals(Session.getAuthorizationHeader()).enqueue(new Callback<Map<String, Object>>() {
+            @EverythingIsNonNull
+            @Override
+            public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
+                Debug.logDebug(response.toString());
+                if (response.isSuccessful()) {
+                    List<Referral> results = new ArrayList<>();
+                    Map<String, Object> resp = response.body();
+                    List<Map<String, Object>> referrals = (List<Map<String, Object>>) resp.get("referrals");
+                    if (referrals != null && referrals.size() > 0) {
+                        for (Map<String, Object> r : referrals) {
+                            // filter by status
+                            if (status != null && !status.equals(r.get("status"))) continue;
+                            results.add(new Referral(r));
+                        }
+                    }
+                    listener.onComplete(results, null);
+                } else {
+                    if (response.code() == 401) {
+                        authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
+                            @Override
+                            public void onComplete(TokenResponse value, Throwable error) {
+                                if (error != null) {
+                                    listener.onComplete(null, new UnauthorizedException());
+                                    return;
+                                }
+                                getReferrals(status, listener);
+                            }
+                        });
+                    } else {
+                        Debug.logErrorResponse(response);
+                        returnError(listener, response);
+                    }
+                }
+            }
+
+            @EverythingIsNonNull
+            @Override
+            public void onFailure(Call<Map<String, Object>> call, Throwable t) {
+                returnError(listener, t);
+            }
+        });
+    }
+
+    public void getReferralsByReferrer(String id, @NonNull OnCompleteListener<List<Referral>> listener) {
+        service.findReferralByReferrer(Session.getAuthorizationHeader(), id).enqueue(new Callback<Map<String, Object>>() {
+            @EverythingIsNonNull
+            @Override
+            public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
+                Debug.logDebug(response.toString());
+                if (response.isSuccessful()) {
+                    List<Referral> results = new ArrayList<>();
+                    Map<String, Object> resp = response.body();
+                    List<Map<String, Object>> referrals = (List<Map<String, Object>>) resp.get("referrals");
+                    if (referrals != null && referrals.size() > 0) {
+                        for (Map<String, Object> r : referrals) {
+                            results.add(new Referral(r));
+                        }
+                    }
+                    listener.onComplete(results, null);
+                } else {
+                    if (response.code() == 401) {
+                        authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
+                            @Override
+                            public void onComplete(TokenResponse value, Throwable error) {
+                                if (error != null) {
+                                    listener.onComplete(null, new UnauthorizedException());
+                                    return;
+                                }
+                                getReferralsByReferrer(id, listener);
+                            }
+                        });
+                    } else {
+                        Debug.logErrorResponse(response);
+                        returnError(listener, response);
+                    }
+                }
+            }
+
+            @EverythingIsNonNull
+            @Override
+            public void onFailure(Call<Map<String, Object>> call, Throwable t) {
+                returnError(listener, t);
+            }
+        });
     }
 }

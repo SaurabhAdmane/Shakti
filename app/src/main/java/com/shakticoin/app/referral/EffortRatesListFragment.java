@@ -88,15 +88,13 @@ public class EffortRatesListFragment extends Fragment {
                 abbr += lastName.substring(0, 1);
 
                 ((ViewHolderLead) holder).setFullName(referral.toString());
-                ((ViewHolderLead) holder).setEmailAddress(referral.getEmailAddress());
-                ((ViewHolderLead) holder).setTelecomNumber(referral.getTelecomNumber());
-                if (referral.getAvatarUrl() == null) {
-                    Context context = getContext();
-                    ((ViewHolderLead) holder).generateAvatar(abbr.toUpperCase(),
-                            context != null ? getResources().getColor(R.color.avatarDefault) : colorGenerator.getRandomColor());
-                } else {
-                    //TODO: add processing for URL to an avatar picture
-                }
+                ((ViewHolderLead) holder).setEmailAddress(referral.getEmail());
+                ((ViewHolderLead) holder).setTelecomNumber(referral.getPhone());
+                // TODO: at the time of writing back API does not provide a URL to an avatar picture
+                Context context = getContext();
+                ((ViewHolderLead) holder).generateAvatar(abbr.toUpperCase(),
+                        context != null ? getResources().getColor(R.color.avatarDefault) : colorGenerator.getRandomColor());
+
             } else if (item instanceof String && holder instanceof ViewHolderSectionTitle){
                 // this is a string containing first letter for section header
                 ((ViewHolderSectionTitle) holder).setTitle((String) item, position == 0);
