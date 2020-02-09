@@ -9,7 +9,10 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.shakticoin.app.R;
+import com.shakticoin.app.ShaktiApplication;
+import com.shakticoin.app.api.kyc.KycCategory;
 import com.shakticoin.app.databinding.ActivityKycBinding;
+import com.shakticoin.app.util.CommonUtil;
 import com.shakticoin.app.wallet.BaseWalletActivity;
 
 public class KycActivity extends BaseWalletActivity {
@@ -26,9 +29,12 @@ public class KycActivity extends BaseWalletActivity {
 
         onInitView(binding.getRoot(), getString(R.string.profile_kyc_title));
 
+        KycCategory category = getIntent().getParcelableExtra(CommonUtil.prefixed("KYC_CATEGORY", ShaktiApplication.getContext()));
+        viewModel.kycCategory.setValue(category);
+
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.mainFragment, new KycUtilityFragment())
+                .replace(R.id.mainFragment, new KycDoctypeFragment())
                 .commit();
     }
 

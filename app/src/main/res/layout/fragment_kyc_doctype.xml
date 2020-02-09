@@ -7,6 +7,8 @@
         <import type="com.shakticoin.app.profile.KycUtilityViewModel.Options" alias="Options"/>
         <variable
             name="viewModel" type="com.shakticoin.app.profile.KycUtilityViewModel"/>
+        <variable
+            name="commonViewModel" type="com.shakticoin.app.profile.KycCommonViewModel" />
     </data>
     <ScrollView
         android:layout_width="match_parent"
@@ -26,7 +28,7 @@
                 android:layout_marginTop="35dp"
                 android:layout_marginEnd="8dp"
                 android:gravity="center_horizontal"
-                android:text="@string/kyc_utility_bills"
+                android:text="@{commonViewModel.kycCategory.name}"
                 android:textAppearance="@style/AppText.Body"
                 android:textColor="@color/colorBrand"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -188,7 +190,7 @@
                 tools:ignore="ContentDescription" />
 
             <TextView
-                android:id="@+id/textView7"
+                android:id="@+id/categoryName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
@@ -257,6 +259,18 @@
                 app:layout_constraintStart_toStartOf="@+id/leftCircle"
                 app:layout_constraintTop_toBottomOf="@+id/skipIcon" />
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/documentType"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="24dp"
+                android:visibility="@{viewModel.selectedOption==Options.SKIP ? View.INVISIBLE : View.VISIBLE}"
+                app:layout_constraintTop_toTopOf="@+id/selectPhoto"
+                app:layout_constraintBottom_toBottomOf="@+id/selectSkip"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <!--
             <CheckBox
                 android:id="@+id/propertyCheckBox"
                 style="@style/AppCheckbox"
@@ -360,8 +374,9 @@
                 app:layout_constraintBottom_toBottomOf="@+id/selectSkip"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cableCheckbox" />
+                -->
 
-            <TextView
+            <!--TextView
                 android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -373,9 +388,9 @@
                 android:visibility="@{viewModel.selectedOption==Options.SKIP ? View.INVISIBLE : View.VISIBLE}"
                 app:layout_constraintBottom_toBottomOf="@+id/vehicleCheckbox"
                 app:layout_constraintEnd_toStartOf="@+id/vehicleCheckbox"
-                app:layout_constraintTop_toTopOf="@+id/vehicleCheckbox" />
+                app:layout_constraintTop_toTopOf="@+id/vehicleCheckbox" /-->
 
-            <TextView
+            <!--TextView
                 android:id="@+id/textView10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -387,9 +402,9 @@
                 android:visibility="@{viewModel.selectedOption==Options.SKIP ? View.INVISIBLE : View.VISIBLE}"
                 app:layout_constraintBottom_toBottomOf="@+id/propertyCheckBox"
                 app:layout_constraintEnd_toStartOf="@+id/propertyCheckBox"
-                app:layout_constraintTop_toTopOf="@+id/propertyCheckBox" />
+                app:layout_constraintTop_toTopOf="@+id/propertyCheckBox" /-->
 
-            <TextView
+            <!--TextView
                 android:id="@+id/textView11"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -401,9 +416,9 @@
                 android:visibility="@{viewModel.selectedOption==Options.SKIP ? View.INVISIBLE : View.VISIBLE}"
                 app:layout_constraintBottom_toBottomOf="@+id/electricityCheckbox"
                 app:layout_constraintEnd_toStartOf="@+id/electricityCheckbox"
-                app:layout_constraintTop_toTopOf="@+id/electricityCheckbox" />
+                app:layout_constraintTop_toTopOf="@+id/electricityCheckbox" /-->
 
-            <TextView
+            <!--TextView
                 android:id="@+id/textView13"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -415,9 +430,9 @@
                 android:visibility="@{viewModel.selectedOption==Options.SKIP ? View.INVISIBLE : View.VISIBLE}"
                 app:layout_constraintBottom_toBottomOf="@+id/waterCheckBox"
                 app:layout_constraintEnd_toStartOf="@+id/waterCheckBox"
-                app:layout_constraintTop_toTopOf="@+id/waterCheckBox" />
+                app:layout_constraintTop_toTopOf="@+id/waterCheckBox" /-->
 
-            <TextView
+            <!--TextView
                 android:id="@+id/textView14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -429,9 +444,9 @@
                 android:visibility="@{viewModel.selectedOption==Options.SKIP ? View.INVISIBLE : View.VISIBLE}"
                 app:layout_constraintBottom_toBottomOf="@+id/taxCheckbox"
                 app:layout_constraintEnd_toStartOf="@+id/taxCheckbox"
-                app:layout_constraintTop_toTopOf="@+id/taxCheckbox" />
+                app:layout_constraintTop_toTopOf="@+id/taxCheckbox" /-->
 
-            <TextView
+            <!--TextView
                 android:id="@+id/textView15"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -443,9 +458,9 @@
                 android:visibility="@{viewModel.selectedOption==Options.SKIP ? View.INVISIBLE : View.VISIBLE}"
                 app:layout_constraintBottom_toBottomOf="@+id/insuranceCheckbox"
                 app:layout_constraintEnd_toStartOf="@+id/insuranceCheckbox"
-                app:layout_constraintTop_toTopOf="@+id/insuranceCheckbox" />
+                app:layout_constraintTop_toTopOf="@+id/insuranceCheckbox" /-->
 
-            <TextView
+            <!--TextView
                 android:id="@+id/textView16"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -457,9 +472,9 @@
                 android:visibility="@{viewModel.selectedOption==Options.SKIP ? View.INVISIBLE : View.VISIBLE}"
                 app:layout_constraintBottom_toBottomOf="@+id/cableCheckbox"
                 app:layout_constraintEnd_toStartOf="@+id/cableCheckbox"
-                app:layout_constraintTop_toTopOf="@+id/cableCheckbox" />
+                app:layout_constraintTop_toTopOf="@+id/cableCheckbox" /-->
 
-            <TextView
+            <!--TextView
                 android:id="@+id/textView17"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -471,21 +486,21 @@
                 android:visibility="@{viewModel.selectedOption==Options.SKIP ? View.INVISIBLE : View.VISIBLE}"
                 app:layout_constraintBottom_toBottomOf="@+id/financeCheckbox"
                 app:layout_constraintEnd_toStartOf="@+id/financeCheckbox"
-                app:layout_constraintTop_toTopOf="@+id/financeCheckbox" />
+                app:layout_constraintTop_toTopOf="@+id/financeCheckbox" /-->
 
             <TextView
                 android:id="@+id/textView18"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
                 android:text="@string/kyc_select_document_type"
                 android:textAppearance="@style/AppText.Body"
                 android:textColor="#FFD9D9DA"
                 android:textSize="12sp"
                 android:visibility="@{viewModel.selectedOption==Options.SKIP ? View.INVISIBLE : View.VISIBLE}"
-                app:layout_constraintBottom_toTopOf="@+id/propertyCheckBox"
-                app:layout_constraintEnd_toStartOf="@+id/propertyCheckBox" />
+                app:layout_constraintBottom_toTopOf="@+id/documentType"
+                app:layout_constraintEnd_toEndOf="@+id/documentType" />
 
             <CheckBox
                 android:id="@+id/checkBox2"
@@ -551,15 +566,15 @@
                 android:id="@+id/textView21"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="32dp"
                 android:text="@string/kyc_select_option"
                 android:textAppearance="@style/AppText.Body"
                 android:textColor="#FFD9D9DA"
                 android:textSize="12sp"
                 android:visibility="@{viewModel.selectedOption==Options.SKIP ? View.VISIBLE : View.INVISIBLE}"
-                app:layout_constraintBottom_toTopOf="@+id/propertyCheckBox"
-                app:layout_constraintEnd_toStartOf="@+id/propertyCheckBox" />
+                app:layout_constraintBottom_toTopOf="@+id/textView19"
+                app:layout_constraintEnd_toEndOf="@+id/checkBox2" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
