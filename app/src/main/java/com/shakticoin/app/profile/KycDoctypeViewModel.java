@@ -5,16 +5,16 @@ import androidx.databinding.ObservableBoolean;
 import androidx.databinding.ObservableField;
 import androidx.lifecycle.ViewModel;
 
-public class KycGovermentViewModel extends ViewModel {
+public class KycDoctypeViewModel extends ViewModel {
     public enum Options {PHOTO, UPLOAD, SKIP}
 
     public ObservableBoolean takePhotoState = new ObservableBoolean(true);
     public ObservableBoolean uploadFileState = new ObservableBoolean(false);
     public ObservableBoolean skipState = new ObservableBoolean(false);
 
-    public ObservableField<KycGovermentViewModel.Options> selectedOption = new ObservableField<>(KycGovermentViewModel.Options.PHOTO);
+    public ObservableField<Options> selectedOption = new ObservableField<>(Options.PHOTO);
 
-    public KycGovermentViewModel() {
+    public KycDoctypeViewModel() {
         takePhotoState.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
             @Override
             public void onPropertyChanged(Observable sender, int propertyId) {
@@ -22,7 +22,7 @@ public class KycGovermentViewModel extends ViewModel {
                 if (value) {
                     if (uploadFileState.get()) uploadFileState.set(false);
                     if (skipState.get()) skipState.set(false);
-                    selectedOption.set(KycGovermentViewModel.Options.PHOTO);
+                    selectedOption.set(KycDoctypeViewModel.Options.PHOTO);
                 }
             }
         });
@@ -33,7 +33,7 @@ public class KycGovermentViewModel extends ViewModel {
                 if (value) {
                     if (takePhotoState.get()) takePhotoState.set(false);
                     if (skipState.get()) skipState.set(false);
-                    selectedOption.set(KycGovermentViewModel.Options.UPLOAD);
+                    selectedOption.set(Options.UPLOAD);
                 }
             }
         });
@@ -44,7 +44,7 @@ public class KycGovermentViewModel extends ViewModel {
                 if (value) {
                     if (takePhotoState.get()) takePhotoState.set(false);
                     if (uploadFileState.get()) uploadFileState.set(false);
-                    selectedOption.set(KycGovermentViewModel.Options.SKIP);
+                    selectedOption.set(Options.SKIP);
                 }
             }
         });

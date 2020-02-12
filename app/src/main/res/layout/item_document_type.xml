@@ -2,7 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingTop="4dp"
@@ -15,7 +14,6 @@
         android:layout_gravity="top"
         android:layout_marginEnd="8dp"
         android:gravity="end"
-        android:text="@string/kyc_type_gas_bill"
         android:textAppearance="@style/AppText.Body"
         android:textColor="#FFD9D9DA"
         android:textSize="10sp"

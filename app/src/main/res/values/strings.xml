@@ -290,14 +290,6 @@
     <string name="kyc_upload_file">Scan &amp;\nUpload a File</string>
     <string name="kyc_skip">Skip to\nUpload file</string>
     <string name="kyc_document_match">Your document must match your name &amp; address.</string>
-    <string name="kyc_type_phone_bill">Phone</string>
-    <string name="kyc_type_gas_bill">Gas</string>
-    <string name="kyc_type_elect_bill">Electricity</string>
-    <string name="kyc_type_water_bill">Water</string>
-    <string name="kyc_type_tax_bill">Municipal Tax</string>
-    <string name="kyc_type_insurance">Insurance Coverage</string>
-    <string name="kyc_type_cable_bill">Cable</string>
-    <string name="kyc_type_other_bill">Other</string>
     <string name="kyc_select_option">Select an Option</string>
     <string name="kyc_opt_mining">Purchase a Mining License</string>
     <string name="kyc_opt_fee">Pay a small Fee to Validate</string>

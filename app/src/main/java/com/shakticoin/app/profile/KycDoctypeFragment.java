@@ -25,7 +25,7 @@ import java.util.Objects;
 
 public class KycDoctypeFragment extends Fragment {
     private FragmentKycDoctypeBinding binding;
-    private KycUtilityViewModel viewModel;
+    private KycDoctypeViewModel viewModel;
     private KycCommonViewModel commonViewModel;
 
     @Override
@@ -38,7 +38,7 @@ public class KycDoctypeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentKycDoctypeBinding.inflate(inflater, container, false);
         binding.setLifecycleOwner(this);
-        viewModel = ViewModelProviders.of(this).get(KycUtilityViewModel.class);
+        viewModel = ViewModelProviders.of(this).get(KycDoctypeViewModel.class);
         commonViewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(KycCommonViewModel.class);
         binding.setViewModel(viewModel);
         binding.setCommonViewModel(commonViewModel);
