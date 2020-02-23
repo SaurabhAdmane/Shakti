@@ -53,20 +53,31 @@
                 app:layout_constraintStart_toEndOf="@+id/label"
                 app:layout_constraintTop_toTopOf="@+id/label" />
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/list"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="24dp"
+                app:layout_constraintBottom_toTopOf="@+id/textView22"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/label" />
+
             <Button
                 android:id="@+id/doAddDocument"
                 style="@style/AppButton.Rounded"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="315dp"
                 android:layout_marginEnd="24dp"
+                android:layout_marginBottom="30dp"
                 android:onClick="onAddDocument"
                 android:text="@string/kyc_files_action_add"
+                app:layout_constraintBottom_toTopOf="@+id/doSend"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/label" />
+                app:layout_constraintStart_toStartOf="parent" />
 
             <Button
                 android:id="@+id/doSend"
@@ -74,30 +85,30 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="30dp"
                 android:layout_marginEnd="24dp"
+                android:layout_marginBottom="30dp"
                 android:onClick="onSend"
                 android:text="@string/kyc_files_action_send"
+                app:layout_constraintBottom_toTopOf="@+id/doCancel"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/doAddDocument" />
+                app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
                 android:id="@+id/doCancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="30dp"
                 android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:onClick="onCancel"
                 android:text="@string/kyc_files_action_cancel"
                 android:textAppearance="@style/AppButton.Link"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/doSend" />
+                app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
                 android:id="@+id/textView22"
@@ -111,19 +122,6 @@
                 app:layout_constraintBottom_toTopOf="@+id/doAddDocument"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
-
-            <ImageView
-                android:id="@+id/imageView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="100dp"
-                android:layout_marginEnd="8dp"
-                android:tint="@android:color/white"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/label"
-                app:srcCompat="@drawable/ic_edit_upload" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

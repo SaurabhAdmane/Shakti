@@ -7,6 +7,7 @@ import com.shakticoin.app.api.kyc.KycCategory;
 
 public class KycSelectorViewModel extends ViewModel {
 
+    /** Selected KYC category */
     MutableLiveData<KycCategory> selectedCategory = new MutableLiveData<>();
 
 }

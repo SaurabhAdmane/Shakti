@@ -9,6 +9,8 @@
         <item>Doctoral degree</item>
     </string-array>
 
+    <string name="kyc_file_name_template">doc_%1$d_%2$s.jpg</string>
+
     <string name="app_name" translatable="false">Shakti Coin</string>
     <string name="err_not_implemented">Not implemented yet</string>
     <string name="welcom_message">Welcome to Shakti Coin</string>
@@ -90,6 +92,9 @@
     <string name="err_email_exists">The email address is already used.</string>
     <string name="err_phone_exists">The phone number is already used.</string>
     <string name="err_email_phone_exists">Both the email and phone number are already used.</string>
+    <string name="err_no_camera">This feature is not available because your device has no camera</string>
+    <string name="err_no_camera_app">This feature is not available because you have no camera application installed</string>
+    <string name="err_no_camera_permission">You cannot take a picture without permissions for camera</string>
     <string name="ref_who_referred">Who referred you?</string>
     <string name="ref_story">Like an elephant, we never forget. Effort is Shakti. Always remember and reward honest human effort. Tell us who referred you.</string>
     <string name="ref_type_info">Or, type their information:</string>

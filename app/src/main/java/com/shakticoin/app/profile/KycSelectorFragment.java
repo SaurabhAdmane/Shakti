@@ -1,5 +1,6 @@
 package com.shakticoin.app.profile;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -24,6 +25,7 @@ import com.shakticoin.app.util.CommonUtil;
 import com.shakticoin.app.util.Debug;
 import com.shakticoin.app.widget.CheckableRoundButton;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -34,6 +36,7 @@ public class KycSelectorFragment extends Fragment {
     private KycSelectorViewModel viewModel;
     private PersonalViewModel activityViewModel;
 
+    private ArrayList<KycCategory> kycCategories;
     private SelectorAdapter adapter;
 
     private KYCRepository kycRepository = new KYCRepository();
@@ -69,7 +72,8 @@ public class KycSelectorFragment extends Fragment {
                     Toast.makeText(getContext(), Debug.getFailureMsg(getContext(), error), Toast.LENGTH_LONG).show();
                     return;
                 }
-                if (categories != null && categories.size() > 0) {
+                kycCategories = new ArrayList<>(categories);
+                if (categories.size() > 0) {
                     adapter = new SelectorAdapter(categories);
                     binding.selector.setAdapter(adapter);
                     viewModel.selectedCategory.setValue(categories.get(0));
@@ -106,8 +110,9 @@ public class KycSelectorFragment extends Fragment {
 
     private void onNext() {
         Intent intent = new Intent(getActivity(), KycActivity.class);
-        intent.putExtra(CommonUtil.prefixed("KYC_CATEGORY", ShaktiApplication.getContext()),
-                viewModel.selectedCategory.getValue());
+        Context context = ShaktiApplication.getContext();
+        intent.putExtra(CommonUtil.prefixed("KYC_CATEGORY", context), viewModel.selectedCategory.getValue());
+        intent.putParcelableArrayListExtra(CommonUtil.prefixed("KYC_CATEGORY_LIST", context), kycCategories);
         startActivity(intent);
     }
 
