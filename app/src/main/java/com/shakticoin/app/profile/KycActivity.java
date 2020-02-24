@@ -31,7 +31,6 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 public class KycActivity extends BaseWalletActivity {
@@ -155,7 +154,8 @@ public class KycActivity extends BaseWalletActivity {
         }
 
         String timestamp = new SimpleDateFormat("yyyyMMddHHmmss", Locale.US).format(new Date());
-        String filename = getString(R.string.kyc_file_name_template, 0/*TODO: should be document type id*/, timestamp);
+        int documentTypeId = viewModel.kycDocumentType != null ? viewModel.kycDocumentType.getId() : 0;
+        String filename = getString(R.string.kyc_file_name_template, documentTypeId, timestamp);
         File imageFile = new File(categoryFiles, filename);
         return imageFile.createNewFile() ? imageFile : null;
     }

@@ -65,19 +65,9 @@ public class KycDoctypeFragment extends Fragment {
         return v;
     }
 
-    class DocumentTypeViewHolder extends RecyclerView.ViewHolder {
-        public TextView text;
-        public CheckBox checkbox;
-
-        public DocumentTypeViewHolder(@NonNull View itemView) {
-            super(itemView);
-            text = itemView.findViewById(R.id.text);
-            checkbox = itemView.findViewById(R.id.checkbox);
-        }
-    }
-
-    class DocumentTypeAdapter extends RecyclerView.Adapter<DocumentTypeViewHolder> {
+    class DocumentTypeAdapter extends RecyclerView.Adapter<DocumentTypeAdapter.DocumentTypeViewHolder> {
         private List<KycDocType> docTypeList;
+        private int selectedPosition = -1;
 
         DocumentTypeAdapter(List<KycDocType> data) {
             docTypeList = data;
@@ -94,11 +84,31 @@ public class KycDoctypeFragment extends Fragment {
         public void onBindViewHolder(@NonNull DocumentTypeViewHolder holder, int position) {
             KycDocType docType = docTypeList.get(position);
             holder.text.setText(docType.getName());
+            holder.checkbox.setChecked(selectedPosition == position);
         }
 
         @Override
         public int getItemCount() {
             return docTypeList != null ? docTypeList.size() : 0;
+        }
+
+        class DocumentTypeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+            public TextView text;
+            public CheckBox checkbox;
+
+            DocumentTypeViewHolder(@NonNull View itemView) {
+                super(itemView);
+                text = itemView.findViewById(R.id.text);
+                checkbox = itemView.findViewById(R.id.checkbox);
+                itemView.setOnClickListener(this);
+            }
+
+            @Override
+            public void onClick(View v) {
+                selectedPosition = getAdapterPosition();
+                commonViewModel.kycDocumentType = docTypeList.get(selectedPosition);
+                notifyDataSetChanged();
+            }
         }
     }
 }
