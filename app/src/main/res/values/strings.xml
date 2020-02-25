@@ -262,14 +262,14 @@
     </string>
     <string name="profile_kyc_choosed_of_three">Choose of any three categories.</string>
     <string name="profile_company_title">Company info</string>
-    <string name="profile_company_domiciled_info">Domiciled Information</string>
+    <string name="profile_company_domiciled_info">Legal Residence Information</string>
     <string name="profile_company_affiliates">Affiliated companies</string>
     <string name="profile_company_hint_name">Company Name</string>
     <string name="profile_company_hint_trade">Trade Name</string>
-    <string name="profile_company_hint_structure">Company Structure</string>
+    <string name="profile_company_hint_structure">Company <Structur></Structur>e</string>
     <string name="profile_company_hint_established">Date of Establishment</string>
     <string name="profile_company_hint_code">Industry Code</string>
-    <string name="profile_company_hint_vault">Vault ID</string>
+    <string name="profile_company_hint_vault">VaultID</string>
     <string name="profile_company_bind">Bind Trade Name</string>
     <string name="profile_company_domiciled_country">Domiciled Country</string>
     <string name="profile_company_domiciled_state">Domiciled State</string>
@@ -283,6 +283,7 @@
     </string>
     <string name="profile_company_alerts">I consent to receiving alerts from the Shakti Network</string>
     <string name="profile_company_update_adds">Update Additional Info</string>
+    <string name="profile_company_add_another_company">Add Another Company</string>
     <string name="wallet_page_personal">Personal Info</string>
     <string name="wallet_page_additional">Additional Info</string>
     <string name="wallet_page_kyc">KYC Validation</string>

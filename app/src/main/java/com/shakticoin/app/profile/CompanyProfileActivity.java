@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -107,6 +108,10 @@ public class CompanyProfileActivity extends BaseWalletActivity {
 
     public void onUpdateCompanyAdditionalInfo(View v) {
         binding.mainFragment.setCurrentItem(4, true);
+    }
+
+    public void onAddAnotherCompany(View v) {
+        Toast.makeText(this, R.string.err_not_implemented, Toast.LENGTH_SHORT).show();
     }
 
     public void onCancel(View v) {
