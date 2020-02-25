@@ -22,6 +22,7 @@ import com.shakticoin.app.wallet.WalletActivity;
 import com.shakticoin.app.widget.DatePicker;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class CompanyProfileActivity extends BaseWalletActivity {
@@ -43,6 +44,14 @@ public class CompanyProfileActivity extends BaseWalletActivity {
 
         toolbarTitle = binding.getRoot().findViewById(R.id.toolbarTitle);
 
+        String[] pageIndicatorItems = new String[] {
+                getString(R.string.wallet_page_personal),
+                null,
+                getString(R.string.wallet_page_additional),
+                null,
+                getString(R.string.wallet_page_kyc)
+        };
+        binding.pageIndicator.setSizeAndLabels(pageIndicatorItems);
         binding.pageIndicator.setSelectedIndex(1);
 
         pageAdapter = new CompanyProfileFragmentAdapter(getSupportFragmentManager());

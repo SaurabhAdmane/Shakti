@@ -68,6 +68,14 @@ public class ProfileActivity extends BaseWalletActivity {
 
         toolbarTitle = binding.getRoot().findViewById(R.id.toolbarTitle);
 
+        String[] pageIndicatorItems = new String[] {
+                getString(R.string.wallet_page_personal),
+                null,
+                getString(R.string.wallet_page_additional),
+                null,
+                getString(R.string.wallet_page_kyc)
+        };
+        binding.pageIndicator.setSizeAndLabels(pageIndicatorItems);
         binding.pageIndicator.setSelectedIndex(1);
 
         viewModel.progressBarTrigger.set(true);

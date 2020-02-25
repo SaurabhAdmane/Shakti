@@ -17,7 +17,7 @@
 
         <include layout="@layout/inline_header"/>
 
-        <com.shakticoin.app.widget.WalletPageIndicator
+        <com.shakticoin.app.widget.PageIndicator
             android:id="@+id/pageIndicator"
             android:layout_width="match_parent"
             android:layout_height="46dp"
