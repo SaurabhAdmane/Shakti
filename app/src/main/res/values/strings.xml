@@ -284,6 +284,7 @@
     <string name="profile_company_alerts">I consent to receiving alerts from the Shakti Network</string>
     <string name="profile_company_update_adds">Update Additional Info</string>
     <string name="profile_company_add_another_company">Add Another Company</string>
+    <string name="profile_company_page_company_info">Company Info</string>
     <string name="wallet_page_personal">Personal Info</string>
     <string name="wallet_page_additional">Additional Info</string>
     <string name="wallet_page_kyc">KYC Validation</string>
