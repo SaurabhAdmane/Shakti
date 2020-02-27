@@ -151,13 +151,13 @@
 
                         <com.shakticoin.app.widget.InlineLabelEditText
                             android:id="@+id/firstName"
+                            style="@style/AppTextField"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            style="@style/AppTextField"
                             android:ems="10"
-                            android:inputType="textPersonName"
                             android:hint="@string/hint_first_name"
-                            android:text="@={referral.firstName}"/>
+                            android:inputType="textPersonName|textCapWords"
+                            android:text="@={referral.firstName}" />
                     </com.shakticoin.app.widget.TextInputLayout>
 
                     <com.shakticoin.app.widget.TextInputLayout
@@ -175,13 +175,13 @@
 
                         <com.shakticoin.app.widget.InlineLabelEditText
                             android:id="@+id/lastName"
+                            style="@style/AppTextField"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            style="@style/AppTextField"
                             android:ems="10"
-                            android:inputType="textPersonName"
                             android:hint="@string/hint_last_name"
-                            android:text="@={referral.lastName}"/>
+                            android:inputType="textPersonName|textCapWords"
+                            android:text="@={referral.lastName}" />
 
                     </com.shakticoin.app.widget.TextInputLayout>
 
