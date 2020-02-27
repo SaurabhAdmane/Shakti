@@ -42,6 +42,7 @@ import java.util.Objects;
 public abstract class BaseWalletActivity extends AppCompatActivity {
     private BaseWalletViewModel viewModel;
     private RecyclerView notifications;
+    private View emptyMessage;
     private BaseWalletActivity.NotificationAdapter adapter;
 
     private View leftDrawer;
@@ -70,11 +71,15 @@ public abstract class BaseWalletActivity extends AppCompatActivity {
         toolbarTitle.setText(title);
 
         // setup list of notifications
+        emptyMessage = findViewById(R.id.empty);
         notifications = findViewById(R.id.notificationList);
         notifications.setHasFixedSize(false);
         notifications.setLayoutManager(new LinearLayoutManager(this));
         adapter = new BaseWalletActivity.NotificationAdapter();
         notifications.setAdapter(adapter);
+        if (adapter.getItemCount() == 0) {
+            emptyMessage.setVisibility(View.VISIBLE);
+        }
 
         viewModel.notifications.observe(this, notifications -> adapter.notifyDataSetChanged());
 

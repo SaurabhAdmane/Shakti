@@ -18,26 +18,9 @@ public class BaseWalletViewModel extends ViewModel {
 
     public BaseWalletViewModel() {
         selectedDrawer.setValue(0);
-        /*
-         * TODO: Create a list of notifications for testing purpose. Replace with real stuff later.
-         */
         List<BaseWalletViewModel.Notification> testList = new ArrayList<>();
         BaseWalletViewModel.Notification notification = new BaseWalletViewModel.Notification();
-        notification.setTitle("Welcome to your Wallet.");
-        notification.setMessage("Complete your KYC verification to fully unlock it and get ready for your Bonus Bounty!");
-        notification.setDate(new Date(2019, 1, 6));
-        testList.add(notification);
-        notification = new BaseWalletViewModel.Notification();
-        notification.setTitle("Congratulations!");
-        notification.setMessage("You've choosen the 1008.00 SXE Bonus Bounty. Refer friends to unlock it sooner!");
-        notification.setDate(new Date(2019, 1, 7));
-        testList.add(notification);
-        notification = new BaseWalletViewModel.Notification();
-        notification.setTitle("A friend has singed up.");
-        notification.setMessage("Alan Reynolds has registered you as a referral upon singing up.");
-        notification.setDate(new Date(2019, 1, 12));
-        testList.add(notification);
-        Collections.sort(testList, (o1, o2) -> o1.getDate().compareTo(o2.getDate()));
+        // TODO: no messaging api
         notifications.setValue(testList);
     }
 
