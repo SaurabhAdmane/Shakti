@@ -1,22 +1,20 @@
 package com.shakticoin.app.profile;
 
 import android.app.Activity;
-import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ObservableField;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.lifecycle.Observer;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.viewpager.widget.ViewPager;
 
 import com.shakticoin.app.R;
 import com.shakticoin.app.api.OnCompleteListener;
@@ -31,16 +29,15 @@ import com.shakticoin.app.api.user.User;
 import com.shakticoin.app.api.user.UserRepository;
 import com.shakticoin.app.databinding.ActivityProfileBinding;
 import com.shakticoin.app.util.Debug;
-import com.shakticoin.app.util.PostalCodeValidator;
 import com.shakticoin.app.util.Validator;
 import com.shakticoin.app.wallet.BaseWalletActivity;
 import com.shakticoin.app.widget.DatePicker;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
+import java.util.Locale;
 
 public class ProfileActivity extends BaseWalletActivity {
     private ActivityProfileBinding binding;
@@ -52,6 +49,14 @@ public class ProfileActivity extends BaseWalletActivity {
     private CountryRepository countryRepo = new CountryRepository();
 
     private TextView toolbarTitle;
+
+    private final String[] tags = new String[] {
+            PersonalInfoFragment1.class.getSimpleName(),
+            PersonalInfoFragment2.class.getSimpleName(),
+            AdditionalInfoFragment1.class.getSimpleName(),
+            AdditionalInfoFragment2.class.getSimpleName(),
+            KycSelectorFragment.class.getSimpleName()};
+    private ProfileFragmentAdapter adapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -146,29 +151,41 @@ public class ProfileActivity extends BaseWalletActivity {
             }
         });
 
-        binding.mainFragment.setAdapter(new ProfileFragmentAdapter(getSupportFragmentManager()));
-        binding.mainFragment.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int i, float v, int i1) {}
-
-            @Override
-            public void onPageSelected(int i) {
-                binding.pageIndicator.setSelectedIndex(i+1);
-                if (i == 0 || i == 1) {
-                    toolbarTitle.setText(R.string.wallet_page_personal);
-                    binding.profileBackground.setBackgroundResource(R.drawable.personal_background);
-                } else if (i == 2 || i == 3) {
-                    toolbarTitle.setText(R.string.wallet_page_additional);
-                    binding.profileBackground.setBackgroundResource(R.drawable.additional_background);
-                } else {
-                    toolbarTitle.setText(R.string.wallet_page_kyc);
-                    binding.profileBackground.setBackgroundResource(R.drawable.kyc_validation_background);
+        getSupportFragmentManager().addOnBackStackChangedListener(() -> {
+            for (int i = 0; i < tags.length; i++) {
+                String tag = tags[i];
+                Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
+                if (fragment != null && fragment.isVisible()) {
+                    binding.pageIndicator.setSelectedIndex(i+1);
+                    Debug.logDebug(tag);
                 }
             }
-
-            @Override
-            public void onPageScrollStateChanged(int i) {}
         });
+        adapter = new ProfileFragmentAdapter(getSupportFragmentManager());
+        selectPage(0);
+    }
+
+    private void selectPage(int index) {
+        Fragment fragment = adapter.getItem(index);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        if (index > 0) {
+            transaction.addToBackStack(fragment.getClass().getSimpleName());
+        }
+        transaction.replace(binding.mainFragment.getId(), fragment, fragment.getClass().getSimpleName());
+        transaction.commit();
+
+        binding.pageIndicator.setSelectedIndex(index+1);
+
+        if (index == 0 || index == 1) {
+            toolbarTitle.setText(R.string.wallet_page_personal);
+            binding.profileBackground.setBackgroundResource(R.drawable.personal_background);
+        } else if (index == 2 || index == 3) {
+            toolbarTitle.setText(R.string.wallet_page_additional);
+            binding.profileBackground.setBackgroundResource(R.drawable.additional_background);
+        } else {
+            toolbarTitle.setText(R.string.wallet_page_kyc);
+            binding.profileBackground.setBackgroundResource(R.drawable.kyc_validation_background);
+        }
     }
 
     @Override
@@ -178,6 +195,22 @@ public class ProfileActivity extends BaseWalletActivity {
 
     public void onDoKYC(View v) {
         Toast.makeText(this, R.string.err_not_implemented, Toast.LENGTH_SHORT).show();
+    }
+
+    public void onNextPersonalInfo(View v) {
+        boolean validationSuccessful = true;
+        if (TextUtils.isEmpty(personalInfoViewModel.firstName.getValue())) {
+            validationSuccessful = false;
+            personalInfoViewModel.firstNameErrMsg.setValue(getString(R.string.err_required));
+        }
+        if (TextUtils.isEmpty(personalInfoViewModel.lastName.getValue())) {
+            validationSuccessful = false;
+            personalInfoViewModel.lastNameErrMsg.setValue(getString(R.string.err_required));
+        }
+
+        if (validationSuccessful) {
+            selectPage(1);
+        }
     }
 
     public void onUpdatePersonalInfo(View v) {
@@ -202,43 +235,7 @@ public class ProfileActivity extends BaseWalletActivity {
         }
 
         if (validationSuccessful) {
-            binding.mainFragment.setCurrentItem(2);
-        }
-    }
-
-    public void onUpdateAdditionalInfo(View v) {
-        boolean validationSuccessful = true;
-        if (TextUtils.isEmpty(additionInfoViewModel.kinFullName.getValue())) {
-            validationSuccessful = false;
-            additionInfoViewModel.kinFullNameErrMsg.setValue(getString(R.string.err_required));
-        }
-        if (!Validator.isEmailOrPhoneNumber(additionInfoViewModel.kinContact.getValue())) {
-            validationSuccessful = false;
-            additionInfoViewModel.kinContactErrMsg.setValue(getString(R.string.err_email_phone_required));
-        }
-        if (TextUtils.isEmpty(additionInfoViewModel.kinRelationship.getValue())) {
-            validationSuccessful = false;
-            additionInfoViewModel.kinRelationshipErrMsg.setValue(getString(R.string.err_required));
-        }
-
-        if (validationSuccessful) {
-            binding.mainFragment.setCurrentItem(4);
-        }
-    }
-
-    public void onNextPersonalInfo(View v) {
-        boolean validationSuccessful = true;
-        if (TextUtils.isEmpty(personalInfoViewModel.firstName.getValue())) {
-            validationSuccessful = false;
-            personalInfoViewModel.firstNameErrMsg.setValue(getString(R.string.err_required));
-        }
-        if (TextUtils.isEmpty(personalInfoViewModel.lastName.getValue())) {
-            validationSuccessful = false;
-            personalInfoViewModel.lastNameErrMsg.setValue(getString(R.string.err_required));
-        }
-
-        if (validationSuccessful) {
-            binding.mainFragment.setCurrentItem(1);
+            selectPage(2);
         }
     }
 
@@ -258,7 +255,27 @@ public class ProfileActivity extends BaseWalletActivity {
         }
 
         if (validationSuccessful) {
-            binding.mainFragment.setCurrentItem(3);
+            selectPage(3);
+        }
+    }
+
+    public void onUpdateAdditionalInfo(View v) {
+        boolean validationSuccessful = true;
+        if (TextUtils.isEmpty(additionInfoViewModel.kinFullName.getValue())) {
+            validationSuccessful = false;
+            additionInfoViewModel.kinFullNameErrMsg.setValue(getString(R.string.err_required));
+        }
+        if (!Validator.isEmailOrPhoneNumber(additionInfoViewModel.kinContact.getValue())) {
+            validationSuccessful = false;
+            additionInfoViewModel.kinContactErrMsg.setValue(getString(R.string.err_email_phone_required));
+        }
+        if (TextUtils.isEmpty(additionInfoViewModel.kinRelationship.getValue())) {
+            validationSuccessful = false;
+            additionInfoViewModel.kinRelationshipErrMsg.setValue(getString(R.string.err_required));
+        }
+
+        if (validationSuccessful) {
+            selectPage(4);
         }
     }
 
@@ -267,53 +284,47 @@ public class ProfileActivity extends BaseWalletActivity {
     }
 
     public void onSetBirthDate(View v) {
-        DatePicker picker = new DatePicker(new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(android.widget.DatePicker view, int year, int month, int dayOfMonth) {
-                Calendar cal = Calendar.getInstance();
-                cal.set(Calendar.YEAR, year);
-                cal.set(Calendar.MONTH, month);
-                cal.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                cal.set(Calendar.HOUR_OF_DAY, 0);
-                cal.set(Calendar.MINUTE, 0);
-                cal.set(Calendar.SECOND, 0);
-                cal.set(Calendar.MILLISECOND, 0);
+        DatePicker picker = new DatePicker((view, year, month, dayOfMonth) -> {
+            Calendar cal = Calendar.getInstance();
+            cal.set(Calendar.YEAR, year);
+            cal.set(Calendar.MONTH, month);
+            cal.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            cal.set(Calendar.HOUR_OF_DAY, 0);
+            cal.set(Calendar.MINUTE, 0);
+            cal.set(Calendar.SECOND, 0);
+            cal.set(Calendar.MILLISECOND, 0);
 
-                SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-                personalInfoViewModel.birthDate.setValue(fmt.format(cal.getTime()));
-            }
+            SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+            personalInfoViewModel.birthDate.setValue(fmt.format(cal.getTime()));
         });
         picker.show(getSupportFragmentManager(), "date-picker");
     }
 
     /** Collection of fragments for the activity */
-    class ProfileFragmentAdapter extends FragmentPagerAdapter {
+    static class ProfileFragmentAdapter extends FragmentPagerAdapter {
+        private ArrayList<Fragment> fragments;
 
         ProfileFragmentAdapter(FragmentManager fm) {
             super(fm, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+
+            fragments = new ArrayList<>(5);
+            fragments.add(new PersonalInfoFragment1());
+            fragments.add(new PersonalInfoFragment2());
+            fragments.add(new AdditionalInfoFragment1());
+            fragments.add(new AdditionalInfoFragment2());
+            fragments.add(new KycSelectorFragment());
         }
 
+        @NonNull
         @Override
         public Fragment getItem(int i) {
-            switch (i) {
-                case 0:
-                    return new PersonalInfoFragment1();
-                case 1:
-                    return new PersonalInfoFragment2();
-                case 2:
-                    return new AdditionalInfoFragment1();
-                case 3:
-                    return new AdditionalInfoFragment2();
-                case 4:
-                    return new KycSelectorFragment();
-                default:
-                    return null;
-            }
+            if (i >= fragments.size()) throw new IllegalArgumentException();
+            return fragments.get(i);
         }
 
         @Override
         public int getCount() {
-            return 5;
+            return fragments.size();
         }
     }
 }
