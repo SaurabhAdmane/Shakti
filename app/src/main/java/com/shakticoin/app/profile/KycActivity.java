@@ -25,7 +25,7 @@ import com.shakticoin.app.api.kyc.KycCategory;
 import com.shakticoin.app.databinding.ActivityKycBinding;
 import com.shakticoin.app.util.CommonUtil;
 import com.shakticoin.app.util.Debug;
-import com.shakticoin.app.wallet.BaseWalletActivity;
+import com.shakticoin.app.widget.DrawerActivity;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,7 +33,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class KycActivity extends BaseWalletActivity {
+public class KycActivity extends DrawerActivity {
     private static final int REQUEST_IMAGE_CAPTURE = 342;
     private static final int REQUEST_CAMERA_PERMISSION = 385;
 

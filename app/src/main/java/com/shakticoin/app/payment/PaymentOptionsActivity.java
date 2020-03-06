@@ -28,12 +28,12 @@ import com.shakticoin.app.databinding.ActivityPaymentOptionsBinding;
 import com.shakticoin.app.payment.stripe.StripeActivity;
 import com.shakticoin.app.util.CommonUtil;
 import com.shakticoin.app.util.Debug;
-import com.shakticoin.app.wallet.BaseWalletActivity;
+import com.shakticoin.app.widget.DrawerActivity;
 import com.shakticoin.app.wallet.WalletActivity;
 
 import java.util.List;
 
-public class PaymentOptionsActivity extends BaseWalletActivity {
+public class PaymentOptionsActivity extends DrawerActivity {
     public static final int STRIPE_PAYMENT  = 100;
 
     private ActivityPaymentOptionsBinding binding;

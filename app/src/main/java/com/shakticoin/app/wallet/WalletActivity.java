@@ -11,8 +11,9 @@ import com.shakticoin.app.registration.SignInActivity;
 
 import com.shakticoin.app.R;
 import com.shakticoin.app.databinding.ActivityWalletBinding;
+import com.shakticoin.app.widget.DrawerActivity;
 
-public class WalletActivity extends BaseWalletActivity {
+public class WalletActivity extends DrawerActivity {
     private ActivityWalletBinding binding;
     private WalletModel viewModel;
 

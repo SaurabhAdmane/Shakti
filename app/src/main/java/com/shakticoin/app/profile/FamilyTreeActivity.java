@@ -20,12 +20,12 @@ import com.shakticoin.app.api.Session;
 import com.shakticoin.app.api.UnauthorizedException;
 import com.shakticoin.app.api.user.FamilyMember;
 import com.shakticoin.app.api.user.UserRepository;
-import com.shakticoin.app.wallet.BaseWalletActivity;
+import com.shakticoin.app.widget.DrawerActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FamilyTreeActivity extends BaseWalletActivity implements DialogInterface.OnDismissListener {
+public class FamilyTreeActivity extends DrawerActivity implements DialogInterface.OnDismissListener {
     private UserRepository userRepository = new UserRepository();
 
     private FamilyMembersAdapter adapter;

@@ -22,11 +22,11 @@ import com.shakticoin.app.api.referral.model.Referral;
 import com.shakticoin.app.databinding.ActivityAddReferralBinding;
 import com.shakticoin.app.util.Debug;
 import com.shakticoin.app.util.Validator;
-import com.shakticoin.app.wallet.BaseWalletActivity;
+import com.shakticoin.app.widget.DrawerActivity;
 
 import java.util.Map;
 
-public class AddReferralActivity extends BaseWalletActivity {
+public class AddReferralActivity extends DrawerActivity {
     private ActivityAddReferralBinding binding;
     private ReferralParameters referral;
     private ReferralRepository referralRepository = new ReferralRepository();

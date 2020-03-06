@@ -23,9 +23,9 @@ import com.shakticoin.app.api.Session;
 import com.shakticoin.app.databinding.ActivitySettingsBinding;
 import com.shakticoin.app.profile.KycActivity;
 import com.shakticoin.app.util.Debug;
-import com.shakticoin.app.wallet.BaseWalletActivity;
+import com.shakticoin.app.widget.DrawerActivity;
 
-public class SettingsActivity extends BaseWalletActivity {
+public class SettingsActivity extends DrawerActivity {
     private ActivitySettingsBinding binding;
     private SettingsViewModel viewModel;
     private UserRepository userRepo;

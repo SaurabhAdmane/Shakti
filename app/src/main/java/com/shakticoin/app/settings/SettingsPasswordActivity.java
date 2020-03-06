@@ -12,9 +12,9 @@ import com.shakticoin.app.registration.RecoveryPasswordActivity;
 import com.shakticoin.app.R;
 import com.shakticoin.app.databinding.ActivityResetPasswordBinding;
 
-import com.shakticoin.app.wallet.BaseWalletActivity;
+import com.shakticoin.app.widget.DrawerActivity;
 
-public class SettingsPasswordActivity extends BaseWalletActivity {
+public class SettingsPasswordActivity extends DrawerActivity {
     private ActivityResetPasswordBinding binding;
 
     @Override

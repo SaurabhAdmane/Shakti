@@ -25,11 +25,11 @@ import com.shakticoin.app.registration.MiningLicenseActivity;
 import com.shakticoin.app.settings.SettingsContactUsActivity;
 import com.shakticoin.app.util.CommonUtil;
 import com.shakticoin.app.util.Debug;
-import com.shakticoin.app.wallet.BaseWalletActivity;
+import com.shakticoin.app.widget.DrawerActivity;
 
 import java.util.List;
 
-public class VaultChooserActivity extends BaseWalletActivity {
+public class VaultChooserActivity extends DrawerActivity {
     private ActivityVaultChooserBinding binding;
     private VaultChooserViewModel viewModel;
 

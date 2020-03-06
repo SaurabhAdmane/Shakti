@@ -30,7 +30,7 @@ import com.shakticoin.app.api.user.UserRepository;
 import com.shakticoin.app.databinding.ActivityProfileBinding;
 import com.shakticoin.app.util.Debug;
 import com.shakticoin.app.util.Validator;
-import com.shakticoin.app.wallet.BaseWalletActivity;
+import com.shakticoin.app.widget.DrawerActivity;
 import com.shakticoin.app.widget.DatePicker;
 
 import java.text.SimpleDateFormat;
@@ -39,7 +39,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-public class ProfileActivity extends BaseWalletActivity {
+public class ProfileActivity extends DrawerActivity {
     private ActivityProfileBinding binding;
     private PersonalViewModel viewModel;
     private PersonalInfoViewModel personalInfoViewModel;

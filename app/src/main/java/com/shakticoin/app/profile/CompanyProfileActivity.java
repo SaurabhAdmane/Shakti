@@ -17,7 +17,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.shakticoin.app.R;
 import com.shakticoin.app.databinding.ActivityCompanyProfileBinding;
-import com.shakticoin.app.wallet.BaseWalletActivity;
+import com.shakticoin.app.widget.DrawerActivity;
 import com.shakticoin.app.wallet.WalletActivity;
 import com.shakticoin.app.widget.DatePicker;
 
@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class CompanyProfileActivity extends BaseWalletActivity {
+public class CompanyProfileActivity extends DrawerActivity {
     private ActivityCompanyProfileBinding binding;
     private CompanyProfileViewModel viewModel;
 

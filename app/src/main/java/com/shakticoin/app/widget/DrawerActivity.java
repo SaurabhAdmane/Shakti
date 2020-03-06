@@ -1,4 +1,4 @@
-package com.shakticoin.app.wallet;
+package com.shakticoin.app.widget;
 
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
@@ -29,6 +29,7 @@ import com.shakticoin.app.referral.MyReferralsActivity;
 import com.shakticoin.app.settings.SettingsActivity;
 import com.shakticoin.app.tour.WelcomeTourActivity;
 import com.shakticoin.app.util.CommonUtil;
+import com.shakticoin.app.wallet.WalletActivity;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -36,10 +37,10 @@ import java.util.List;
 import java.util.Objects;
 
 @SuppressLint("Registered")
-public abstract class BaseWalletActivity extends AppCompatActivity {
-    private BaseWalletViewModel viewModel;
+public abstract class DrawerActivity extends AppCompatActivity {
+    private DrawerActivityViewModel viewModel;
     private RecyclerView notifications;
-    private BaseWalletActivity.NotificationAdapter adapter;
+    private DrawerActivity.NotificationAdapter adapter;
 
     private View leftDrawer;
     private View rightDrawer;
@@ -48,7 +49,7 @@ public abstract class BaseWalletActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = ViewModelProviders.of(this).get(BaseWalletViewModel.class);
+        viewModel = ViewModelProviders.of(this).get(DrawerActivityViewModel.class);
     }
 
     protected void onInitView(View root, String title, boolean hasBackNavButton) {
@@ -71,7 +72,7 @@ public abstract class BaseWalletActivity extends AppCompatActivity {
         notifications = findViewById(R.id.notificationList);
         notifications.setHasFixedSize(false);
         notifications.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new BaseWalletActivity.NotificationAdapter();
+        adapter = new DrawerActivity.NotificationAdapter();
         notifications.setAdapter(adapter);
         if (adapter.getItemCount() == 0) {
             emptyMessage.setVisibility(View.VISIBLE);
@@ -157,7 +158,7 @@ public abstract class BaseWalletActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(@NonNull NotificationViewHolder viewHolder, int position) {
-            BaseWalletViewModel.Notification notification =
+            DrawerActivityViewModel.Notification notification =
                     Objects.requireNonNull(viewModel.notifications.getValue()).get(position);
             if (notification != null) {
                 viewHolder.title.setText(notification.getTitle());
@@ -175,7 +176,7 @@ public abstract class BaseWalletActivity extends AppCompatActivity {
 
         @Override
         public int getItemCount() {
-            List<BaseWalletViewModel.Notification> list = viewModel.notifications.getValue();
+            List<DrawerActivityViewModel.Notification> list = viewModel.notifications.getValue();
             return list != null ? list.size() : 0;
         }
     }

@@ -7,12 +7,12 @@ import android.view.View;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 
-import com.shakticoin.app.wallet.BaseWalletActivity;
+import com.shakticoin.app.widget.DrawerActivity;
 
 import com.shakticoin.app.R;
 import com.shakticoin.app.databinding.ActivityVaultAdvantageBinding;
 
-public class VaultAdvantageActivity extends BaseWalletActivity {
+public class VaultAdvantageActivity extends DrawerActivity {
     private ActivityVaultAdvantageBinding binding;
 
     @Override

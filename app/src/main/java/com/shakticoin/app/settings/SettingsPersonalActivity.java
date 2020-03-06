@@ -17,9 +17,9 @@ import com.shakticoin.app.api.user.User;
 import com.shakticoin.app.api.user.UserRepository;
 import com.shakticoin.app.databinding.ActivityPersonalInfoBinding;
 import com.shakticoin.app.util.Debug;
-import com.shakticoin.app.wallet.BaseWalletActivity;
+import com.shakticoin.app.widget.DrawerActivity;
 
-public class SettingsPersonalActivity extends BaseWalletActivity {
+public class SettingsPersonalActivity extends DrawerActivity {
     private ActivityPersonalInfoBinding binding;
     private SettingsPersonalViewModel viewModel;
     private UserRepository userRepo;

@@ -8,9 +8,9 @@ import android.view.View;
 
 import com.shakticoin.app.R;
 import com.shakticoin.app.databinding.ActivityCompanySummaryBinding;
-import com.shakticoin.app.wallet.BaseWalletActivity;
+import com.shakticoin.app.widget.DrawerActivity;
 
-public class CompanySummaryActivity extends BaseWalletActivity {
+public class CompanySummaryActivity extends DrawerActivity {
 
     private ActivityCompanySummaryBinding binding;
     private CompanySummaryViewModel viewModel;

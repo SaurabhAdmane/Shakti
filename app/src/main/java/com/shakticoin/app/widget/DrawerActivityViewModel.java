@@ -1,25 +1,24 @@
-package com.shakticoin.app.wallet;
+package com.shakticoin.app.widget;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-public class BaseWalletViewModel extends ViewModel {
+public class DrawerActivityViewModel extends ViewModel {
 
     /** Selected button in the drawer. 0 based index. */
-    public MutableLiveData<Integer> selectedDrawer = new MutableLiveData<>();
+    MutableLiveData<Integer> selectedDrawer = new MutableLiveData<>();
 
     /** List of unread notification messages */
     MutableLiveData<List<Notification>> notifications = new MutableLiveData<>();
 
-    public BaseWalletViewModel() {
+    public DrawerActivityViewModel() {
         selectedDrawer.setValue(0);
-        List<BaseWalletViewModel.Notification> testList = new ArrayList<>();
-        BaseWalletViewModel.Notification notification = new BaseWalletViewModel.Notification();
+        List<DrawerActivityViewModel.Notification> testList = new ArrayList<>();
+        DrawerActivityViewModel.Notification notification = new DrawerActivityViewModel.Notification();
         // TODO: no messaging api
         notifications.setValue(testList);
     }

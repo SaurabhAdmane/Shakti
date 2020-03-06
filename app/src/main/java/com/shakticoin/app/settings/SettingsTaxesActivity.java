@@ -10,14 +10,14 @@ import com.shakticoin.app.R;
 import com.shakticoin.app.databinding.ActivityTaxesBinding;
 import com.shakticoin.app.util.Debug;
 import com.shakticoin.app.util.HtmlUtil;
-import com.shakticoin.app.wallet.BaseWalletActivity;
+import com.shakticoin.app.widget.DrawerActivity;
 
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
 
-public class SettingsTaxesActivity extends BaseWalletActivity {
+public class SettingsTaxesActivity extends DrawerActivity {
     private ActivityTaxesBinding binding;
 
     @Override

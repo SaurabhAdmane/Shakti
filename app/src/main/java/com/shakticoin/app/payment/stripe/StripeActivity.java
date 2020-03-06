@@ -4,30 +4,20 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 
-import com.shakticoin.app.BuildConfig;
 import com.shakticoin.app.R;
 import com.shakticoin.app.databinding.ActivityPmntStripeBinding;
 import com.shakticoin.app.util.CommonUtil;
-import com.shakticoin.app.util.Debug;
-import com.shakticoin.app.wallet.BaseWalletActivity;
-import com.stripe.android.ApiResultCallback;
-import com.stripe.android.PaymentConfiguration;
-import com.stripe.android.Stripe;
-import com.stripe.android.model.Card;
-import com.stripe.android.model.Token;
-
-import org.jetbrains.annotations.NotNull;
+import com.shakticoin.app.widget.DrawerActivity;
 
 import java.text.NumberFormat;
 import java.util.Currency;
 import java.util.Locale;
 
-public class StripeActivity extends BaseWalletActivity {
+public class StripeActivity extends DrawerActivity {
 
     public static final String KEY_ORDER_NAME   = "ORDER_NAME";
     public static final String KEY_ORDER_AMOUNT = "ORDER_AMOUNT";

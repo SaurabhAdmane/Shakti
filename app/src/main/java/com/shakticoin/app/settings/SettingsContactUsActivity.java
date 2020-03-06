@@ -20,11 +20,11 @@ import com.shakticoin.app.api.common.RequestReason;
 import com.shakticoin.app.databinding.ActivityContactUsBinding;
 import com.shakticoin.app.util.Debug;
 import com.shakticoin.app.util.Validator;
-import com.shakticoin.app.wallet.BaseWalletActivity;
+import com.shakticoin.app.widget.DrawerActivity;
 
 import java.util.List;
 
-public class SettingsContactUsActivity extends BaseWalletActivity {
+public class SettingsContactUsActivity extends DrawerActivity {
     private ActivityContactUsBinding binding;
     private ContactUsViewModel viewModel;
     private CommonRepository commonRepository = new CommonRepository();

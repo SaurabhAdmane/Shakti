@@ -9,12 +9,12 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 
 import com.shakticoin.app.registration.MiningLicenseActivity;
-import com.shakticoin.app.wallet.BaseWalletActivity;
+import com.shakticoin.app.widget.DrawerActivity;
 
 import com.shakticoin.app.R;
 import com.shakticoin.app.databinding.ActivityBecomeMinerBinding;
 
-public class BecomeMinerActivity extends BaseWalletActivity {
+public class BecomeMinerActivity extends DrawerActivity {
     private ActivityBecomeMinerBinding binding;
 
     @Override
