@@ -232,6 +232,7 @@
     <string name="drawer_settings">Settings</string>
     <string name="drawer_home">Home</string>
     <string name="drawer_family_tree">Family Tree</string>
+    <string name="drawer_company">Company</string>
     <string name="profile_personal_title">Personal info</string>
     <string name="profile_personal_whoyou">Who are you?</string>
     <string name="profile_personal_whereyou">Where do you live?</string>
@@ -587,5 +588,20 @@
     <string name="family_members">Family Members</string>
     <string name="family_action">Add a Family Member</string>
     <string name="dlg_family_title"><![CDATA[Add a<br/><font color="#B09C75"><b>Family Member</b></font>]]></string>
+    <string name="company_sum_title">Due-Dilligence Checklist</string>
+    <string name="company_sum_vault">VaultID</string>
+    <string name="company_sum_company_name">Company Name</string>
+    <string name="company_sum_trade_name">Trade Name</string>
+    <string name="company_sum_structure">Company Structure</string>
+    <string name="company_sum_estabsh">Date of Establishment</string>
+    <string name="company_sum_industry">Industry Code</string>
+    <string name="company_sum_country">Domiciled Country</string>
+    <string name="company_sum_state">State</string>
+    <string name="company_sum_city">City</string>
+    <string name="company_sum_email">Email Address</string>
+    <string name="company_sum_phone">Phone Number</string>
+    <string name="company_sum_affiliate">Affiliated Company</string>
+    <string name="company_sum_relationship">Type of Relationship</string>
+    <string name="company_sum_type">Type of Company</string>
 
 </resources>

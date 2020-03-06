@@ -5,6 +5,12 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,22 +22,13 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-
+import com.shakticoin.app.R;
+import com.shakticoin.app.profile.CompanySummaryActivity;
 import com.shakticoin.app.profile.FamilyTreeActivity;
 import com.shakticoin.app.referral.MyReferralsActivity;
 import com.shakticoin.app.settings.SettingsActivity;
-
-import com.shakticoin.app.R;
-import com.shakticoin.app.miner.BecomeMinerActivity;
 import com.shakticoin.app.tour.WelcomeTourActivity;
 import com.shakticoin.app.util.CommonUtil;
-import com.shakticoin.app.vault.VaultAdvantageActivity;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -42,7 +39,6 @@ import java.util.Objects;
 public abstract class BaseWalletActivity extends AppCompatActivity {
     private BaseWalletViewModel viewModel;
     private RecyclerView notifications;
-    private View emptyMessage;
     private BaseWalletActivity.NotificationAdapter adapter;
 
     private View leftDrawer;
@@ -71,7 +67,7 @@ public abstract class BaseWalletActivity extends AppCompatActivity {
         toolbarTitle.setText(title);
 
         // setup list of notifications
-        emptyMessage = findViewById(R.id.empty);
+        View emptyMessage = findViewById(R.id.empty);
         notifications = findViewById(R.id.notificationList);
         notifications.setHasFixedSize(false);
         notifications.setLayoutManager(new LinearLayoutManager(this));
@@ -116,6 +112,10 @@ public abstract class BaseWalletActivity extends AppCompatActivity {
                     drawerIconId = R.id.familyTreeMenuIcon;
                     drawerTextId = R.id.familyTreeMenuText;
                     break;
+                case 7:
+                    drawerIconId = R.id.companyMenuIcon;
+                    drawerTextId = R.id.companyMenuText;
+                    break;
             }
             int selectedButtonColor = ContextCompat.getColor(this, R.color.drawerButtonSelected);
             ImageView drawerIcon = leftDrawer.findViewById(drawerIconId);
@@ -133,7 +133,7 @@ public abstract class BaseWalletActivity extends AppCompatActivity {
         onInitView(root, title, false);
     }
 
-    class NotificationViewHolder extends RecyclerView.ViewHolder {
+    static class NotificationViewHolder extends RecyclerView.ViewHolder {
         public TextView title;
         public TextView message;
         public TextView date;
@@ -273,6 +273,11 @@ public abstract class BaseWalletActivity extends AppCompatActivity {
 
     public void onOpenFamilyTree(View v) {
         Intent intent = new Intent(this, FamilyTreeActivity.class);
+        startActivity(intent);
+    }
+
+    public void onOpenCompany(View v) {
+        Intent intent = new Intent(this, CompanySummaryActivity.class);
         startActivity(intent);
     }
 

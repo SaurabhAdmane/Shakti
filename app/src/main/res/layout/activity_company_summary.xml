@@ -1,0 +1,454 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.shakticoin.app.profile.CompanySummaryViewModel" />
+    </data>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/wallet_background"
+        tools:context=".profile.CompanySummaryActivity">
+
+        <include layout="@layout/inline_header"/>
+
+        <RelativeLayout
+            android:id="@+id/fragments"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/toolbar">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fillViewport="true">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/balance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="61dp"
+                        android:layout_marginEnd="24dp"
+                        android:text="Company XYZ"
+                        android:textAlignment="center"
+                        android:textAppearance="@style/AppText.Body"
+                        android:textFontWeight="500"
+                        android:textSize="36sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="UnusedAttribute" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="51dp"
+                        android:orientation="vertical"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/balance">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/table_row_height"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="16dp"
+                            android:background="#80000000"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="1"
+                                android:layout_marginEnd="2dp"
+                                android:text="@string/company_sum_vault"
+                                android:textAppearance="@style/AppText.Body" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="1"
+                                android:layout_marginStart="2dp"
+                                android:text="@{viewModel.vault}"
+                                android:textAppearance="@style/AppText.Body" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/table_row_height"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="16dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="1"
+                                android:layout_marginEnd="2dp"
+                                android:text="@string/company_sum_company_name"
+                                android:textAppearance="@style/AppText.Body" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="1"
+                                android:layout_marginStart="2dp"
+                                android:text="@{viewModel.companyName}"
+                                android:textAppearance="@style/AppText.Body" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/table_row_height"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="16dp"
+                            android:background="#80000000"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="1"
+                                android:layout_marginEnd="2dp"
+                                android:text="@string/company_sum_trade_name"
+                                android:textAppearance="@style/AppText.Body" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="1"
+                                android:layout_marginStart="2dp"
+                                android:text="@{viewModel.tradeName}"
+                                android:textAppearance="@style/AppText.Body" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/table_row_height"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="16dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="1"
+                                android:layout_marginEnd="2dp"
+                                android:text="@string/company_sum_structure"
+                                android:textAppearance="@style/AppText.Body" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="1"
+                                android:layout_marginStart="2dp"
+                                android:text="@{viewModel.structure}"
+                                android:textAppearance="@style/AppText.Body" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/table_row_height"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="16dp"
+                            android:background="#80000000"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="1"
+                                android:layout_marginEnd="2dp"
+                                android:text="@string/company_sum_estabsh"
+                                android:textAppearance="@style/AppText.Body" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="1"
+                                android:layout_marginStart="2dp"
+                                android:text="@{viewModel.dateEstablished}"
+                                android:textAppearance="@style/AppText.Body" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/table_row_height"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="16dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="1"
+                                android:layout_marginEnd="2dp"
+                                android:text="@string/company_sum_industry"
+                                android:textAppearance="@style/AppText.Body" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="1"
+                                android:layout_marginStart="2dp"
+                                android:text="@{viewModel.industry}"
+                                android:textAppearance="@style/AppText.Body" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/table_row_height"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="16dp"
+                            android:background="#80000000"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="1"
+                                android:layout_marginEnd="2dp"
+                                android:text="@string/company_sum_country"
+                                android:textAppearance="@style/AppText.Body" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="1"
+                                android:layout_marginStart="2dp"
+                                android:text="@{viewModel.country}"
+                                android:textAppearance="@style/AppText.Body" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/table_row_height"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="16dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="1"
+                                android:layout_marginEnd="2dp"
+                                android:text="@string/company_sum_state"
+                                android:textAppearance="@style/AppText.Body" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="1"
+                                android:layout_marginStart="2dp"
+                                android:text="@{viewModel.state}"
+                                android:textAppearance="@style/AppText.Body" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/table_row_height"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="16dp"
+                            android:background="#80000000"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="1"
+                                android:layout_marginEnd="2dp"
+                                android:text="@string/company_sum_city"
+                                android:textAppearance="@style/AppText.Body" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="1"
+                                android:layout_marginStart="2dp"
+                                android:text="@{viewModel.city}"
+                                android:textAppearance="@style/AppText.Body" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/table_row_height"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="16dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="1"
+                                android:layout_marginEnd="2dp"
+                                android:text="@string/company_sum_email"
+                                android:textAppearance="@style/AppText.Body" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="1"
+                                android:layout_marginStart="2dp"
+                                android:text="@{viewModel.emailAddress}"
+                                android:textAppearance="@style/AppText.Body" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/table_row_height"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="16dp"
+                            android:background="#80000000"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="1"
+                                android:layout_marginEnd="2dp"
+                                android:text="@string/company_sum_phone"
+                                android:textAppearance="@style/AppText.Body" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="1"
+                                android:layout_marginStart="2dp"
+                                android:text="@{viewModel.phoneNumber}"
+                                android:textAppearance="@style/AppText.Body" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/table_row_height"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="16dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="1"
+                                android:layout_marginEnd="2dp"
+                                android:text="@string/company_sum_affiliate"
+                                android:textAppearance="@style/AppText.Body" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="1"
+                                android:layout_marginStart="2dp"
+                                android:text="@{viewModel.affiliatedCompany}"
+                                android:textAppearance="@style/AppText.Body" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/table_row_height"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="16dp"
+                            android:background="#80000000"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="1"
+                                android:layout_marginEnd="2dp"
+                                android:text="@string/company_sum_relationship"
+                                android:textAppearance="@style/AppText.Body" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="1"
+                                android:layout_marginStart="2dp"
+                                android:text="@{viewModel.relationship}"
+                                android:textAppearance="@style/AppText.Body" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/table_row_height"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="16dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="1"
+                                android:layout_marginEnd="2dp"
+                                android:text="@string/company_sum_type"
+                                android:textAppearance="@style/AppText.Body" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="1"
+                                android:layout_marginStart="2dp"
+                                android:text="@{viewModel.type}"
+                                android:textAppearance="@style/AppText.Body" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </ScrollView>
+
+            <include layout="@layout/inline_messages"/>
+
+        </RelativeLayout>
+    </RelativeLayout>
+</layout>
