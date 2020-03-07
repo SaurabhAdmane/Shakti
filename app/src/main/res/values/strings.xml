@@ -61,6 +61,8 @@
     <string name="hint_relationship">Relationship</string>
     <string name="hint_message">Message</string>
     <string name="hint_reason_to_contact">Reason to Contact</string>
+    <string name="hint_gender">Gender</string>
+    <string name="hint_language">Language</string>
     <string name="education_level">Highest level of Education</string>
     <string name="occupation">Occupation</string>
     <string name="birthdate">Date of Birth</string>
@@ -603,5 +605,16 @@
     <string name="company_sum_affiliate">Affiliated Company</string>
     <string name="company_sum_relationship">Type of Relationship</string>
     <string name="company_sum_type">Type of Company</string>
+    <string name="feats_title">Feats of PoE</string>
+    <string name="feats_onboard_child">On-board School Going Child</string>
+    <string name="feats_add_language">Add another language</string>
+    <string name="feats_hint_primary_email_address">Primary Email Address</string>
+    <string name="feats_hint_primary_phone_number">Primary Phone Number</string>
+    <string name="feats_hint_secondary_email">Secondary Email</string>
+    <string name="feats_hint_secondary_phone">Secondary Phone Number</string>
+    <string name="feats_nextkin">Your next of kin</string>
+    <string name="feats_another_kin">Add another next of kin</string>
+    <string name="feats_another_beneficiary">Add beneficiary</string>
+    <string name="feats_are_you_head">Are You Head of Family?</string>
 
 </resources>

@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.shakticoin.app.feats.OnboardChildViewModel" />
+    </data>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="24dp">
+
+            <TextView
+                android:id="@+id/label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="35dp"
+                android:layout_marginEnd="8dp"
+                android:gravity="center_horizontal"
+                android:text="@string/profile_personal_whoyou"
+                android:textAppearance="@style/AppText.Body"
+                android:textColor="@color/colorBrand"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="16dp"
+                android:background="@color/colorBrand"
+                app:layout_constraintBottom_toBottomOf="@+id/label"
+                app:layout_constraintEnd_toStartOf="@+id/label"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/label" />
+
+            <View
+                android:id="@+id/divider2"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="24dp"
+                android:background="@color/colorBrand"
+                app:layout_constraintBottom_toBottomOf="@+id/label"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/label"
+                app:layout_constraintTop_toTopOf="@+id/label" />
+
+            <com.shakticoin.app.widget.TextInputLayout
+                android:id="@+id/firstNameLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="24dp"
+                style="@style/AppTextLayout"
+                app:labelTextSize="11sp"
+                app:labelFontTypeface="@font/lato"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/label">
+
+                <com.shakticoin.app.widget.InlineLabelEditText
+                    android:id="@+id/firstName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/AppTextField"
+                    android:hint="@string/hint_first_name"
+                    android:inputType="textCapWords|textPersonName"
+                    android:text="@={viewModel.firstName}"/>
+            </com.shakticoin.app.widget.TextInputLayout>
+
+            <com.shakticoin.app.widget.TextInputLayout
+                android:id="@+id/lastNameLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="24dp"
+                app:labelTextSize="11sp"
+                app:labelFontTypeface="@font/lato"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/firstNameLayout">
+
+                <com.shakticoin.app.widget.InlineLabelEditText
+                    android:id="@+id/lastName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/AppTextField"
+                    android:hint="@string/hint_last_name"
+                    android:inputType="textCapWords|textPersonName"
+                    android:text="@={viewModel.lastName}"/>
+            </com.shakticoin.app.widget.TextInputLayout>
+
+            <com.shakticoin.app.widget.SpinnerLayout
+                android:id="@+id/genderLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="24dp"
+                style="@style/AppTextLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lastNameLayout">
+
+                <com.shakticoin.app.widget.InlineLabelSpinner
+                    android:id="@+id/gender"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:popupBackground="@android:color/transparent"
+                    android:entries="@{viewModel.gender}"
+                    android:onItemSelected="@{(parent, view, position, id) -> viewModel.onGenderSelected(view, position)}"
+                    app:newValue="@{viewModel.selectedGender}"
+                    app:hint="@string/hint_gender"
+                    app:textColorHint="@color/colorHint"
+                    app:spinnerBorderColor="@color/colorBrand"/>
+            </com.shakticoin.app.widget.SpinnerLayout>
+
+            <com.shakticoin.app.widget.TextInputLayout
+                android:id="@+id/birthDateLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="24dp"
+                style="@style/AppTextLayout"
+                app:labelTextSize="11sp"
+                app:labelFontTypeface="@font/lato"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/genderLayout">
+
+                <com.shakticoin.app.widget.InlineLabelTextView
+                    android:id="@+id/birthDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/AppTextField"
+                    android:hint="@string/birthdate"
+                    android:onClick="onSetBirthDate"
+                    app:localizedDate="@{viewModel.birthDate}"/>
+            </com.shakticoin.app.widget.TextInputLayout>
+
+            <com.shakticoin.app.widget.SpinnerLayout
+                android:id="@+id/languageLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="24dp"
+                style="@style/AppTextLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/birthDateLayout">
+
+                <com.shakticoin.app.widget.InlineLabelSpinner
+                    android:id="@+id/language"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:popupBackground="@android:color/transparent"
+                    android:entries="@{viewModel.languages}"
+                    android:onItemSelected="@{(parent, view, position, id) -> viewModel.onOnLanguageSelected(view, position)}"
+                    app:newValue="@{viewModel.selectedLanguage}"
+                    app:hint="@string/hint_language"
+                    app:textColorHint="@color/colorHint"
+                    app:spinnerBorderColor="@color/colorBrand"/>
+            </com.shakticoin.app.widget.SpinnerLayout>
+
+            <Button
+                android:id="@+id/doAddLanguage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="24dp"
+                android:text="@string/feats_add_language"
+                android:drawableStart="@drawable/ic_add_circle_outline_24px"
+                android:drawableTint="@color/colorBrand"
+                android:drawablePadding="6dp"
+                android:textColor="@color/colorBrand"
+                android:textAllCaps="false"
+                style="?android:attr/borderlessButtonStyle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/languageLayout" />
+
+            <com.shakticoin.app.widget.TextInputLayout
+                android:id="@+id/primaryEmailAddressLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="24dp"
+                style="@style/AppTextLayout"
+                app:labelTextSize="11sp"
+                app:labelFontTypeface="@font/lato"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/doAddLanguage">
+
+                <com.shakticoin.app.widget.InlineLabelEditText
+                    android:id="@+id/primaryEmailAddress"
+                    style="@style/AppTextField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/feats_hint_primary_email_address"
+                    android:inputType="textEmailAddress"
+                    android:text="@={viewModel.primaryEmailAddress}" />
+            </com.shakticoin.app.widget.TextInputLayout>
+
+            <com.shakticoin.app.widget.TextInputLayout
+                android:id="@+id/primaryPhoneNumberLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="24dp"
+                style="@style/AppTextLayout"
+                app:labelTextSize="11sp"
+                app:labelFontTypeface="@font/lato"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/primaryEmailAddressLayout">
+
+                <com.shakticoin.app.widget.InlineLabelEditText
+                    android:id="@+id/primaryPhoneNumber"
+                    style="@style/AppTextField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/feats_hint_primary_phone_number"
+                    android:inputType="phone"
+                    android:text="@={viewModel.primaryPhoneNumber}" />
+            </com.shakticoin.app.widget.TextInputLayout>
+
+            <com.shakticoin.app.widget.TextInputLayout
+                android:id="@+id/address1Layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="24dp"
+                style="@style/AppTextLayout"
+                app:labelTextSize="11sp"
+                app:labelFontTypeface="@font/lato"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/primaryPhoneNumberLayout">
+
+                <com.shakticoin.app.widget.InlineLabelEditText
+                    android:id="@+id/address1"
+                    style="@style/AppTextField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_address1"
+                    android:inputType="text|textPostalAddress"
+                    android:text="@={viewModel.address1}" />
+            </com.shakticoin.app.widget.TextInputLayout>
+
+            <Button
+                android:id="@+id/doNext"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="24dp"
+                android:text="@string/next"
+                android:onClick="onNextPersonalInfo"
+                style="@style/AppButton.Rounded"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/address1Layout" />
+
+            <Button
+                android:id="@+id/doCancel"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/cancel"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:onClick="onCancel"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/doNext" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>

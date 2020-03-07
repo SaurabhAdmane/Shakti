@@ -216,6 +216,10 @@
             android:screenOrientation="portrait"
             android:parentActivityName=".wallet.WalletActivity"
             tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".feats.OnboardChildActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
