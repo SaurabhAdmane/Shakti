@@ -619,6 +619,12 @@
     <string name="feats_hint_spprimary_phone">Service Provider Primary Phone</string>
     <string name="feats_hint_sp_name">Service Provider Business Name</string>
     <string name="feats_hint_tax_paying_country">Tax Paying Country</string>
+    <string name="feats_hint_verwallet">Verifier WalletID</string>
+    <string name="feats_hint_vervault">Verifier bizVaultID</string>
+    <string name="feats_hint_veremail">Verifier Email</string>
+    <string name="feats_hint_verprimary_phone">Verifier Primary Phone</string>
+    <string name="feats_hint_versecondary_phone">Verifier Secondary Phone</string>
+    <string name="feats_hint_vercountry">Verifier Country of Residence</string>
     <string name="feats_nextkin">Your next of kin</string>
     <string name="feats_another_kin">Add another next of kin</string>
     <string name="feats_another_beneficiary">Add beneficiary</string>
@@ -652,5 +658,7 @@
     <string name="feats_provider_info">Serv. Provider Info</string>
     <string name="feats_provider_title1">Service Provider Details</string>
     <string name="feats_provider_title2">Where do you work?</string>
-
+    <string name="feats_verifier_info">Independent Verifier Info</string>
+    <string name="feats_verifier_onboard">On-boarding Independent Verifier</string>
+    <string name="feats_verifier_action">Update independent verifier information</string>
 </resources>
