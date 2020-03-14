@@ -616,5 +616,30 @@
     <string name="feats_another_kin">Add another next of kin</string>
     <string name="feats_another_beneficiary">Add beneficiary</string>
     <string name="feats_are_you_head">Are You Head of Family?</string>
+    <string name="feats_onboard_school">On-board a School</string>
+    <string name="feats_school_title1">Which School do you want to Onboard?</string>
+    <string name="feats_school_title3">School %1$d - Address Information</string>
+    <string name="feats_school_name">School Name</string>
+    <string name="feats_school_info">School Info</string>
+    <string name="feats_country_tax">Country of Tax</string>
+    <string name="feats_established">Date of Establishment</string>
+    <string name="feats_bizvaultid">bizVaultID</string>
+    <string name="feats_walletid">WalletID</string>
+    <string name="feats_school_primary_language">Primary Language</string>
+    <string name="feats_school_secondary_language">Secondary Language</string>
+    <string name="feats_add_another_primary_language">Add another primary language</string>
+    <string name="feats_add_anther_secondary_language">Add another secondary language</string>
+    <string name="feats_add_another_email">Add another email address</string>
+    <string name="feats_add_another_phone">Add another phone number</string>
+    <string name="feats_add_another_registrar">Add another registrar name</string>
+    <string name="feats_add_another_principal">Add another principal name</string>
+    <string name="feats_add_athother_vice_principal">Add another vice principal name</string>
+    <string name="feats_add_another_school">Add Another School</string>
+    <string name="feats_hint_registrar_name">Registrar Name</string>
+    <string name="feats_hint_principal_name">Principal Name</string>
+    <string name="feats_hint_vice_principal_name">Vise Principal Name</string>
+    <string name="feats_action_update_school">Update school information</string>
+    <string name="feats_school_gov">Is the School Gov. Accredited?</string>
+    <string name="feats_school_affeliated">Is the School Affiliated?</string>
 
 </resources>

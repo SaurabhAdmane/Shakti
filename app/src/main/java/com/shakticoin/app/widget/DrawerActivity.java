@@ -23,6 +23,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.shakticoin.app.R;
+import com.shakticoin.app.feats.OnboardChildActivity;
+import com.shakticoin.app.feats.OnboardSchoolActivity;
 import com.shakticoin.app.profile.CompanySummaryActivity;
 import com.shakticoin.app.profile.FamilyTreeActivity;
 import com.shakticoin.app.referral.MyReferralsActivity;
@@ -267,8 +269,10 @@ public abstract class DrawerActivity extends AppCompatActivity {
     }
 
     public void onOpenHome(View v) {
-        Intent intent = new Intent(this, WelcomeTourActivity.class);
-        intent.putExtra(CommonUtil.prefixed("finalDestination", this), WalletActivity.class.getName());
+//        Intent intent = new Intent(this, WelcomeTourActivity.class);
+//        intent.putExtra(CommonUtil.prefixed("finalDestination", this), WalletActivity.class.getName());
+//        startActivity(intent);
+        Intent intent = new Intent(this, OnboardSchoolActivity.class);
         startActivity(intent);
     }
 
