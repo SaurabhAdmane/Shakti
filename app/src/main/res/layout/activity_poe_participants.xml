@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+
+    </data>
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/scrollable_bottom_padding">
+
+            <TextView
+                android:id="@+id/label1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="35dp"
+                android:layout_marginEnd="8dp"
+                android:gravity="center_horizontal"
+                android:text="@string/parties_children_title"
+                android:textAppearance="@style/AppText.Body"
+                android:textColor="@color/colorBrand"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="16dp"
+                android:background="@color/colorBrand"
+                app:layout_constraintBottom_toBottomOf="@+id/label1"
+                app:layout_constraintEnd_toStartOf="@+id/label1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/label1" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="24dp"
+                android:background="@color/colorBrand"
+                app:layout_constraintBottom_toBottomOf="@+id/label1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/label1"
+                app:layout_constraintTop_toTopOf="@+id/label1" />
+
+            <TextView
+                android:id="@+id/label2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="35dp"
+                android:layout_marginEnd="8dp"
+                android:gravity="center_horizontal"
+                android:text="@string/parties_schools_title"
+                android:textAppearance="@style/AppText.Body"
+                android:textColor="@color/colorBrand"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/label1" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="16dp"
+                android:background="@color/colorBrand"
+                app:layout_constraintBottom_toBottomOf="@+id/label2"
+                app:layout_constraintEnd_toStartOf="@+id/label2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/label2" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="24dp"
+                android:background="@color/colorBrand"
+                app:layout_constraintBottom_toBottomOf="@+id/label2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/label2"
+                app:layout_constraintTop_toTopOf="@+id/label2" />
+
+            <TextView
+                android:id="@+id/label3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="35dp"
+                android:layout_marginEnd="8dp"
+                android:gravity="center_horizontal"
+                android:text="@string/parties_providers_title"
+                android:textAppearance="@style/AppText.Body"
+                android:textColor="@color/colorBrand"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/label2" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="16dp"
+                android:background="@color/colorBrand"
+                app:layout_constraintBottom_toBottomOf="@+id/label3"
+                app:layout_constraintEnd_toStartOf="@+id/label3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/label3" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="24dp"
+                android:background="@color/colorBrand"
+                app:layout_constraintBottom_toBottomOf="@+id/label3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/label3"
+                app:layout_constraintTop_toTopOf="@+id/label3" />
+
+            <TextView
+                android:id="@+id/label4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="35dp"
+                android:layout_marginEnd="8dp"
+                android:gravity="center_horizontal"
+                android:text="@string/parties_verifiers_title"
+                android:textAppearance="@style/AppText.Body"
+                android:textColor="@color/colorBrand"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/label3" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="16dp"
+                android:background="@color/colorBrand"
+                app:layout_constraintBottom_toBottomOf="@+id/label4"
+                app:layout_constraintEnd_toStartOf="@+id/label4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/label4" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="24dp"
+                android:background="@color/colorBrand"
+                app:layout_constraintBottom_toBottomOf="@+id/label4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/label4"
+                app:layout_constraintTop_toTopOf="@+id/label4" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>

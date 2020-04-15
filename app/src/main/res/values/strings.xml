@@ -661,4 +661,9 @@
     <string name="feats_verifier_info">Independent Verifier Info</string>
     <string name="feats_verifier_onboard">On-boarding Independent Verifier</string>
     <string name="feats_verifier_action">Update independent verifier information</string>
+    <string name="parties_label">PoE Participants</string>
+    <string name="parties_children_title">On-boarded School Children</string>
+    <string name="parties_schools_title">On-boarded Schools</string>
+    <string name="parties_providers_title">On-boarded Service Providers</string>
+    <string name="parties_verifiers_title">On-boarded Independent Verifiers</string>
 </resources>
