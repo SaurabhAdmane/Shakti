@@ -1,5 +1,6 @@
 package com.shakticoin.app.widget;
 
+import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -14,6 +15,8 @@ public class DrawerActivityViewModel extends ViewModel {
 
     /** List of unread notification messages */
     MutableLiveData<List<Notification>> notifications = new MutableLiveData<>();
+
+    public ObservableBoolean isMinerExpanded = new ObservableBoolean(false);
 
     public DrawerActivityViewModel() {
         selectedDrawer.setValue(0);

@@ -18,11 +18,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.ImageViewCompat;
+import androidx.databinding.Observable;
+import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.shakticoin.app.R;
+import com.shakticoin.app.feats.ParticipantsActivity;
 import com.shakticoin.app.profile.CompanySummaryActivity;
 import com.shakticoin.app.profile.FamilyTreeActivity;
 import com.shakticoin.app.referral.MyReferralsActivity;
@@ -45,6 +48,9 @@ public abstract class DrawerActivity extends AppCompatActivity {
     private View leftDrawer;
     private View rightDrawer;
     private View mainFragment;
+
+    private View menuItemMinerExpanded;
+    private View menuItemMinerIcon;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -79,6 +85,22 @@ public abstract class DrawerActivity extends AppCompatActivity {
         }
 
         viewModel.notifications.observe(this, notifications -> adapter.notifyDataSetChanged());
+
+        menuItemMinerIcon = findViewById(R.id.minerDropdownIcon);
+        menuItemMinerExpanded = findViewById(R.id.minerMenuExpanded);
+        viewModel.isMinerExpanded.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+            @Override
+            public void onPropertyChanged(Observable sender, int propertyId) {
+                boolean state = ((ObservableBoolean) sender).get();
+                if (state) {
+                    menuItemMinerExpanded.setVisibility(View.VISIBLE);
+                    menuItemMinerIcon.setScaleY(-1f);
+                } else {
+                    menuItemMinerIcon.setScaleY(1f);
+                    menuItemMinerExpanded.setVisibility(View.GONE);
+                }
+            }
+        });
 
         // set active drawer button
         if (leftDrawer != null) {
@@ -251,8 +273,13 @@ public abstract class DrawerActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void onOpenMiner(View v) {
-        Intent intent = new Intent(this, WalletActivity.class);
+    public void onExpandMiner(View v) {
+        viewModel.isMinerExpanded.set(!viewModel.isMinerExpanded.get());
+    }
+
+    public void onOpenPoE(View v) {
+        Intent intent = new Intent(this, ParticipantsActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
     }
 

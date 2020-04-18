@@ -229,7 +229,9 @@
     <string name="new_bounty_terms"><u>Refer to the terms</u> for more detailed conditions associated with claiming your bounty. You must sign up for a wallet first and ensure you have completed KYC to be eligible.</string>
     <string name="drawer_wallet">Wallet</string>
     <string name="drawer_vault">Vault</string>
-    <string name="drawer_miner">Miner</string>
+    <string name="drawer_miner">Mine SXE</string>
+    <string name="drawer_poe">PoE</string>
+    <string name="drawer_add_friends">Add Friends &amp; Family</string>
     <string name="drawer_referrals">Referrals</string>
     <string name="drawer_settings">Settings</string>
     <string name="drawer_home">Home</string>
