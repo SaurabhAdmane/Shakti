@@ -12,12 +12,12 @@ public interface WalletService {
 
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("walletservice/api/v1/wallets/")
-    Call<Map<String, Object>> createWallet(@Header("Authorization") String authorization,
+    Call<Map<String, String>> createWallet(@Header("Authorization") String authorization,
                                            @Body CreateWalletParameters parameters);
 
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("walletservice/api/v1/users/wallet/address/")
-    Call<Map<String, Object>> getWalletAddress(@Header("Authorization") String authorization,
+    Call<Map<String, String>> getWalletAddress(@Header("Authorization") String authorization,
                                                @Body WalletAddressParameters parameters);
 
     @Headers({"Content-Type: application/json", "Accept: application/json"})
@@ -27,6 +27,6 @@ public interface WalletService {
 
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("walletservice/api/v1/coins/")
-    Call<Map<String, Object>> transferSxeCoins(@Header("Authorization") String authorization,
+    Call<Map<String, String>> transferSxeCoins(@Header("Authorization") String authorization,
                                                @Body TransferParameters parameters);
 }
