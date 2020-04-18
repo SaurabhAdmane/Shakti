@@ -194,7 +194,7 @@
             android:paddingEnd="20dp"
             android:clickable="true"
             android:focusable="true"
-            android:onClick="onOpenReferrals">
+            android:onClick="onOpenBonusBounty">
             <ImageView
                 android:id="@+id/referralsMenuIcon"
                 android:layout_width="24dp"

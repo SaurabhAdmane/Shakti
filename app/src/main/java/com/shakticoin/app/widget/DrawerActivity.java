@@ -29,6 +29,7 @@ import com.shakticoin.app.feats.ParticipantsActivity;
 import com.shakticoin.app.profile.CompanySummaryActivity;
 import com.shakticoin.app.profile.FamilyTreeActivity;
 import com.shakticoin.app.referral.MyReferralsActivity;
+import com.shakticoin.app.registration.BonusBountyActivity;
 import com.shakticoin.app.settings.SettingsActivity;
 import com.shakticoin.app.tour.WelcomeTourActivity;
 import com.shakticoin.app.util.CommonUtil;
@@ -280,6 +281,11 @@ public abstract class DrawerActivity extends AppCompatActivity {
     public void onOpenPoE(View v) {
         Intent intent = new Intent(this, ParticipantsActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
+    }
+
+    public void onOpenBonusBounty(View v) {
+        Intent intent = new Intent(this, BonusBountyActivity.class);
         startActivity(intent);
     }
 
