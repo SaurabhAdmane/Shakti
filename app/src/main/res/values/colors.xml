@@ -36,4 +36,5 @@
     <color name="avatarDefault">@color/colorAppGrey</color>
     <color name="avatarSectionBookmark">#FF4A4A4A</color>
 
+    <color name="whiteDisabled">@color/colorGrey1</color>
 </resources>

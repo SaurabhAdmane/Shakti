@@ -50,9 +50,13 @@
         android:layout_gravity="center_vertical|end"
         android:layout_marginEnd="6dp"
         android:background="?attr/actionBarItemBackground"
-        android:onClick="onNotifications"
         android:padding="4dp"
+        android:tint="@color/whiteDisabled"
         app:srcCompat="@drawable/ic_notification"
         tools:ignore="ContentDescription" />
+    <!-- FIXME: add when disabled
+        android:onClick="onNotifications"
+        and remove tint
+    -->
 
 </androidx.appcompat.widget.Toolbar>
