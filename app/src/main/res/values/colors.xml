@@ -22,6 +22,7 @@
     <color name="colorReadMessage">@color/colorGrey2</color>
 
     <color name="drawerButtonNormal">#FFD9D9DA</color>
+    <color name="drawerItemDisabled">#80D9D9DA</color>
     <color name="drawerButtonSelected">@color/colorBrand</color>
 
     <color name="colorButtonIcon">#FF4A4A4A</color>
