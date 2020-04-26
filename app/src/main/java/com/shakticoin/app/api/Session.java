@@ -3,14 +3,22 @@ package com.shakticoin.app.api;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.LocaleList;
+import android.security.keystore.KeyGenParameterSpec;
 
+import androidx.security.crypto.EncryptedSharedPreferences;
+import androidx.security.crypto.MasterKeys;
+
+import com.shakticoin.app.BuildConfig;
 import com.shakticoin.app.ShaktiApplication;
 import com.shakticoin.app.api.user.User;
 import com.shakticoin.app.registration.SignInActivity;
+import com.shakticoin.app.util.Debug;
 import com.shakticoin.app.util.PreferenceHelper;
-import com.shakticoin.app.wallet.WalletActivity;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.Locale;
 
 public class Session {
@@ -42,85 +50,50 @@ public class Session {
 
     public static String getRefreshToken(Context context) {
         if (refreshToken == null) {
-            SharedPreferences prefs = context.getSharedPreferences(PreferenceHelper.GENERAL_PREFERENCES, Context.MODE_PRIVATE);
-            // FIXME: temporarily we store the key un-encrypted
-            refreshToken = prefs.getString(PreferenceHelper.PREF_KEY_TOKEN, null);
+            try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    KeyGenParameterSpec keyGenParams = MasterKeys.AES256_GCM_SPEC;
+                    String masterKeyAlias = MasterKeys.getOrCreate(keyGenParams);
+                    SharedPreferences prefs = EncryptedSharedPreferences.create(
+                            "ss", masterKeyAlias, context,
+                            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM);
+                    refreshToken = prefs.getString(PreferenceHelper.PREF_KEY_TOKEN, null);
+                } else {
+                    SharedPreferences prefs =
+                            context.getSharedPreferences(PreferenceHelper.GENERAL_PREFERENCES, Context.MODE_PRIVATE);
+                    refreshToken = prefs.getString(PreferenceHelper.PREF_KEY_TOKEN, null);
+                }
 
-//            String storedToken = prefs.getString(PreferenceHelper.PREF_KEY_TOKEN, null);
-//
-//            if (storedToken != null) {
-//                KeyPair keyPair = CryptoUtil.getMasterKeyPair(context);
-//                if (keyPair != null) {
-//                    try {
-//                        refreshToken = CryptoUtil.decryptShortString(storedToken, keyPair);
-//
-//                        // user might disabled locking screen by now and we should no allow
-//                        // automatic login in this case
-//                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//                            KeyguardManager keyguardManager =
-//                                    (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
-//                            if (keyguardManager != null && !keyguardManager.isDeviceSecure()) return null;
-//                        }
-//
-//                    } catch (NoSuchPaddingException e) {
-//                        Debug.logException(e);
-//                        Debug.logDebug("NoSuchPaddingException: " + e.getMessage());
-//                    } catch (NoSuchAlgorithmException e) {
-//                        Debug.logException(e);
-//                        Debug.logDebug("NoSuchAlgorithmException: " + e.getMessage());
-//                    } catch (InvalidKeyException e) {
-//                        Debug.logException(e);
-//                        Debug.logDebug("InvalidKeyException: " + e.getMessage());
-//                    } catch (BadPaddingException e) {
-//                        Debug.logException(e);
-//                        Debug.logDebug("BadPaddingException: " + e.getMessage());
-//                    } catch (IllegalBlockSizeException e) {
-//                        Debug.logException(e);
-//                        Debug.logDebug("IllegalBlockSizeException: " + e.getMessage());
-//                    }
-//                }
-//            }
+            } catch (IOException | GeneralSecurityException e) {
+                Debug.logException(e);
+            }
         }
         return refreshToken;
     }
 
     public static void setRefreshToken(String token, boolean rememberMe, Context context) {
         if (rememberMe) {
-//            try {
-//                String encryptedKey = token;
-//                KeyPair keyPair = CryptoUtil.getMasterKeyPair(context);
-//                if (keyPair == null) {
-//                    Debug.logDebug("No KeyPair - not encrypting");
-//                } else {
-//                    encryptedKey = CryptoUtil.encryptShortString(token, keyPair);
-//                    SharedPreferences prefs = context.getSharedPreferences(PreferenceHelper.GENERAL_PREFERENCES, Context.MODE_PRIVATE);
-//                    prefs.edit().putString(PreferenceHelper.PREF_KEY_TOKEN, encryptedKey).apply();
-//                }
-//
-//            } catch (IOException e) {
-//                Debug.logException(e);
-//                Debug.logDebug("IOException: " + e.getMessage());
-//            } catch (NoSuchPaddingException e) {
-//                Debug.logException(e);
-//                Debug.logDebug("NoSuchPaddingException: " + e.getMessage());
-//            } catch (InvalidKeyException e) {
-//                Debug.logException(e);
-//                Debug.logDebug("InvalidKeyException: " + e.getMessage());
-//            } catch (BadPaddingException e) {
-//                Debug.logException(e);
-//                Debug.logDebug("BadPaddingException: " + e.getMessage());
-//            } catch (IllegalBlockSizeException e) {
-//                Debug.logException(e);
-//                Debug.logDebug("IllegalBlockSizeException: " + e.getMessage());
-//            } catch (NoSuchAlgorithmException e) {
-//                Debug.logException(e);
-//                Debug.logDebug("NoSuchAlgorithmException: " + e.getMessage());
-//            }
+            try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    // store refresh token in an encrypted storage in order to login automatically
+                    KeyGenParameterSpec keyGenParams = MasterKeys.AES256_GCM_SPEC;
+                    String masterKeyAlias = MasterKeys.getOrCreate(keyGenParams);
+                    SharedPreferences prefs = EncryptedSharedPreferences.create(
+                            "ss", masterKeyAlias, context,
+                            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM);
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putString(PreferenceHelper.PREF_KEY_TOKEN, token).apply();
+                } else {
+                    SharedPreferences prefs =
+                            context.getSharedPreferences(PreferenceHelper.GENERAL_PREFERENCES, Context.MODE_PRIVATE);
+                    prefs.edit().putString(PreferenceHelper.PREF_KEY_TOKEN, token).apply();
+                }
 
-            //FIXME: temporarily stre key unencrypted because current implementation may encrypt
-            // only strings under 256 symbols while refresh token now is much longer.
-            SharedPreferences prefs = context.getSharedPreferences(PreferenceHelper.GENERAL_PREFERENCES, Context.MODE_PRIVATE);
-            prefs.edit().putString(PreferenceHelper.PREF_KEY_TOKEN, token).apply();
+            } catch (IOException | GeneralSecurityException e) {
+                Debug.logException(e);
+            }
         }
 
         setRefreshToken(token);

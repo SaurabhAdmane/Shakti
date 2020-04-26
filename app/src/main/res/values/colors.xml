@@ -4,13 +4,14 @@
     <color name="colorPrimary">#62666A</color>
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#d3c5a9</color>
-    <color name="colorBrand">#D8C295</color>
+    <color name="colorBrand">#FFD8C295</color>
+    <color name="colorBrandDisabled">#80D8C295</color>
     <color name="colorAppGrey">#727473</color>
     <color name="colorTintBackground">#BF000000</color>
     <color name="colorTintBackground50">#80000000</color>
     <color name="colorErrorText">#FFFFFFFF</color>
     <color name="colorErrorBackground">#FFBE061C</color>
-    <color name="colorHint">#FFFFFFFF</color>
+    <color name="colorHint">@color/colorGrey2</color>
     <color name="colorGrey1">#FF898989</color>
     <color name="colorGrey2">#FFD9D9DA</color>
     <color name="colorGrey3">#FF4A4A4A</color>
@@ -21,6 +22,7 @@
     <color name="colorReadMessage">@color/colorGrey2</color>
 
     <color name="drawerButtonNormal">#FFD9D9DA</color>
+    <color name="drawerItemDisabled">#80D9D9DA</color>
     <color name="drawerButtonSelected">@color/colorBrand</color>
 
     <color name="colorButtonIcon">#FF4A4A4A</color>
@@ -34,4 +36,5 @@
     <color name="avatarDefault">@color/colorAppGrey</color>
     <color name="avatarSectionBookmark">#FF4A4A4A</color>
 
+    <color name="whiteDisabled">@color/colorGrey1</color>
 </resources>

@@ -1,7 +1,5 @@
 package com.shakticoin.app.api.country;
 
-import android.content.Context;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -53,7 +51,7 @@ public class CountryRepository extends BackendRepository {
          */
         liveData.setValue(Collections.singletonList(new Country(null, "")));
 
-        countryService.getCountries(Session.getAuthorizationHeader(), Session.getLanguageHeader())
+        countryService.getCountries(Session.getLanguageHeader())
                 .enqueue(new Callback<List<Country>>() {
                     @Override
                     public void onResponse(@NonNull Call<List<Country>> call, @NonNull Response<List<Country>> response) {
@@ -81,7 +79,7 @@ public class CountryRepository extends BackendRepository {
     }
 
     public void getCountry(@NonNull String countryCode, @NonNull OnCompleteListener<Country> listener) {
-        countryService.getCountry(Session.getAuthorizationHeader(), Session.getLanguageHeader(), countryCode)
+        countryService.getCountry(Session.getLanguageHeader(), countryCode)
                 .enqueue(new Callback<Country>() {
                     @EverythingIsNonNull
                     @Override
@@ -119,7 +117,7 @@ public class CountryRepository extends BackendRepository {
 
     public void getSubdivisionsByCountry(@NonNull String countryCode,
                                          @NonNull OnCompleteListener<List<Subdivision>> listener) {
-        countryService.getSubdivisions(Session.getAuthorizationHeader(), Session.getLanguageHeader(), countryCode)
+        countryService.getSubdivisions(Session.getLanguageHeader(), countryCode)
                 .enqueue(new Callback<List<Subdivision>>() {
                     @EverythingIsNonNull
                     @Override
@@ -160,8 +158,9 @@ public class CountryRepository extends BackendRepository {
     public void getSubdivision(@NonNull String countryCode,
                                @NonNull Integer subdivisionId,
                                @NonNull OnCompleteListener<Subdivision> listener) {
-        countryService.getSubdivision(Session.getAuthorizationHeader(), Session.getLanguageHeader(),
+        countryService.getSubdivision(Session.getLanguageHeader(),
                 countryCode, subdivisionId).enqueue(new Callback<Subdivision>() {
+            @EverythingIsNonNull
             @Override
             public void onResponse(Call<Subdivision> call, Response<Subdivision> response) {
                 Debug.logDebug(response.toString());
@@ -186,6 +185,7 @@ public class CountryRepository extends BackendRepository {
                 }
             }
 
+            @EverythingIsNonNull
             @Override
             public void onFailure(Call<Subdivision> call, Throwable t) {
                 Debug.logException(t);

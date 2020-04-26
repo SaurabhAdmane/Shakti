@@ -10,10 +10,10 @@ import android.view.View;
 
 import com.shakticoin.app.R;
 import com.shakticoin.app.databinding.ActivityMyReferralsBinding;
-import com.shakticoin.app.wallet.BaseWalletActivity;
+import com.shakticoin.app.widget.DrawerActivity;
 
 @SuppressLint("Registered")
-public class MyReferralsActivity extends BaseWalletActivity {
+public class MyReferralsActivity extends DrawerActivity {
     private ActivityMyReferralsBinding binding;
 
     @Override

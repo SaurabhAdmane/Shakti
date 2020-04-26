@@ -1,13 +1,20 @@
-<manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.shakticoin.app">
+
+    <uses-sdk tools:overrideLibrary="androidx.security"/>
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
 
-    <uses-feature android:name="android.hardware.camera" android:required="false" />
-    <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
 
     <application
         android:name=".ShaktiApplication"
@@ -24,230 +31,223 @@
 
         <activity
             android:name=".registration.SignUpActivity"
-            android:screenOrientation="portrait"/>
-
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".registration.SignInActivity"
-            android:screenOrientation="portrait"/>
-
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".SplashActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Splash">
+            android:theme="@style/AppTheme.Splash"
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".tour.WelcomeTourActivity"
-            android:screenOrientation="portrait"/>
-
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".registration.RecoveryPasswordActivity"
-            android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".registration.SignInActivity" />
-        </activity>
-
+            android:screenOrientation="portrait"
+            android:parentActivityName=".registration.SignInActivity"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".registration.ReferralActivity"
-            android:screenOrientation="portrait"/>
-
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".registration.ReferralConfirmationActivity"
-            android:screenOrientation="portrait"/>
-
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".registration.BonusBountyActivity"
-            android:screenOrientation="portrait"/>
-
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".registration.MiningLicenseActivity"
-            android:screenOrientation="portrait"/>
-
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".payment.stripe.StripeActivity"
-            android:screenOrientation="portrait"/>
-
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".wallet.WalletActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:launchMode="singleTop"/>
-
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".widget.qr.QRScannerActivity"
-            android:screenOrientation="portrait"/>
-
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".registration.NewBonusBountyActivity"
-            android:screenOrientation="portrait"/>
-
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".profile.ProfileActivity"
-            android:screenOrientation="portrait"/>
-
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".profile.KycActivity"
-            android:screenOrientation="portrait"/>
-
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".referral.MyReferralsActivity"
-            android:screenOrientation="portrait"/>
-
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".referral.AddReferralActivity"
-            android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".referral.MyReferralsActivity" />
-        </activity>
-
+            android:screenOrientation="portrait"
+            android:parentActivityName=".referral.MyReferralsActivity"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".referral.EffortRatesActivity"
-            android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".referral.MyReferralsActivity" />
-        </activity>
-
+            android:screenOrientation="portrait"
+            android:parentActivityName=".referral.MyReferralsActivity"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".miner.BecomeMinerActivity"
-            android:screenOrientation="portrait"/>
-
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".miner.UpgradeMinerActivity"
-            android:screenOrientation="portrait"/>
-
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".vault.VaultAdvantageActivity"
-            android:screenOrientation="portrait"/>
-
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".vault.VaultChooserActivity"
-            android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".vault.VaultAdvantageActivity" />
-        </activity>
-
+            android:screenOrientation="portrait"
+            android:parentActivityName=".vault.VaultAdvantageActivity"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".settings.SettingsActivity"
-            android:screenOrientation="portrait"/>
-
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".settings.SettingsPersonalActivity"
-            android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".settings.SettingsActivity" />
-        </activity>
-
+            android:screenOrientation="portrait"
+            android:parentActivityName=".settings.SettingsActivity"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".settings.SettingsHelpActivity"
-            android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".settings.SettingsHelpActivity" />
+            android:screenOrientation="portrait"
+            android:parentActivityName=".settings.SettingsHelpActivity"
+            tools:ignore="LockedOrientationActivity">
         </activity>
-
         <activity
             android:name=".settings.SettingsPrivPolicyActivity"
-            android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".settings.SettingsHelpActivity" />
-        </activity>
-
+            android:screenOrientation="portrait"
+            android:parentActivityName=".settings.SettingsHelpActivity"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".settings.SettingsAppTermsActivity"
-            android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".settings.SettingsHelpActivity" />
-        </activity>
-
+            android:screenOrientation="portrait"
+            android:parentActivityName=".settings.SettingsHelpActivity"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".settings.SettingsTaxesActivity"
-            android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".settings.SettingsHelpActivity" />
-        </activity>
-
+            android:screenOrientation="portrait"
+            android:parentActivityName=".settings.SettingsHelpActivity"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".settings.SettingsProcFeeActivity"
-            android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".settings.SettingsHelpActivity" />
-        </activity>
-
+            android:screenOrientation="portrait"
+            android:parentActivityName=".settings.SettingsHelpActivity"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".settings.SettingsContactUsActivity"
-            android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".settings.SettingsHelpActivity" />
-        </activity>
-
+            android:screenOrientation="portrait"
+            android:parentActivityName=".settings.SettingsHelpActivity"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".settings.SettingsPasswordActivity"
-            android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".settings.SettingsHelpActivity" />
-        </activity>
-
+            android:screenOrientation="portrait"
+            android:parentActivityName=".settings.SettingsHelpActivity"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".wallet.WalletAdminActivity"
-            android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".wallet.WalletActivity"/>
-        </activity>
-
+            android:screenOrientation="portrait"
+            android:parentActivityName=".wallet.WalletActivity"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".wallet.WalletHistoryActivity"
-            android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".wallet.WalletActivity"/>
-        </activity>
-
+            android:screenOrientation="portrait"
+            android:parentActivityName=".wallet.WalletActivity"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".payment.PaymentOptionsActivity"
-            android:screenOrientation="portrait">
-        </activity>
-
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"/>
         <activity
             android:name=".profile.FamilyTreeActivity"
-            android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".wallet.WalletActivity"/>
-        </activity>
-
+            android:screenOrientation="portrait"
+            android:parentActivityName=".wallet.WalletActivity"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".registration.ActivationActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity">
             <intent-filter android:name="Activation">
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="http"
+
+                <data
                     android:host="0.0.0.0"
+                    android:pathPrefix="/auth/activate"
                     android:port="8080"
-                    android:pathPrefix="/auth/activate" />
+                    android:scheme="http" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".profile.CompanyProfileActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".profile.CompanySummaryActivity"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".wallet.WalletActivity"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".feats.OnboardChildActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".feats.OnboardSchoolActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"/>
+        <activity
+            android:name=".feats.OnboardProviderActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".feats.OnboardVerifierActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".feats.ParticipantsActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
 
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.shakticoin.app.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 
 </manifest>

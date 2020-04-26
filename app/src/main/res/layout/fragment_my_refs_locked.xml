@@ -231,20 +231,6 @@
                 app:layout_constraintStart_toEndOf="@+id/imageView10"
                 app:layout_constraintTop_toTopOf="@+id/imageView10" />
 
-            <ImageView
-                android:id="@+id/imageView11"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:tint="@color/colorBrand"
-                app:layout_constraintBottom_toBottomOf="@+id/blackRect3"
-                app:layout_constraintEnd_toEndOf="@+id/blackRect3"
-                app:layout_constraintStart_toStartOf="@+id/blackRect3"
-                app:layout_constraintTop_toBottomOf="@+id/textView39"
-                app:srcCompat="@drawable/ic_round_expand_more_24px"
-                tools:ignore="ContentDescription" />
-
             <TextView
                 android:id="@+id/label1"
                 android:layout_width="wrap_content"
@@ -258,7 +244,7 @@
                 android:textColor="@color/colorBrand"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView11" />
+                app:layout_constraintTop_toBottomOf="@+id/textView39" />
 
             <View
                 android:id="@+id/divider3"
@@ -289,7 +275,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="43dp"
+                android:layout_marginTop="40dp"
                 android:layout_marginEnd="24dp"
                 android:text="@{@string/my_refs_calc(0, 0)}"
                 android:textAppearance="@style/AppText.Body"

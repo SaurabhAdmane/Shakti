@@ -17,7 +17,7 @@
 
         <include layout="@layout/inline_header"/>
 
-        <com.shakticoin.app.widget.WalletPageIndicator
+        <com.shakticoin.app.widget.PageIndicator
             android:id="@+id/pageIndicator"
             android:layout_width="match_parent"
             android:layout_height="46dp"
@@ -34,12 +34,13 @@
             tools:ignore="UnknownIdInLayout">
 
             <include layout="@layout/inline_drawer"/>
-            <androidx.viewpager.widget.ViewPager
+
+            <FrameLayout
                 android:id="@+id/mainFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+            </FrameLayout>
 
-            </androidx.viewpager.widget.ViewPager>
             <include layout="@layout/inline_messages"/>
 
         </RelativeLayout>

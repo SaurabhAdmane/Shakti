@@ -1,27 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:state_checked="false" >
+    <item android:state_checked="false" android:state_enabled="true">
         <shape android:shape="rectangle">
             <solid android:color="@color/colorBrand" />
             <corners android:radius="100dp"/>
-            <stroke android:color="@color/colorBrand" android:width="1dp"/>
+            <stroke android:color="@color/colorBrand" android:width="0dp"/>
             <gradient
-                android:angle="45"
-                android:startColor="#FFD0C19C"
-                android:endColor="#FFAE9F7A"
+                android:angle="225"
+                android:startColor="#FFAE9F7A"
+                android:endColor="#FF8D7A55"
                 android:type="linear" />
         </shape>
     </item>
-    <item android:state_checked="true">
+    <item android:state_checked="true" android:state_enabled="true">
         <shape android:shape="rectangle">
             <solid android:color="@color/colorBrand" />
             <corners android:radius="100dp"/>
-            <stroke android:color="@color/colorBrand" android:width="1dp"/>
+            <stroke android:color="@color/colorBrand" android:width="0dp"/>
             <gradient
                 android:angle="225"
-                android:startColor="#FFD0C19C"
-                android:endColor="#FFAE9F7A"
+                android:startColor="#FFAE9F7A"
+                android:endColor="#FF8D7A55"
+                android:type="linear" />
+        </shape>
+    </item>
+    <item android:state_checked="false" android:state_enabled="false">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/colorBrandDisabled" />
+            <corners android:radius="100dp"/>
+            <stroke android:color="@color/colorBrandDisabled" android:width="0dp"/>
+            <gradient
+                android:angle="225"
+                android:startColor="#80AE9F7A"
+                android:endColor="#808D7A55"
+                android:type="linear" />
+        </shape>
+    </item>
+    <item android:state_checked="true" android:state_enabled="false">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/colorBrandDisabled" />
+            <corners android:radius="100dp"/>
+            <stroke android:color="@color/colorBrandDisabled" android:width="0dp"/>
+            <gradient
+                android:angle="225"
+                android:startColor="#80AE9F7A"
+                android:endColor="#808D7A55"
                 android:type="linear" />
         </shape>
     </item>

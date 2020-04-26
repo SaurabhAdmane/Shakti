@@ -9,10 +9,9 @@ import androidx.databinding.DataBindingUtil;
 
 import com.shakticoin.app.R;
 import com.shakticoin.app.databinding.ActivityWalletAdminBinding;
+import com.shakticoin.app.widget.DrawerActivity;
 
-import java.util.Objects;
-
-public class WalletAdminActivity extends BaseWalletActivity {
+public class WalletAdminActivity extends DrawerActivity {
     ActivityWalletAdminBinding binding;
 
     @Override

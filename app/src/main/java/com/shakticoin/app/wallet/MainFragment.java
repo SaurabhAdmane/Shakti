@@ -39,7 +39,9 @@ public class MainFragment extends Fragment {
         binding.setLifecycleOwner(this);
         binding.setViewModel(viewModel);
 
+        /* FIXME: uncomment when lint to admin screen must be enabled and make associated label clickable as well
         binding.doAdmin.setOnClickListener(this::onAdminWallet);
+        */
         binding.doVerification.setOnClickListener(this::onVerification);
         binding.doBalanceHistory.setOnClickListener(this::onBalanceHistory);
         binding.doRefer.setOnClickListener(this::onShowUnlockInfo);

@@ -12,25 +12,21 @@ public interface CountryService {
 
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @GET("commonservice/v1/api/countries/")
-    Call<List<Country>> getCountries(@Header("Authorization") String authorization,
-                                     @Header("Accept-Language") String language);
+    Call<List<Country>> getCountries(@Header("Accept-Language") String language);
 
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @GET("commonservice/v1/api/countries/{code}/")
-    Call<Country> getCountry(@Header("Authorization") String authorization,
-                             @Header("Accept-Language") String language,
+    Call<Country> getCountry(@Header("Accept-Language") String language,
                              @Path("code") String code);
 
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @GET("commonservice/v1/api/countries/{code}/subdivisions/")
-    Call<List<Subdivision>> getSubdivisions(@Header("Authorization") String authorization,
-                                            @Header("Accept-Language") String language,
+    Call<List<Subdivision>> getSubdivisions(@Header("Accept-Language") String language,
                                             @Path("code") String code);
 
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @GET("commonservice/v1/api/countries/{code}/subdivisions/{id}/")
-    Call<Subdivision> getSubdivision(@Header("Authorization") String authorization,
-                                     @Header("Accept-Language") String language,
+    Call<Subdivision> getSubdivision(@Header("Accept-Language") String language,
                                      @Path("code") String code,
                                      @Path("id") Integer id);
 }

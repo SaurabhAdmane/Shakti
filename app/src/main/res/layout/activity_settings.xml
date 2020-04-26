@@ -133,7 +133,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="16dp"
                         android:gravity="end"
-                        android:text="@string/settings_kyc_progress"
                         android:textAppearance="@style/AppText.Body"
                         app:layout_constraintBottom_toBottomOf="@+id/doKycStatus"
                         app:layout_constraintEnd_toStartOf="@+id/doKycStatus"
@@ -167,6 +166,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="24dp"
+                        android:enabled="false"
                         app:layout_constraintBottom_toBottomOf="@+id/textView80"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/textView80" />
@@ -213,6 +213,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="24dp"
+                        android:enabled="false"
                         app:layout_constraintBottom_toBottomOf="@+id/textView83"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/textView83" />
@@ -234,6 +235,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="24dp"
+                        android:enabled="false"
                         app:layout_constraintBottom_toBottomOf="@+id/textView84"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/textView84" />
@@ -255,6 +257,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="24dp"
+                        android:enabled="false"
                         app:layout_constraintBottom_toBottomOf="@+id/textView85"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/textView85" />
@@ -276,6 +279,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="24dp"
+                        android:enabled="false"
                         app:layout_constraintBottom_toBottomOf="@+id/textView86"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/textView86" />

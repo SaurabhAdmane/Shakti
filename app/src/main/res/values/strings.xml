@@ -9,6 +9,8 @@
         <item>Doctoral degree</item>
     </string-array>
 
+    <string name="kyc_file_name_template">doc_%1$d_%2$s.jpg</string>
+
     <string name="app_name" translatable="false">Shakti Coin</string>
     <string name="err_not_implemented">Not implemented yet</string>
     <string name="welcom_message">Welcome to Shakti Coin</string>
@@ -59,6 +61,8 @@
     <string name="hint_relationship">Relationship</string>
     <string name="hint_message">Message</string>
     <string name="hint_reason_to_contact">Reason to Contact</string>
+    <string name="hint_gender">Gender</string>
+    <string name="hint_language">Language</string>
     <string name="education_level">Highest level of Education</string>
     <string name="occupation">Occupation</string>
     <string name="birthdate">Date of Birth</string>
@@ -90,6 +94,10 @@
     <string name="err_email_exists">The email address is already used.</string>
     <string name="err_phone_exists">The phone number is already used.</string>
     <string name="err_email_phone_exists">Both the email and phone number are already used.</string>
+    <string name="err_no_camera">This feature is not available because your device has no camera</string>
+    <string name="err_no_camera_app">This feature is not available because you have no camera application installed</string>
+    <string name="err_no_camera_permission">You cannot take a picture without permissions for camera</string>
+    <string name="err_no_messages">You have no messages for now</string>
     <string name="ref_who_referred">Who referred you?</string>
     <string name="ref_story">Like an elephant, we never forget. Effort is Shakti. Always remember and reward honest human effort. Tell us who referred you.</string>
     <string name="ref_type_info">Or, type their information:</string>
@@ -221,11 +229,14 @@
     <string name="new_bounty_terms"><u>Refer to the terms</u> for more detailed conditions associated with claiming your bounty. You must sign up for a wallet first and ensure you have completed KYC to be eligible.</string>
     <string name="drawer_wallet">Wallet</string>
     <string name="drawer_vault">Vault</string>
-    <string name="drawer_miner">Miner</string>
-    <string name="drawer_referrals">Referrals</string>
+    <string name="drawer_miner">Mine SXE</string>
+    <string name="drawer_poe">PoE</string>
+    <string name="drawer_add_friends">Add Friends &amp; Family</string>
+    <string name="drawer_referrals">Grab Your Boundy</string>
     <string name="drawer_settings">Settings</string>
     <string name="drawer_home">Home</string>
     <string name="drawer_family_tree">Family Tree</string>
+    <string name="drawer_company">Company</string>
     <string name="profile_personal_title">Personal info</string>
     <string name="profile_personal_whoyou">Who are you?</string>
     <string name="profile_personal_whereyou">Where do you live?</string>
@@ -257,14 +268,14 @@
     </string>
     <string name="profile_kyc_choosed_of_three">Choose of any three categories.</string>
     <string name="profile_company_title">Company info</string>
-    <string name="profile_company_domiciled_info">Domiciled Information</string>
+    <string name="profile_company_domiciled_info">Legal Residence Information</string>
     <string name="profile_company_affiliates">Affiliated companies</string>
     <string name="profile_company_hint_name">Company Name</string>
     <string name="profile_company_hint_trade">Trade Name</string>
-    <string name="profile_company_hint_structure">Company Structure</string>
+    <string name="profile_company_hint_structure">Company <Structur></Structur>e</string>
     <string name="profile_company_hint_established">Date of Establishment</string>
     <string name="profile_company_hint_code">Industry Code</string>
-    <string name="profile_company_hint_vault">Vault ID</string>
+    <string name="profile_company_hint_vault">VaultID</string>
     <string name="profile_company_bind">Bind Trade Name</string>
     <string name="profile_company_domiciled_country">Domiciled Country</string>
     <string name="profile_company_domiciled_state">Domiciled State</string>
@@ -278,6 +289,8 @@
     </string>
     <string name="profile_company_alerts">I consent to receiving alerts from the Shakti Network</string>
     <string name="profile_company_update_adds">Update Additional Info</string>
+    <string name="profile_company_add_another_company">Add Another Company</string>
+    <string name="profile_company_page_company_info">Company Info</string>
     <string name="wallet_page_personal">Personal Info</string>
     <string name="wallet_page_additional">Additional Info</string>
     <string name="wallet_page_kyc">KYC Validation</string>
@@ -290,14 +303,6 @@
     <string name="kyc_upload_file">Scan &amp;\nUpload a File</string>
     <string name="kyc_skip">Skip to\nUpload file</string>
     <string name="kyc_document_match">Your document must match your name &amp; address.</string>
-    <string name="kyc_type_phone_bill">Phone</string>
-    <string name="kyc_type_gas_bill">Gas</string>
-    <string name="kyc_type_elect_bill">Electricity</string>
-    <string name="kyc_type_water_bill">Water</string>
-    <string name="kyc_type_tax_bill">Municipal Tax</string>
-    <string name="kyc_type_insurance">Insurance Coverage</string>
-    <string name="kyc_type_cable_bill">Cable</string>
-    <string name="kyc_type_other_bill">Other</string>
     <string name="kyc_select_option">Select an Option</string>
     <string name="kyc_opt_mining">Purchase a Mining License</string>
     <string name="kyc_opt_fee">Pay a small Fee to Validate</string>
@@ -587,5 +592,80 @@
     <string name="family_members">Family Members</string>
     <string name="family_action">Add a Family Member</string>
     <string name="dlg_family_title"><![CDATA[Add a<br/><font color="#B09C75"><b>Family Member</b></font>]]></string>
-
+    <string name="company_sum_title">Due-Dilligence Checklist</string>
+    <string name="company_sum_vault">VaultID</string>
+    <string name="company_sum_company_name">Company Name</string>
+    <string name="company_sum_trade_name">Trade Name</string>
+    <string name="company_sum_structure">Company Structure</string>
+    <string name="company_sum_estabsh">Date of Establishment</string>
+    <string name="company_sum_industry">Industry Code</string>
+    <string name="company_sum_country">Domiciled Country</string>
+    <string name="company_sum_state">State</string>
+    <string name="company_sum_city">City</string>
+    <string name="company_sum_email">Email Address</string>
+    <string name="company_sum_phone">Phone Number</string>
+    <string name="company_sum_affiliate">Affiliated Company</string>
+    <string name="company_sum_relationship">Type of Relationship</string>
+    <string name="company_sum_type">Type of Company</string>
+    <string name="feats_title">Feats of PoE</string>
+    <string name="feats_onboard_child">On-board School Going Child</string>
+    <string name="feats_add_language">Add another language</string>
+    <string name="feats_hint_primary_email_address">Primary Email Address</string>
+    <string name="feats_hint_primary_phone_number">Primary Phone Number</string>
+    <string name="feats_hint_secondary_email">Secondary Email</string>
+    <string name="feats_hint_secondary_phone">Secondary Phone Number</string>
+    <string name="feats_hint_spwallet">Service Provider WalletID</string>
+    <string name="feats_hint_spbizvault">Service Provider bizVaultID</string>
+    <string name="feats_hint_sptaxcountry">Service Provider Tax Paying Country</string>
+    <string name="feats_hint_spprimary_email">Service Provider Primary Email</string>
+    <string name="feats_hint_spprimary_phone">Service Provider Primary Phone</string>
+    <string name="feats_hint_sp_name">Service Provider Business Name</string>
+    <string name="feats_hint_tax_paying_country">Tax Paying Country</string>
+    <string name="feats_hint_verwallet">Verifier WalletID</string>
+    <string name="feats_hint_vervault">Verifier bizVaultID</string>
+    <string name="feats_hint_veremail">Verifier Email</string>
+    <string name="feats_hint_verprimary_phone">Verifier Primary Phone</string>
+    <string name="feats_hint_versecondary_phone">Verifier Secondary Phone</string>
+    <string name="feats_hint_vercountry">Verifier Country of Residence</string>
+    <string name="feats_nextkin">Your next of kin</string>
+    <string name="feats_another_kin">Add another next of kin</string>
+    <string name="feats_another_beneficiary">Add beneficiary</string>
+    <string name="feats_are_you_head">Are You Head of Family?</string>
+    <string name="feats_onboard_school">On-board a School</string>
+    <string name="feats_school_title1">Which School do you want to Onboard?</string>
+    <string name="feats_school_title3">School %1$d - Address Information</string>
+    <string name="feats_school_name">School Name</string>
+    <string name="feats_school_info">School Info</string>
+    <string name="feats_country_tax">Country of Tax</string>
+    <string name="feats_established">Date of Establishment</string>
+    <string name="feats_bizvaultid">bizVaultID</string>
+    <string name="feats_walletid">WalletID</string>
+    <string name="feats_school_primary_language">Primary Language</string>
+    <string name="feats_school_secondary_language">Secondary Language</string>
+    <string name="feats_add_another_primary_language">Add another primary language</string>
+    <string name="feats_add_anther_secondary_language">Add another secondary language</string>
+    <string name="feats_add_another_email">Add another email address</string>
+    <string name="feats_add_another_phone">Add another phone number</string>
+    <string name="feats_add_another_registrar">Add another registrar name</string>
+    <string name="feats_add_another_principal">Add another principal name</string>
+    <string name="feats_add_athother_vice_principal">Add another vice principal name</string>
+    <string name="feats_add_another_school">Add Another School</string>
+    <string name="feats_hint_registrar_name">Registrar Name</string>
+    <string name="feats_hint_principal_name">Principal Name</string>
+    <string name="feats_hint_vice_principal_name">Vise Principal Name</string>
+    <string name="feats_action_update_school">Update school information</string>
+    <string name="feats_school_gov">Is the School Gov. Accredited?</string>
+    <string name="feats_school_affeliated">Is the School Affiliated?</string>
+    <string name="feats_onboard_provider">On-board a Service Provider</string>
+    <string name="feats_provider_info">Serv. Provider Info</string>
+    <string name="feats_provider_title1">Service Provider Details</string>
+    <string name="feats_provider_title2">Where do you work?</string>
+    <string name="feats_verifier_info">Independent Verifier Info</string>
+    <string name="feats_verifier_onboard">On-boarding Independent Verifier</string>
+    <string name="feats_verifier_action">Update independent verifier information</string>
+    <string name="parties_label">PoE Participants</string>
+    <string name="parties_children_title">On-boarded School Children</string>
+    <string name="parties_schools_title">On-boarded Schools</string>
+    <string name="parties_providers_title">On-boarded Service Providers</string>
+    <string name="parties_verifiers_title">On-boarded Independent Verifiers</string>
 </resources>

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,21 +12,30 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.viewpager.widget.ViewPager;
 
 import com.shakticoin.app.R;
 import com.shakticoin.app.databinding.ActivityCompanyProfileBinding;
-import com.shakticoin.app.wallet.BaseWalletActivity;
+import com.shakticoin.app.widget.DrawerActivity;
 import com.shakticoin.app.wallet.WalletActivity;
 import com.shakticoin.app.widget.DatePicker;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
-public class CompanyProfileActivity extends BaseWalletActivity {
+public class CompanyProfileActivity extends DrawerActivity {
     private ActivityCompanyProfileBinding binding;
     private CompanyProfileViewModel viewModel;
+
+    private final String[] tags = new String[] {
+            CompanyInfoFragment1.class.getSimpleName(),
+            CompanyInfoFragment2.class.getSimpleName(),
+            CompanyAdditionalInfoFragment1.class.getSimpleName(),
+            CompanyAdditionalInfoFragment2.class.getSimpleName(),
+            KycSelectorFragment.class.getSimpleName()};
     private CompanyProfileFragmentAdapter pageAdapter;
 
     private TextView toolbarTitle;
@@ -42,37 +52,55 @@ public class CompanyProfileActivity extends BaseWalletActivity {
 
         toolbarTitle = binding.getRoot().findViewById(R.id.toolbarTitle);
 
+        String[] pageIndicatorItems = new String[] {
+                getString(R.string.profile_company_page_company_info),
+                null,
+                getString(R.string.wallet_page_additional),
+                null,
+                getString(R.string.wallet_page_kyc)
+        };
+        binding.pageIndicator.setSizeAndLabels(pageIndicatorItems);
         binding.pageIndicator.setSelectedIndex(1);
 
-        pageAdapter = new CompanyProfileFragmentAdapter(getSupportFragmentManager());
-        binding.mainFragment.setAdapter(pageAdapter);
-        binding.mainFragment.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
-
-            @Override
-            public void onPageSelected(int position) {
-                binding.pageIndicator.setSelectedIndex(position+1);
-                if (position == 0 || position == 1) {
-                    toolbarTitle.setText(R.string.profile_company_title);
-                    binding.profileBackground.setBackgroundResource(R.drawable.personal_background);
-                } else if (position == 2 || position == 3) {
-                    toolbarTitle.setText(R.string.wallet_page_additional);
-                    binding.profileBackground.setBackgroundResource(R.drawable.additional_background);
-                } else {
-                    toolbarTitle.setText(R.string.wallet_page_kyc);
-                    binding.profileBackground.setBackgroundResource(R.drawable.kyc_validation_background);
+        getSupportFragmentManager().addOnBackStackChangedListener(() -> {
+            for (int i = 0; i < tags.length; i++) {
+                String tag = tags[i];
+                Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
+                if (fragment != null && fragment.isVisible()) {
+                    binding.pageIndicator.setSelectedIndex(i+1);
                 }
             }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {}
         });
+        pageAdapter = new CompanyProfileFragmentAdapter(getSupportFragmentManager());
+        selectPage(0);
     }
 
     @Override
     protected int getCurrentDrawerSelection() {
         return 4;
+    }
+
+    private void selectPage(int index) {
+        Fragment fragment = pageAdapter.getItem(index);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        if (index > 0) {
+            transaction.addToBackStack(fragment.getClass().getSimpleName());
+        }
+        transaction.replace(binding.mainFragment.getId(), fragment, fragment.getClass().getSimpleName());
+        transaction.commit();
+
+        binding.pageIndicator.setSelectedIndex(index+1);
+
+        if (index == 0 || index == 1) {
+            toolbarTitle.setText(R.string.profile_company_title);
+            binding.profileBackground.setBackgroundResource(R.drawable.personal_background);
+        } else if (index == 2 || index == 3) {
+            toolbarTitle.setText(R.string.wallet_page_additional);
+            binding.profileBackground.setBackgroundResource(R.drawable.additional_background);
+        } else {
+            toolbarTitle.setText(R.string.wallet_page_kyc);
+            binding.profileBackground.setBackgroundResource(R.drawable.kyc_validation_background);
+        }
     }
 
     public void onSetDateEstablished(View v) {
@@ -86,7 +114,7 @@ public class CompanyProfileActivity extends BaseWalletActivity {
             cal.set(Calendar.SECOND, 0);
             cal.set(Calendar.MILLISECOND, 0);
 
-            SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
             viewModel.establishmentDate.setValue(fmt.format(cal.getTime()));
         });
         picker.show(getSupportFragmentManager(), "date-picker");
@@ -94,51 +122,53 @@ public class CompanyProfileActivity extends BaseWalletActivity {
     }
 
     public void onNextCompanyInfoPage(View v) {
-        binding.mainFragment.setCurrentItem(1, true);
+        selectPage(1);
     }
 
     public void onUpdateCompanyInfo(View v) {
-        binding.mainFragment.setCurrentItem(2, true);
+        selectPage(2);
     }
 
     public void onNextCompanyAdditionalPage(View v) {
-        binding.mainFragment.setCurrentItem(3, true);
+        selectPage(3);
     }
 
     public void onUpdateCompanyAdditionalInfo(View v) {
-        binding.mainFragment.setCurrentItem(4, true);
+        selectPage(4);
+    }
+
+    public void onAddAnotherCompany(View v) {
+        Toast.makeText(this, R.string.err_not_implemented, Toast.LENGTH_SHORT).show();
     }
 
     public void onCancel(View v) {
         navigateUpTo(new Intent(this, WalletActivity.class));
     }
 
-    class CompanyProfileFragmentAdapter extends FragmentPagerAdapter {
+    static class CompanyProfileFragmentAdapter extends FragmentPagerAdapter {
+        private ArrayList<Fragment> fragments;
 
-        public CompanyProfileFragmentAdapter(@NonNull FragmentManager fm) {
+        CompanyProfileFragmentAdapter(@NonNull FragmentManager fm) {
             super(fm, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+
+            fragments = new ArrayList<>(5);
+            fragments.add(new CompanyInfoFragment1());
+            fragments.add(new CompanyInfoFragment2());
+            fragments.add(new CompanyAdditionalInfoFragment1());
+            fragments.add(new CompanyAdditionalInfoFragment2());
+            fragments.add(new KycSelectorFragment());
         }
 
         @NonNull
         @Override
         public Fragment getItem(int position) {
-            switch (position) {
-                case 0:
-                    return new CompanyInfoFragment1();
-                case 1:
-                    return new CompanyInfoFragment2();
-                case 2:
-                    return new CompanyAdditionalInfoFragment1();
-                case 3:
-                    return new CompanyAdditionalInfoFragment2();
-                default:
-                    return new KycSelectorFragment();
-            }
+            if (position >= fragments.size()) throw new IllegalArgumentException();
+            return fragments.get(position);
         }
 
         @Override
         public int getCount() {
-            return 5;
+            return fragments.size();
         }
     }
 }

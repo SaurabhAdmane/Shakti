@@ -5,12 +5,12 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 
-import com.shakticoin.app.wallet.BaseWalletActivity;
+import com.shakticoin.app.widget.DrawerActivity;
 
 import com.shakticoin.app.R;
 import com.shakticoin.app.databinding.ActivityUpgradeMinerBinding;
 
-public class UpgradeMinerActivity extends BaseWalletActivity {
+public class UpgradeMinerActivity extends DrawerActivity {
     private ActivityUpgradeMinerBinding binding;
 
     @Override

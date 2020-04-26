@@ -26,7 +26,7 @@ public class BindingAdapters {
         InlineLabelSpinner spinner = (InlineLabelSpinner) view;
         spinner.clear();
         if (values != null) {
-            spinner.add(new Country(null, ""));
+            spinner.add("");
             spinner.addAll(values);
         }
     }

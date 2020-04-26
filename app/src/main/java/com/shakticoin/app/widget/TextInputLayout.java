@@ -38,14 +38,21 @@ import android.widget.TextView;
 import com.shakticoin.app.R;
 
 public class TextInputLayout extends RelativeLayout {
+    /**
+     * The design contain special call-out like look for validation error message that
+     * does not work well at the moment. This is why we temporarily are switched to
+     * standard error messages. This constant controls this and can be set to false
+     * for call-out look.
+     */
+    private static final boolean STANDARD_ERR_MESSAGE = true;
 
     private Drawable passwordToggleDrawable;
     private Drawable passwordToggleDummyDrawable;
     private Drawable originalEditTextEndDrawable;
     private boolean passwordToggledVisible = false;
-    private boolean passwordToggleEnabled = false;
+    private boolean passwordToggleEnabled;
 
-    private boolean validationEnabled = false;
+    private boolean validationEnabled;
     private Drawable validationOk;
     private Drawable validationFailed;
     private Validator validationListener;
@@ -252,7 +259,7 @@ public class TextInputLayout extends RelativeLayout {
                 } else {
                     textPaint.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
                 }
-                Float textWidth = textPaint.measureText((String) hint);
+                float textWidth = textPaint.measureText((String) hint);
                 int paddingTotal = labelView.getPaddingLeft() + labelView.getPaddingRight();
                 textWidth = textWidth + paddingTotal;
                 if (editTextView instanceof InlineLabelEditText) {
@@ -389,61 +396,71 @@ public class TextInputLayout extends RelativeLayout {
 
     @SuppressLint("ClickableViewAccessibility")
     public void setError(String errorMsg) {
-        int[] screenLoc = new int[2];
-        editTextView.getLocationOnScreen(screenLoc);
-        int fieldWidth = editTextView.getWidth();
-        // TODO: or window location? check in multiwindow case
-
-        Point point = new Point();
-        WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
-        if (wm != null) {
-            Display display = wm.getDefaultDisplay();
-            display.getSize(point);
-        }
-
-        LayoutInflater inflater = (LayoutInflater)
-                getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        if (inflater == null) return;
-        @SuppressLint("InflateParams")
-        View v = inflater.inflate(R.layout.error_callout_up, null);
-        TextView textView = v.findViewById(R.id.text);
-        textView.setText(errorMsg);
-
-        PopupWindow window = new PopupWindow(v,
-                ConstraintLayout.LayoutParams.WRAP_CONTENT,
-                ConstraintLayout.LayoutParams.WRAP_CONTENT,
-                true); // focusable is set to make possible closing the callout by clicking outside of the window
-        ViewTreeObserver observer = v.getViewTreeObserver();
-        observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                // now we know size of the callout and can position it more precisely
-                v.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-
-                int calloutHeight = v.getHeight();
-                int desiredY = screenLoc[1] - calloutHeight/2;
-
-                int calloutWidth = v.getWidth();
-                int desiredX = screenLoc[0] + fieldWidth/2;
-                if (calloutWidth > fieldWidth/2) {
-                    // screen width - callout width - right margin
-                    desiredX = point.x - calloutWidth - 24 * oneDPinPixels.intValue();
+        if (STANDARD_ERR_MESSAGE) {
+            for (int i = 0; i < getChildCount(); i++) {
+                View v = getChildAt(i);
+                if (v instanceof EditText) {
+                    ((EditText) v).setError(errorMsg);
+                    break;
                 }
-                if (desiredX < screenLoc[0]) {
-                    desiredX = screenLoc[0];
-                }
-
-                window.dismiss();
-                window.showAtLocation(editTextView, Gravity.NO_GRAVITY, desiredX, desiredY);
             }
-        });
+        } else {
+            int[] screenLoc = new int[2];
+            editTextView.getLocationOnScreen(screenLoc);
+            int fieldWidth = editTextView.getWidth();
+            // TODO: or window location? check in multiwindow case
 
-        window.setTouchInterceptor((v1, event) -> {
-            window.dismiss();
-            return true;
-        });
+            Point point = new Point();
+            WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+            if (wm != null) {
+                Display display = wm.getDefaultDisplay();
+                display.getSize(point);
+            }
 
-        window.showAtLocation(editTextView, Gravity.NO_GRAVITY, screenLoc[0], screenLoc[1]);
+            LayoutInflater inflater = (LayoutInflater)
+                    getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            if (inflater == null) return;
+            @SuppressLint("InflateParams")
+            View v = inflater.inflate(R.layout.error_callout_up, null);
+            TextView textView = v.findViewById(R.id.text);
+            textView.setText(errorMsg);
+
+            PopupWindow window = new PopupWindow(v,
+                    ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                    ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                    true); // focusable is set to make possible closing the callout by clicking outside of the window
+            ViewTreeObserver observer = v.getViewTreeObserver();
+            observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    // now we know size of the callout and can position it more precisely
+                    v.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+
+                    int calloutHeight = v.getHeight();
+                    int desiredY = screenLoc[1] - calloutHeight / 2;
+
+                    int calloutWidth = v.getWidth();
+                    int desiredX = screenLoc[0] + fieldWidth / 2;
+                    if (calloutWidth > fieldWidth / 2) {
+                        // screen width - callout width - right margin
+                        desiredX = point.x - calloutWidth - 24 * oneDPinPixels.intValue();
+                    }
+                    if (desiredX < screenLoc[0]) {
+                        desiredX = screenLoc[0];
+                    }
+
+                    window.dismiss();
+                    window.showAtLocation(editTextView, Gravity.NO_GRAVITY, desiredX, desiredY);
+                }
+            });
+
+            window.setTouchInterceptor((v1, event) -> {
+                window.dismiss();
+                return true;
+            });
+
+            window.showAtLocation(editTextView, Gravity.NO_GRAVITY, screenLoc[0], screenLoc[1]);
+        }
     }
 
     /**

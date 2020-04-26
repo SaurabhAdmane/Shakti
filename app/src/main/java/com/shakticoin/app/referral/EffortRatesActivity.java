@@ -9,9 +9,9 @@ import androidx.databinding.DataBindingUtil;
 import com.shakticoin.app.R;
 import com.shakticoin.app.api.referral.model.EffortRate;
 import com.shakticoin.app.databinding.ActivityEffortRatesBinding;
-import com.shakticoin.app.wallet.BaseWalletActivity;
+import com.shakticoin.app.widget.DrawerActivity;
 
-public class EffortRatesActivity extends BaseWalletActivity {
+public class EffortRatesActivity extends DrawerActivity {
     private ActivityEffortRatesBinding binding;
 
     @Override

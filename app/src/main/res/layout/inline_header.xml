@@ -7,6 +7,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="?attr/actionBarSize"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
     android:background="@color/colorPrimaryDark">
 
     <ImageButton
@@ -38,6 +40,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:gravity="center_horizontal"
         android:textAppearance="@style/AppText.ToolBarTitle"/>
 
     <ImageButton
@@ -46,10 +49,14 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|end"
         android:layout_marginEnd="6dp"
-        android:padding="4dp"
         android:background="?attr/actionBarItemBackground"
-        android:onClick="onNotifications"
+        android:padding="4dp"
+        android:tint="@color/whiteDisabled"
         app:srcCompat="@drawable/ic_notification"
         tools:ignore="ContentDescription" />
+    <!-- FIXME: add when disabled
+        android:onClick="onNotifications"
+        and remove tint
+    -->
 
 </androidx.appcompat.widget.Toolbar>

@@ -72,6 +72,7 @@
                         android:text="@={viewModel.lastName}"/>
             </com.shakticoin.app.widget.TextInputLayout>
 
+            <!-- FIXME: The switch is disabled because API does not allow empty email address and registration by phone not possible -->
             <Switch
                 android:id="@+id/contactMechSelector"
                 android:layout_width="wrap_content"
@@ -83,6 +84,7 @@
                 android:track="@drawable/switch_track"
                 android:thumb="@drawable/switch_thumb"
                 android:checked="@{viewModel.isPhoneNumberChecked}"
+                android:enabled="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/lastNameLayout" />

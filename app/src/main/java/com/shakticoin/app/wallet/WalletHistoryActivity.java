@@ -32,6 +32,7 @@ import com.shakticoin.app.payment.DialogPaySXE;
 import com.shakticoin.app.util.Debug;
 import com.shakticoin.app.util.RecyclerViewHeader;
 import com.shakticoin.app.util.RecyclerViewItem;
+import com.shakticoin.app.widget.DrawerActivity;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
@@ -44,7 +45,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class WalletHistoryActivity extends BaseWalletActivity {
+public class WalletHistoryActivity extends DrawerActivity {
     private ActivityWalletHistoryBinding binding;
     private WalletRepository repository;
 

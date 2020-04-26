@@ -18,4 +18,13 @@
         android:layout_height="wrap_content"
         android:background="@drawable/drawer"/>
 
+    <TextView
+        android:id="@+id/empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal|top"
+        android:padding="24dp"
+        android:text="@string/err_no_messages"
+        android:textAppearance="@style/AppText.Body"
+        android:visibility="invisible" />
 </FrameLayout>
