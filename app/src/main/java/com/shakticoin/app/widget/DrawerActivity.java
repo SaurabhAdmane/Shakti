@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -88,6 +87,7 @@ public abstract class DrawerActivity extends AppCompatActivity {
 
         viewModel.notifications.observe(this, notifications -> adapter.notifyDataSetChanged());
 
+        // process expendable menu item
         menuItemMinerIcon = findViewById(R.id.minerDropdownIcon);
         menuItemMinerExpanded = findViewById(R.id.minerMenuExpanded);
         viewModel.isMinerExpanded.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
@@ -214,8 +214,7 @@ public abstract class DrawerActivity extends AppCompatActivity {
             if (currentWidth == 0) {
                 float currentOffset = rightDrawer.getTranslationX();
                 if (Math.abs(currentOffset) < 0.1) {
-                    int containerWidth = getResources().getDimensionPixelOffset(R.dimen.notifications_list_width);
-                    rightDrawer.setTranslationX(containerWidth);
+                    closeRightDrawer();
                 }
             }
             ValueAnimator anim = ValueAnimator.ofInt(currentWidth, currentWidth == 0 ? openedWidth : 0);
@@ -243,9 +242,7 @@ public abstract class DrawerActivity extends AppCompatActivity {
             // we need close the drawer before open notification messages because main content will
             // be shifted over it
             if (Math.abs(rightDrawer.getTranslationX() - openedWidth) < 0.1 && leftDrawer != null) {
-                ViewGroup.LayoutParams layoutParams = leftDrawer.getLayoutParams();
-                layoutParams.width = 0;
-                leftDrawer.setLayoutParams(layoutParams);
+                closeLeftDrawer();
             }
 
             int startPosition = rightDrawer.getTranslationX() == 0 ? 0 : currentWidth;
@@ -263,16 +260,40 @@ public abstract class DrawerActivity extends AppCompatActivity {
         }
     }
 
+    private void closeLeftDrawer() {
+        ViewGroup.LayoutParams layoutParams = leftDrawer.getLayoutParams();
+        layoutParams.width = 0;
+        leftDrawer.setLayoutParams(layoutParams);
+        mainFragment.setTranslationX(0);
+    }
+
+    private void closeRightDrawer() {
+        int containerWidth = getResources().getDimensionPixelOffset(R.dimen.notifications_list_width);
+        rightDrawer.setTranslationX(containerWidth);
+    }
+
+    private void closeDrawers() {
+        closeLeftDrawer();
+        closeRightDrawer();
+    }
+
+    public void onTapOutsideDrawers(View v) {
+        closeDrawers();
+    }
+
     public void onOpenReferrals(View v) {
         Intent intent = new Intent(this, MyReferralsActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
+        closeDrawers();
     }
 
     public void onOpenSettings(View v) {
+        mainFragment.getMeasuredHeight();
         Intent intent = new Intent(this, SettingsActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
+        closeDrawers();
     }
 
     public void onExpandMiner(View v) {
@@ -283,37 +304,48 @@ public abstract class DrawerActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ParticipantsActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
+        closeDrawers();
     }
 
     public void onOpenBonusBounty(View v) {
         Intent intent = new Intent(this, BonusBountyActivity.class);
         startActivity(intent);
+        closeDrawers();
     }
 
     public void onOpenVault(View v) {
-        Intent intent = new Intent(this, WalletActivity.class);
-        startActivity(intent);
+        if (!(this instanceof WalletActivity)) {
+            Intent intent = new Intent(this, WalletActivity.class);
+            startActivity(intent);
+        }
+        closeDrawers();
     }
 
     public void onOpenWallet(View v) {
-        Intent intent = new Intent(this, WalletActivity.class);
-        startActivity(intent);
+        if (!(this instanceof WalletActivity)){
+            Intent intent = new Intent(this, WalletActivity.class);
+            startActivity(intent);
+        }
+        closeDrawers();
     }
 
     public void onOpenHome(View v) {
         Intent intent = new Intent(this, WelcomeTourActivity.class);
         intent.putExtra(CommonUtil.prefixed("finalDestination", this), WalletActivity.class.getName());
         startActivity(intent);
+        closeDrawers();
     }
 
     public void onOpenFamilyTree(View v) {
         Intent intent = new Intent(this, FamilyTreeActivity.class);
         startActivity(intent);
+        closeDrawers();
     }
 
     public void onOpenCompany(View v) {
         Intent intent = new Intent(this, CompanySummaryActivity.class);
         startActivity(intent);
+        closeDrawers();
     }
 
     public void onNotImplemented(View v) {
