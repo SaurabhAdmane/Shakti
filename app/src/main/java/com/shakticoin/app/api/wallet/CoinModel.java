@@ -1,13 +1,12 @@
 package com.shakticoin.app.api.wallet;
 
-public class TransferParameters {
+public class CoinModel {
     private Integer addressNumber;
     private String cacheBytes;
     private String messageForRecipient;
-    private String passphrase;
+    private Long sessionToken;
     private String toAddress;
     private String valueInToshi;
-    private String walletBytes;
 
     public Integer getAddressNumber() {
         return addressNumber;
@@ -33,12 +32,12 @@ public class TransferParameters {
         this.messageForRecipient = messageForRecipient;
     }
 
-    public String getPassphrase() {
-        return passphrase;
+    public Long getSessionToken() {
+        return sessionToken;
     }
 
-    public void setPassphrase(String passphrase) {
-        this.passphrase = passphrase;
+    public void setSessionToken(Long sessionToken) {
+        this.sessionToken = sessionToken;
     }
 
     public String getToAddress() {
@@ -55,13 +54,5 @@ public class TransferParameters {
 
     public void setValueInToshi(String valueInToshi) {
         this.valueInToshi = valueInToshi;
-    }
-
-    public String getWalletBytes() {
-        return walletBytes;
-    }
-
-    public void setWalletBytes(String walletBytes) {
-        this.walletBytes = walletBytes;
     }
 }

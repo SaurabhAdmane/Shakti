@@ -41,7 +41,7 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="27dp"
                 android:layout_marginEnd="24dp"
-                android:text="@{viewModel.formattedBalance}"
+                android:text="@{viewModel.getFormattedBalance(viewModel.balance)}"
                 android:textAppearance="@style/AppText.Body"
                 android:textFontWeight="500"
                 android:textSize="36sp"

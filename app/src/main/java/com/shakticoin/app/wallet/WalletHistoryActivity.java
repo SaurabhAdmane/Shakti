@@ -1,5 +1,6 @@
 package com.shakticoin.app.wallet;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -24,12 +25,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.shakticoin.app.R;
+import com.shakticoin.app.api.Constants;
 import com.shakticoin.app.api.OnCompleteListener;
+import com.shakticoin.app.api.Session;
 import com.shakticoin.app.api.wallet.Transaction;
+import com.shakticoin.app.api.wallet.WalletBalanceModelRequest;
 import com.shakticoin.app.api.wallet.WalletRepository;
 import com.shakticoin.app.databinding.ActivityWalletHistoryBinding;
 import com.shakticoin.app.payment.DialogPaySXE;
 import com.shakticoin.app.util.Debug;
+import com.shakticoin.app.util.FormatUtil;
 import com.shakticoin.app.util.RecyclerViewHeader;
 import com.shakticoin.app.util.RecyclerViewItem;
 import com.shakticoin.app.widget.DrawerActivity;
@@ -48,6 +53,7 @@ import java.util.Map;
 public class WalletHistoryActivity extends DrawerActivity {
     private ActivityWalletHistoryBinding binding;
     private WalletRepository repository;
+    private TransactionAdapter adapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,19 +68,41 @@ public class WalletHistoryActivity extends DrawerActivity {
         binding.list.setHasFixedSize(true);
         binding.list.setLayoutManager(new LinearLayoutManager(this));
         binding.list.addItemDecoration(new ItemDecoration(this));
-        TransactionAdapter adapter = new TransactionAdapter(new ArrayList<>());
+        adapter = new TransactionAdapter(new ArrayList<>());
         binding.list.setAdapter(adapter);
-        repository.getTransactions(new OnCompleteListener<List<Transaction>>() {
-            @Override
-            public void onComplete(List<Transaction> transactions, Throwable error) {
-                if (error != null) {
-                    Debug.logException(error);
-                    return;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        final Activity activity = this;
+
+        String walletBytes = repository.getExistingWallet(null);
+        if (walletBytes != null) {
+            repository.getBalance(new OnCompleteListener<BigDecimal>() {
+                @Override
+                public void onComplete(BigDecimal value, Throwable error) {
+                    if (error != null) {
+                        Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                    binding.balance.setText(FormatUtil.formatCoinAmount(value));
                 }
-                binding.emptyListMsg.setVisibility(transactions.size() == 0 ? View.VISIBLE : View.GONE);
-                adapter.addAll(transactions);
-            }
-        });
+            });
+
+            repository.getTransactions(new OnCompleteListener<List<Transaction>>() {
+                @Override
+                public void onComplete(List<Transaction> transactions, Throwable error) {
+                    if (error != null) {
+                        Debug.logException(error);
+                        return;
+                    }
+                    binding.emptyListMsg.setVisibility(transactions.size() == 0 ? View.VISIBLE : View.GONE);
+                    adapter.addAll(transactions);
+                }
+            });
+        }
     }
 
     @Override
