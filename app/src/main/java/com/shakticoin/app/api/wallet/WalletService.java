@@ -11,22 +11,27 @@ import retrofit2.http.POST;
 public interface WalletService {
 
     @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("walletservice/api/v1/users/session/")
+    Call<SessionModelResponse> getSession(@Header("Authorization") String authorization,
+                                          @Body SessionModelRequest parameters);
+
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("walletservice/api/v1/wallets/")
     Call<Map<String, String>> createWallet(@Header("Authorization") String authorization,
-                                           @Body CreateWalletParameters parameters);
+                                           @Body WalletModelRequest parameters);
 
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("walletservice/api/v1/users/wallet/address/")
-    Call<Map<String, String>> getWalletAddress(@Header("Authorization") String authorization,
-                                               @Body WalletAddressParameters parameters);
+    Call<WalletAddressModelResponse> getWalletAddress(@Header("Authorization") String authorization,
+                                               @Body WalletAddressModelRequest parameters);
 
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("walletservice/api/v1/users/wallet/mybalance/")
-    Call<Map<String, Object>> getWalletBalance(@Header("Authorization") String authorization,
-                                               @Body WalletBalanceParameters parameters);
+    Call<WalletBalanceModelResponse> getWalletBalance(@Header("Authorization") String authorization,
+                                               @Body WalletBalanceModelRequest parameters);
 
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("walletservice/api/v1/coins/")
-    Call<Map<String, String>> transferSxeCoins(@Header("Authorization") String authorization,
-                                               @Body TransferParameters parameters);
+    Call<TransferModelResponse> transferSxeCoins(@Header("Authorization") String authorization,
+                                               @Body CoinModel parameters);
 }

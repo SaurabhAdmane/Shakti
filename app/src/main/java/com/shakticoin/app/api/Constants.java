@@ -48,4 +48,19 @@ public class Constants {
         public static final int REGST_DASHBRD = 9;
     }
 
+    /**
+     * "chai" is 1/100th of a coin.
+     */
+    public static final Integer CHAI_FACTOR     = 100;
+
+    /**
+     * "toshi" is 1/100,000th of a coin and it is the smallest
+     * unit of measure in the system.
+     */
+    public static final Integer TOSHI_FACTOR    = 100000;
+
+    /**
+     * Default passphrase for wallet
+     */
+    public static final String PASSPHRASE = "empty";
 }

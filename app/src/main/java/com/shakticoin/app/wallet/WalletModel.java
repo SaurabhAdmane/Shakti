@@ -5,12 +5,14 @@ import androidx.databinding.ObservableField;
 import androidx.lifecycle.ViewModel;
 
 import com.shakticoin.app.api.user.UserRepository;
+import com.shakticoin.app.util.FormatUtil;
 
 import java.math.BigDecimal;
 import java.util.Locale;
 
 public class WalletModel extends ViewModel {
     public ObservableBoolean progressBarTrigger = new ObservableBoolean(false);
+
     public ObservableField<String> fullName = new ObservableField<>();
     public ObservableField<String> referralCode = new ObservableField<>();
     public ObservableField<String> referralLink = new ObservableField<>();
@@ -54,9 +56,10 @@ public class WalletModel extends ViewModel {
 //        });
     }
 
-    public String getFormattedBalance() {
-        return String.format(Locale.getDefault(), "SXE %1$.2f", balance.get());
+    public String getFormattedBalance(BigDecimal amount) {
+        return FormatUtil.formatCoinAmount(amount);
     }
+
     public String getFormattedBonusBalance() {
         return String.format(Locale.getDefault(), "SXE %1$.2f", bonusBalance.get());
     }

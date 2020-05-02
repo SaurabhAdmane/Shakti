@@ -1,19 +1,31 @@
 package com.shakticoin.app.api.wallet;
 
-import androidx.annotation.NonNull;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.os.Build;
+import android.security.keystore.KeyGenParameterSpec;
+import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.security.crypto.EncryptedSharedPreferences;
+import androidx.security.crypto.MasterKeys;
+
+import com.shakticoin.app.ShaktiApplication;
 import com.shakticoin.app.api.BackendRepository;
-import com.shakticoin.app.api.BaseUrl;
 import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.Session;
 import com.shakticoin.app.api.UnauthorizedException;
 import com.shakticoin.app.api.auth.AuthRepository;
 import com.shakticoin.app.api.auth.TokenResponse;
+import com.shakticoin.app.api.user.User;
 import com.shakticoin.app.util.Debug;
+import com.shakticoin.app.util.PreferenceHelper;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -29,12 +41,116 @@ public class WalletRepository extends BackendRepository {
     private AuthRepository authRepository;
 
     public WalletRepository() {
+        // TODO: URL is temporarily and must be changed
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BaseUrl.get())
+                .baseUrl("http://155.138.222.28:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         service = retrofit.create(WalletService.class);
         authRepository = new AuthRepository();
+    }
+
+    /**
+     * Before a user enters the wallet page we must have this wallet. The wallet bytes (that is
+     * a wallet ID) must be stored in encrypted preferences (for now, better to get it in user's
+     * information).
+     * @param user User information does not contains wallet but it should. Included for the future.
+     * @return
+     */
+    public String getExistingWallet(@Nullable User user) {
+        String walletBytes = null;
+        try {
+            Context context = ShaktiApplication.getContext();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                KeyGenParameterSpec keyGenParams = MasterKeys.AES256_GCM_SPEC;
+                String masterKeyAlias = MasterKeys.getOrCreate(keyGenParams);
+                SharedPreferences prefs = EncryptedSharedPreferences.create(
+                        "ss", masterKeyAlias, context,
+                        EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                        EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM);
+                walletBytes = prefs.getString(PreferenceHelper.PREF_WALLET_BYTES, null);
+            } else {
+                SharedPreferences prefs =
+                        context.getSharedPreferences(PreferenceHelper.GENERAL_PREFERENCES, Context.MODE_PRIVATE);
+                walletBytes = prefs.getString(PreferenceHelper.PREF_WALLET_BYTES, null);
+            }
+
+        } catch (IOException | GeneralSecurityException e) {
+            Debug.logException(e);
+        }
+        return walletBytes;
+    }
+
+    /**
+     * Store wallet ID locally for future use but we must save it in the user profile when API
+     * will allow this.
+     * @param walletBytes A wallet ID
+     */
+    public void storeWallet(@NonNull String walletBytes) {
+        if (TextUtils.isEmpty(walletBytes)) throw new IllegalArgumentException();
+        try {
+            Context context = ShaktiApplication.getContext();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                // store refresh token in an encrypted storage in order to login automatically
+                KeyGenParameterSpec keyGenParams = MasterKeys.AES256_GCM_SPEC;
+                String masterKeyAlias = MasterKeys.getOrCreate(keyGenParams);
+                SharedPreferences prefs = EncryptedSharedPreferences.create(
+                        "ss", masterKeyAlias, context,
+                        EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                        EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM);
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putString(PreferenceHelper.PREF_WALLET_BYTES, walletBytes).apply();
+            } else {
+                SharedPreferences prefs =
+                        context.getSharedPreferences(PreferenceHelper.GENERAL_PREFERENCES, Context.MODE_PRIVATE);
+                prefs.edit().putString(PreferenceHelper.PREF_WALLET_BYTES, walletBytes).apply();
+            }
+
+        } catch (IOException | GeneralSecurityException e) {
+            Debug.logException(e);
+        }
+    }
+
+    public void getWalletSession(@NonNull OnCompleteListener<Long> listener) {
+        SessionModelRequest parameters = new SessionModelRequest();
+        parameters.setWalletBytes(getExistingWallet(null));
+        service.getSession(Session.getAuthorizationHeader(), parameters).enqueue(new Callback<SessionModelResponse>() {
+            @EverythingIsNonNull
+            @Override
+            public void onResponse(Call<SessionModelResponse> call, Response<SessionModelResponse> response) {
+                Debug.logDebug(response.toString());
+                if (response.isSuccessful()) {
+                    SessionModelResponse result = response.body();
+                    if (result != null) {
+                        String message = result.getMessage();
+                        if (message != null) Debug.logDebug(message);
+                        listener.onComplete(result.getSessionToken(), null);
+                    } else listener.onComplete(null, new IllegalStateException());
+                } else {
+                    if (response.code() == 401) {
+                        authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
+                            @Override
+                            public void onComplete(TokenResponse value, Throwable error) {
+                                if (error != null) {
+                                    listener.onComplete(null, new UnauthorizedException());
+                                    return;
+                                }
+                                getWalletSession(listener);
+                            }
+                        });
+                    } else {
+                        Debug.logErrorResponse(response);
+                        returnError(listener, response);
+                    }
+                }
+            }
+
+            @EverythingIsNonNull
+            @Override
+            public void onFailure(Call<SessionModelResponse> call, Throwable t) {
+                returnError(listener, t);
+            }
+        });
     }
 
     /**
@@ -43,8 +159,8 @@ public class WalletRepository extends BackendRepository {
      * @param passphrase The wallet password. Basically, it's encryption passphrase that is not
      *                   depends on user's account password.
      */
-    public void createWallet(@NonNull String passphrase, @NonNull OnCompleteListener<String> listener) {
-        CreateWalletParameters parameters = new CreateWalletParameters(null, passphrase);
+    public void createWallet(@Nullable String passphrase, @NonNull OnCompleteListener<String> listener) {
+        WalletModelRequest parameters = new WalletModelRequest(null, passphrase);
         service.createWallet(Session.getAuthorizationHeader(), parameters).enqueue(new Callback<Map<String, String>>() {
             @EverythingIsNonNull
             @Override
@@ -85,18 +201,18 @@ public class WalletRepository extends BackendRepository {
         });
     }
 
-    public void getAddress(@NonNull WalletAddressParameters parameters, @NonNull OnCompleteListener<String> listener) {
-        service.getWalletAddress(Session.getAuthorizationHeader(), parameters).enqueue(new Callback<Map<String, String>>() {
+    public void getAddress(@NonNull WalletAddressModelRequest parameters, @NonNull OnCompleteListener<String> listener) {
+        service.getWalletAddress(Session.getAuthorizationHeader(), parameters).enqueue(new Callback<WalletAddressModelResponse>() {
             @EverythingIsNonNull
             @Override
-            public void onResponse(Call<Map<String, String>> call, Response<Map<String, String>> response) {
+            public void onResponse(Call<WalletAddressModelResponse> call, Response<WalletAddressModelResponse> response) {
                 Debug.logDebug(response.toString());
                 if (response.isSuccessful()) {
-                    Map<String, String> results = response.body();
+                    WalletAddressModelResponse results = response.body();
                     if (results != null) {
-                        String message = results.get("message");
+                        String message = results.getMessage();
                         if (message != null) Debug.logDebug(message);
-                        String walletAddress = results.get("walletAddress");
+                        String walletAddress = results.getWalletAddress();
                         listener.onComplete(walletAddress, null);
                     } else listener.onComplete(null, new IllegalStateException());
                 } else {
@@ -120,27 +236,44 @@ public class WalletRepository extends BackendRepository {
 
             @EverythingIsNonNull
             @Override
-            public void onFailure(Call<Map<String, String>> call, Throwable t) {
+            public void onFailure(Call<WalletAddressModelResponse> call, Throwable t) {
                 returnError(listener, t);
             }
         });
     }
 
-    public void getBalance(@NonNull WalletBalanceParameters parameters, @NonNull OnCompleteListener<BigDecimal> listener) {
-        service.getWalletBalance(Session.getAuthorizationHeader(), parameters).enqueue(new Callback<Map<String, Object>>() {
+    public void getBalance(@NonNull OnCompleteListener<BigDecimal> listener) {
+        Long sessionToken = Session.getWalletSessionToken();
+        if (sessionToken == null) {
+            getWalletSession(new OnCompleteListener<Long>() {
+                @Override
+                public void onComplete(Long sessionToken, Throwable error) {
+                    if (error != null) {
+                        Debug.logException(error);
+                        return;
+                    }
+                    Session.setWalletSessionToken(sessionToken);
+                    getBalance(listener);
+                }
+            });
+            return;
+        }
+        WalletBalanceModelRequest parameters = new WalletBalanceModelRequest();
+        parameters.setSessionToken(sessionToken);
+        service.getWalletBalance(Session.getAuthorizationHeader(), parameters).enqueue(new Callback<WalletBalanceModelResponse>() {
             @EverythingIsNonNull
             @Override
-            public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
+            public void onResponse(Call<WalletBalanceModelResponse> call, Response<WalletBalanceModelResponse> response) {
                 Debug.logDebug(response.toString());
                 if (response.isSuccessful()) {
-                    Map<String, Object> results = response.body();
+                    WalletBalanceModelResponse results = response.body();
                     if (results != null) {
-                        String message = (String) results.get("message");
+                        String message = (String) results.getMessage();
                         if (message != null) Debug.logDebug(message);
-                        Long walletBalance = (Long) results.get("walletBalance");
+                        String walletBalance = (String) results.getWalletBalance();
                         BigDecimal balance = BigDecimal.ZERO;
-                        if (walletBalance != null) {
-                            balance = BigDecimal.valueOf(walletBalance);
+                        if (!TextUtils.isEmpty(walletBalance) && TextUtils.isDigitsOnly(walletBalance)) {
+                            balance = new BigDecimal(walletBalance);
                         }
                         listener.onComplete(balance, null);
                     } else listener.onComplete(null, new IllegalStateException());
@@ -153,7 +286,7 @@ public class WalletRepository extends BackendRepository {
                                     listener.onComplete(null, new UnauthorizedException());
                                     return;
                                 }
-                                getBalance(parameters, listener);
+                                getBalance(listener);
                             }
                         });
                     } else {
@@ -165,24 +298,24 @@ public class WalletRepository extends BackendRepository {
 
             @EverythingIsNonNull
             @Override
-            public void onFailure(Call<Map<String, Object>> call, Throwable t) {
+            public void onFailure(Call<WalletBalanceModelResponse> call, Throwable t) {
                 returnError(listener, t);
             }
         });
     }
 
-    public void transfer(TransferParameters parameters, @NonNull OnCompleteListener<String> listener) {
-        service.transferSxeCoins(Session.getAuthorizationHeader(), parameters).enqueue(new Callback<Map<String, String>>() {
+    public void transfer(CoinModel parameters, @NonNull OnCompleteListener<String> listener) {
+        service.transferSxeCoins(Session.getAuthorizationHeader(), parameters).enqueue(new Callback<TransferModelResponse>() {
             @EverythingIsNonNull
             @Override
-            public void onResponse(Call<Map<String, String>> call, Response<Map<String, String>> response) {
+            public void onResponse(Call<TransferModelResponse> call, Response<TransferModelResponse> response) {
                 Debug.logDebug(response.toString());
                 if (response.isSuccessful()) {
-                    Map<String, String> results = response.body();
+                    TransferModelResponse results = response.body();
                     if (results != null) {
-                        String message = results.get("message");
+                        String message = results.getMessage();
                         if (message != null) Debug.logDebug(message);
-                        String transactionId = results.get("transactionId");
+                        String transactionId = results.getTransactionId();
                         listener.onComplete(transactionId, null);
                     } else listener.onComplete(null, new IllegalStateException());
                 } else {
@@ -206,7 +339,7 @@ public class WalletRepository extends BackendRepository {
 
             @EverythingIsNonNull
             @Override
-            public void onFailure(Call<Map<String, String>> call, Throwable t) {
+            public void onFailure(Call<TransferModelResponse> call, Throwable t) {
                 returnError(listener, t);
             }
         });
