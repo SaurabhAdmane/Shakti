@@ -174,7 +174,8 @@
         All wallets are locked by default. It is up to the wallet holder to successfully unlock
         their wallets by undergoing KYC, AML &amp; CTF compliance screening.
     </string>
-    <string name="wallet_history_main_wallet">Main Wallet</string>
+    <string name="wallet_history_main_wallet"><u>Main Wallet</u></string>
+    <string name="wallet_history_empty_list">No transactions yet</string>
     <string name="dlg_business_vault_title"><![CDATA[Get the <font color="#B09C75">Business Vault</font><br/>advantage</string]]></string>
     <string name="dlg_business_vault_text"><![CDATA[
         <p><b>As a Business Leader, you\'re eligible for SXE Vault!</b></p>

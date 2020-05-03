@@ -77,13 +77,16 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="24dp"
                     android:background="@drawable/button_circle_small"
-                    android:onClick="onOpenWalletAdmin"
-                    android:tint="@color/colorBrand"
+                    android:tint="@color/whiteDisabled"
                     app:layout_constraintBottom_toBottomOf="@+id/doMainWallet"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/doMainWallet"
                     app:srcCompat="@drawable/ic_wallet"
                     tools:ignore="ContentDescription" />
+                <!-- FIXME: restore when enabled
+                    android:tint="@color/colorBrand"
+                    android:onClick="onOpenWalletAdmin"
+                -->
 
                 <TextView
                     android:id="@+id/label2"
@@ -96,10 +99,17 @@
                     android:text="@string/wallet_admin"
                     android:textAppearance="@style/AppButton.Link"
                     android:textSize="9sp"
+                    android:enabled="false"
+                    android:textColor="@color/whiteDisabled"
                     app:layout_constraintEnd_toEndOf="@+id/doAdmin"
                     app:layout_constraintStart_toStartOf="@+id/doAdmin"
                     app:layout_constraintTop_toBottomOf="@+id/doAdmin"
                     tools:ignore="SmallSp" />
+                <!-- FIXME: restore when enabled
+                    Remove
+                    android:textColor="@color/whiteDisabled"
+                    android:enabled="false"
+                -->
 
                 <View
                     android:id="@+id/blackRect1"
@@ -120,11 +130,17 @@
                     android:layout_marginEnd="8dp"
                     android:text="@string/wallet_receive_sxe"
                     android:onClick="onReceive"
+                    android:enabled="false"
+                    android:textColor="@color/whiteDisabled"
                     app:layout_constraintBottom_toBottomOf="@+id/doPaySXE"
                     app:layout_constraintEnd_toStartOf="@+id/doPaySXE"
                     app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/doPaySXE" />
+                <!-- FIXME: remove when must be enabled
+                    android:enabled="false"
+                    android:textColor="@color/whiteDisabled"
+                -->
 
                 <Button
                     android:id="@+id/doPaySXE"
@@ -144,6 +160,20 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_marginTop="0dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/blackRect1" >
+                </androidx.recyclerview.widget.RecyclerView>
+
+                <TextView
+                    android:id="@+id/emptyListMsg"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="0dp"
+                    android:textAppearance="@style/AppText.Body"
+                    android:text="@string/wallet_history_empty_list"
+                    android:gravity="center"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
