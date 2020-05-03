@@ -66,12 +66,13 @@ public class WalletHistoryActivity extends DrawerActivity {
         binding.list.setAdapter(adapter);
         repository.getTransactions(new OnCompleteListener<List<Transaction>>() {
             @Override
-            public void onComplete(List<Transaction> value, Throwable error) {
+            public void onComplete(List<Transaction> transactions, Throwable error) {
                 if (error != null) {
                     Debug.logException(error);
                     return;
                 }
-                adapter.addAll(value);
+                binding.emptyListMsg.setVisibility(transactions.size() == 0 ? View.VISIBLE : View.GONE);
+                adapter.addAll(transactions);
             }
         });
     }
