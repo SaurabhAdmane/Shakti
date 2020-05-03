@@ -126,7 +126,7 @@ public class SignInActivity extends AppCompatActivity {
                         TokenResponse resp = response.body();
                         if (resp != null) {
                             Session.setAccessToken(resp.getAccess());
-                            Session.setRefreshToken(resp.getRefresh(), rememberMe, self);
+                            Session.setRefreshToken(resp.getRefresh(), rememberMe);
                             SharedPreferences prefs = getSharedPreferences(PreferenceHelper.GENERAL_PREFERENCES, Context.MODE_PRIVATE);
                             prefs.edit().putBoolean(PreferenceHelper.PREF_KEY_HAS_ACCOUNT, true).apply();
 

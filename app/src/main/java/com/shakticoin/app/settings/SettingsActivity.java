@@ -107,7 +107,7 @@ public class SettingsActivity extends DrawerActivity {
     }
 
     public void onLogOut(View v) {
-        Session.clean(this);
+        Session.clean();
         Intent intent = new Intent(this, SignInActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
