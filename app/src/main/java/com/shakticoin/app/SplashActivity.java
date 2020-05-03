@@ -16,7 +16,6 @@ import com.shakticoin.app.api.UnauthorizedException;
 import com.shakticoin.app.api.auth.AuthRepository;
 import com.shakticoin.app.api.auth.TokenResponse;
 import com.shakticoin.app.api.user.User;
-import com.shakticoin.app.api.user.UserResponse;
 import com.shakticoin.app.api.user.UserRepository;
 import com.shakticoin.app.registration.SignInActivity;
 import com.shakticoin.app.registration.SignUpActivity;
@@ -42,7 +41,7 @@ public class SplashActivity extends AppCompatActivity {
         if (tourDone) {
             boolean hasAccount = prefs.getBoolean(PreferenceHelper.PREF_KEY_HAS_ACCOUNT, false);
             if (hasAccount) {
-                String refreshToken = Session.getRefreshToken(this);
+                String refreshToken = Session.getRefreshToken();
                 if (refreshToken == null) {
                     startActivity(new Intent(this, SignInActivity.class));
                     finish();

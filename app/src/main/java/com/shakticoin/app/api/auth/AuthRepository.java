@@ -1,25 +1,14 @@
 package com.shakticoin.app.api.auth;
 
-import android.content.Context;
-
 import androidx.annotation.NonNull;
 
-import com.shakticoin.app.ShaktiApplication;
 import com.shakticoin.app.api.BackendRepository;
+import com.shakticoin.app.api.BaseUrl;
+import com.shakticoin.app.api.OnCompleteListener;
+import com.shakticoin.app.api.Session;
 import com.shakticoin.app.api.UnauthorizedException;
 import com.shakticoin.app.util.Debug;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-import com.shakticoin.app.R;
-import com.shakticoin.app.api.BaseUrl;
-import com.shakticoin.app.api.OnCompleteListener;
-import com.shakticoin.app.api.RemoteException;
-import com.shakticoin.app.api.Session;
-
-import java.io.IOException;
-
-import okhttp3.ResponseBody;
 import okhttp3.internal.annotations.EverythingIsNonNull;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -91,7 +80,7 @@ public class AuthRepository extends BackendRepository {
                     listener.onComplete(resp, null);
                 } else {
                     Debug.logErrorResponse(response);
-                    Session.clean(ShaktiApplication.getContext());
+                    Session.clean();
                     listener.onComplete(null, new UnauthorizedException());
                 }
             }

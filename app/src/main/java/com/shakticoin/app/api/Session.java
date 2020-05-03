@@ -10,7 +10,6 @@ import android.security.keystore.KeyGenParameterSpec;
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKeys;
 
-import com.shakticoin.app.BuildConfig;
 import com.shakticoin.app.ShaktiApplication;
 import com.shakticoin.app.api.user.User;
 import com.shakticoin.app.registration.SignInActivity;
@@ -36,10 +35,6 @@ public class Session {
         accessToken = token;
     }
 
-    public static String getRefreshToken() {
-        return refreshToken;
-    }
-
     public static synchronized void setRefreshToken(String token) {
         refreshToken = token;
     }
@@ -48,8 +43,9 @@ public class Session {
         return accessToken;
     }
 
-    public static String getRefreshToken(Context context) {
+    public static String getRefreshToken() {
         if (refreshToken == null) {
+            Context context = ShaktiApplication.getContext();
             try {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     KeyGenParameterSpec keyGenParams = MasterKeys.AES256_GCM_SPEC;
@@ -72,8 +68,9 @@ public class Session {
         return refreshToken;
     }
 
-    public static void setRefreshToken(String token, boolean rememberMe, Context context) {
+    public static void setRefreshToken(String token, boolean rememberMe) {
         if (rememberMe) {
+            Context context = ShaktiApplication.getContext();
             try {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     // store refresh token in an encrypted storage in order to login automatically
@@ -108,13 +105,28 @@ public class Session {
         Session.user = user;
     }
 
-    public static synchronized void clean(Context context) {
+    public static synchronized void clean() {
         accessToken = null;
         refreshToken = null;
         user = null;
-        if (context != null) {
-            SharedPreferences prefs = context.getSharedPreferences(PreferenceHelper.GENERAL_PREFERENCES, Context.MODE_PRIVATE);
-            prefs.edit().remove(PreferenceHelper.PREF_KEY_TOKEN).apply();
+        Context context = ShaktiApplication.getContext();
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                // store refresh token in an encrypted storage in order to login automatically
+                KeyGenParameterSpec keyGenParams = MasterKeys.AES256_GCM_SPEC;
+                String masterKeyAlias = MasterKeys.getOrCreate(keyGenParams);
+                SharedPreferences prefs = EncryptedSharedPreferences.create(
+                        "ss", masterKeyAlias, context,
+                        EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                        EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM);
+                prefs.edit().remove(PreferenceHelper.PREF_KEY_TOKEN).apply();
+            } else {
+                SharedPreferences prefs =
+                        context.getSharedPreferences(PreferenceHelper.GENERAL_PREFERENCES, Context.MODE_PRIVATE);
+                prefs.edit().remove(PreferenceHelper.PREF_KEY_TOKEN).apply();
+            }
+        } catch (IOException | GeneralSecurityException e) {
+            Debug.logException(e);
         }
     }
 
@@ -139,7 +151,7 @@ public class Session {
     }
 
     public static Intent unauthorizedIntent(Context context) {
-        Session.clean(context);
+        Session.clean();
         Intent intent = new Intent(context, SignInActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         return intent;
