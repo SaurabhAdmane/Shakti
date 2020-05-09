@@ -1,13 +1,11 @@
 package com.shakticoin.app.profile;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,6 +16,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.shakticoin.app.ProgressBarModel;
 import com.shakticoin.app.R;
 import com.shakticoin.app.ShaktiApplication;
 import com.shakticoin.app.api.OnCompleteListener;
@@ -37,22 +36,25 @@ public class KycSelectorFragment extends Fragment {
 
     private FragmentProfileKycSelectorBinding binding;
     private KycSelectorViewModel viewModel;
+    private ProgressBarModel activityViewModel;
 
     private ArrayList<KycCategory> kycCategories;
     private SelectorAdapter adapter;
 
     private KYCRepository kycRepository = new KYCRepository();
 
-    private ProgressBar progressBar;
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(this).get(KycSelectorViewModel.class);
 
-        Activity activity = getActivity();
+        FragmentActivity activity = getActivity();
         if (activity != null) {
-            progressBar = activity.findViewById(R.id.progressBar);
+            if (activity instanceof KycActivity) {
+                activityViewModel = ViewModelProviders.of(activity).get(KycCommonViewModel.class);
+            } else if (activity instanceof ProfileActivity) {
+                activityViewModel = ViewModelProviders.of(activity).get(PersonalViewModel.class);
+            }
         }
     }
 
@@ -71,11 +73,11 @@ public class KycSelectorFragment extends Fragment {
 
         binding.doNext.setOnClickListener(v1 -> onNext());
 
-        if (progressBar != null) progressBar.setVisibility(View.VISIBLE);
+        if (activityViewModel != null) activityViewModel.getProgressBarTrigger().set(true);
         kycRepository.getKycCategories(new OnCompleteListener<List<KycCategory>>() {
             @Override
             public void onComplete(List<KycCategory> categories, Throwable error) {
-                if (progressBar != null) progressBar.setVisibility(View.INVISIBLE);
+                if (activityViewModel != null) activityViewModel.getProgressBarTrigger().set(false);
                 if (error != null) {
                     Toast.makeText(getContext(), Debug.getFailureMsg(getContext(), error), Toast.LENGTH_LONG).show();
                     return;

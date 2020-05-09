@@ -83,12 +83,12 @@ public class ProfileActivity extends DrawerActivity {
         binding.pageIndicator.setSizeAndLabels(pageIndicatorItems);
         binding.pageIndicator.setSelectedIndex(1);
 
-        viewModel.progressBarTrigger.set(true);
+        viewModel.getProgressBarTrigger().set(true);
         final Activity self = this;
         userRepo.getUserInfo(Session.getUser().getId(), new OnCompleteListener<User>() {
             @Override
             public void onComplete(User user, Throwable error) {
-                viewModel.progressBarTrigger.set(false);
+                viewModel.getProgressBarTrigger().set(false);
                 if (error != null) {
                     if (error instanceof UnauthorizedException) {
                         startActivity(Session.unauthorizedIntent(self));
