@@ -75,10 +75,17 @@ public class KycActivity extends DrawerActivity {
         KycCategory category = getIntent().getParcelableExtra(CommonUtil.prefixed("KYC_CATEGORY", context));
         viewModel.kycCategory.setValue(category);
 
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.mainFragment, new KycDoctypeFragment())
-                .commit();
+        if (viewModel.kycCategories != null && viewModel.kycCategories.size() > 0) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.mainFragment, new KycDoctypeFragment())
+                    .commit();
+        } else {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.mainFragment, new KycSelectorFragment())
+                    .commit();
+        }
     }
 
     @Override
