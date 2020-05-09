@@ -62,6 +62,10 @@ public class KycDoctypeFragment extends Fragment {
             binding.documentType.setAdapter(new DocumentTypeAdapter(docTypes));
         }
 
+        // FIXME: temporarily disabled because not implemented
+        binding.selectUpload.setEnabled(false);
+        binding.selectSkip.setEnabled(false);
+
         return v;
     }
 
