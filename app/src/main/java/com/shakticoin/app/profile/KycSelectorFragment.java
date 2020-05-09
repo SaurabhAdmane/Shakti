@@ -1,16 +1,19 @@
 package com.shakticoin.app.profile;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,18 +37,23 @@ public class KycSelectorFragment extends Fragment {
 
     private FragmentProfileKycSelectorBinding binding;
     private KycSelectorViewModel viewModel;
-    private PersonalViewModel activityViewModel;
 
     private ArrayList<KycCategory> kycCategories;
     private SelectorAdapter adapter;
 
     private KYCRepository kycRepository = new KYCRepository();
 
+    private ProgressBar progressBar;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(this).get(KycSelectorViewModel.class);
-        activityViewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(PersonalViewModel.class);
+
+        Activity activity = getActivity();
+        if (activity != null) {
+            progressBar = activity.findViewById(R.id.progressBar);
+        }
     }
 
     @Nullable
@@ -63,11 +71,11 @@ public class KycSelectorFragment extends Fragment {
 
         binding.doNext.setOnClickListener(v1 -> onNext());
 
-        activityViewModel.progressBarTrigger.set(true);
+        if (progressBar != null) progressBar.setVisibility(View.VISIBLE);
         kycRepository.getKycCategories(new OnCompleteListener<List<KycCategory>>() {
             @Override
             public void onComplete(List<KycCategory> categories, Throwable error) {
-                activityViewModel.progressBarTrigger.set(false);
+                if (progressBar != null) progressBar.setVisibility(View.INVISIBLE);
                 if (error != null) {
                     Toast.makeText(getContext(), Debug.getFailureMsg(getContext(), error), Toast.LENGTH_LONG).show();
                     return;
@@ -109,11 +117,25 @@ public class KycSelectorFragment extends Fragment {
     }
 
     private void onNext() {
-        Intent intent = new Intent(getActivity(), KycActivity.class);
-        Context context = ShaktiApplication.getContext();
-        intent.putExtra(CommonUtil.prefixed("KYC_CATEGORY", context), viewModel.selectedCategory.getValue());
-        intent.putParcelableArrayListExtra(CommonUtil.prefixed("KYC_CATEGORY_LIST", context), kycCategories);
-        startActivity(intent);
+        FragmentActivity activity = getActivity();
+        if (activity != null) {
+            if (activity instanceof KycActivity) {
+                KycCommonViewModel activityViewModel = ViewModelProviders.of(activity).get(KycCommonViewModel.class);
+                activityViewModel.kycCategories = kycCategories;
+                activityViewModel.kycCategory.setValue(viewModel.selectedCategory.getValue());
+                activity.getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.mainFragment, new KycDoctypeFragment())
+                        .addToBackStack(KycDoctypeFragment.class.getSimpleName())
+                        .commit();
+            } else {
+                Intent intent = new Intent(getActivity(), KycActivity.class);
+                Context context = ShaktiApplication.getContext();
+                intent.putExtra(CommonUtil.prefixed("KYC_CATEGORY", context), viewModel.selectedCategory.getValue());
+                intent.putParcelableArrayListExtra(CommonUtil.prefixed("KYC_CATEGORY_LIST", context), kycCategories);
+                startActivity(intent);
+            }
+        }
     }
 
     class SelectorViewHolder extends RecyclerView.ViewHolder {
