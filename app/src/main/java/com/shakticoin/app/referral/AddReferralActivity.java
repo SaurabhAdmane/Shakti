@@ -93,10 +93,6 @@ public class AddReferralActivity extends DrawerActivity {
             validationSuccessful = false;
             binding.emailFieldLayout.setError(getString(R.string.err_email_required));
         }
-        if (!Validator.isPhoneNumber(referral.getPhone())) {
-            validationSuccessful = false;
-            binding.phoneFieldLayout.setError(getString(R.string.err_phone_required));
-        }
 
         if (validationSuccessful) {
             final Activity activity = this;
