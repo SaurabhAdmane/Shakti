@@ -34,4 +34,12 @@ public interface WalletService {
     @POST("walletservice/api/v1/coins/")
     Call<TransferModelResponse> transferSxeCoins(@Header("Authorization") String authorization,
                                                @Body CoinModel parameters);
+
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("walletservice/api/v1/wallet/transaction/history/bytime/")
+    Call<BlockByTimeResponse> getBlockByTime(@Header("Authorization") String authorization, @Body BlockByTimeRequest parameters);
+
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("walletservice/api/v1/wallet/transaction/history/transaction/")
+    Call<BlockByTimeResponse> getTransaction(@Header("Authorization") String authorization, @Body TransactionInformation parameters);
 }
