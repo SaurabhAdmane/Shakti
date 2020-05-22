@@ -22,7 +22,7 @@ public class PaymentRepository extends BackendRepository {
 
     public PaymentRepository() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BaseUrl.get())
+                .baseUrl(BaseUrl.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         stripeService = retrofit.create(StripePaymentService.class);

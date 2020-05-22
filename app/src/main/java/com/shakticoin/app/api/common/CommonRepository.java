@@ -27,7 +27,7 @@ public class CommonRepository extends BackendRepository {
 
     public CommonRepository() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BaseUrl.get())
+                .baseUrl(BaseUrl.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

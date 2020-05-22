@@ -13,6 +13,7 @@ import androidx.security.crypto.MasterKeys;
 
 import com.shakticoin.app.ShaktiApplication;
 import com.shakticoin.app.api.BackendRepository;
+import com.shakticoin.app.api.BaseUrl;
 import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.Session;
 import com.shakticoin.app.api.UnauthorizedException;
@@ -41,9 +42,8 @@ public class WalletRepository extends BackendRepository {
     private AuthRepository authRepository;
 
     public WalletRepository() {
-        // TODO: URL is temporarily and must be changed
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://155.138.222.28:8080/")
+                .baseUrl(BaseUrl.WALLETSERVICE_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         service = retrofit.create(WalletService.class);
@@ -111,7 +111,7 @@ public class WalletRepository extends BackendRepository {
         }
     }
 
-    public void getWalletSession(@NonNull OnCompleteListener<Long> listener) {
+    private void getWalletSession(@NonNull OnCompleteListener<Long> listener) {
         SessionModelRequest parameters = new SessionModelRequest();
         parameters.setWalletBytes(getExistingWallet(null));
         service.getSession(Session.getAuthorizationHeader(), parameters).enqueue(new Callback<SessionModelResponse>() {
@@ -201,12 +201,30 @@ public class WalletRepository extends BackendRepository {
         });
     }
 
-    public void getAddress(@NonNull WalletAddressModelRequest parameters, @NonNull OnCompleteListener<String> listener) {
+    public void getAddress(@NonNull OnCompleteListener<String> listener) {
+        Long sessionToken = Session.getWalletSessionToken();
+        if (sessionToken == null) {
+            getWalletSession(new OnCompleteListener<Long>() {
+                @Override
+                public void onComplete(Long sessionToken, Throwable error) {
+                    if (error != null) {
+                        listener.onComplete(null, error);
+                        return;
+                    }
+                    Session.setWalletSessionToken(sessionToken);
+                    getAddress(listener);
+                }
+            });
+            return;
+        }
+        WalletAddressModelRequest parameters = new WalletAddressModelRequest();
+        parameters.setSessionToken(sessionToken);
         service.getWalletAddress(Session.getAuthorizationHeader(), parameters).enqueue(new Callback<WalletAddressModelResponse>() {
             @EverythingIsNonNull
             @Override
             public void onResponse(Call<WalletAddressModelResponse> call, Response<WalletAddressModelResponse> response) {
                 Debug.logDebug(response.toString());
+                Session.setWalletSessionToken(null);
                 if (response.isSuccessful()) {
                     WalletAddressModelResponse results = response.body();
                     if (results != null) {
@@ -224,7 +242,7 @@ public class WalletRepository extends BackendRepository {
                                     listener.onComplete(null, new UnauthorizedException());
                                     return;
                                 }
-                                getAddress(parameters, listener);
+                                getAddress(listener);
                             }
                         });
                     } else {
@@ -237,6 +255,7 @@ public class WalletRepository extends BackendRepository {
             @EverythingIsNonNull
             @Override
             public void onFailure(Call<WalletAddressModelResponse> call, Throwable t) {
+                Session.setWalletSessionToken(null);
                 returnError(listener, t);
             }
         });
@@ -249,7 +268,7 @@ public class WalletRepository extends BackendRepository {
                 @Override
                 public void onComplete(Long sessionToken, Throwable error) {
                     if (error != null) {
-                        Debug.logException(error);
+                        listener.onComplete(null, error);
                         return;
                     }
                     Session.setWalletSessionToken(sessionToken);
@@ -265,10 +284,11 @@ public class WalletRepository extends BackendRepository {
             @Override
             public void onResponse(Call<WalletBalanceModelResponse> call, Response<WalletBalanceModelResponse> response) {
                 Debug.logDebug(response.toString());
+                Session.setWalletSessionToken(null); // clear session token
                 if (response.isSuccessful()) {
                     WalletBalanceModelResponse results = response.body();
                     if (results != null) {
-                        String message = (String) results.getMessage();
+                        String message = results.getMessage();
                         if (message != null) Debug.logDebug(message);
                         String walletBalance = (String) results.getWalletBalance();
                         BigDecimal balance = BigDecimal.ZERO;
@@ -299,17 +319,40 @@ public class WalletRepository extends BackendRepository {
             @EverythingIsNonNull
             @Override
             public void onFailure(Call<WalletBalanceModelResponse> call, Throwable t) {
+                Session.setWalletSessionToken(null);
                 returnError(listener, t);
             }
         });
     }
 
-    public void transfer(CoinModel parameters, @NonNull OnCompleteListener<String> listener) {
+    public void transfer(@NonNull String address, @NonNull Long amount, @Nullable String message, @NonNull OnCompleteListener<String> listener) {
+        Long sessionToken = Session.getWalletSessionToken();
+        if (sessionToken == null) {
+            getWalletSession(new OnCompleteListener<Long>() {
+                @Override
+                public void onComplete(Long token, Throwable error) {
+                    if (error != null) {
+                        listener.onComplete(null, error);
+                        return;
+                    }
+                    Session.setWalletSessionToken(token);
+                    transfer(address, amount, message, listener);
+                }
+            });
+        }
+        CoinModel parameters = new CoinModel();
+        parameters.setToAddress(address);
+        parameters.setValueInToshi(amount.toString());
+        parameters.setSessionToken(sessionToken);
+        if (message != null) {
+            parameters.setMessageForRecipient(message);
+        }
         service.transferSxeCoins(Session.getAuthorizationHeader(), parameters).enqueue(new Callback<TransferModelResponse>() {
             @EverythingIsNonNull
             @Override
             public void onResponse(Call<TransferModelResponse> call, Response<TransferModelResponse> response) {
                 Debug.logDebug(response.toString());
+                Session.setWalletSessionToken(null);
                 if (response.isSuccessful()) {
                     TransferModelResponse results = response.body();
                     if (results != null) {
@@ -327,7 +370,7 @@ public class WalletRepository extends BackendRepository {
                                     listener.onComplete(null, new UnauthorizedException());
                                     return;
                                 }
-                                transfer(parameters, listener);
+                                transfer(address, amount, message, listener);
                             }
                         });
                     } else {
@@ -340,6 +383,7 @@ public class WalletRepository extends BackendRepository {
             @EverythingIsNonNull
             @Override
             public void onFailure(Call<TransferModelResponse> call, Throwable t) {
+                Session.setWalletSessionToken(null);
                 returnError(listener, t);
             }
         });
