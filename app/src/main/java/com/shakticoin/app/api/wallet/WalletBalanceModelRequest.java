@@ -1,16 +1,13 @@
 package com.shakticoin.app.api.wallet;
 
 import com.shakticoin.app.BuildConfig;
+import com.shakticoin.app.util.Debug;
 
 public class WalletBalanceModelRequest {
     private Integer addressNumber = 0;
     private String cacheBytes = "";
-    private Integer network = 1;
+    private Integer network = Debug.NETWORK;
     private Long sessionToken;
-
-    public WalletBalanceModelRequest() {
-        network = BuildConfig.DEBUG ? 1 : 0;
-    }
 
     public Integer getAddressNumber() {
         return addressNumber;
