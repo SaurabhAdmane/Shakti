@@ -1,17 +1,13 @@
 package com.shakticoin.app.api.wallet;
 
 import com.shakticoin.app.BuildConfig;
+import com.shakticoin.app.util.Debug;
 
 public class WalletAddressModelRequest {
     private Integer addressNumber = 0;
     private String cacheBytes = "";
-    private Integer network = 1;
+    private Integer network = Debug.NETWORK;
     private Long sessionToken;
-
-    public WalletAddressModelRequest() {
-        // 0 - main network, 1 - test network
-        network = BuildConfig.DEBUG ? 1 : 0;
-    }
 
     /**
      * The addressNumber parameter is an unsigned integer representing the address number to return.

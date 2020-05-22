@@ -17,6 +17,8 @@ import retrofit2.Response;
 
 
 public class Debug {
+    /** 0 - main network, 1 - test network */
+    public static int NETWORK = 1;
 
     /**
      * Log exception as a debug message in debug build but post to Crashlytics in release.
