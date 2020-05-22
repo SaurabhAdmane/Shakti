@@ -1,8 +1,8 @@
 package com.shakticoin.app.api.wallet;
 
 public class CoinModel {
-    private Integer addressNumber;
-    private String cacheBytes;
+    private Integer addressNumber = 0;
+    private String cacheBytes = "";
     private String messageForRecipient;
     private Long sessionToken;
     private String toAddress;

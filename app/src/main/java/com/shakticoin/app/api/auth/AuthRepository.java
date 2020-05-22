@@ -21,7 +21,7 @@ public class AuthRepository extends BackendRepository {
 
     public AuthRepository() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BaseUrl.get())
+                .baseUrl(BaseUrl.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

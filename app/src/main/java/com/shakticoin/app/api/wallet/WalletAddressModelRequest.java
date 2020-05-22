@@ -3,15 +3,14 @@ package com.shakticoin.app.api.wallet;
 import com.shakticoin.app.BuildConfig;
 
 public class WalletAddressModelRequest {
-    private Integer addressNumber;
-    private String cacheBytes;
-    private Integer network;
+    private Integer addressNumber = 0;
+    private String cacheBytes = "";
+    private Integer network = 1;
     private Long sessionToken;
 
     public WalletAddressModelRequest() {
         // 0 - main network, 1 - test network
         network = BuildConfig.DEBUG ? 1 : 0;
-        addressNumber = 0;
     }
 
     /**
