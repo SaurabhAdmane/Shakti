@@ -23,6 +23,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
                 <TextView
                     android:id="@+id/label1"
                     android:layout_width="wrap_content"
@@ -130,17 +141,11 @@
                     android:layout_marginEnd="8dp"
                     android:text="@string/wallet_receive_sxe"
                     android:onClick="onReceive"
-                    android:enabled="false"
-                    android:textColor="@color/whiteDisabled"
                     app:layout_constraintBottom_toBottomOf="@+id/doPaySXE"
                     app:layout_constraintEnd_toStartOf="@+id/doPaySXE"
                     app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/doPaySXE" />
-                <!-- FIXME: remove when must be enabled
-                    android:enabled="false"
-                    android:textColor="@color/whiteDisabled"
-                -->
 
                 <Button
                     android:id="@+id/doPaySXE"
