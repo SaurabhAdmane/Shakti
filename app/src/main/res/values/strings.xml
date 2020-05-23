@@ -139,6 +139,7 @@
     <string name="minerlic_features">Features</string>
     <string name="err_incorrect_card">Please enter a valid card data</string>
     <string name="err_payment_cancelled">The payment was cancelled or failed</string>
+    <string name="wallet_unknown_balance">SXE -.--</string>
     <string name="wallet_receive_sxe">Receive SXE</string>
     <string name="wallet_pay_sxe">Pay with SXE</string>
     <string name="wallet_toolbar_title">My Wallet</string>
