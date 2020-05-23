@@ -75,7 +75,7 @@
                     style="@style/AppTextField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/hint_email_address"
+                    android:hint="@string/profile_company_hint_position"
                     android:inputType="text|textCapSentences"
                     android:text="" />
             </com.shakticoin.app.widget.TextInputLayout>
