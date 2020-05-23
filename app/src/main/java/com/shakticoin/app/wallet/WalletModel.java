@@ -4,6 +4,8 @@ import androidx.databinding.ObservableBoolean;
 import androidx.databinding.ObservableField;
 import androidx.lifecycle.ViewModel;
 
+import com.shakticoin.app.R;
+import com.shakticoin.app.ShaktiApplication;
 import com.shakticoin.app.api.user.UserRepository;
 import com.shakticoin.app.util.FormatUtil;
 
@@ -17,7 +19,7 @@ public class WalletModel extends ViewModel {
     public ObservableField<String> referralCode = new ObservableField<>();
     public ObservableField<String> referralLink = new ObservableField<>();
 
-    public ObservableField<BigDecimal> balance = new ObservableField<>(BigDecimal.ZERO);
+    public ObservableField<BigDecimal> balance = new ObservableField<>();
     public ObservableField<BigDecimal> bonusBalance = new ObservableField<>(BigDecimal.ZERO);
 
 
@@ -57,6 +59,7 @@ public class WalletModel extends ViewModel {
     }
 
     public String getFormattedBalance(BigDecimal amount) {
+        if (amount == null) return ShaktiApplication.getContext().getString(R.string.wallet_unknown_balance);
         return FormatUtil.formatCoinAmount(amount);
     }
 
