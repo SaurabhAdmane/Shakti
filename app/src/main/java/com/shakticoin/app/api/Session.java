@@ -24,6 +24,7 @@ public class Session {
     private static String accessToken;
     private static String refreshToken;
     private static User user;
+    private static Long walletSessionToken;
 
     private static boolean networkConnected = true;
 
@@ -106,9 +107,10 @@ public class Session {
     }
 
     public static synchronized void clean() {
-        accessToken = null;
-        refreshToken = null;
-        user = null;
+        accessToken         = null;
+        refreshToken        = null;
+        user                = null;
+        walletSessionToken  = null;
         Context context = ShaktiApplication.getContext();
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -168,5 +170,19 @@ public class Session {
      */
     public static void setNetworkConnected(boolean connected) {
         networkConnected = connected;
+    }
+
+    /**
+     * A Wallet API session token.
+     */
+    public static Long getWalletSessionToken() {
+        return walletSessionToken;
+    }
+
+    /**
+     * Store a Wallet API session token in the session object.
+     */
+    public static synchronized void setWalletSessionToken(Long sessionToken) {
+        walletSessionToken = sessionToken;
     }
 }

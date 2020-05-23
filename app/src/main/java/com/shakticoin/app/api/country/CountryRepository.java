@@ -32,7 +32,7 @@ public class CountryRepository extends BackendRepository {
 
     public CountryRepository() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BaseUrl.get())
+                .baseUrl(BaseUrl.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

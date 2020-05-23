@@ -77,7 +77,8 @@
             android:gravity="center_horizontal"
             android:textAppearance="@style/AppText.Title"
             android:textColor="@color/colorGrey3"
-            android:text="@string/dlg_sxe_pay_sendto"/>
+            android:text="@string/dlg_sxe_pay_sendto"
+            android:labelFor="@+id/recipient"/>
 
         <EditText
             android:id="@+id/recipient"
@@ -89,9 +90,11 @@
             android:layout_marginTop="10dp"
             android:gravity="center_horizontal"
             android:inputType="textEmailAddress"
-            android:text="john.doe@email.com" />
+            android:autofillHints="emailAddress" />
 
-        <TextView
+        <!-- FIXME: disabled after adding 3rd field that does not exist in the original design. If this
+        change is approved we can remove this element -->
+        <!--TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
@@ -99,10 +102,10 @@
             android:layout_marginTop="22dp"
             android:fontFamily="@font/lato"
             android:gravity="center_horizontal"
-            android:text="&amp;"
+            android:text="@string/and"
             android:textAppearance="@style/AppText.Title"
             android:textColor="@color/colorGrey3"
-            android:textStyle="bold" />
+            android:textStyle="bold" /-->
 
         <TextView
             android:layout_width="match_parent"
@@ -113,7 +116,7 @@
             android:gravity="center_horizontal"
             android:textAppearance="@style/AppText.Title"
             android:textColor="@color/colorGrey3"
-            android:text="@string/dlg_sxe_pay_amount" />
+            android:text="@string/dlg_sxe_pay_amount"/>
 
         <EditText
             android:id="@+id/amount"
@@ -125,7 +128,33 @@
             android:layout_marginTop="10dp"
             android:gravity="center_horizontal"
             android:inputType="numberDecimal"
-            android:text="00.00" />
+            android:hint="@string/hint_zero"
+            android:importantForAutofill="no"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginTop="17dp"
+            android:gravity="center_horizontal"
+            android:textAppearance="@style/AppText.Title"
+            android:textColor="@color/colorGrey3"
+            android:text="@string/dlg_sxe_pay_message"/>
+
+        <EditText
+            android:id="@+id/messageToRecipient"
+            style="@style/AppTextFieldDialogNoLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:inputType="numberDecimal"
+            android:imeOptions="actionDone"
+            android:hint="@string/dlg_sxe_default_message"
+            android:importantForAutofill="no" />
 
         <Button
             android:id="@+id/doOk"

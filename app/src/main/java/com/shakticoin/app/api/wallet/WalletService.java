@@ -11,22 +11,35 @@ import retrofit2.http.POST;
 public interface WalletService {
 
     @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("walletservice/api/v1/users/session/")
+    Call<SessionModelResponse> getSession(@Header("Authorization") String authorization,
+                                          @Body SessionModelRequest parameters);
+
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("walletservice/api/v1/wallets/")
-    Call<Map<String, Object>> createWallet(@Header("Authorization") String authorization,
-                                           @Body CreateWalletParameters parameters);
+    Call<Map<String, String>> createWallet(@Header("Authorization") String authorization,
+                                           @Body WalletModelRequest parameters);
 
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("walletservice/api/v1/users/wallet/address/")
-    Call<Map<String, Object>> getWalletAddress(@Header("Authorization") String authorization,
-                                               @Body WalletAddressParameters parameters);
+    Call<WalletAddressModelResponse> getWalletAddress(@Header("Authorization") String authorization,
+                                               @Body WalletAddressModelRequest parameters);
 
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("walletservice/api/v1/users/wallet/mybalance/")
-    Call<Map<String, Object>> getWalletBalance(@Header("Authorization") String authorization,
-                                               @Body WalletBalanceParameters parameters);
+    Call<WalletBalanceModelResponse> getWalletBalance(@Header("Authorization") String authorization,
+                                               @Body WalletBalanceModelRequest parameters);
 
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("walletservice/api/v1/coins/")
-    Call<Map<String, Object>> transferSxeCoins(@Header("Authorization") String authorization,
-                                               @Body TransferParameters parameters);
+    Call<TransferModelResponse> transferSxeCoins(@Header("Authorization") String authorization,
+                                               @Body CoinModel parameters);
+
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("walletservice/api/v1/wallet/transaction/history/bytime/")
+    Call<BlockByTimeResponse> getBlockByTime(@Header("Authorization") String authorization, @Body BlockByTimeRequest parameters);
+
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("walletservice/api/v1/wallet/transaction/history/transaction/")
+    Call<BlockByTimeResponse> getTransaction(@Header("Authorization") String authorization, @Body TransactionInformation parameters);
 }

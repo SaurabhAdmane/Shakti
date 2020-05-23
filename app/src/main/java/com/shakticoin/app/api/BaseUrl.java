@@ -1,20 +1,11 @@
 package com.shakticoin.app.api;
 
-import com.shakticoin.app.BuildConfig;
-
-
 /**
  * Convenience class to obtain different URL for debug and release modes.
  */
 public class BaseUrl {
-    private static final String BASE_URL_DEBUG = "https://dev-api.shakticoin.com/";
-    private static final String BASE_URL = BASE_URL_DEBUG; // TODO: must be something different
+    public static final String BASE_URL = "https://dev-api.shakticoin.com/";
+    public static final String USERSERVICE_BASE_URL = "http://userservice.test.shakticoin.com:8000/";
+    public static final String WALLETSERVICE_BASE_URL = "http://155.138.222.28:8080/";
 
-    public static String get() {
-        if (BuildConfig.DEBUG) {
-            return BASE_URL_DEBUG;
-        } else {
-            return BASE_URL;
-        }
-    }
 }

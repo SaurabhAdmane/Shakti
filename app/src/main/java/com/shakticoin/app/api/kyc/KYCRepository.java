@@ -26,7 +26,7 @@ public class KYCRepository extends BackendRepository {
 
     public KYCRepository() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BaseUrl.get())
+                .baseUrl(BaseUrl.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

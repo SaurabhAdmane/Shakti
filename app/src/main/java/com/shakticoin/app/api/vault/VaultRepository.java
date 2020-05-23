@@ -27,7 +27,7 @@ public class VaultRepository extends BackendRepository {
 
     public VaultRepository() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BaseUrl.get())
+                .baseUrl(BaseUrl.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         service = retrofit.create(VaultService.class);

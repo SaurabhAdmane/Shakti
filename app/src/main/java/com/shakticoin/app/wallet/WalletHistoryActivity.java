@@ -1,6 +1,10 @@
 package com.shakticoin.app.wallet;
 
+import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Canvas;
@@ -8,6 +12,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -19,17 +24,22 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.shakticoin.app.R;
+import com.shakticoin.app.ShaktiApplication;
+import com.shakticoin.app.api.Constants;
 import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.wallet.Transaction;
+import com.shakticoin.app.api.wallet.TransferModelResponse;
 import com.shakticoin.app.api.wallet.WalletRepository;
 import com.shakticoin.app.databinding.ActivityWalletHistoryBinding;
 import com.shakticoin.app.payment.DialogPaySXE;
 import com.shakticoin.app.util.Debug;
+import com.shakticoin.app.util.FormatUtil;
 import com.shakticoin.app.util.RecyclerViewHeader;
 import com.shakticoin.app.util.RecyclerViewItem;
 import com.shakticoin.app.widget.DrawerActivity;
@@ -48,6 +58,7 @@ import java.util.Map;
 public class WalletHistoryActivity extends DrawerActivity {
     private ActivityWalletHistoryBinding binding;
     private WalletRepository repository;
+    private TransactionAdapter adapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,19 +73,43 @@ public class WalletHistoryActivity extends DrawerActivity {
         binding.list.setHasFixedSize(true);
         binding.list.setLayoutManager(new LinearLayoutManager(this));
         binding.list.addItemDecoration(new ItemDecoration(this));
-        TransactionAdapter adapter = new TransactionAdapter(new ArrayList<>());
+        adapter = new TransactionAdapter(new ArrayList<>());
         binding.list.setAdapter(adapter);
-        repository.getTransactions(new OnCompleteListener<List<Transaction>>() {
-            @Override
-            public void onComplete(List<Transaction> transactions, Throwable error) {
-                if (error != null) {
-                    Debug.logException(error);
-                    return;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        final Activity activity = this;
+
+        String walletBytes = repository.getExistingWallet(null);
+        if (walletBytes != null) {
+            binding.progressBar.setVisibility(View.VISIBLE);
+            repository.getBalance(new OnCompleteListener<BigDecimal>() {
+                @Override
+                public void onComplete(BigDecimal value, Throwable error) {
+                    binding.progressBar.setVisibility(View.INVISIBLE);
+                    if (error != null) {
+                        Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                    binding.balance.setText(FormatUtil.formatCoinAmount(value));
                 }
-                binding.emptyListMsg.setVisibility(transactions.size() == 0 ? View.VISIBLE : View.GONE);
-                adapter.addAll(transactions);
-            }
-        });
+            });
+
+            repository.getTransactions(new OnCompleteListener<List<Transaction>>() {
+                @Override
+                public void onComplete(List<Transaction> transactions, Throwable error) {
+                    if (error != null) {
+                        Debug.logException(error);
+                        return;
+                    }
+                    binding.emptyListMsg.setVisibility(transactions.size() == 0 ? View.VISIBLE : View.GONE);
+                    adapter.addAll(transactions);
+                }
+            });
+        }
     }
 
     @Override
@@ -91,15 +126,70 @@ public class WalletHistoryActivity extends DrawerActivity {
     }
 
     public void onPay(View v) {
-        DialogPaySXE.getInstance().show(getSupportFragmentManager(), DialogPaySXE.class.getSimpleName());
+        DialogPaySXE.getInstance(new DialogPaySXE.OnPayListener() {
+            @Override
+            public void onPay(@NonNull String payee, @NonNull BigDecimal amount) {
+                makeSxePayment(payee, amount);
+            }
+        }).show(getSupportFragmentManager(), DialogPaySXE.class.getSimpleName());
     }
 
     public void onReceive(View v) {
-        Toast.makeText(this, R.string.err_not_implemented, Toast.LENGTH_SHORT).show();
+        // TODO: for now we are able only to send coins to a wallet address, no mapping ID to address.
+        // This rise another problem because we have no way to know what is wallet address is.
+        // So, I use this button to advertise his own wallet address to a user that he can share with
+        // a payer. But this is temporarily.
+        final String[] address = new String[1];
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setTitle("You wallet address")
+                .setNegativeButton("Close", null)
+                .setNeutralButton("Copy to cliboard", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ClipboardManager cm =
+                                (ClipboardManager) ShaktiApplication.getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+                        if (cm != null && !TextUtils.isEmpty(address[0])) {
+                            ClipData clip = ClipData.newPlainText("wallet address", address[0]);
+                            cm.setPrimaryClip(clip);
+                        }
+                    }
+                });
+        binding.progressBar.setVisibility(View.VISIBLE);
+        final Activity activity = this;
+        repository.getAddress(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(String walletAddress, Throwable error) {
+                binding.progressBar.setVisibility(View.INVISIBLE);
+                if (error != null && TextUtils.isEmpty(walletAddress)) {
+                    Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
+                    return;
+                }
+                address[0] = walletAddress;
+                builder.setMessage(walletAddress);
+                builder.create().show();
+            }
+        });
     }
 
     public void onShowDetails(View v) {
         Toast.makeText(this, R.string.err_not_implemented, Toast.LENGTH_SHORT).show();
+    }
+
+    private void makeSxePayment(@NonNull String payee, @NonNull BigDecimal amount) {
+        binding.progressBar.setVisibility(View.VISIBLE);
+        final Activity activity = this;
+        long toshiAmount = amount.multiply(BigDecimal.valueOf(Constants.TOSHI_FACTOR)).longValue();
+        repository.transfer(payee, toshiAmount, null, new OnCompleteListener<TransferModelResponse>() {
+            @Override
+            public void onComplete(TransferModelResponse response, Throwable error) {
+                binding.progressBar.setVisibility(View.INVISIBLE);
+                if (error != null) {
+                    Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
+                    return;
+                }
+                Toast.makeText(activity, response.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
