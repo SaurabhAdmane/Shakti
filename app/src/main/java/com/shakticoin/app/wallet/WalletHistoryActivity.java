@@ -27,9 +27,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.shakticoin.app.R;
 import com.shakticoin.app.api.Constants;
 import com.shakticoin.app.api.OnCompleteListener;
-import com.shakticoin.app.api.Session;
 import com.shakticoin.app.api.wallet.Transaction;
-import com.shakticoin.app.api.wallet.WalletBalanceModelRequest;
+import com.shakticoin.app.api.wallet.TransferModelResponse;
 import com.shakticoin.app.api.wallet.WalletRepository;
 import com.shakticoin.app.databinding.ActivityWalletHistoryBinding;
 import com.shakticoin.app.payment.DialogPaySXE;
@@ -119,7 +118,12 @@ public class WalletHistoryActivity extends DrawerActivity {
     }
 
     public void onPay(View v) {
-        DialogPaySXE.getInstance().show(getSupportFragmentManager(), DialogPaySXE.class.getSimpleName());
+        DialogPaySXE.getInstance(new DialogPaySXE.OnPayListener() {
+            @Override
+            public void onPay(@NonNull String payee, @NonNull BigDecimal amount) {
+                makeSxePayment(payee, amount);
+            }
+        }).show(getSupportFragmentManager(), DialogPaySXE.class.getSimpleName());
     }
 
     public void onReceive(View v) {
@@ -128,6 +132,21 @@ public class WalletHistoryActivity extends DrawerActivity {
 
     public void onShowDetails(View v) {
         Toast.makeText(this, R.string.err_not_implemented, Toast.LENGTH_SHORT).show();
+    }
+
+    private void makeSxePayment(@NonNull String payee, @NonNull BigDecimal amount) {
+        final Activity activity = this;
+        long toshiAmount = amount.multiply(BigDecimal.valueOf(Constants.TOSHI_FACTOR)).longValue();
+        repository.transfer(payee, toshiAmount, null, new OnCompleteListener<TransferModelResponse>() {
+            @Override
+            public void onComplete(TransferModelResponse response, Throwable error) {
+                if (error != null) {
+                    Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
+                    return;
+                }
+                Toast.makeText(activity, response.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

@@ -11,10 +11,12 @@ import androidx.annotation.Nullable;
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKeys;
 
+import com.shakticoin.app.R;
 import com.shakticoin.app.ShaktiApplication;
 import com.shakticoin.app.api.BackendRepository;
 import com.shakticoin.app.api.BaseUrl;
 import com.shakticoin.app.api.OnCompleteListener;
+import com.shakticoin.app.api.RemoteException;
 import com.shakticoin.app.api.Session;
 import com.shakticoin.app.api.UnauthorizedException;
 import com.shakticoin.app.api.auth.AuthRepository;
@@ -325,7 +327,7 @@ public class WalletRepository extends BackendRepository {
         });
     }
 
-    public void transfer(@NonNull String address, @NonNull Long amount, @Nullable String message, @NonNull OnCompleteListener<String> listener) {
+    public void transfer(@NonNull String address, @NonNull Long amount, @Nullable String message, @NonNull OnCompleteListener<TransferModelResponse> listener) {
         Long sessionToken = Session.getWalletSessionToken();
         if (sessionToken == null) {
             getWalletSession(new OnCompleteListener<Long>() {
@@ -339,14 +341,14 @@ public class WalletRepository extends BackendRepository {
                     transfer(address, amount, message, listener);
                 }
             });
+            return;
         }
         CoinModel parameters = new CoinModel();
         parameters.setToAddress(address);
         parameters.setValueInToshi(amount.toString());
         parameters.setSessionToken(sessionToken);
-        if (message != null) {
-            parameters.setMessageForRecipient(message);
-        }
+        parameters.setMessageForRecipient(message != null ? message
+                : ShaktiApplication.getContext().getString(R.string.dlg_sxe_default_message));
         service.transferSxeCoins(Session.getAuthorizationHeader(), parameters).enqueue(new Callback<TransferModelResponse>() {
             @EverythingIsNonNull
             @Override
@@ -358,8 +360,7 @@ public class WalletRepository extends BackendRepository {
                     if (results != null) {
                         String message = results.getMessage();
                         if (message != null) Debug.logDebug(message);
-                        String transactionId = results.getTransactionId();
-                        listener.onComplete(transactionId, null);
+                        listener.onComplete(results, null);
                     } else listener.onComplete(null, new IllegalStateException());
                 } else {
                     if (response.code() == 401) {
@@ -375,7 +376,10 @@ public class WalletRepository extends BackendRepository {
                         });
                     } else {
                         Debug.logErrorResponse(response);
-                        returnError(listener, response);
+                        listener.onComplete(null,
+                                new RemoteException(
+                                        ShaktiApplication.getContext().getString(R.string.dlg_sxe_err_transfer),
+                                        response.code()));
                     }
                 }
             }
