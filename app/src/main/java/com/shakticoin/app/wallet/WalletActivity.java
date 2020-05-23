@@ -11,12 +11,9 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.shakticoin.app.R;
-import com.shakticoin.app.api.Constants;
 import com.shakticoin.app.api.OnCompleteListener;
-import com.shakticoin.app.api.Session;
 import com.shakticoin.app.api.user.User;
 import com.shakticoin.app.api.user.UserRepository;
-import com.shakticoin.app.api.wallet.WalletBalanceModelRequest;
 import com.shakticoin.app.api.wallet.WalletRepository;
 import com.shakticoin.app.databinding.ActivityWalletBinding;
 import com.shakticoin.app.registration.SignInActivity;
@@ -53,16 +50,6 @@ public class WalletActivity extends DrawerActivity {
 
         viewModel = ViewModelProviders.of(this).get(WalletModel.class);
 
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.mainFragment, new MainFragment(), MainFragment.class.getSimpleName())
-                .commit();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
         // update wallet information
         Activity activity = this;
         userRepository.getUserInfo(new OnCompleteListener<User>() {
@@ -93,6 +80,10 @@ public class WalletActivity extends DrawerActivity {
             }
         });
 
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.mainFragment, new MainFragment(), MainFragment.class.getSimpleName())
+                .commit();
     }
 
     @Override
