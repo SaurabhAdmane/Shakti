@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -51,11 +52,13 @@ public class WalletActivity extends DrawerActivity {
         viewModel = ViewModelProviders.of(this).get(WalletModel.class);
 
         // update wallet information
+        binding.progressBar.setVisibility(View.VISIBLE);
         Activity activity = this;
         userRepository.getUserInfo(new OnCompleteListener<User>() {
             @Override
             public void onComplete(User user, Throwable error) {
                 if (error != null) {
+                    binding.progressBar.setVisibility(View.INVISIBLE);
                     Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
                     return;
                 }
@@ -66,6 +69,7 @@ public class WalletActivity extends DrawerActivity {
                     walletRepository.createWallet(null, new OnCompleteListener<String>() {
                         @Override
                         public void onComplete(String walletBytes, Throwable error) {
+                            binding.progressBar.setVisibility(View.INVISIBLE);
                             if (error != null) {
                                 Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
                                 return;
@@ -96,6 +100,7 @@ public class WalletActivity extends DrawerActivity {
         walletRepository.getBalance(new OnCompleteListener<BigDecimal>() {
             @Override
             public void onComplete(BigDecimal balance, Throwable error) {
+                binding.progressBar.setVisibility(View.INVISIBLE);
                 if (error != null) {
                     Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
                     return;

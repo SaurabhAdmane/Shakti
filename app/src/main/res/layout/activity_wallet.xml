@@ -39,7 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:visibility="@{viewModel.progressBarTrigger ? View.VISIBLE : View.INVISIBLE}"/>
+            android:visibility="invisible"/>
 
     </RelativeLayout>
 </layout>

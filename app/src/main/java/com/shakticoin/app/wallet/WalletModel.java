@@ -1,6 +1,5 @@
 package com.shakticoin.app.wallet;
 
-import androidx.databinding.ObservableBoolean;
 import androidx.databinding.ObservableField;
 import androidx.lifecycle.ViewModel;
 
@@ -13,8 +12,6 @@ import java.math.BigDecimal;
 import java.util.Locale;
 
 public class WalletModel extends ViewModel {
-    public ObservableBoolean progressBarTrigger = new ObservableBoolean(false);
-
     public ObservableField<String> fullName = new ObservableField<>();
     public ObservableField<String> referralCode = new ObservableField<>();
     public ObservableField<String> referralLink = new ObservableField<>();
@@ -24,7 +21,7 @@ public class WalletModel extends ViewModel {
 
 
     public WalletModel() {
-        progressBarTrigger.set(true);
+//        progressBarTrigger.set(true);
         UserRepository userRepository = new UserRepository();
 //        userRepository.getUserInfo(new OnCompleteListener<UserResponse>() {
 //            @Override
