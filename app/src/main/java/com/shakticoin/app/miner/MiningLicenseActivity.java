@@ -1,4 +1,4 @@
-package com.shakticoin.app.registration;
+package com.shakticoin.app.miner;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -17,6 +17,7 @@ import com.shakticoin.app.R;
 import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.Session;
 import com.shakticoin.app.api.UnauthorizedException;
+import com.shakticoin.app.api.license.LicenseRepository;
 import com.shakticoin.app.api.payment.PaymentRepository;
 import com.shakticoin.app.api.user.UserRepository;
 import com.shakticoin.app.api.vault.Bonus;
@@ -27,14 +28,18 @@ import com.shakticoin.app.payment.PaymentOptionsActivity;
 import com.shakticoin.app.util.CommonUtil;
 import com.shakticoin.app.util.Debug;
 import com.shakticoin.app.wallet.WalletActivity;
+import com.shakticoin.app.widget.DrawerActivity;
 
 import java.util.List;
 
-public class MiningLicenseActivity extends AppCompatActivity {
+import okhttp3.ResponseBody;
+
+public class MiningLicenseActivity extends DrawerActivity {
 
     private ActivityMiningLicenseBinding binding;
     private MiningLicenseModel viewModel;
     private VaultRepository vaultRepository = new VaultRepository();
+    private LicenseRepository licenseRepository = new LicenseRepository();
 
     private int vaultId = -1;
 
@@ -46,6 +51,9 @@ public class MiningLicenseActivity extends AppCompatActivity {
                 .findViewById(android.R.id.content)).getChildAt(0);
         binding = ActivityMiningLicenseBinding.bind(root);
         binding.setLifecycleOwner(this);
+
+        // need to call in any subclass of DrawerActivity
+        super.onInitView(binding.getRoot(), getString(R.string.miner_intro_toolbar));
 
         viewModel = ViewModelProviders.of(this).get(MiningLicenseModel.class);
         binding.setViewModel(viewModel);
@@ -82,6 +90,22 @@ public class MiningLicenseActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        licenseRepository.getLicenses(new OnCompleteListener<ResponseBody>() {
+            @Override
+            public void onComplete(ResponseBody value, Throwable error) {
+
+            }
+        });
+    }
+
+    @Override
+    protected int getCurrentDrawerSelection() {
+        return 2;
     }
 
     @Override

@@ -47,7 +47,7 @@ public class WalletActivity extends DrawerActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_wallet);
         binding.setLifecycleOwner(this);
 
-        // need to call in any subclass of BaseWalletActivity
+        // need to call in any subclass of DrawerActivity
         super.onInitView(binding.getRoot(), getString(R.string.wallet_toolbar_title));
 
         viewModel = ViewModelProviders.of(this).get(WalletModel.class);

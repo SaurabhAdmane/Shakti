@@ -13,8 +13,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.shakticoin.app.databinding.FragmentWalletMainBinding;
+import com.shakticoin.app.miner.MiningLicenseActivity;
 import com.shakticoin.app.profile.ProfileActivity;
-import com.shakticoin.app.registration.MiningLicenseActivity;
 import com.shakticoin.app.util.CommonUtil;
 import com.shakticoin.app.vault.VaultChooserActivity;
 

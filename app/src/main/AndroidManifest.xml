@@ -70,7 +70,7 @@
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".registration.MiningLicenseActivity"
+            android:name=".miner.MiningLicenseActivity"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity

@@ -1,4 +1,4 @@
-package com.shakticoin.app.registration;
+package com.shakticoin.app.miner;
 
 import androidx.databinding.Observable;
 import androidx.databinding.ObservableBoolean;
