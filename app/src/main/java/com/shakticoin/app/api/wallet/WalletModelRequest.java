@@ -1,8 +1,7 @@
 package com.shakticoin.app.api.wallet;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import com.shakticoin.app.api.Constants;
 
 public class WalletModelRequest {
     private String authorizationBytes;
@@ -13,9 +12,9 @@ public class WalletModelRequest {
         passphrase = "";
     }
 
-    public WalletModelRequest(@Nullable String authorizationBytes, @Nullable String passphrase) {
+    public WalletModelRequest(@Nullable String authorizationBytes, @NonNull String passphrase) {
         this.authorizationBytes = authorizationBytes != null ? authorizationBytes : "";
-        this.passphrase = passphrase != null ? passphrase : Constants.PASSPHRASE;
+        this.passphrase = passphrase;
     }
 
     public String getAuthorizationBytes() {

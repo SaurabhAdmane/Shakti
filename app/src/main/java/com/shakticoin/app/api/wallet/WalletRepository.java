@@ -21,9 +21,11 @@ import com.shakticoin.app.api.Session;
 import com.shakticoin.app.api.UnauthorizedException;
 import com.shakticoin.app.api.auth.AuthRepository;
 import com.shakticoin.app.api.auth.TokenResponse;
-import com.shakticoin.app.api.user.User;
 import com.shakticoin.app.util.Debug;
 import com.shakticoin.app.util.PreferenceHelper;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -32,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -56,10 +59,9 @@ public class WalletRepository extends BackendRepository {
      * Before a user enters the wallet page we must have this wallet. The wallet bytes (that is
      * a wallet ID) must be stored in encrypted preferences (for now, better to get it in user's
      * information).
-     * @param user User information does not contains wallet but it should. Included for the future.
      * @return
      */
-    public String getExistingWallet(@Nullable User user) {
+    public String getExistingWallet() {
         String walletBytes = null;
         try {
             Context context = ShaktiApplication.getContext();
@@ -114,8 +116,8 @@ public class WalletRepository extends BackendRepository {
     }
 
     private void getWalletSession(@NonNull OnCompleteListener<Long> listener) {
-        SessionModelRequest parameters = new SessionModelRequest();
-        parameters.setWalletBytes(getExistingWallet(null));
+        SessionModelRequest parameters =
+                new SessionModelRequest(null, Session.getWalletPassphrase(), getExistingWallet());
         service.getSession(Session.getAuthorizationHeader(), parameters).enqueue(new Callback<SessionModelResponse>() {
             @EverythingIsNonNull
             @Override
@@ -140,6 +142,21 @@ public class WalletRepository extends BackendRepository {
                                 getWalletSession(listener);
                             }
                         });
+                    } if (response.code() == 500) {
+                        // this is a general service error but most probably it means incorrect passphrase
+                        String errorMsg = response.message();
+                        ResponseBody errorBody = response.errorBody();
+                        if (errorBody != null) {
+                            try {
+                                JSONObject errorJson = new JSONObject(errorBody.string());
+                                if (errorJson.has("message")) errorMsg = errorJson.getString("message");
+                            } catch (JSONException | IOException e) {
+                                Debug.logException(e);
+                                errorMsg = ShaktiApplication.getContext().getString(R.string.err_unexpected);
+                                listener.onComplete(null, e);
+                            }
+                        }
+                        listener.onComplete(null, new SessionException(errorMsg));
                     } else {
                         Debug.logErrorResponse(response);
                         returnError(listener, response);

@@ -25,6 +25,7 @@ public class Session {
     private static String refreshToken;
     private static User user;
     private static Long walletSessionToken;
+    private static String walletPassphrase;
 
     private static boolean networkConnected = true;
 
@@ -106,11 +107,20 @@ public class Session {
         Session.user = user;
     }
 
+    public static String getWalletPassphrase() {
+        return walletPassphrase;
+    }
+
+    public static synchronized void setWalletPassphrase(String passphrase) {
+        walletPassphrase = passphrase;
+    }
+
     public static synchronized void clean() {
         accessToken         = null;
         refreshToken        = null;
         user                = null;
         walletSessionToken  = null;
+        walletPassphrase    = null;
         Context context = ShaktiApplication.getContext();
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

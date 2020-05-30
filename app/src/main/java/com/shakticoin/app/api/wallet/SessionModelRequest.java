@@ -1,16 +1,17 @@
 package com.shakticoin.app.api.wallet;
 
-import com.shakticoin.app.api.Constants;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 public class SessionModelRequest {
     private String cacheBytes = "";
-    private String passphrase = Constants.PASSPHRASE;
+    private String passphrase;
     private String walletBytes;
 
     public SessionModelRequest() {}
 
-    public SessionModelRequest(String cacheBytes, String passphrase, String walletBytes) {
-        this.cacheBytes = cacheBytes;
+    public SessionModelRequest(@Nullable String cacheBytes, @NonNull String passphrase, @NonNull String walletBytes) {
+        this.cacheBytes = cacheBytes == null ? "" : cacheBytes;
         this.passphrase = passphrase;
         this.walletBytes = walletBytes;
     }

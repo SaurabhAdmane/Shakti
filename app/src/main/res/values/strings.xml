@@ -680,4 +680,14 @@
     <string name="parties_schools_title">On-boarded Schools</string>
     <string name="parties_providers_title">On-boarded Service Providers</string>
     <string name="parties_verifiers_title">On-boarded Independent Verifiers</string>
+    <string name="dlg_pass__title">Wallet Passphrase</string>
+    <string name="dlg_pass__hint">Enter the passphrase</string>
+    <string name="dlg_pass__hint1">Repeat the passphrase</string>
+    <string name="dlg_pass__action">Submit</string>
+    <string name="dlg_pass__text">
+        You are about to create a new wallet. Please enter a password and keep it in secret. You
+        will need it to access your wallet.
+    </string>
+    <string name="dlg_pass__validation_msg1">The passphrase cannot be empty</string>
+    <string name="dlg_pass__validation_msg2">The main passphrase and confirmation passphrase are not equal</string>
 </resources>

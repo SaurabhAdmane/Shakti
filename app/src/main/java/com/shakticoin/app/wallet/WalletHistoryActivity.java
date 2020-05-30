@@ -33,6 +33,8 @@ import com.shakticoin.app.R;
 import com.shakticoin.app.ShaktiApplication;
 import com.shakticoin.app.api.Constants;
 import com.shakticoin.app.api.OnCompleteListener;
+import com.shakticoin.app.api.Session;
+import com.shakticoin.app.api.wallet.SessionException;
 import com.shakticoin.app.api.wallet.Transaction;
 import com.shakticoin.app.api.wallet.TransferModelResponse;
 import com.shakticoin.app.api.wallet.WalletRepository;
@@ -83,7 +85,8 @@ public class WalletHistoryActivity extends DrawerActivity {
 
         final Activity activity = this;
 
-        String walletBytes = repository.getExistingWallet(null);
+        getWalletBalance();
+        String walletBytes = repository.getExistingWallet();
         if (walletBytes != null) {
             binding.progressBar.setVisibility(View.VISIBLE);
             repository.getBalance(new OnCompleteListener<BigDecimal>() {
@@ -115,6 +118,70 @@ public class WalletHistoryActivity extends DrawerActivity {
     @Override
     protected int getCurrentDrawerSelection() {
         return 0;
+    }
+
+    public void getWalletBalance() {
+        if (Session.getWalletPassphrase() == null) {
+            DialogPass.getInstance(new DialogPass.OnPassListener() {
+                @Override
+                public void onPassEntered(@Nullable String password) {
+                    if (!TextUtils.isEmpty(password)) {
+                        Session.setWalletPassphrase(password);
+                    }
+                    getWalletBalance();
+                }
+            }).show(getSupportFragmentManager(), DialogPass.class.getName());
+            return;
+        }
+
+        Activity activity = this;
+
+        binding.progressBar.setVisibility(View.VISIBLE);
+        String walletBytes = repository.getExistingWallet();
+        if (walletBytes == null) {
+            // we need to create a new wallet
+            repository.createWallet(null, new OnCompleteListener<String>() {
+                @Override
+                public void onComplete(String walletBytes, Throwable error) {
+                    binding.progressBar.setVisibility(View.INVISIBLE);
+                    if (error != null) {
+                        Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                    repository.storeWallet(walletBytes);
+                    getWalletBalance();
+                }
+            });
+        } else {
+            repository.getBalance(new OnCompleteListener<BigDecimal>() {
+                @Override
+                public void onComplete(BigDecimal balance, Throwable error) {
+                    binding.progressBar.setVisibility(View.INVISIBLE);
+                    if (error != null) {
+                        Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
+                        if (error instanceof SessionException) {
+                            Session.setWalletPassphrase(null);
+                            getWalletBalance();
+                        }
+                        return;
+                    }
+                    binding.balance.setText(FormatUtil.formatCoinAmount(balance));
+
+                    // if we get the balance successfully then we can request transactions
+                    repository.getTransactions(new OnCompleteListener<List<Transaction>>() {
+                        @Override
+                        public void onComplete(List<Transaction> transactions, Throwable error) {
+                            if (error != null) {
+                                Debug.logException(error);
+                                return;
+                            }
+                            binding.emptyListMsg.setVisibility(transactions.size() == 0 ? View.VISIBLE : View.GONE);
+                            adapter.addAll(transactions);
+                        }
+                    });
+                }
+            });
+        }
     }
 
     public void onOpenMainWallet(View v) {

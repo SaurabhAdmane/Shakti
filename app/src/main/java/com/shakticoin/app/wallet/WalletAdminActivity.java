@@ -3,6 +3,7 @@ package com.shakticoin.app.wallet;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
@@ -11,6 +12,8 @@ import androidx.databinding.DataBindingUtil;
 
 import com.shakticoin.app.R;
 import com.shakticoin.app.api.OnCompleteListener;
+import com.shakticoin.app.api.Session;
+import com.shakticoin.app.api.wallet.SessionException;
 import com.shakticoin.app.api.wallet.WalletRepository;
 import com.shakticoin.app.databinding.ActivityWalletAdminBinding;
 import com.shakticoin.app.util.Debug;
@@ -36,28 +39,63 @@ public class WalletAdminActivity extends DrawerActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
-        final Activity activity = this;
-
-        String walletBytes = repository.getExistingWallet(null);
-        if (walletBytes != null) {
-            repository.getBalance(new OnCompleteListener<BigDecimal>() {
-                @Override
-                public void onComplete(BigDecimal value, Throwable error) {
-                    if (error != null) {
-                        Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
-                        return;
-                    }
-                    binding.balance.setText(FormatUtil.formatCoinAmount(value));
-                }
-            });
-        }
-
+        getWalletBalance();
     }
 
     @Override
     protected int getCurrentDrawerSelection() {
         return 0;
+    }
+
+    public void getWalletBalance() {
+        if (Session.getWalletPassphrase() == null) {
+            DialogPass.getInstance(new DialogPass.OnPassListener() {
+                @Override
+                public void onPassEntered(@Nullable String password) {
+                    if (!TextUtils.isEmpty(password)) {
+                        Session.setWalletPassphrase(password);
+                    }
+                    getWalletBalance();
+                }
+            }).show(getSupportFragmentManager(), DialogPass.class.getName());
+            return;
+        }
+
+        Activity activity = this;
+
+        binding.progressBar.setVisibility(View.VISIBLE);
+        String walletBytes = repository.getExistingWallet();
+        if (walletBytes == null) {
+            // we need to create a new wallet
+            repository.createWallet(null, new OnCompleteListener<String>() {
+                @Override
+                public void onComplete(String walletBytes, Throwable error) {
+                    binding.progressBar.setVisibility(View.INVISIBLE);
+                    if (error != null) {
+                        Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                    repository.storeWallet(walletBytes);
+                    getWalletBalance();
+                }
+            });
+        } else {
+            repository.getBalance(new OnCompleteListener<BigDecimal>() {
+                @Override
+                public void onComplete(BigDecimal balance, Throwable error) {
+                    binding.progressBar.setVisibility(View.INVISIBLE);
+                    if (error != null) {
+                        Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
+                        if (error instanceof SessionException) {
+                            Session.setWalletPassphrase(null);
+                            getWalletBalance();
+                        }
+                        return;
+                    }
+                    binding.balance.setText(FormatUtil.formatCoinAmount(balance));
+                }
+            });
+        }
     }
 
     public void onOpenBalanceHistory(View v) {

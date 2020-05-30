@@ -58,9 +58,4 @@ public class Constants {
      * unit of measure in the system.
      */
     public static final Integer TOSHI_FACTOR    = 100000;
-
-    /**
-     * Default passphrase for wallet
-     */
-    public static final String PASSPHRASE = "empty";
 }
