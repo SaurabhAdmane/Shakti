@@ -101,6 +101,23 @@ public class MiningLicenseActivity extends DrawerActivity {
 
             }
         });
+
+//        LicService service = new Retrofit.Builder()
+//                .baseUrl(BaseUrl.LICENSESERVICE_BASE_URL)
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .build()
+//                .create(LicService.class);
+//        service.getLicenses(Session.getAuthorizationHeader()).enqueue(new Callback<ResponseBody>() {
+//            @Override
+//            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+//                Debug.logDebug(response.toString());
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ResponseBody> call, Throwable t) {
+//                Debug.logDebug(t.getMessage());
+//            }
+//        });
     }
 
     @Override
