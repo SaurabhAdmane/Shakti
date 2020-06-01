@@ -151,7 +151,7 @@
             android:layout_marginEnd="32dp"
             android:layout_marginTop="10dp"
             android:gravity="center_horizontal"
-            android:inputType="numberDecimal"
+            android:inputType="textCapSentences"
             android:imeOptions="actionDone"
             android:hint="@string/dlg_sxe_default_message"
             android:importantForAutofill="no" />

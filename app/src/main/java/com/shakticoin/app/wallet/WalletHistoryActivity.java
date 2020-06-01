@@ -193,12 +193,8 @@ public class WalletHistoryActivity extends DrawerActivity {
     }
 
     public void onPay(View v) {
-        DialogPaySXE.getInstance(new DialogPaySXE.OnPayListener() {
-            @Override
-            public void onPay(@NonNull String payee, @NonNull BigDecimal amount) {
-                makeSxePayment(payee, amount);
-            }
-        }).show(getSupportFragmentManager(), DialogPaySXE.class.getSimpleName());
+        DialogPaySXE.getInstance((payee, amount, message)
+                -> makeSxePayment(payee, amount, message)).show(getSupportFragmentManager(), DialogPaySXE.class.getSimpleName());
     }
 
     public void onReceive(View v) {
@@ -242,11 +238,11 @@ public class WalletHistoryActivity extends DrawerActivity {
         Toast.makeText(this, R.string.err_not_implemented, Toast.LENGTH_SHORT).show();
     }
 
-    private void makeSxePayment(@NonNull String payee, @NonNull BigDecimal amount) {
+    private void makeSxePayment(@NonNull String payee, @NonNull BigDecimal amount, String message) {
         binding.progressBar.setVisibility(View.VISIBLE);
         final Activity activity = this;
         long toshiAmount = amount.multiply(BigDecimal.valueOf(Constants.TOSHI_FACTOR)).longValue();
-        repository.transfer(payee, toshiAmount, null, new OnCompleteListener<TransferModelResponse>() {
+        repository.transfer(payee, toshiAmount, message, new OnCompleteListener<TransferModelResponse>() {
             @Override
             public void onComplete(TransferModelResponse response, Throwable error) {
                 binding.progressBar.setVisibility(View.INVISIBLE);

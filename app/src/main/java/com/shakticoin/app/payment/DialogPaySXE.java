@@ -25,7 +25,7 @@ import java.util.Objects;
 public class DialogPaySXE extends DialogFragment {
 
     public interface OnPayListener {
-        void onPay(@NonNull String payee, @NonNull BigDecimal amount);
+        void onPay(@NonNull String payee, @NonNull BigDecimal amount, @Nullable String message);
     }
 
     private OnPayListener listener;
@@ -92,7 +92,7 @@ public class DialogPaySXE extends DialogFragment {
             return;
         }
 
-        listener.onPay(recipient, amountNum);
+        listener.onPay(recipient, amountNum, messageToRecipient);
 
         dismiss();
     }
