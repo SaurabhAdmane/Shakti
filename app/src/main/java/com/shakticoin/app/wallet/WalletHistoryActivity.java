@@ -251,6 +251,8 @@ public class WalletHistoryActivity extends DrawerActivity {
                     return;
                 }
                 Toast.makeText(activity, response.getMessage(), Toast.LENGTH_LONG).show();
+                // we need to update the balance
+                getWalletBalance();
             }
         });
     }
