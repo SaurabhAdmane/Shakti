@@ -21,7 +21,7 @@ public interface WalletService {
                                            @Body WalletModelRequest parameters);
 
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("users/wallet/address/")
+    @POST("users/wallet/walletid/")
     Call<WalletAddressModelResponse> getWalletAddress(@Header("Authorization") String authorization,
                                                @Body WalletAddressModelRequest parameters);
 
