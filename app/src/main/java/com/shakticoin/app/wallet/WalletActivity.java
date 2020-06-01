@@ -91,7 +91,7 @@ public class WalletActivity extends DrawerActivity {
         String walletBytes = walletRepository.getExistingWallet();
         if (walletBytes == null) {
             // we need to create a new wallet
-            walletRepository.createWallet(null, new OnCompleteListener<String>() {
+            walletRepository.createWallet(Session.getWalletPassphrase(), new OnCompleteListener<String>() {
                 @Override
                 public void onComplete(String walletBytes, Throwable error) {
                     binding.progressBar.setVisibility(View.INVISIBLE);
