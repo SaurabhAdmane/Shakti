@@ -21,7 +21,7 @@ public class AuthRepository extends BackendRepository {
 
     public AuthRepository() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BaseUrl.BASE_URL)
+                .baseUrl(BaseUrl.USERSERVICE_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -31,7 +31,7 @@ public class AuthRepository extends BackendRepository {
     /**
      * Login to the backend and return user's information if successful.
      */
-    public void login(@NonNull String username, @NonNull String password, @NonNull OnCompleteListener<Void> listener) {
+    public void login(@NonNull String username, @NonNull String password, @NonNull OnCompleteListener<TokenResponse> listener) {
         Credentials credentials = new Credentials();
         credentials.setUsername(username);
         credentials.setPassword(password);
@@ -44,9 +44,7 @@ public class AuthRepository extends BackendRepository {
                 if (response.isSuccessful()) {
                     TokenResponse resp = response.body();
                     if (resp != null) {
-                        Session.setAccessToken(resp.getAccess());
-                        Session.setRefreshToken(resp.getRefresh());
-                        listener.onComplete(null,null);
+                        listener.onComplete(resp, null);
                     }
                 } else {
                     returnError(listener, response);

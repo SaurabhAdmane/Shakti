@@ -37,7 +37,7 @@ public class UserRepository extends BackendRepository {
 
     public UserRepository() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BaseUrl.BASE_URL)
+                .baseUrl(BaseUrl.USERSERVICE_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         userService = retrofit.create(UserService.class);
