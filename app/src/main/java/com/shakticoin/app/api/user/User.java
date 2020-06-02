@@ -4,6 +4,7 @@ import java.util.List;
 
 public class User {
     private Integer id;
+    private String shakti_id;
     private String email;
     private String first_name;
     private String middle_name;
@@ -110,5 +111,13 @@ public class User {
 
     public void setKinship(List<Kinship> kinship) {
         this.kinship = kinship;
+    }
+
+    public String getShakti_id() {
+        return shakti_id;
+    }
+
+    public void setShakti_id(String shakti_id) {
+        this.shakti_id = shakti_id;
     }
 }

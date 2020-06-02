@@ -8,14 +8,14 @@ import retrofit2.http.POST;
 
 public interface LoginService {
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("userservice/v1/api/token/")
+    @POST("token/")
     Call<TokenResponse> token(@Body Credentials credentials);
 
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("userservice/v1/api/token/refresh/")
+    @POST("token/refresh/")
     Call<TokenResponse> refresh(@Body TokenParameters parameters);
 
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("userservice/v1/api/token/verify/")
-    Call<ResponseBody> verify(@Body PasswordResetRequest request);
+    @POST("token/verify/")
+    Call<ResponseBody> verify(@Body TokenVerifyParameters request);
 }

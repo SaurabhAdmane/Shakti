@@ -17,7 +17,7 @@ public interface UserService {
      * Retrieve a user by ID
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @GET("userservice/v1/api/users/{id}/")
+    @GET("users/{id}/")
     Call<User> getUserByID(
             @Header("Authorization") String authorization,
             @Header("Accept-Language") String language,
@@ -27,7 +27,7 @@ public interface UserService {
      * Retrieve a user by authorization token
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @GET("userservice/v1/api/users/")
+    @GET("users/")
     Call<User> getUser(
             @Header("Authorization") String authorization,
             @Header("Accept-Language") String language);
@@ -36,7 +36,7 @@ public interface UserService {
      * Adds a new user.
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("userservice/v1/api/users/")
+    @POST("users/")
     Call<User> createUser(@Body CreateUserParameters parameters);
 
 
@@ -44,7 +44,7 @@ public interface UserService {
      * Updates a user.
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @PUT("userservice/v1/api/users/{id}/")
+    @PUT("users/{id}/")
     Call<UserResponse> updateUser(
             @Header("Authorization") String authorization,
             @Header("Accept-Language") String language,
@@ -53,7 +53,7 @@ public interface UserService {
 
     /** Retrieves user address by ID */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @GET("userservice/v1/api/users/{id}/address/")
+    @GET("users/{id}/address/")
     Call<Residence> getUserAddress(
             @Header("Authorization") String authorization,
             @Header("Accept-Language") String language,
@@ -63,28 +63,28 @@ public interface UserService {
      * Activate new user.
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("userservice/v1/api/users/{id}/status/activate/")
+    @POST("users/{id}/status/activate/")
     Call<Void> activateUser(@Path("id") Integer userId, @Body UserActivateParameters parameters);
 
     /**
      * Change user password
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("userservice/v1/api/users/{id}/password/change/")
+    @POST("users/{id}/password/change/")
     Call<Void> changePassword(@Header("Authorization") String authorization, @Path("id") Integer userId);
 
     /**
      * Reset user password.
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("userservice/v1/api/users/password/reset/")
+    @POST("users/password/reset/")
     Call<Void> resetPassword(@Body ResetPasswordParameters parameters);
 
     /**
      * Confirm user password reset.
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("userservice/v1/api/users/password/reset/confirm/")
+    @POST("users/password/reset/confirm/")
     Call<Void> confirmResetPassword(@Body ConfirmResetPasswordParameters parameters);
 
 
@@ -92,7 +92,7 @@ public interface UserService {
      * Retrieve family members.
      */
     @Headers("Accept: application/json")
-    @GET("/userservice/v1/api/families/")
+    @GET("families/")
     Call<List<FamilyMember>> getFamilyMembers(@Header("Authorization") String authorization,
                                               @Header("Accept-Language") String language);
 
@@ -100,7 +100,7 @@ public interface UserService {
      * Add a family member.
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("/userservice/v1/api/families/")
+    @POST("families/")
     Call<FamilyMember> addFamilyMember(@Header("Authorization") String authorization,
                                        @Header("Accept-Language") String language,
                                        @Body FamilyMember member);

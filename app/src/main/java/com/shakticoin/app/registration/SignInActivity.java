@@ -12,18 +12,15 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import com.shakticoin.app.R;
-import com.shakticoin.app.api.BaseUrl;
 import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.Session;
 import com.shakticoin.app.api.UnauthorizedException;
-import com.shakticoin.app.api.auth.Credentials;
-import com.shakticoin.app.api.auth.LoginService;
+import com.shakticoin.app.api.auth.AuthRepository;
 import com.shakticoin.app.api.auth.TokenResponse;
 import com.shakticoin.app.api.user.User;
 import com.shakticoin.app.api.user.UserRepository;
@@ -36,17 +33,11 @@ import com.shakticoin.app.wallet.WalletActivity;
 
 import java.util.Objects;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-
 public class SignInActivity extends AppCompatActivity {
     private ActivitySigninBinding binding;
 
-    private LoginService loginService;
-    private UserRepository userRepository;
+    private AuthRepository authRepository = new AuthRepository();
+    private UserRepository userRepository = new UserRepository();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,14 +71,6 @@ public class SignInActivity extends AppCompatActivity {
                 Toast.makeText(self, R.string.err_device_not_secure, Toast.LENGTH_LONG).show();
             }
         });
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BaseUrl.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        loginService = retrofit.create(LoginService.class);
-        userRepository = new UserRepository();
-
     }
 
     public void onLogin(View view) {
@@ -111,59 +94,40 @@ public class SignInActivity extends AppCompatActivity {
 
         binding.progressBar.setVisibility(View.VISIBLE);
 
-        Credentials credentials = new Credentials();
-        credentials.setUsername(username);
-        credentials.setPassword(password);
-
         final Activity self = this;
-        Call<TokenResponse> call = loginService.token(credentials);
-        call.enqueue(new Callback<TokenResponse>() {
+        authRepository.login(username, password, new OnCompleteListener<TokenResponse>() {
             @Override
-            public void onResponse(@NonNull Call<TokenResponse> call, @NonNull Response<TokenResponse> response) {
-                if (call.isExecuted()) {
-                    Debug.logDebug(response.toString());
-                    if (response.isSuccessful()) {
-                        TokenResponse resp = response.body();
-                        if (resp != null) {
-                            Session.setAccessToken(resp.getAccess());
-                            Session.setRefreshToken(resp.getRefresh(), rememberMe);
-                            SharedPreferences prefs = getSharedPreferences(PreferenceHelper.GENERAL_PREFERENCES, Context.MODE_PRIVATE);
-                            prefs.edit().putBoolean(PreferenceHelper.PREF_KEY_HAS_ACCOUNT, true).apply();
-
-                            userRepository.getUserInfo(new OnCompleteListener<User>() {
-                                @Override
-                                public void onComplete(User value, Throwable error) {
-                                    binding.progressBar.setVisibility(View.INVISIBLE);
-
-                                    if (error != null) {
-                                        if (error instanceof UnauthorizedException) {
-                                            startActivity(Session.unauthorizedIntent(self));
-                                        } else {
-                                            Toast.makeText(self, Debug.getFailureMsg(self, error), Toast.LENGTH_LONG).show();
-                                            Debug.logException(error);
-                                        }
-                                        return;
-                                    }
-
-                                    // go to the wallet
-                                    startActivity(new Intent(self, WalletActivity.class));
-                                }
-                            });
-
-                        }
-                    } else {
-                        Debug.logErrorResponse(response);
-                        binding.progressBar.setVisibility(View.INVISIBLE);
-                        Toast.makeText(self, R.string.err_login_failed, Toast.LENGTH_LONG).show();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<TokenResponse> call, @NonNull Throwable t) {
+            public void onComplete(TokenResponse tokens, Throwable error) {
                 binding.progressBar.setVisibility(View.INVISIBLE);
-                Toast.makeText(self, Debug.getFailureMsg(self, t), Toast.LENGTH_SHORT).show();
-                Debug.logException(t);
+                if (error != null) {
+                    Toast.makeText(self, R.string.err_login_failed, Toast.LENGTH_LONG).show();
+                    return;
+                }
+                Session.setAccessToken(tokens.getAccess());
+                Session.setRefreshToken(tokens.getRefresh(), rememberMe);
+                SharedPreferences prefs = getSharedPreferences(PreferenceHelper.GENERAL_PREFERENCES, Context.MODE_PRIVATE);
+                prefs.edit().putBoolean(PreferenceHelper.PREF_KEY_HAS_ACCOUNT, true).apply();
+
+                binding.progressBar.setVisibility(View.VISIBLE);
+                userRepository.getUserInfo(new OnCompleteListener<User>() {
+                    @Override
+                    public void onComplete(User value, Throwable error) {
+                        binding.progressBar.setVisibility(View.INVISIBLE);
+                        if (error != null) {
+                            if (error instanceof UnauthorizedException) {
+                                startActivity(Session.unauthorizedIntent(self));
+                            } else {
+                                Toast.makeText(self, Debug.getFailureMsg(self, error), Toast.LENGTH_LONG).show();
+                                Debug.logException(error);
+                            }
+                            return;
+                        }
+
+                        // go to the wallet
+                        startActivity(new Intent(self, WalletActivity.class));
+                    }
+                });
+
             }
         });
     }
