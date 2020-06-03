@@ -5,14 +5,14 @@ import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.shakticoin.app.api.vault.PackageExtended;
+import com.shakticoin.app.api.license.LicenseType;
 
 import java.util.List;
 
 public class MiningLicenseModel extends ViewModel {
-    public enum PackageType {M101, T100, T200, T300, T400}
+    public enum LicenseTypeIds {M101, T100, T200, T300, T400}
 
-    public List<PackageExtended> packages;
+    public List<LicenseType> packages;
 
     public ObservableBoolean onM101 = new ObservableBoolean();
     public ObservableBoolean onT100 = new ObservableBoolean();
@@ -26,11 +26,11 @@ public class MiningLicenseModel extends ViewModel {
     public ObservableBoolean enabledT300 = new ObservableBoolean(true);
     public ObservableBoolean enabledT400 = new ObservableBoolean(true);
 
-    MutableLiveData<PackageType> selectedPlan = new MutableLiveData<>();
+    MutableLiveData<LicenseTypeIds> selectedPlan = new MutableLiveData<>();
 
     public MiningLicenseModel() {
         onM101.set(true);
-        selectedPlan.setValue(PackageType.M101);
+        selectedPlan.setValue(LicenseTypeIds.M101);
         onM101.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
             @Override
             public void onPropertyChanged(Observable sender, int propertyId) {
@@ -40,7 +40,7 @@ public class MiningLicenseModel extends ViewModel {
                     if (onT200.get()) onT200.set(false);
                     if (onT300.get()) onT300.set(false);
                     if (onT400.get()) onT400.set(false);
-                    selectedPlan.setValue(PackageType.M101);
+                    selectedPlan.setValue(LicenseTypeIds.M101);
                 }
             }
         });
@@ -54,7 +54,7 @@ public class MiningLicenseModel extends ViewModel {
                     if (onT200.get()) onT200.set(false);
                     if (onT300.get()) onT300.set(false);
                     if (onT400.get()) onT400.set(false);
-                    selectedPlan.setValue(PackageType.T100);
+                    selectedPlan.setValue(LicenseTypeIds.T100);
                 }
             }
         });
@@ -68,7 +68,7 @@ public class MiningLicenseModel extends ViewModel {
                     if (onM101.get()) onM101.set(false);
                     if (onT300.get()) onT300.set(false);
                     if (onT400.get()) onT400.set(false);
-                    selectedPlan.setValue(PackageType.T200);
+                    selectedPlan.setValue(LicenseTypeIds.T200);
                 }
             }
         });
@@ -82,7 +82,7 @@ public class MiningLicenseModel extends ViewModel {
                     if (onT200.get()) onT200.set(false);
                     if (onM101.get()) onM101.set(false);
                     if (onT400.get()) onT400.set(false);
-                    selectedPlan.setValue(PackageType.T300);
+                    selectedPlan.setValue(LicenseTypeIds.T300);
                 }
             }
         });
@@ -96,21 +96,21 @@ public class MiningLicenseModel extends ViewModel {
                     if (onT200.get()) onT200.set(false);
                     if (onM101.get()) onM101.set(false);
                     if (onT400.get()) onT300.set(false);
-                    selectedPlan.setValue(PackageType.T400);
+                    selectedPlan.setValue(LicenseTypeIds.T400);
                 }
             }
         });
     }
 
-    void init(List<PackageExtended> packages) {
+    void init(List<LicenseType> packages) {
         this.packages = packages;
     }
 
     /**
      * Returns package related data that we received from the server.
      */
-    public PackageExtended getSelectedPackage() {
-        PackageType packageType = selectedPlan.getValue();
+    public LicenseType getSelectedPackage() {
+        LicenseTypeIds packageType = selectedPlan.getValue();
         if (packageType != null && packageType.ordinal() < packages.size()) {
             return packages.get(packageType.ordinal());
         }

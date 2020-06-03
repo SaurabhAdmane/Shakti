@@ -1,6 +1,5 @@
 package com.shakticoin.app.miner;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -14,25 +13,19 @@ import androidx.core.text.HtmlCompat;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.shakticoin.app.R;
+import com.shakticoin.app.ShaktiApplication;
 import com.shakticoin.app.api.OnCompleteListener;
-import com.shakticoin.app.api.Session;
-import com.shakticoin.app.api.UnauthorizedException;
 import com.shakticoin.app.api.license.LicenseRepository;
-import com.shakticoin.app.api.payment.PaymentRepository;
-import com.shakticoin.app.api.user.UserRepository;
-import com.shakticoin.app.api.vault.Bonus;
-import com.shakticoin.app.api.vault.PackageExtended;
+import com.shakticoin.app.api.license.LicenseType;
 import com.shakticoin.app.api.vault.VaultRepository;
 import com.shakticoin.app.databinding.ActivityMiningLicenseBinding;
 import com.shakticoin.app.payment.PaymentOptionsActivity;
 import com.shakticoin.app.util.CommonUtil;
-import com.shakticoin.app.util.Debug;
 import com.shakticoin.app.wallet.WalletActivity;
 import com.shakticoin.app.widget.DrawerActivity;
 
+import java.text.NumberFormat;
 import java.util.List;
-
-import okhttp3.ResponseBody;
 
 public class MiningLicenseActivity extends DrawerActivity {
 
@@ -60,64 +53,36 @@ public class MiningLicenseActivity extends DrawerActivity {
 
         final AppCompatActivity self = this;
 
-        if (savedInstanceState != null) {
-            vaultId = savedInstanceState.getInt("vaultId", -1);
-        } else {
-            Intent intent = getIntent();
-            vaultId = intent.getIntExtra(CommonUtil.prefixed("vaultId", this), -1);
-        }
-        if (vaultId > -1) {
-            binding.progressBar.setVisibility(View.VISIBLE);
-            vaultRepository.getVaultPackages(vaultId, new OnCompleteListener<List<PackageExtended>>() {
-                @Override
-                public void onComplete(List<PackageExtended> packages, Throwable error) {
-                    binding.progressBar.setVisibility(View.INVISIBLE);
-                    if (error != null) {
-                        if (error instanceof UnauthorizedException) {
-                            startActivity(Session.unauthorizedIntent(self));
-                        }
-                        return;
-                    }
-
-                    viewModel.init(packages);
-                    viewModel.selectedPlan.observe(self, packageType -> {
-                        if (packageType == null) return;
-                        PackageExtended packageExtended = viewModel.getSelectedPackage();
-                        if (packageExtended != null) {
-                            updateDetails(packageExtended);
-                        }
-                    });
-                }
-            });
-        }
+//        if (savedInstanceState != null) {
+//        } else {
+//        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        licenseRepository.getLicenses(new OnCompleteListener<ResponseBody>() {
-            @Override
-            public void onComplete(ResponseBody value, Throwable error) {
 
+        final AppCompatActivity activity = this;
+        binding.progressBar.setVisibility(View.VISIBLE);
+        licenseRepository.getLicenses(new OnCompleteListener<List<LicenseType>>() {
+            @Override
+            public void onComplete(List<LicenseType> value, Throwable error) {
+                binding.progressBar.setVisibility(View.INVISIBLE);
+                if (error != null) {
+                    Toast.makeText(ShaktiApplication.getContext(), R.string.err_unexpected, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                viewModel.init(value);
+                viewModel.selectedPlan.observe(activity, type -> {
+                    if (type == null) return;
+                    LicenseType licenseType = viewModel.getSelectedPackage();
+                    if (licenseType != null) {
+                        updateDetails(licenseType);
+                    }
+                });
             }
         });
-
-//        LicService service = new Retrofit.Builder()
-//                .baseUrl(BaseUrl.LICENSESERVICE_BASE_URL)
-//                .addConverterFactory(GsonConverterFactory.create())
-//                .build()
-//                .create(LicService.class);
-//        service.getLicenses(Session.getAuthorizationHeader()).enqueue(new Callback<ResponseBody>() {
-//            @Override
-//            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-//                Debug.logDebug(response.toString());
-//            }
-//
-//            @Override
-//            public void onFailure(Call<ResponseBody> call, Throwable t) {
-//                Debug.logDebug(t.getMessage());
-//            }
-//        });
     }
 
     @Override
@@ -127,73 +92,42 @@ public class MiningLicenseActivity extends DrawerActivity {
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putInt("vaultId", vaultId);
         super.onSaveInstanceState(outState);
     }
 
-    private void updateDetails(PackageExtended packageExtended) {
-        if (packageExtended != null) {
-            MiningLicenseModel.PackageType packageType = viewModel.selectedPlan.getValue();
+    private void updateDetails(LicenseType licenseType) {
+        if (licenseType != null) {
+            MiningLicenseModel.LicenseTypeIds type = viewModel.selectedPlan.getValue();
             binding.features.setText(HtmlCompat.fromHtml(
-                    formatFeatureList(packageType, packageExtended), HtmlCompat.FROM_HTML_MODE_LEGACY));
+                    formatFeatureList(type, licenseType), HtmlCompat.FROM_HTML_MODE_LEGACY));
 
-            MiningLicenseModel.PackageType packageTypeName = viewModel.selectedPlan.getValue();
+            MiningLicenseModel.LicenseTypeIds packageTypeName = viewModel.selectedPlan.getValue();
             if (packageTypeName != null) {
-                binding.license.setText(packageExtended.getName());
+                binding.license.setText(licenseType.getLicName());
                 binding.onClaim.setText(getString(R.string.minerlic_action, packageTypeName));
             }
 
-            Bonus bonus = packageExtended.getBonus();
-            if (bonus != null) {
-                binding.offer.setText(bonus.getDescription());
-                // FIXME: where to get payment amount?
-//                BigDecimal price = viewModel.getPaymentAmount();
-//                binding.paymentAmount.setText(price != null ?
-//                        String.format(getResources().getConfiguration().locale, "$%1$.2f", price) : "");
+            String bonusDescription = licenseType.getBonus();
+            if (bonusDescription != null) {
+                binding.offer.setText(bonusDescription);
             }
+
+            Double price = licenseType.getPrice();
+            if (price != null) {
+                NumberFormat formatter = NumberFormat.getCurrencyInstance();
+                binding.paymentAmount.setText(formatter.format(price));
+            }
+
+            binding.onClaim.setEnabled(true);
         }
     }
 
     public void onApply(View view) {
         Intent intent = new Intent(this, PaymentOptionsActivity.class);
         intent.putExtra(CommonUtil.prefixed("vaultId", this), vaultId);
-        PackageExtended pkg = viewModel.getSelectedPackage();
-        intent.putExtra(CommonUtil.prefixed("packageId", this), pkg.getId());
+        LicenseType licenseType = viewModel.getSelectedPackage();
+        intent.putExtra(CommonUtil.prefixed("licenseTypeId", this), licenseType.getId());
         startActivity(intent);
-    }
-
-    private void completePayment(@Nullable String token, long orderId) {
-        if (token == null) return; // perhaps not possible
-        if (orderId < 0) return;
-
-        final Activity activity = this;
-
-        binding.progressBar.setVisibility(View.VISIBLE);
-        PaymentRepository repository = new PaymentRepository();
-        repository.makeStripePayment(orderId, token, new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(Void value, Throwable error) {
-                if (error != null) {
-                    Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                // we can consider the registration completed at this point
-                UserRepository userRepository = new UserRepository();
-//                userRepository.updateRegistrationStatus(Constants.RegistrationStatus.REGST_COMPL, new OnCompleteListener<Void>() {
-//                    @Override
-//                    public void onComplete(Void value, Throwable error) {
-//                        binding.progressBar.setVisibility(View.INVISIBLE);
-//                        if (error != null) {
-//                            Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_SHORT).show();
-//                            return;
-//                        }
-//
-//                        openWallet();
-//                    }
-//                });
-            }
-        });
     }
 
     /**
@@ -210,8 +144,8 @@ public class MiningLicenseActivity extends DrawerActivity {
     /**
      * Format bullet list string from a plain list of features.
      */
-    private String formatFeatureList(MiningLicenseModel.PackageType packageType, PackageExtended packageExtended) {
-        List<String> features = packageExtended.getFeatures();
+    private String formatFeatureList(MiningLicenseModel.LicenseTypeIds packageType, LicenseType licenseType) {
+        List<String> features = licenseType.getLicFeatures();
         StringBuilder sb = new StringBuilder();
         sb.append("<p><b>");
         if (packageType != null) {

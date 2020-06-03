@@ -11,7 +11,7 @@ interface LicenseService {
 
     /** Return all license types  */
     @GET("licenses")
-    fun getLicenses(@Header("Authorization") authorization: String?): Call<ResponseBody?>?
+    fun getLicenses(@Header("Authorization") authorization: String?): Call<List<LicenseType>?>
 
     /** Search for license inventories based on region  */
     @GET("licences/inventory/{country}")

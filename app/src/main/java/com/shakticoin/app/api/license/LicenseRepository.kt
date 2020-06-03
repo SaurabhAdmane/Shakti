@@ -3,35 +3,60 @@ package com.shakticoin.app.api.license
 
 import com.shakticoin.app.api.BaseUrl
 import com.shakticoin.app.api.OnCompleteListener
+import com.shakticoin.app.api.RemoteException
 import com.shakticoin.app.api.Session
+import com.shakticoin.app.api.auth.AuthRepository
+import com.shakticoin.app.api.auth.TokenResponse
 import com.shakticoin.app.util.Debug
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+val MINING_PLANS: List<String> = listOf("M101W", "T100W", "T200W", "T300W", "T400W",
+        "M101M", "T100M", "T200M", "T300M", "T400M", "M101Y", "T100Y", "T200Y", "T300Y", "T400Y")
+
 class LicenseRepository {
+
     private val licenseService: LicenseService = Retrofit.Builder()
             .baseUrl(BaseUrl.LICENSESERVICE_BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(LicenseService::class.java)
 
-    fun getLicenses(listener: OnCompleteListener<ResponseBody?>?) {
-        licenseService.getLicenses(Session.getAuthorizationHeader())!!.enqueue(object : Callback<ResponseBody?> {
-            override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
+    val authRepository = AuthRepository();
+
+    fun getLicenses(listener: OnCompleteListener<List<LicenseType>?>?) {
+        licenseService.getLicenses(Session.getAuthorizationHeader()).enqueue(object : Callback<List<LicenseType>?> {
+            override fun onResponse(call: Call<List<LicenseType>?>, response: Response<List<LicenseType>?>) {
                 Debug.logDebug(response.toString())
                 if (response.isSuccessful) {
-                    val body = response.body()!!.string()
-                    Debug.logDebug(body)
+                    val licenseTypes = response.body();
+                    if (licenseTypes != null) {
+                        // for display purpose we need only year mining license
+                        val plans = licenseTypes.filter { MINING_PLANS.contains(it.planCode) && it.cycle == 1}
+                        // good to have them ordered properly
+                        listener!!.onComplete(plans.sortedBy { it.orderNumber }, null)
+                    } else listener!!.onComplete(listOf(), null);
                 } else {
-                    val errorBody = response.errorBody()!!.string()
-                    Debug.logDebug(errorBody)
+                    if (response.code() == 401) {
+                        authRepository.refreshToken(Session.getRefreshToken(), object: OnCompleteListener<TokenResponse?>() {
+                            override fun onComplete(value: TokenResponse?, error: Throwable?) {
+                                if (error != null) {
+                                    listener!!.onComplete(null, error)
+                                    return;
+                                }
+                                getLicenses(listener)
+                            }
+                        })
+                    } else {
+                        Debug.logErrorResponse(response)
+                        listener!!.onComplete(null, RemoteException(response.message(), response.code()))
+                    }
                 }
             }
-            override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
+            override fun onFailure(call: Call<List<LicenseType>?>, t: Throwable) {
                 Debug.logDebug(t.message);
             }
         })

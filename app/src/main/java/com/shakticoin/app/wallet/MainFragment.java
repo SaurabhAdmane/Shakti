@@ -15,7 +15,6 @@ import androidx.lifecycle.ViewModelProviders;
 import com.shakticoin.app.databinding.FragmentWalletMainBinding;
 import com.shakticoin.app.miner.MiningLicenseActivity;
 import com.shakticoin.app.profile.ProfileActivity;
-import com.shakticoin.app.util.CommonUtil;
 import com.shakticoin.app.vault.VaultChooserActivity;
 
 import java.util.Objects;
@@ -78,7 +77,6 @@ public class MainFragment extends Fragment {
         assert fragmentManager != null;
         DialogBecomeMiner.newInstance(v1 -> {
             Intent intent = new Intent(getActivity(), MiningLicenseActivity.class);
-            intent.putExtra(CommonUtil.prefixed("vaultId", getActivity()), 2 /*FIXME: hardcoded vault ID*/);
             startActivity(intent);
         }).show(fragmentManager, DialogBecomeMiner.TAG);
     }

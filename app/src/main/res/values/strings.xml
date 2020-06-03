@@ -27,6 +27,7 @@
     <string name="common_status">Status</string>
     <string name="common_yes">Yes</string>
     <string name="common_no">No</string>
+    <string name="common_apply">Apply</string>
     <string name="and">&amp;</string>
     <string name="do_registration">Create Shakti ID</string>
     <string name="do_login"><u>Already have an account? Sign in</u></string>
