@@ -1,5 +1,8 @@
 package com.shakticoin.app.api.license
 
+import android.os.Parcel
+import android.os.Parcelable
+
 /**
  * API returns:
  * {
@@ -28,7 +31,7 @@ package com.shakticoin.app.api.license
  *   "orderNumber":11
  *   },
  */
-class LicenseType {
+class LicenseType() : Parcelable {
     var id: String? = null
     var planCode: String? = null
     var licName: String? = null
@@ -38,4 +41,42 @@ class LicenseType {
     var bonus: String? = null
     var licCategory: String? = null
     var orderNumber: Int? = null
+
+    constructor(parcel: Parcel) : this() {
+        id = parcel.readString()
+        planCode = parcel.readString()
+        licName = parcel.readString()
+        licFeatures = parcel.createStringArrayList()
+        price = parcel.readValue(Double::class.java.classLoader) as? Double
+        cycle = parcel.readValue(Int::class.java.classLoader) as? Int
+        bonus = parcel.readString()
+        licCategory = parcel.readString()
+        orderNumber = parcel.readValue(Int::class.java.classLoader) as? Int
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(id)
+        parcel.writeString(planCode)
+        parcel.writeString(licName)
+        parcel.writeStringList(licFeatures)
+        parcel.writeValue(price)
+        parcel.writeValue(cycle)
+        parcel.writeString(bonus)
+        parcel.writeString(licCategory)
+        parcel.writeValue(orderNumber)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<LicenseType> {
+        override fun createFromParcel(parcel: Parcel): LicenseType {
+            return LicenseType(parcel)
+        }
+
+        override fun newArray(size: Int): Array<LicenseType?> {
+            return arrayOfNulls(size)
+        }
+    }
 }

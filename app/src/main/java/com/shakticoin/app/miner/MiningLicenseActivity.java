@@ -15,16 +15,19 @@ import androidx.lifecycle.ViewModelProviders;
 import com.shakticoin.app.R;
 import com.shakticoin.app.ShaktiApplication;
 import com.shakticoin.app.api.OnCompleteListener;
+import com.shakticoin.app.api.license.LicenceRepository;
 import com.shakticoin.app.api.license.LicenseRepository;
 import com.shakticoin.app.api.license.LicenseType;
 import com.shakticoin.app.api.vault.VaultRepository;
 import com.shakticoin.app.databinding.ActivityMiningLicenseBinding;
 import com.shakticoin.app.payment.PaymentOptionsActivity;
 import com.shakticoin.app.util.CommonUtil;
+import com.shakticoin.app.util.Debug;
 import com.shakticoin.app.wallet.WalletActivity;
 import com.shakticoin.app.widget.DrawerActivity;
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MiningLicenseActivity extends DrawerActivity {
@@ -35,6 +38,8 @@ public class MiningLicenseActivity extends DrawerActivity {
     private LicenseRepository licenseRepository = new LicenseRepository();
 
     private int vaultId = -1;
+
+    private ArrayList<LicenseType> licenseTypesAll;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,14 +71,27 @@ public class MiningLicenseActivity extends DrawerActivity {
         binding.progressBar.setVisibility(View.VISIBLE);
         licenseRepository.getLicenses(new OnCompleteListener<List<LicenseType>>() {
             @Override
-            public void onComplete(List<LicenseType> value, Throwable error) {
+            public void onComplete(List<LicenseType> licenseTypes, Throwable error) {
                 binding.progressBar.setVisibility(View.INVISIBLE);
                 if (error != null) {
-                    Toast.makeText(ShaktiApplication.getContext(), R.string.err_unexpected, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ShaktiApplication.getContext(), Debug.getFailureMsg(activity, error), Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                viewModel.init(value);
+                // keep for further
+                licenseTypesAll = new ArrayList<>();
+                licenseTypesAll.addAll(licenseTypes);
+
+                // we need only year mining licenses in this activity
+                List<LicenseType> yearMiningLics = new ArrayList<>();
+                for (LicenseType t : licenseTypes) {
+                    if (LicenceRepository.getMINING_PLANS().contains(t.getPlanCode())
+                            && Integer.valueOf(1).equals(t.getCycle())) {
+                        yearMiningLics.add(t);
+                    }
+                }
+
+                viewModel.init(yearMiningLics);
                 viewModel.selectedPlan.observe(activity, type -> {
                     if (type == null) return;
                     LicenseType licenseType = viewModel.getSelectedPackage();
@@ -124,9 +142,10 @@ public class MiningLicenseActivity extends DrawerActivity {
 
     public void onApply(View view) {
         Intent intent = new Intent(this, PaymentOptionsActivity.class);
-        intent.putExtra(CommonUtil.prefixed("vaultId", this), vaultId);
+//        intent.putExtra(CommonUtil.prefixed("vaultId", this), vaultId);
         LicenseType licenseType = viewModel.getSelectedPackage();
         intent.putExtra(CommonUtil.prefixed("licenseTypeId", this), licenseType.getId());
+        intent.putParcelableArrayListExtra(CommonUtil.prefixed("licenses", this), licenseTypesAll);
         startActivity(intent);
     }
 

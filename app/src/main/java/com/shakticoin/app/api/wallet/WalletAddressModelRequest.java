@@ -1,6 +1,5 @@
 package com.shakticoin.app.api.wallet;
 
-import com.shakticoin.app.BuildConfig;
 import com.shakticoin.app.util.Debug;
 
 public class WalletAddressModelRequest {

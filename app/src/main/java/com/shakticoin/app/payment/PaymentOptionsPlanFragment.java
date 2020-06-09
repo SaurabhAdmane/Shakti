@@ -11,32 +11,28 @@ import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.shakticoin.app.R;
-import com.shakticoin.app.api.OnCompleteListener;
-import com.shakticoin.app.api.Session;
-import com.shakticoin.app.api.UnauthorizedException;
-import com.shakticoin.app.api.vault.PackageDiscount;
-import com.shakticoin.app.api.vault.PackageExtended;
-import com.shakticoin.app.api.vault.PackagePlanExtended;
-import com.shakticoin.app.api.vault.VaultRepository;
+import com.shakticoin.app.api.license.LicenseType;
 import com.shakticoin.app.databinding.FragmentPaymentOptionsPlanBinding;
-import com.shakticoin.app.util.Debug;
 
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class PaymentOptionsPlanFragment extends Fragment {
     FragmentPaymentOptionsPlanBinding binding;
     PaymentOptionsViewModel viewModel;
-    private VaultRepository vaultRepository;
+    OptionsPageViewModel pageViewModel;
+//    private VaultRepository vaultRepository;
     private ProgressBar progressBar;
-    private int vaultId = -1;
-    private PackageExtended packageExtended;
-    private PaymentOptionsViewModel.PackageType packageType;
+//    private int vaultId = -1;
+//    private PackageExtended packageExtended;
+//    private PaymentOptionsViewModel.PackageType packageType;
+    private String selectedLicenseTypeId;
+    private String plan;
+    private ArrayList<LicenseType> licenseTypes;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -48,7 +44,7 @@ public class PaymentOptionsPlanFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(PaymentOptionsViewModel.class);
-        vaultRepository = new VaultRepository();
+        pageViewModel = ViewModelProviders.of(this).get(OptionsPageViewModel.class);
     }
 
     @Nullable
@@ -57,58 +53,80 @@ public class PaymentOptionsPlanFragment extends Fragment {
         binding = FragmentPaymentOptionsPlanBinding.inflate(inflater, container, false);
         binding.setLifecycleOwner(this);
         binding.setViewModel(viewModel);
+        binding.setPageViewModel(pageViewModel);
         View v = binding.getRoot();
 
         Bundle args = getArguments();
         if (args != null) {
-            vaultId = args.getInt("vaultId", -1);
-            packageType = PaymentOptionsViewModel.PackageType.valueOf(args.getString("packageType"));
-            packageExtended = args.getParcelable("package");
+            selectedLicenseTypeId = args.getString("selectedLicenseTypeId");
+            plan = args.getString("plan");
+            licenseTypes = args.getParcelableArrayList("licenseTypes");
         }
-        if (packageExtended != null) {
-            if (progressBar != null) progressBar.setVisibility(View.VISIBLE);
-            vaultRepository.getPackagePlans(vaultId, packageExtended.getId(), new OnCompleteListener<List<PackagePlanExtended>>() {
-                @Override
-                public void onComplete(List<PackagePlanExtended> plans, Throwable error) {
-                    if (progressBar != null) progressBar.setVisibility(View.INVISIBLE);
-                    if (error != null) {
-                        if (error instanceof UnauthorizedException) {
-                            startActivity(Session.unauthorizedIntent(getContext()));
-                        }
-                        return;
-                    }
 
-                    for (PackagePlanExtended plan : plans) {
-                        PackageDiscount discount = null;
-                        List<PackageDiscount> discounts = plan.getDiscount();
-                        if (discounts != null && discounts.size() > 0) {
-                            discount = discounts.get(0);
-                        }
-
-                        switch (plan.getPeriod()) {
-                            case PackagePlanExtended.WEEKLY:
-                                viewModel.weeklyPlan.set(plan);
-                                break;
-                            case PackagePlanExtended.MONTHLY:
-                                viewModel.monthlyPlan.set(plan);
-//                                if (discount != null) {
-//                                    binding.monthlyDiscountText.setText(discount.getDescription());
-//                                }
-                                break;
-                            case PackagePlanExtended.ANNUAL:
-                                viewModel.annualPlan.set(plan);
-                                viewModel.selectedPlan.set(plan);
-//                                if (discount != null) {
-//                                    binding.annualDiscountText.setText(discount.getDescription());
-//                                }
-                                break;
-                        }
-                    }
-                }
-            });
+        if (licenseTypes != null && licenseTypes.size() > 0) {
+            binding.planName.setText(licenseTypes.get(0).getLicName());
         }
+
+        PaymentOptionsViewModel.PackageType[] packageTypes = PaymentOptionsViewModel.PackageType.values();
+        if (plan != null) {
+            if (plan.equals(packageTypes[0].name())) {
+                // the fragment represents first plan and arrow "prev" must be disabled
+                binding.doGoLeft.setVisibility(View.INVISIBLE);
+            } else if (plan.equals(packageTypes[packageTypes.length-1].name())) {
+                // the fragment represents last plan and arrow "next" must be disabled
+                binding.doGoRight.setVisibility(View.INVISIBLE);
+            }
+        }
+
+//        if (packageExtended != null) {
+//            if (progressBar != null) progressBar.setVisibility(View.VISIBLE);
+//            vaultRepository.getPackagePlans(vaultId, packageExtended.getId(), new OnCompleteListener<List<PackagePlanExtended>>() {
+//                @Override
+//                public void onComplete(List<PackagePlanExtended> plans, Throwable error) {
+//                    if (progressBar != null) progressBar.setVisibility(View.INVISIBLE);
+//                    if (error != null) {
+//                        if (error instanceof UnauthorizedException) {
+//                            startActivity(Session.unauthorizedIntent(getContext()));
+//                        }
+//                        return;
+//                    }
+//
+//                    for (PackagePlanExtended plan : plans) {
+//                        PackageDiscount discount = null;
+//                        List<PackageDiscount> discounts = plan.getDiscount();
+//                        if (discounts != null && discounts.size() > 0) {
+//                            discount = discounts.get(0);
+//                        }
+//
+//                        switch (plan.getPeriod()) {
+//                            case PackagePlanExtended.WEEKLY:
+//                                viewModel.weeklyPlan.set(plan);
+//                                break;
+//                            case PackagePlanExtended.MONTHLY:
+//                                viewModel.monthlyPlan.set(plan);
+////                                if (discount != null) {
+////                                    binding.monthlyDiscountText.setText(discount.getDescription());
+////                                }
+//                                break;
+//                            case PackagePlanExtended.ANNUAL:
+//                                viewModel.annualPlan.set(plan);
+//                                viewModel.selectedPlan.set(plan);
+////                                if (discount != null) {
+////                                    binding.annualDiscountText.setText(discount.getDescription());
+////                                }
+//                                break;
+//                        }
+//                    }
+//                }
+//            });
+//        }
 
         return v;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -117,12 +135,15 @@ public class PaymentOptionsPlanFragment extends Fragment {
         super.onDetach();
     }
 
-    public static PaymentOptionsPlanFragment getInstance(int vaultId, String packageTypeId, PackageExtended packageExtended) {
+    public static PaymentOptionsPlanFragment getInstance(String selectedLicenseTypeId, String plan, ArrayList<LicenseType> licenseTypes) {
         PaymentOptionsPlanFragment fragment = new PaymentOptionsPlanFragment();
         Bundle args = new Bundle();
-        args.putString("packageType", packageTypeId);
-        args.putParcelable("package", packageExtended);
-        args.putInt("vaultId", vaultId);
+//        args.putString("packageType", packageTypeId);
+//        args.putParcelable("package", packageExtended);
+//        args.putInt("", vaultId);
+        args.putString("selectedLicenseTypeId", selectedLicenseTypeId);
+        args.putParcelableArrayList("licenseTypes", licenseTypes);
+        args.putString("plan", plan);
         fragment.setArguments(args);
         return fragment;
     }

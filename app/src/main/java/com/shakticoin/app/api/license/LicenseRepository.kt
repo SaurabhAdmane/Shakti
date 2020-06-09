@@ -34,10 +34,8 @@ class LicenseRepository {
                 if (response.isSuccessful) {
                     val licenseTypes = response.body();
                     if (licenseTypes != null) {
-                        // for display purpose we need only year mining license
-                        val plans = licenseTypes.filter { MINING_PLANS.contains(it.planCode) && it.cycle == 1}
                         // good to have them ordered properly
-                        listener!!.onComplete(plans.sortedBy { it.orderNumber }, null)
+                        listener!!.onComplete(licenseTypes.sortedBy { it.orderNumber }, null)
                     } else listener!!.onComplete(listOf(), null);
                 } else {
                     if (response.code() == 401) {
@@ -57,7 +55,8 @@ class LicenseRepository {
                 }
             }
             override fun onFailure(call: Call<List<LicenseType>?>, t: Throwable) {
-                Debug.logDebug(t.message);
+                Debug.logException(t)
+                listener!!.onComplete(null, t)
             }
         })
     }
