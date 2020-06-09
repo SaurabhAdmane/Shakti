@@ -8,20 +8,28 @@ import com.shakticoin.app.api.Session
 import com.shakticoin.app.api.auth.AuthRepository
 import com.shakticoin.app.api.auth.TokenResponse
 import com.shakticoin.app.util.Debug
+import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 val MINING_PLANS: List<String> = listOf("M101W", "T100W", "T200W", "T300W", "T400W",
         "M101M", "T100M", "T200M", "T300M", "T400M", "M101Y", "T100Y", "T200Y", "T300Y", "T400Y")
 
 class LicenseRepository {
 
+    private val http = OkHttpClient.Builder()
+            .readTimeout(30, TimeUnit.SECONDS)
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .build();
+
     private val licenseService: LicenseService = Retrofit.Builder()
             .baseUrl(BaseUrl.LICENSESERVICE_BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
+            .client(http)
             .build()
             .create(LicenseService::class.java)
 

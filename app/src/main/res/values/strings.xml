@@ -572,7 +572,7 @@
     <string name="pmnt_opts_weekly">Weekly</string>
     <string name="pmnt_opts_monthly">Monthly</string>
     <string name="pmnt_opts_annual">Annual</string>
-    <string name="pmnt_opts_saving">Save %1$.0f%%</string>
+    <string name="pmnt_opts_saving">Save %1$d%%</string>
     <string name="pmnt_opts_saving_long">Save as much as %1$d%%</string>
     <string name="pmnt_opts_annual_instalments">Paid in Annual installments.</string>
     <string name="pmnt_opts_monthly_instalments">Paid in Monthly installments.</string>

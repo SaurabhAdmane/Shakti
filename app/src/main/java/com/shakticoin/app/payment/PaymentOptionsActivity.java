@@ -15,7 +15,6 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
 import com.shakticoin.app.R;
-import com.shakticoin.app.api.license.LicenseRepository;
 import com.shakticoin.app.api.license.LicenseType;
 import com.shakticoin.app.databinding.ActivityPaymentOptionsBinding;
 import com.shakticoin.app.util.CommonUtil;
@@ -26,21 +25,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PaymentOptionsActivity extends DrawerActivity {
-    public static final int STRIPE_PAYMENT  = 100;
-
     private ActivityPaymentOptionsBinding binding;
     private PaymentOptionsViewModel viewModel;
     private PageAdapter pages;
 
-//    private VaultRepository vaultRepository = new VaultRepository();
-    private LicenseRepository licenceRepository = new LicenseRepository();
-//    private List<PackageExtended> packages;
-
-//    private int vaultId = -1;
     private String licenseTypeId;
     private ArrayList<LicenseType> licenseTypesAll;
     private Map<String, ArrayList<LicenseType>> licenseTypesGrouped;
-//    private int packageId = -1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,13 +49,9 @@ public class PaymentOptionsActivity extends DrawerActivity {
             Intent intent = getIntent();
             licenseTypeId = intent.getStringExtra(CommonUtil.prefixed("licenseTypeId", this));
             licenseTypesAll = intent.getParcelableArrayListExtra(CommonUtil.prefixed("licenses", this));
-//            vaultId = intent.getIntExtra(CommonUtil.prefixed("vaultId", this), -1);
-//            packageId = intent.getIntExtra(CommonUtil.prefixed("packageId", this), -1);
         } else {
             licenseTypeId = savedInstanceState.getString("licenseTypeId");
             licenseTypesAll = savedInstanceState.getParcelableArrayList("licenses");
-//            vaultId = savedInstanceState.getInt("vaultId", -1);
-//            packageId = savedInstanceState.getInt("packageId", -1);
         }
 
         // group all license type by plan base code
@@ -127,8 +114,6 @@ public class PaymentOptionsActivity extends DrawerActivity {
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putString("licenseTypeId", licenseTypeId);
         outState.putParcelableArrayList("licenses", licenseTypesAll);
-//        outState.putInt("vaultId", vaultId);
-//        outState.putInt("packageId", packageId);
         super.onSaveInstanceState(outState);
     }
 
@@ -232,11 +217,9 @@ public class PaymentOptionsActivity extends DrawerActivity {
     }
 
     class PageAdapter extends FragmentStatePagerAdapter {
-//        private List<PackageExtended> packages;
 
         PageAdapter(@NonNull FragmentManager fm, int behavior) {
             super(fm, behavior);
-//            this.packages = packages;
         }
 
         @NonNull

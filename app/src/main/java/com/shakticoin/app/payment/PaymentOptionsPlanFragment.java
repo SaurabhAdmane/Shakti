@@ -18,21 +18,24 @@ import com.shakticoin.app.R;
 import com.shakticoin.app.api.license.LicenseType;
 import com.shakticoin.app.databinding.FragmentPaymentOptionsPlanBinding;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class PaymentOptionsPlanFragment extends Fragment {
     FragmentPaymentOptionsPlanBinding binding;
     PaymentOptionsViewModel viewModel;
     OptionsPageViewModel pageViewModel;
-//    private VaultRepository vaultRepository;
     private ProgressBar progressBar;
-//    private int vaultId = -1;
-//    private PackageExtended packageExtended;
-//    private PaymentOptionsViewModel.PackageType packageType;
     private String selectedLicenseTypeId;
     private String plan;
-    private ArrayList<LicenseType> licenseTypes;
+    private LicenseType selectedLicenseType;
+
+    private Integer maxMinCircle = 0;
+    private Map<OptionsPageViewModel.Period, Integer> discounts = new HashMap<>(3);
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -60,11 +63,15 @@ public class PaymentOptionsPlanFragment extends Fragment {
         if (args != null) {
             selectedLicenseTypeId = args.getString("selectedLicenseTypeId");
             plan = args.getString("plan");
-            licenseTypes = args.getParcelableArrayList("licenseTypes");
+            pageViewModel.licenseTypes = args.getParcelableArrayList("licenseTypes");
+            if (pageViewModel.licenseTypes != null) {
+                Collections.sort(pageViewModel.licenseTypes, (o1, o2) ->
+                        Objects.requireNonNull(o1.getCycle()).compareTo(Objects.requireNonNull(o2.getCycle()))*-1);
+            }
         }
 
-        if (licenseTypes != null && licenseTypes.size() > 0) {
-            binding.planName.setText(licenseTypes.get(0).getLicName());
+        if (pageViewModel.licenseTypes != null && pageViewModel.licenseTypes.size() > 0) {
+            binding.planName.setText(pageViewModel.licenseTypes.get(0).getLicName());
         }
 
         PaymentOptionsViewModel.PackageType[] packageTypes = PaymentOptionsViewModel.PackageType.values();
@@ -78,48 +85,68 @@ public class PaymentOptionsPlanFragment extends Fragment {
             }
         }
 
-//        if (packageExtended != null) {
-//            if (progressBar != null) progressBar.setVisibility(View.VISIBLE);
-//            vaultRepository.getPackagePlans(vaultId, packageExtended.getId(), new OnCompleteListener<List<PackagePlanExtended>>() {
-//                @Override
-//                public void onComplete(List<PackagePlanExtended> plans, Throwable error) {
-//                    if (progressBar != null) progressBar.setVisibility(View.INVISIBLE);
-//                    if (error != null) {
-//                        if (error instanceof UnauthorizedException) {
-//                            startActivity(Session.unauthorizedIntent(getContext()));
-//                        }
-//                        return;
-//                    }
-//
-//                    for (PackagePlanExtended plan : plans) {
-//                        PackageDiscount discount = null;
-//                        List<PackageDiscount> discounts = plan.getDiscount();
-//                        if (discounts != null && discounts.size() > 0) {
-//                            discount = discounts.get(0);
-//                        }
-//
-//                        switch (plan.getPeriod()) {
-//                            case PackagePlanExtended.WEEKLY:
-//                                viewModel.weeklyPlan.set(plan);
-//                                break;
-//                            case PackagePlanExtended.MONTHLY:
-//                                viewModel.monthlyPlan.set(plan);
-////                                if (discount != null) {
-////                                    binding.monthlyDiscountText.setText(discount.getDescription());
-////                                }
-//                                break;
-//                            case PackagePlanExtended.ANNUAL:
-//                                viewModel.annualPlan.set(plan);
-//                                viewModel.selectedPlan.set(plan);
-////                                if (discount != null) {
-////                                    binding.annualDiscountText.setText(discount.getDescription());
-////                                }
-//                                break;
-//                        }
-//                    }
-//                }
-//            });
-//        }
+        // calculate discounts which user may have when select longer period
+        if (pageViewModel.licenseTypes != null) {
+            LicenseType shortestPlan = pageViewModel.licenseTypes.get(0);
+            if (shortestPlan != null) {
+                maxMinCircle = shortestPlan.getCycle();
+                BigDecimal basePrice = BigDecimal.valueOf(shortestPlan.getPrice());
+                for (int i = 1; i < pageViewModel.licenseTypes.size(); i++) {
+                    LicenseType licenseType = pageViewModel.licenseTypes.get(i);
+                    OptionsPageViewModel.Period period = null;
+                    Integer cycle = licenseType.getCycle();
+                    if (cycle == null) continue;
+                    switch (licenseType.getCycle()) {
+                        case 1:
+                            period = OptionsPageViewModel.Period.ANNUAL;
+                            break;
+                        case 12:
+                            period = OptionsPageViewModel.Period.MONTHLY;
+                            break;
+                    }
+                    BigDecimal k = BigDecimal.valueOf(maxMinCircle)
+                            .divide(BigDecimal.valueOf(licenseType.getCycle().longValue()), 1, BigDecimal.ROUND_DOWN);
+                    BigDecimal relPrice = BigDecimal.valueOf(licenseType.getPrice()).divide(k, BigDecimal.ROUND_HALF_UP);
+                    BigDecimal percents = BigDecimal.ONE.subtract(
+                            relPrice.divide(basePrice, BigDecimal.ROUND_HALF_UP)
+                    ).multiply(BigDecimal.valueOf(100));
+                    discounts.put(period, percents.intValue());
+                }
+
+                Integer discount = discounts.get(OptionsPageViewModel.Period.MONTHLY);
+                if (discount != null) {
+                    binding.monthlyDiscountText.setText(getString(R.string.pmnt_opts_saving, discount));
+                }
+                discount = discounts.get(OptionsPageViewModel.Period.ANNUAL);
+                if (discount != null) {
+                    binding.annualDiscountText.setText(getString(R.string.pmnt_opts_saving, discount));
+                }
+
+                pageViewModel.selectedPeriod.observe(this, period -> {
+                    int numberPeriods = maxMinCircle;
+
+                    switch (period) {
+                        case ANNUAL:
+                            numberPeriods = 1;
+                            break;
+                        case MONTHLY:
+                            numberPeriods = 12;
+                    }
+
+                    for (LicenseType licenseType : pageViewModel.licenseTypes) {
+                        if (numberPeriods == licenseType.getCycle()) {
+                            selectedLicenseType = licenseType;
+                            break;
+                        }
+                    }
+
+                    binding.textAmountUSD.setText(getString(R.string.pmnt_opts_amount, selectedLicenseType.getPrice()));
+                    binding.textFullSaving.setText(
+                            numberPeriods < maxMinCircle && discounts.get(period) != null ?
+                                    getString(R.string.pmnt_opts_saving_long, discounts.get(period)) : "");
+                });
+            }
+        }
 
         return v;
     }
@@ -138,9 +165,6 @@ public class PaymentOptionsPlanFragment extends Fragment {
     public static PaymentOptionsPlanFragment getInstance(String selectedLicenseTypeId, String plan, ArrayList<LicenseType> licenseTypes) {
         PaymentOptionsPlanFragment fragment = new PaymentOptionsPlanFragment();
         Bundle args = new Bundle();
-//        args.putString("packageType", packageTypeId);
-//        args.putParcelable("package", packageExtended);
-//        args.putInt("", vaultId);
         args.putString("selectedLicenseTypeId", selectedLicenseTypeId);
         args.putParcelableArrayList("licenseTypes", licenseTypes);
         args.putString("plan", plan);
