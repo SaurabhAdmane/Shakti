@@ -101,16 +101,22 @@ public class SignUpActivity extends AppCompatActivity implements TextView.OnEdit
             hasErrors = true;
         }
 
-        if (viewModel.isPhoneNumberChecked.get()) {
-            if (!Validator.isPhoneNumber(viewModel.phoneNumber.getValue())) {
-                viewModel.phoneNumberErrMsg.setValue(getString(R.string.err_phone_required));
-                hasErrors = true;
-            }
-        } else {
-            if (!Validator.isEmail(viewModel.emailAddress.getValue())) {
-                viewModel.emailAddressErrMsg.setValue(getString(R.string.err_email_required));
-                hasErrors = true;
-            }
+        boolean hasEmailAndPhone = true;
+        if (!Validator.isPhoneNumber(viewModel.phoneNumber.getValue())) {
+            viewModel.phoneNumberErrMsg.setValue(getString(R.string.err_phone_required));
+            hasEmailAndPhone = false;
+            hasErrors = true;
+        }
+        if (!Validator.isEmail(viewModel.emailAddress.getValue())) {
+            viewModel.emailAddressErrMsg.setValue(getString(R.string.err_email_required));
+            hasEmailAndPhone = false;
+            hasErrors = true;
+        }
+
+        // UI does not show both fields at the same time and field error mark can be hidden for either
+        // email or phone, depending on the switch position. This is why we show a toast message.
+        if (!hasEmailAndPhone) {
+            Toast.makeText(this, "Both email address and phone number are required", Toast.LENGTH_LONG).show();
         }
 
         return !hasErrors;

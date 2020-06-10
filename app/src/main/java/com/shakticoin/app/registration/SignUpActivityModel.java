@@ -1,13 +1,13 @@
 package com.shakticoin.app.registration;
 
+import android.view.View;
+
 import androidx.databinding.ObservableBoolean;
 import androidx.databinding.ObservableField;
 import androidx.databinding.ObservableInt;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
-import android.view.View;
 
 import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.country.Country;
@@ -21,7 +21,6 @@ import com.shakticoin.app.api.user.UserRepository;
 import com.shakticoin.app.util.Debug;
 import com.shakticoin.app.widget.InlineLabelSpinner;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -99,11 +98,8 @@ public class SignUpActivityModel extends ViewModel {
         CreateUserParameters request = new CreateUserParameters();
         request.setFirst_name(firstName.getValue());
         request.setLast_name(lastName.getValue());
-        if (isPhoneNumberChecked.get()) {
-            request.setMobile(phoneNumber.getValue());
-        } else {
-            request.setEmail(emailAddress.getValue());
-        }
+        request.setMobile(phoneNumber.getValue());
+        request.setEmail(emailAddress.getValue());
         request.setPassword(newPassword.getValue());
 
         Country currentCountry = countryCode.get();
