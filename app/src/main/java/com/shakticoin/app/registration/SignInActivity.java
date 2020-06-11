@@ -22,7 +22,7 @@ import com.shakticoin.app.api.Session;
 import com.shakticoin.app.api.UnauthorizedException;
 import com.shakticoin.app.api.auth.AuthRepository;
 import com.shakticoin.app.api.auth.TokenResponse;
-import com.shakticoin.app.api.user.User;
+import com.shakticoin.app.api.user.UserAccount;
 import com.shakticoin.app.api.user.UserRepository;
 import com.shakticoin.app.databinding.ActivitySigninBinding;
 import com.shakticoin.app.util.CommonUtil;
@@ -109,9 +109,9 @@ public class SignInActivity extends AppCompatActivity {
                 prefs.edit().putBoolean(PreferenceHelper.PREF_KEY_HAS_ACCOUNT, true).apply();
 
                 binding.progressBar.setVisibility(View.VISIBLE);
-                userRepository.getUserInfo(new OnCompleteListener<User>() {
+                userRepository.getUserAccount(new OnCompleteListener<UserAccount>() {
                     @Override
-                    public void onComplete(User value, Throwable error) {
+                    public void onComplete(UserAccount value, Throwable error) {
                         binding.progressBar.setVisibility(View.INVISIBLE);
                         if (error != null) {
                             if (error instanceof UnauthorizedException) {
@@ -127,7 +127,6 @@ public class SignInActivity extends AppCompatActivity {
                         startActivity(new Intent(self, WalletActivity.class));
                     }
                 });
-
             }
         });
     }

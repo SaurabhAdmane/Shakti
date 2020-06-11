@@ -18,7 +18,7 @@ import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.Session;
 import com.shakticoin.app.api.country.Country;
 import com.shakticoin.app.api.country.Subdivision;
-import com.shakticoin.app.api.user.User;
+import com.shakticoin.app.api.user.UserAccount;
 import com.shakticoin.app.util.Debug;
 import com.shakticoin.app.util.Validator;
 
@@ -43,12 +43,14 @@ public class SignUpActivity extends AppCompatActivity implements TextView.OnEdit
 
     public void onMainAction(View v) {
         String tag = (String) v.getTag();
+        // TODO: we skip page with address information for now but keep it just in case
         if ("ContactsPage".equals(tag)) {
-            if (validateContacts()) onAddressPageSelected();
+//            if (validateContacts()) onAddressPageSelected();
+            if (validateContacts()) onPasswordPageSelected();
 
-        } else if ("AddressPage".equals(tag)) {
-            if (validateAddress()) onPasswordPageSelected();
-
+//        } else if ("AddressPage".equals(tag)) {
+//            if (validateAddress()) onPasswordPageSelected();
+//
         } else if ("PasswordPage".equals(tag)) {
             if (validatePassword()) startRegistration();
         }
@@ -65,8 +67,7 @@ public class SignUpActivity extends AppCompatActivity implements TextView.OnEdit
                     return;
                 }
 
-                User user = Session.getUser();
-                Integer userId = user.getId();
+                UserAccount user = Session.getUserAccount();
                 // TODO: confirmation in email does not work yet
 
                 DialogConfirmEmail.getInstance(false)

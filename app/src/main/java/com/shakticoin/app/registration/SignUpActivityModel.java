@@ -13,10 +13,8 @@ import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.country.Country;
 import com.shakticoin.app.api.country.CountryRepository;
 import com.shakticoin.app.api.country.Subdivision;
-import com.shakticoin.app.api.user.Citizenship;
-import com.shakticoin.app.api.user.CreateUserParameters;
-import com.shakticoin.app.api.user.Residence;
-import com.shakticoin.app.api.user.User;
+import com.shakticoin.app.api.user.CreateUserRequest;
+import com.shakticoin.app.api.user.UserAccount;
 import com.shakticoin.app.api.user.UserRepository;
 import com.shakticoin.app.util.Debug;
 import com.shakticoin.app.widget.InlineLabelSpinner;
@@ -92,49 +90,25 @@ public class SignUpActivityModel extends ViewModel {
         }
     }
 
-    void createUser(OnCompleteListener listener) {
+    void createUser(OnCompleteListener<Void> listener) {
         progressBarVisibility.set(View.VISIBLE);
 
-        CreateUserParameters request = new CreateUserParameters();
-        request.setFirst_name(firstName.getValue());
-        request.setLast_name(lastName.getValue());
+        CreateUserRequest request = new CreateUserRequest();
         request.setMobile(phoneNumber.getValue());
-        request.setEmail(emailAddress.getValue());
+        String email = emailAddress.getValue();
+        request.setEmail(email);
+        request.setUsername(email);
         request.setPassword(newPassword.getValue());
 
-        Country currentCountry = countryCode.get();
-        Residence residence = new Residence();
-        residence.setZip_code(postalCode.getValue());
-        residence.setAddress_line_1(address.getValue());
-        residence.setCity(city.getValue());
-        if (currentCountry != null) {
-            residence.setCountry_code(currentCountry.getCode());
-            residence.setCountry_name(currentCountry.getName());
-        }
-        Subdivision stateProvince = stateProvinceCode.get();
-        if (stateProvince != null) {
-            residence.setSubdivision_id(stateProvince.getId());
-            residence.setSubdivision_name(stateProvince.getName());
-        }
-        request.setResidence(Collections.singletonList(residence));
-
-        Citizenship citizenship = new Citizenship();
-        Country citizenshipCountry = citizenshipCode.get();
-        if (citizenshipCountry != null) {
-            citizenship.setCountry_code(citizenshipCountry.getCode());
-            citizenship.setCountry_name(citizenshipCountry.getName());
-        }
-        request.setCitizenship(Collections.singletonList(citizenship));
-
         UserRepository repository = new UserRepository();
-        repository.createUser(request, new OnCompleteListener<User>() {
+        repository.createUserAccount(request, new OnCompleteListener<UserAccount>() {
             @Override
-            public void onComplete(User value, Throwable error) {
+            public void onComplete(UserAccount value, Throwable error) {
                 progressBarVisibility.set(View.INVISIBLE);
                 if (error != null) {
                     Debug.logException(error);
                 }
-                if (listener != null) listener.onComplete(value, error);
+                listener.onComplete(null, error);
             }
         });
     }

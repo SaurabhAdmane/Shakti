@@ -17,26 +17,18 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.shakticoin.app.R;
-import com.shakticoin.app.api.OnCompleteListener;
-import com.shakticoin.app.api.Session;
-import com.shakticoin.app.api.UnauthorizedException;
 import com.shakticoin.app.api.country.Country;
 import com.shakticoin.app.api.country.CountryRepository;
-import com.shakticoin.app.api.country.Subdivision;
-import com.shakticoin.app.api.user.Kinship;
-import com.shakticoin.app.api.user.Residence;
-import com.shakticoin.app.api.user.User;
 import com.shakticoin.app.api.user.UserRepository;
 import com.shakticoin.app.databinding.ActivityProfileBinding;
 import com.shakticoin.app.util.Debug;
 import com.shakticoin.app.util.Validator;
-import com.shakticoin.app.widget.DrawerActivity;
 import com.shakticoin.app.widget.DatePicker;
+import com.shakticoin.app.widget.DrawerActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Locale;
 
 public class ProfileActivity extends DrawerActivity {
@@ -85,71 +77,72 @@ public class ProfileActivity extends DrawerActivity {
 
         viewModel.getProgressBarTrigger().set(true);
         final Activity self = this;
-        userRepo.getUserInfo(Session.getUser().getId(), new OnCompleteListener<User>() {
-            @Override
-            public void onComplete(User user, Throwable error) {
-                viewModel.getProgressBarTrigger().set(false);
-                if (error != null) {
-                    if (error instanceof UnauthorizedException) {
-                        startActivity(Session.unauthorizedIntent(self));
-                    }
-                    return;
-                }
-
-                List<Residence> residences = user.getResidence();
-                if (residences != null && residences.size() > 0) {
-                    Residence residence = residences.get(0);
-                    countryRepo.getCountry(residence.getCountry_code(), new OnCompleteListener<Country>() {
-                        @Override
-                        public void onComplete(Country value, Throwable error) {
-                            if (error != null) {
-                                if (error instanceof UnauthorizedException) {
-                                    startActivity(Session.unauthorizedIntent(self));
-                                }
-                                return;
-                            }
-                            personalInfoViewModel.selectedCountry.setValue(value);
-                        }
-                    });
-                    if (residence.getSubdivision_id() != null) {
-                        countryRepo.getSubdivision(residence.getCountry_code(), residence.getSubdivision_id(),
-                                new OnCompleteListener<Subdivision>() {
-                                    @Override
-                                    public void onComplete(Subdivision value, Throwable error) {
-                                        if (error != null) {
-                                            if (error instanceof UnauthorizedException) {
-                                                startActivity(Session.unauthorizedIntent(self));
-                                            }
-                                            return;
-                                        }
-                                        personalInfoViewModel.selectedState.setValue(value);
-                                    }
-                                });
-                    }
-                    personalInfoViewModel.address1.setValue(residence.getAddress_line_1());
-                    personalInfoViewModel.address2.setValue(residence.getAddress_line_2());
-                    personalInfoViewModel.city.setValue(residence.getCity());
-                    personalInfoViewModel.postalCode.setValue(residence.getZip_code());
-                }
-
-                personalInfoViewModel.firstName.setValue(user.getFirst_name());
-                personalInfoViewModel.middleName.setValue(user.getMiddle_name());
-                personalInfoViewModel.lastName.setValue(user.getLast_name());
-                personalInfoViewModel.birthDate.setValue(user.getDate_of_birth());
-                personalInfoViewModel.emailAddress.setValue(user.getEmail());
-                personalInfoViewModel.phoneNumber.setValue(user.getMobile());
-                personalInfoViewModel.occupation.setValue(user.getOccupation());
-                personalInfoViewModel.selectedEducationLevel.setValue(user.getHighest_level_of_education());
-
-                List<Kinship> kindships = user.getKinship();
-                if (kindships != null && kindships.size() > 0) {
-                    Kinship kinship = kindships.get(0);
-                    personalInfoViewModel.kinFullName.setValue(kinship.getFull_name());
-                    personalInfoViewModel.kinContact.setValue(kinship.getEmail() != null ? kinship.getEmail() : kinship.getMobile());
-                    personalInfoViewModel.kinRelationship.setValue(kinship.getRelation());
-                }
-            }
-        });
+        // FIXME: commented out because the code uses obsolete userservice API
+//        userRepo.getUserInfo(Session.getUser().getId(), new OnCompleteListener<User>() {
+//            @Override
+//            public void onComplete(User user, Throwable error) {
+//                viewModel.getProgressBarTrigger().set(false);
+//                if (error != null) {
+//                    if (error instanceof UnauthorizedException) {
+//                        startActivity(Session.unauthorizedIntent(self));
+//                    }
+//                    return;
+//                }
+//
+//                List<Residence> residences = user.getResidence();
+//                if (residences != null && residences.size() > 0) {
+//                    Residence residence = residences.get(0);
+//                    countryRepo.getCountry(residence.getCountry_code(), new OnCompleteListener<Country>() {
+//                        @Override
+//                        public void onComplete(Country value, Throwable error) {
+//                            if (error != null) {
+//                                if (error instanceof UnauthorizedException) {
+//                                    startActivity(Session.unauthorizedIntent(self));
+//                                }
+//                                return;
+//                            }
+//                            personalInfoViewModel.selectedCountry.setValue(value);
+//                        }
+//                    });
+//                    if (residence.getSubdivision_id() != null) {
+//                        countryRepo.getSubdivision(residence.getCountry_code(), residence.getSubdivision_id(),
+//                                new OnCompleteListener<Subdivision>() {
+//                                    @Override
+//                                    public void onComplete(Subdivision value, Throwable error) {
+//                                        if (error != null) {
+//                                            if (error instanceof UnauthorizedException) {
+//                                                startActivity(Session.unauthorizedIntent(self));
+//                                            }
+//                                            return;
+//                                        }
+//                                        personalInfoViewModel.selectedState.setValue(value);
+//                                    }
+//                                });
+//                    }
+//                    personalInfoViewModel.address1.setValue(residence.getAddress_line_1());
+//                    personalInfoViewModel.address2.setValue(residence.getAddress_line_2());
+//                    personalInfoViewModel.city.setValue(residence.getCity());
+//                    personalInfoViewModel.postalCode.setValue(residence.getZip_code());
+//                }
+//
+//                personalInfoViewModel.firstName.setValue(user.getFirst_name());
+//                personalInfoViewModel.middleName.setValue(user.getMiddle_name());
+//                personalInfoViewModel.lastName.setValue(user.getLast_name());
+//                personalInfoViewModel.birthDate.setValue(user.getDate_of_birth());
+//                personalInfoViewModel.emailAddress.setValue(user.getEmail());
+//                personalInfoViewModel.phoneNumber.setValue(user.getMobile());
+//                personalInfoViewModel.occupation.setValue(user.getOccupation());
+//                personalInfoViewModel.selectedEducationLevel.setValue(user.getHighest_level_of_education());
+//
+//                List<Kinship> kindships = user.getKinship();
+//                if (kindships != null && kindships.size() > 0) {
+//                    Kinship kinship = kindships.get(0);
+//                    personalInfoViewModel.kinFullName.setValue(kinship.getFull_name());
+//                    personalInfoViewModel.kinContact.setValue(kinship.getEmail() != null ? kinship.getEmail() : kinship.getMobile());
+//                    personalInfoViewModel.kinRelationship.setValue(kinship.getRelation());
+//                }
+//            }
+//        });
 
         getSupportFragmentManager().addOnBackStackChangedListener(() -> {
             for (int i = 0; i < tags.length; i++) {

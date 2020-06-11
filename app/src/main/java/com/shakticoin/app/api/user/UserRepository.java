@@ -45,19 +45,19 @@ public class UserRepository extends BackendRepository {
     }
 
     /**
-     * Adds a new user.
+     * Create a new user account.
      */
-    public void createUser(CreateUserParameters parameters, @NonNull OnCompleteListener<User> listener) {
-        Call<User> call = userService.createUser(parameters);
-        call.enqueue(new Callback<User>() {
+    public void createUserAccount(@NonNull CreateUserRequest parameters, @NonNull OnCompleteListener<UserAccount> listener) {
+        Call<UserAccount> call = userService.createUserAccount(parameters);
+        call.enqueue(new Callback<UserAccount>() {
             @Override
-            public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
+            public void onResponse(@NonNull Call<UserAccount> call, @NonNull Response<UserAccount> response) {
                 if (call.isExecuted()) {
                     Debug.logDebug(response.toString());
                     if (response.isSuccessful()) {
-                        User user = response.body();
+                        UserAccount user = response.body();
                         if (user != null) {
-                            Session.setUser(user);
+                            Session.setUserAccount(user);
                         }
                         listener.onComplete(null,null);
                     } else {
@@ -99,51 +99,7 @@ public class UserRepository extends BackendRepository {
             }
 
             @Override
-            public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
-                returnError(listener, t);
-            }
-        });
-
-    }
-
-    /**
-     * Retrieve a user by ID
-     */
-    public void getUserInfo(Integer userId, @NonNull OnCompleteListener<User> listener) {
-        Call<User> call = userService.getUserByID(Session.getAuthorizationHeader(), Session.getLanguageHeader(), userId);
-        call.enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
-                if (call.isExecuted()) {
-                    Debug.logDebug(response.toString());
-                    if (response.isSuccessful()) {
-                        User user = response.body();
-                        if (user != null) {
-                            Session.setUser(user);
-                            listener.onComplete(user, null);
-                        }
-                    } else {
-                        if (response.code() == 401) {
-                            authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
-                                @Override
-                                public void onComplete(TokenResponse value, Throwable error) {
-                                    if (error != null) {
-                                        listener.onComplete(null, new UnauthorizedException());
-                                        return;
-                                    }
-                                    getUserInfo(userId, listener);
-                                }
-                            });
-                        } else {
-                            Debug.logErrorResponse(response);
-                            returnError(listener, response);
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<UserAccount> call, @NonNull Throwable t) {
                 returnError(listener, t);
             }
         });
@@ -152,16 +108,16 @@ public class UserRepository extends BackendRepository {
     /**
      * Retrieve a user by authorization token
      */
-    public void getUserInfo(@NonNull OnCompleteListener<User> listener) {
-        userService.getUser(Session.getAuthorizationHeader(), Session.getLanguageHeader()).enqueue(new Callback<User>() {
+    public void getUserAccount(@NonNull OnCompleteListener<UserAccount> listener) {
+        userService.getUserAccount(Session.getAuthorizationHeader()).enqueue(new Callback<UserAccount>() {
             @EverythingIsNonNull
             @Override
-            public void onResponse(Call<User> call, Response<User> response) {
+            public void onResponse(Call<UserAccount> call, Response<UserAccount> response) {
                 Debug.logDebug(response.toString());
                 if (response.isSuccessful()) {
-                    User user = response.body();
+                    UserAccount user = response.body();
                     if (user != null) {
-                        Session.setUser(user);
+                        Session.setUserAccount(user);
                         listener.onComplete(user, null);
                     }
                 } else {
@@ -173,7 +129,7 @@ public class UserRepository extends BackendRepository {
                                     listener.onComplete(null, new UnauthorizedException());
                                     return;
                                 }
-                                getUserInfo(listener);
+                                getUserAccount(listener);
                             }
                         });
                     } else {
@@ -185,7 +141,7 @@ public class UserRepository extends BackendRepository {
 
             @EverythingIsNonNull
             @Override
-            public void onFailure(Call<User> call, Throwable t) {
+            public void onFailure(Call<UserAccount> call, Throwable t) {
                 returnError(listener, t);
             }
         });

@@ -15,7 +15,7 @@ import com.shakticoin.app.api.Session;
 import com.shakticoin.app.api.UnauthorizedException;
 import com.shakticoin.app.api.auth.AuthRepository;
 import com.shakticoin.app.api.auth.TokenResponse;
-import com.shakticoin.app.api.user.User;
+import com.shakticoin.app.api.user.UserAccount;
 import com.shakticoin.app.api.user.UserRepository;
 import com.shakticoin.app.registration.SignInActivity;
 import com.shakticoin.app.registration.SignUpActivity;
@@ -63,9 +63,9 @@ public class SplashActivity extends AppCompatActivity {
 
                             Session.setAccessToken(value.getAccess());
                             UserRepository userRepo = new UserRepository();
-                            userRepo.getUserInfo(new OnCompleteListener<User>() {
+                            userRepo.getUserAccount(new OnCompleteListener<UserAccount>() {
                                 @Override
-                                public void onComplete(User value, Throwable error) {
+                                public void onComplete(UserAccount value, Throwable error) {
                                     if (error != null) {
                                         if (error instanceof UnauthorizedException) {
                                             startActivity(Session.unauthorizedIntent(self));
@@ -82,42 +82,6 @@ public class SplashActivity extends AppCompatActivity {
                             });
                         }
                     });
-//                    UserRepository userRepository = new UserRepository();
-//                    userRepository.getUserInfo(new OnCompleteListener<UserResponse>() {
-//                        @Override
-//                        public void onComplete(UserResponse value, Throwable error) {
-//                            if (error != null) {
-//                                Toast.makeText(self, Debug.getFailureMsg(self, error), Toast.LENGTH_SHORT).show();
-//                                Debug.logException(error);
-//                                startActivity(new Intent(self, SignInActivity.class));
-//                                return;
-//                            }
-//
-//                            if (value != null) {
-//                                Session.setUser(value.getUser());
-//
-//                                int registrationStatus = value.getRegistration_status();
-//                                if (registrationStatus < 3/*not verified*/) {
-//                                    // we cannot continue before email is confirmed and
-//                                    // just display an information in a popup window
-//                                    DialogConfirmEmail dialog = DialogConfirmEmail.getInstance(true);
-//                                    dialog.show(getSupportFragmentManager(), DialogConfirmEmail.class.getSimpleName());
-//                                    // TODO: when we should close the Splash screen?
-//
-//                                } else if (registrationStatus == 3) {
-//                                    // add referral code if exists and pay the enter fee
-//                                    startActivity(new Intent(self, ReferralActivity.class));
-//
-//                                } else {
-//                                    // go to the wallet
-//                                    startActivity(new Intent(self, WalletActivity.class));
-//
-//                                }
-//                            }
-//                        self.finish();
-//                        }
-//                    });
-
                 }
             } else {
                 startActivity(new Intent(this, SignUpActivity.class));

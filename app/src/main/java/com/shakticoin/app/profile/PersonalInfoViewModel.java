@@ -11,14 +11,11 @@ import com.shakticoin.app.ShaktiApplication;
 import com.shakticoin.app.api.country.Country;
 import com.shakticoin.app.api.country.CountryRepository;
 import com.shakticoin.app.api.country.Subdivision;
-import com.shakticoin.app.api.user.User;
 import com.shakticoin.app.widget.InlineLabelSpinner;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 public class PersonalInfoViewModel extends ViewModel {
     public MutableLiveData<String> firstName = new MutableLiveData<>();
@@ -62,7 +59,8 @@ public class PersonalInfoViewModel extends ViewModel {
     public MutableLiveData<String> kinContactErrMsg = new MutableLiveData<>();
     public MutableLiveData<String> kinRelationshipErrMsg = new MutableLiveData<>();
 
-    public MutableLiveData<User> user;
+    //FIXME: uses obsolete userserve User class
+    //    public MutableLiveData<User> user;
 
     public PersonalInfoViewModel() {
         CountryRepository repository = new CountryRepository();

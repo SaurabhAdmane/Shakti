@@ -8,59 +8,27 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
-import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface UserService {
-
-    /**
-     * Retrieve a user by ID
-     */
-    @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @GET("users/{id}/")
-    Call<User> getUserByID(
-            @Header("Authorization") String authorization,
-            @Header("Accept-Language") String language,
-            @Path("id") Integer userId);
 
     /**
      * Retrieve a user by authorization token
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @GET("users/")
-    Call<User> getUser(
-            @Header("Authorization") String authorization,
-            @Header("Accept-Language") String language);
+    Call<UserAccount> getUserAccount(@Header("Authorization") String authorization);
 
     /**
      * Adds a new user.
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("users/")
-    Call<User> createUser(@Body CreateUserParameters parameters);
-
-
-    /**
-     * Updates a user.
-     */
-    @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @PUT("users/{id}/")
-    Call<UserResponse> updateUser(
-            @Header("Authorization") String authorization,
-            @Header("Accept-Language") String language,
-            @Path("id") Integer userId,
-            @Body CreateUserParameters parameters);
-
-    /** Retrieves user address by ID */
-    @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @GET("users/{id}/address/")
-    Call<Residence> getUserAddress(
-            @Header("Authorization") String authorization,
-            @Header("Accept-Language") String language,
-            @Path("id") Integer userId);
+    Call<UserAccount> createUserAccount(@Body CreateUserRequest parameters);
 
     /**
      * Activate new user.
+     * @deprecated
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("users/{id}/status/activate/")
