@@ -20,7 +20,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -202,77 +201,5 @@ public class UserRepository extends BackendRepository {
                 listener.onComplete(null, t);
             }
         });
-    }
-
-    public void addFamilyMember(@NonNull FamilyMember familyMemeber, @NonNull OnCompleteListener<FamilyMember> listener) {
-        userService.addFamilyMember(Session.getAuthorizationHeader(), Session.getLanguageHeader(), familyMemeber)
-                .enqueue(new Callback<FamilyMember>() {
-                    @EverythingIsNonNull
-                    @Override
-                    public void onResponse(Call<FamilyMember> call, Response<FamilyMember> response) {
-                        Debug.logDebug(response.toString());
-                        if (response.isSuccessful()) {
-                            listener.onComplete(response.body(), null);
-                        } else {
-                            if (response.code() == 401) {
-                                authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
-                                    @Override
-                                    public void onComplete(TokenResponse value, Throwable error) {
-                                        if (error != null) {
-                                            listener.onComplete(null, new UnauthorizedException());
-                                            return;
-                                        }
-                                        addFamilyMember(familyMemeber, listener);
-                                    }
-                                });
-                            } else {
-                                Debug.logErrorResponse(response);
-                                returnError(listener, response);
-                            }
-                        }
-                    }
-
-                    @EverythingIsNonNull
-                    @Override
-                    public void onFailure(Call<FamilyMember> call, Throwable t) {
-                        returnError(listener, t);
-                    }
-                });
-    }
-
-    public void getFamilyMembers(@NonNull OnCompleteListener<List<FamilyMember>> listener) {
-        userService.getFamilyMembers(Session.getAuthorizationHeader(), Session.getLanguageHeader()).enqueue(new Callback<List<FamilyMember>>() {
-            @EverythingIsNonNull
-            @Override
-            public void onResponse(Call<List<FamilyMember>> call, Response<List<FamilyMember>> response) {
-                Debug.logDebug(response.toString());
-                if (response.isSuccessful()) {
-                    listener.onComplete(response.body(), null);
-                } else {
-                    if (response.code() == 401) {
-                        authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
-                            @Override
-                            public void onComplete(TokenResponse value, Throwable error) {
-                                if (error != null) {
-                                    listener.onComplete(null, new UnauthorizedException());
-                                    return;
-                                }
-                                getFamilyMembers(listener);
-                            }
-                        });
-                    } else {
-                        Debug.logErrorResponse(response);
-                        returnError(listener, response);
-                    }
-                }
-            }
-
-            @EverythingIsNonNull
-            @Override
-            public void onFailure(Call<List<FamilyMember>> call, Throwable t) {
-                returnError(listener, t);
-            }
-        });
-
     }
 }

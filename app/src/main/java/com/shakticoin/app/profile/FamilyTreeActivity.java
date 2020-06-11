@@ -15,9 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.shakticoin.app.R;
-import com.shakticoin.app.api.OnCompleteListener;
-import com.shakticoin.app.api.Session;
-import com.shakticoin.app.api.UnauthorizedException;
 import com.shakticoin.app.api.user.FamilyMember;
 import com.shakticoin.app.api.user.UserRepository;
 import com.shakticoin.app.widget.DrawerActivity;
@@ -56,20 +53,21 @@ public class FamilyTreeActivity extends DrawerActivity implements DialogInterfac
     private void updateList() {
         final Activity activity = this;
         progressBar.setVisibility(View.VISIBLE);
-        userRepository.getFamilyMembers(new OnCompleteListener<List<FamilyMember>>() {
-            @Override
-            public void onComplete(List<FamilyMember> value, Throwable error) {
-                progressBar.setVisibility(View.INVISIBLE);
-                if (error != null) {
-                    if (error instanceof UnauthorizedException) {
-                        startActivity(Session.unauthorizedIntent(activity));
-                    }
-                    return;
-                }
-                adapter.clear();
-                adapter.addAll(value);
-            }
-        });
+        // FIXME: get list of familiy members when a new API is available
+//        userRepository.getFamilyMembers(new OnCompleteListener<List<FamilyMember>>() {
+//            @Override
+//            public void onComplete(List<FamilyMember> value, Throwable error) {
+//                progressBar.setVisibility(View.INVISIBLE);
+//                if (error != null) {
+//                    if (error instanceof UnauthorizedException) {
+//                        startActivity(Session.unauthorizedIntent(activity));
+//                    }
+//                    return;
+//                }
+//                adapter.clear();
+//                adapter.addAll(value);
+//            }
+//        });
     }
 
     @Override

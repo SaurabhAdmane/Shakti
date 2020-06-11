@@ -2,7 +2,6 @@ package com.shakticoin.app.profile;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
@@ -14,9 +13,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.shakticoin.app.R;
-import com.shakticoin.app.api.OnCompleteListener;
-import com.shakticoin.app.api.Session;
-import com.shakticoin.app.api.UnauthorizedException;
 import com.shakticoin.app.api.user.FamilyMember;
 import com.shakticoin.app.api.user.UserRepository;
 import com.shakticoin.app.databinding.DialogFamilyMemberBinding;
@@ -90,22 +86,23 @@ public class DialogAddFamilyMember extends DialogFragment {
         if (!isValid) return;
 
         final Activity activity = getActivity();
-        userRepository.addFamilyMember(familyMember, new OnCompleteListener<FamilyMember>() {
-            @Override
-            public void onComplete(FamilyMember value, Throwable error) {
-                if (error != null) {
-                    if (error instanceof UnauthorizedException) {
-                        startActivity(Session.unauthorizedIntent(getContext()));
-                    }
-                    return;
-                }
-                Dialog dialog = getDialog();
-                if (dialog != null) {
-                    dialog.setOnDismissListener((DialogInterface.OnDismissListener) getActivity());
-                    dialog.dismiss();
-                }
-            }
-        });
+        // FIXME: add a family member here when a new API available
+//        userRepository.addFamilyMember(familyMember, new OnCompleteListener<FamilyMember>() {
+//            @Override
+//            public void onComplete(FamilyMember value, Throwable error) {
+//                if (error != null) {
+//                    if (error instanceof UnauthorizedException) {
+//                        startActivity(Session.unauthorizedIntent(getContext()));
+//                    }
+//                    return;
+//                }
+//                Dialog dialog = getDialog();
+//                if (dialog != null) {
+//                    dialog.setOnDismissListener((DialogInterface.OnDismissListener) getActivity());
+//                    dialog.dismiss();
+//                }
+//            }
+//        });
     }
 
     public static DialogAddFamilyMember getInstance() {
