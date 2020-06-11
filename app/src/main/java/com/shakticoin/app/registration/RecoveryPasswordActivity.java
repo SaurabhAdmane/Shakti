@@ -3,8 +3,10 @@ package com.shakticoin.app.registration;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
@@ -12,17 +14,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
-import android.view.View;
-import android.widget.ProgressBar;
-import android.widget.Toast;
-
-import com.shakticoin.app.BuildConfig;
 import com.shakticoin.app.R;
-import com.shakticoin.app.api.BaseUrl;
 import com.shakticoin.app.api.OnCompleteListener;
-import com.shakticoin.app.api.RemoteException;
-import com.shakticoin.app.api.auth.LoginService;
-import com.shakticoin.app.api.auth.PasswordResetRequest;
 import com.shakticoin.app.api.user.UserRepository;
 import com.shakticoin.app.util.CommonUtil;
 import com.shakticoin.app.util.Debug;
@@ -30,17 +23,8 @@ import com.shakticoin.app.util.Validator;
 
 import java.util.Objects;
 
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-
 public class RecoveryPasswordActivity extends AppCompatActivity {
     private RecoveryPasswordModel viewModel;
-    private LoginService loginService;
-
     private ProgressBar progressBar;
 
     @Override
@@ -61,12 +45,6 @@ public class RecoveryPasswordActivity extends AppCompatActivity {
         if (intent.hasExtra(emailAddressKey)) {
             viewModel.emailAddress.setValue(intent.getStringExtra(emailAddressKey));
         }
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BaseUrl.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        loginService = retrofit.create(LoginService.class);
     }
 
     private void nextPage() {

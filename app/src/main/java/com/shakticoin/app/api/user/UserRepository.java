@@ -154,36 +154,34 @@ public class UserRepository extends BackendRepository {
      */
     public void acvivateUser(@NonNull Integer userId, @NonNull String confirmatonToken, @NonNull OnCompleteListener<Void> listener) {
 
-        UserActivateParameters parameters = new UserActivateParameters();
-        parameters.setToken(confirmatonToken);
-
-        userService.activateUser(userId, parameters).enqueue(new Callback<Void>() {
-            @EverythingIsNonNull
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful()) {
-                    listener.onComplete(null, null);
-                } else {
-                    Debug.logErrorResponse(response);
-                    listener.onComplete(null, new RemoteException(response.message(), response.code()));
-                }
-            }
-
-            @EverythingIsNonNull
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                returnError(listener, t);
-            }
-        });
+//        UserActivateParameters parameters = new UserActivateParameters();
+//        parameters.setToken(confirmatonToken);
+//
+//        userService.activateUser(userId, parameters).enqueue(new Callback<Void>() {
+//            @EverythingIsNonNull
+//            @Override
+//            public void onResponse(Call<Void> call, Response<Void> response) {
+//                if (response.isSuccessful()) {
+//                    listener.onComplete(null, null);
+//                } else {
+//                    Debug.logErrorResponse(response);
+//                    listener.onComplete(null, new RemoteException(response.message(), response.code()));
+//                }
+//            }
+//
+//            @EverythingIsNonNull
+//            @Override
+//            public void onFailure(Call<Void> call, Throwable t) {
+//                returnError(listener, t);
+//            }
+//        });
     }
 
     /**
      * Reset user password
      */
     public void resetPassword(String emailAddress, @NonNull OnCompleteListener<Void> listener) {
-        ResetPasswordParameters parameters = new ResetPasswordParameters();
-        parameters.setEmail(emailAddress);
-
+        ResetPasswordParameters parameters = new ResetPasswordParameters(emailAddress);
         userService.resetPassword(parameters).enqueue(new Callback<Void>() {
             @EverythingIsNonNull
             @Override

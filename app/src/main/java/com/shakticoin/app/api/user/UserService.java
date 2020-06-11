@@ -8,7 +8,6 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
-import retrofit2.http.Path;
 
 public interface UserService {
 
@@ -31,15 +30,16 @@ public interface UserService {
      * @deprecated
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("users/{id}/status/activate/")
-    Call<Void> activateUser(@Path("id") Integer userId, @Body UserActivateParameters parameters);
+    @POST("users/auth/activate/")
+    Call<Void> activateUser(@Body UserActivateParameters parameters);
 
     /**
      * Change user password
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("users/{id}/password/change/")
-    Call<Void> changePassword(@Header("Authorization") String authorization, @Path("id") Integer userId);
+    @POST("users/password/change/")
+    Call<Void> changePassword(@Header("Authorization") String authorization,
+                              @Body PasswordChangeParameters parameters);
 
     /**
      * Reset user password.
@@ -47,14 +47,6 @@ public interface UserService {
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("users/password/reset/")
     Call<Void> resetPassword(@Body ResetPasswordParameters parameters);
-
-    /**
-     * Confirm user password reset.
-     */
-    @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("users/password/reset/confirm/")
-    Call<Void> confirmResetPassword(@Body ConfirmResetPasswordParameters parameters);
-
 
     /**
      * Retrieve family members.
