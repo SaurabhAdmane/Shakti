@@ -139,6 +139,11 @@
                     app:layout_constraintTop_toBottomOf="@+id/password_layout" />
 
 
+                <!--
+                    FIXME: This checkbox is made invisible permanently. The reason - the feature can
+                    remember a user just on hour until refresh token expire. Without better ideas we
+                    need to clean up the code some time and remove this feature completely.
+                -->
                 <CheckBox
                     android:id="@+id/rememberMe"
                     style="@style/AppCheckbox"
@@ -149,6 +154,7 @@
                     android:button="@drawable/checkbox_states"
                     android:paddingStart="8dp"
                     android:text="@string/remember_me"
+                    android:visibility="invisible"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/password_layout" />
 
