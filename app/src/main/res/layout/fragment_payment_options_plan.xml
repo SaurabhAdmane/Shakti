@@ -276,6 +276,7 @@
             android:layout_marginTop="26dp"
             android:layout_marginEnd="48dp"
             android:onClick="onMainAction"
+            android:enabled="false"
             android:text="@string/pmnt_opts_main_action"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
