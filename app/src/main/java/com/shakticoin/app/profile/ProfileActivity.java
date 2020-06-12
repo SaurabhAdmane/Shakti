@@ -17,8 +17,10 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.shakticoin.app.R;
-import com.shakticoin.app.api.country.Country;
+import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.country.CountryRepository;
+import com.shakticoin.app.api.kyc.KYCRepository;
+import com.shakticoin.app.api.kyc.KycUserModel;
 import com.shakticoin.app.api.user.UserRepository;
 import com.shakticoin.app.databinding.ActivityProfileBinding;
 import com.shakticoin.app.util.Debug;
@@ -30,9 +32,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.Map;
 
 public class ProfileActivity extends DrawerActivity {
     private ActivityProfileBinding binding;
+    private KYCRepository kycRepository = new KYCRepository();
     private PersonalViewModel viewModel;
     private PersonalInfoViewModel personalInfoViewModel;
     private AdditionalInfoViewModel additionInfoViewModel;
@@ -77,6 +81,26 @@ public class ProfileActivity extends DrawerActivity {
 
         viewModel.getProgressBarTrigger().set(true);
         final Activity self = this;
+
+        kycRepository.getUserDetails(new OnCompleteListener<Map<String, Object>>() {
+            @Override
+            public void onComplete(Map<String, Object> value, Throwable error) {
+                viewModel.getProgressBarTrigger().set(false);
+                if (error != null) {
+                    Toast.makeText(self, Debug.getFailureMsg(self, error), Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                // we save mainly to be able determine if an user data are created
+                // already or we need to create new set
+                viewModel.shaktiId.setValue((String) value.get("shaktiId"));
+
+                personalInfoViewModel.firstName.setValue((String) value.get("firstName"));
+                personalInfoViewModel.middleName.setValue((String) value.get("middleName"));
+                personalInfoViewModel.lastName.setValue((String) value.get("lastName"));
+
+            }
+        });
         // FIXME: commented out because the code uses obsolete userservice API
 //        userRepo.getUserInfo(Session.getUser().getId(), new OnCompleteListener<User>() {
 //            @Override
@@ -208,27 +232,73 @@ public class ProfileActivity extends DrawerActivity {
 
     public void onUpdatePersonalInfo(View v) {
         boolean validationSuccessful = true;
-        if (personalInfoViewModel.selectedCountry.getValue() == null) {
-            validationSuccessful = false;
-            personalInfoViewModel.countriesErrMsg.setValue(getString(R.string.err_required));
-        }
-        if (TextUtils.isEmpty(personalInfoViewModel.city.getValue())) {
-            validationSuccessful = false;
-            personalInfoViewModel.cityErrMsg.setValue(getString(R.string.err_required));
-        }
-        if (TextUtils.isEmpty(personalInfoViewModel.address1.getValue())) {
-            validationSuccessful = false;
-            personalInfoViewModel.addressErrMsg.setValue(getString(R.string.err_required));
-        }
-        Country selectedCountry = personalInfoViewModel.selectedCountry.getValue();
-        if (!Validator.isPostalCodeValid(
-                selectedCountry != null ? selectedCountry.getCode() : null, personalInfoViewModel.postalCode.getValue())) {
-            validationSuccessful = false;
-            personalInfoViewModel.postalCodeErrMsg.setValue(getString(R.string.err_postalCode_requird));
-        }
+//        if (personalInfoViewModel.selectedCountry.getValue() == null) {
+//            validationSuccessful = false;
+//            personalInfoViewModel.countriesErrMsg.setValue(getString(R.string.err_required));
+//        }
+//        if (TextUtils.isEmpty(personalInfoViewModel.city.getValue())) {
+//            validationSuccessful = false;
+//            personalInfoViewModel.cityErrMsg.setValue(getString(R.string.err_required));
+//        }
+//        if (TextUtils.isEmpty(personalInfoViewModel.address1.getValue())) {
+//            validationSuccessful = false;
+//            personalInfoViewModel.addressErrMsg.setValue(getString(R.string.err_required));
+//        }
+//        Country selectedCountry = personalInfoViewModel.selectedCountry.getValue();
+//        if (!Validator.isPostalCodeValid(
+//                selectedCountry != null ? selectedCountry.getCode() : null, personalInfoViewModel.postalCode.getValue())) {
+//            validationSuccessful = false;
+//            personalInfoViewModel.postalCodeErrMsg.setValue(getString(R.string.err_postalCode_requird));
+//        }
 
         if (validationSuccessful) {
-            selectPage(2);
+            final Activity activity = this;
+
+            KycUserModel userData = new KycUserModel();
+
+            String firstName = personalInfoViewModel.firstName.getValue();
+            String middleName = personalInfoViewModel.middleName.getValue();
+            String lastName = personalInfoViewModel.lastName.getValue();
+
+            userData.setFirstName(firstName);
+            userData.setMiddleName(middleName);
+            userData.setLastName(lastName);
+
+            // build a full name
+            StringBuilder sb = new StringBuilder();
+            if (firstName != null) sb.append(firstName);
+            if (middleName != null) sb.append(" ").append(middleName);
+            if (lastName != null) sb.append(" ").append(lastName);
+            userData.setFullName(sb.toString());
+
+            viewModel.getProgressBarTrigger().set(true);
+            if (TextUtils.isEmpty(viewModel.shaktiId.getValue())) {
+                kycRepository.createUserDetails(userData, new OnCompleteListener<Map<String, Object>>() {
+
+                    @Override
+                    public void onComplete(Map<String, Object> value, Throwable error) {
+                        viewModel.getProgressBarTrigger().set(true);
+                        if (error != null) {
+                            Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                        selectPage(2);
+                    }
+                });
+            } else {
+                kycRepository.updateUserDetails(userData, new OnCompleteListener<Map<String, Object>>() {
+
+                    @Override
+                    public void onComplete(Map<String, Object> value, Throwable error) {
+                        viewModel.getProgressBarTrigger().set(true);
+                        if (error != null) {
+                            Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                        selectPage(2);
+                    }
+                });
+            }
         }
     }
 
