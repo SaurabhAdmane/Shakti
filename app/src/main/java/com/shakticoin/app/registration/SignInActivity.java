@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
+import com.shakticoin.app.BuildConfig;
 import com.shakticoin.app.R;
 import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.Session;
@@ -59,18 +60,22 @@ public class SignInActivity extends AppCompatActivity {
             return value != null && value.length() > Validator.MIN_PASSWD_LEN;
         });
 
-        final Activity self = this;
-        binding.rememberMe.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            boolean deviceSecure = false;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                KeyguardManager keyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
-                deviceSecure = keyguardManager != null && keyguardManager.isDeviceSecure();
-            }
-            if (buttonView.isChecked() && !deviceSecure) {
-                buttonView.setChecked(false);
-                Toast.makeText(self, R.string.err_device_not_secure, Toast.LENGTH_LONG).show();
-            }
-        });
+        // Enable "Remember Me" in debug mode only
+        if (BuildConfig.DEBUG) {
+            final Activity self = this;
+            binding.rememberMe.setVisibility(View.VISIBLE);
+            binding.rememberMe.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                boolean deviceSecure = false;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    KeyguardManager keyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
+                    deviceSecure = keyguardManager != null && keyguardManager.isDeviceSecure();
+                }
+                if (buttonView.isChecked() && !deviceSecure) {
+                    buttonView.setChecked(false);
+                    Toast.makeText(self, R.string.err_device_not_secure, Toast.LENGTH_LONG).show();
+                }
+            });
+        }
     }
 
     public void onLogin(View view) {
