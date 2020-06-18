@@ -40,8 +40,9 @@ public class PersonalInfoFragment2 extends Fragment {
         View v = binding.getRoot();
 
         binding.postalCodeLayout.setValidator(new PostalCodeValidator(null));
-        viewModel.selectedCountry.observe(this, country ->
-                binding.postalCodeLayout.setValidator(new PostalCodeValidator(country != null ? country.getCode() : null)));
+        if (viewModel.selectedState.getValue() != null) {
+            binding.stateProvinceLayout.setVisibility(View.VISIBLE);
+        }
 
         // update list of states when selected country is changed.
         viewModel.selectedCountry.observe(this, country -> {

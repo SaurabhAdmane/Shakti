@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <variable
-            name="viewModel" type="com.shakticoin.app.profile.AdditionalInfoViewModel"/>
+            name="viewModel" type="com.shakticoin.app.profile.PersonalInfoViewModel"/>
     </data>
     <ScrollView
         android:layout_width="match_parent"
@@ -69,11 +68,15 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/label">
 
+                <!-- Temporarily disabled
+                    remove app:borderColor when enabled -->
                 <com.shakticoin.app.widget.InlineLabelEditText
                     android:id="@+id/fullName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/AppTextField"
+                    android:enabled="false"
+                    app:borderColor="@color/colorBrandDisabled"
                     android:inputType="textCapWords|textPersonName"
                     android:hint="@string/hint_full_name"
                     android:text="@={viewModel.kinFullName}"/>
@@ -94,6 +97,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/fullNameLayout">
 
+                <!-- Temporarily disabled
+                    remove app:borderColor when enabled -->
                 <com.shakticoin.app.widget.InlineLabelEditText
                     android:id="@+id/phoneOrEmail"
                     style="@style/AppTextField"
@@ -101,7 +106,9 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/hint_phone_or_email"
                     android:inputType="text"
-                    android:text="@={viewModel.kinContact}"/>
+                    android:text="@={viewModel.kinContact}"
+                    android:enabled="false"
+                    app:borderColor="@color/colorBrandDisabled"/>
             </com.shakticoin.app.widget.TextInputLayout>
 
             <com.shakticoin.app.widget.TextInputLayout
@@ -125,7 +132,9 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/hint_relationship"
                     android:inputType="textCapSentences"
-                    android:text="@={viewModel.kinRelationship}"/>
+                    android:text="@={viewModel.kinRelationship}"
+                    android:enabled="false"
+                    app:borderColor="@color/colorBrandDisabled"/>
             </com.shakticoin.app.widget.TextInputLayout>
 
             <com.shakticoin.app.widget.SpinnerLayout
@@ -140,18 +149,21 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/relationshipLayout">
 
+                <!-- Temporarily disabled
+                    when enabled set app:spinnerBorderColor to colorBrand
+                    and change setEnabled/setClickable in the code -->
                 <com.shakticoin.app.widget.InlineLabelSpinner
                     android:id="@+id/educationLevel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:popupBackground="@android:color/transparent"
-                    android:entries="@{viewModel.educatinLevelList}"
+                    android:entries="@{viewModel.educationLevelList}"
                     android:onItemSelected="@{(parent, view, position, id) -> viewModel.onEducationLevelSelectedKin(view, position)}"
                     app:newValue="@{viewModel.kinSelectedEducationLevel}"
                     app:hint="@string/education_level"
                     app:textColorHint="@color/colorHint"
-                    app:spinnerBorderColor="@color/colorBrand"/>
+                    app:spinnerBorderColor="@color/colorBrandDisabled"/>
             </com.shakticoin.app.widget.SpinnerLayout>
 
             <CheckBox
@@ -167,6 +179,7 @@
                 android:paddingEnd="8dp"
                 android:text="@string/profile_additional_auth_stmt"
                 android:checked="true"
+                android:enabled="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/educationLevelLayout" />
@@ -183,6 +196,8 @@
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
                 android:text="@string/profile_additional_alerts_consent"
+                android:checked="@{viewModel.subscriptionConfirmed}"
+                android:onCheckedChanged="@{(view, checked) -> viewModel.onSubscribeConfirmed(checked)}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/authShakti" />

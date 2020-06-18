@@ -4,7 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <variable
-            name="viewModel" type="com.shakticoin.app.profile.AdditionalInfoViewModel"/>
+            name="viewModel" type="com.shakticoin.app.profile.PersonalInfoViewModel"/>
     </data>
     <ScrollView
         android:layout_width="match_parent"
@@ -147,7 +147,7 @@
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:popupBackground="@android:color/transparent"
-                    android:entries="@{viewModel.educatinLevelList}"
+                    android:entries="@{viewModel.educationLevelList}"
                     android:onItemSelected="@{(parent, view, position, id) -> viewModel.onEducationLevelSelected(view, position)}"
                     app:newValue="@{viewModel.selectedEducationLevel}"
                     app:hint="@string/education_level"

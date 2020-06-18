@@ -9,8 +9,6 @@ class KycUserModel {
     var lastName: String? = null
     var middleName: String? = null
     var fullName: String? = null
-    var primaryEmail: String? = null
-    var primaryMobile: String? = null
     var dob: String? = null
     var referenceEmail: String? = null
     var referenceMobile: String? = null

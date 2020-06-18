@@ -18,11 +18,17 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.shakticoin.app.R;
 import com.shakticoin.app.api.OnCompleteListener;
+import com.shakticoin.app.api.Session;
+import com.shakticoin.app.api.UnauthorizedException;
+import com.shakticoin.app.api.country.Country;
 import com.shakticoin.app.api.country.CountryRepository;
+import com.shakticoin.app.api.country.Subdivision;
+import com.shakticoin.app.api.kyc.AddressModel;
 import com.shakticoin.app.api.kyc.KYCRepository;
 import com.shakticoin.app.api.kyc.KycUserModel;
 import com.shakticoin.app.api.user.UserRepository;
 import com.shakticoin.app.databinding.ActivityProfileBinding;
+import com.shakticoin.app.util.CommonUtil;
 import com.shakticoin.app.util.Debug;
 import com.shakticoin.app.util.Validator;
 import com.shakticoin.app.widget.DatePicker;
@@ -31,6 +37,7 @@ import com.shakticoin.app.widget.DrawerActivity;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -39,7 +46,6 @@ public class ProfileActivity extends DrawerActivity {
     private KYCRepository kycRepository = new KYCRepository();
     private PersonalViewModel viewModel;
     private PersonalInfoViewModel personalInfoViewModel;
-    private AdditionalInfoViewModel additionInfoViewModel;
 
     private UserRepository userRepo = new UserRepository();
     private CountryRepository countryRepo = new CountryRepository();
@@ -63,7 +69,6 @@ public class ProfileActivity extends DrawerActivity {
         viewModel = ViewModelProviders.of(this).get(PersonalViewModel.class);
         binding.setViewModel(viewModel);
         personalInfoViewModel = ViewModelProviders.of(this).get(PersonalInfoViewModel.class);
-        additionInfoViewModel = ViewModelProviders.of(this).get(AdditionalInfoViewModel.class);
 
         onInitView(binding.getRoot(), getString(R.string.profile_personal_title));
 
@@ -87,86 +92,76 @@ public class ProfileActivity extends DrawerActivity {
             public void onComplete(Map<String, Object> value, Throwable error) {
                 viewModel.getProgressBarTrigger().set(false);
                 if (error != null) {
-                    Toast.makeText(self, Debug.getFailureMsg(self, error), Toast.LENGTH_LONG).show();
+                    if (error instanceof UnauthorizedException) {
+                        startActivity(Session.unauthorizedIntent(self));
+                    } else {
+                        Toast.makeText(self, Debug.getFailureMsg(self, error), Toast.LENGTH_LONG).show();
+                    }
                     return;
                 }
 
+                // enable button to the next page if the call for user details was successful
+                personalInfoViewModel.nextToSecondPersonalPage.set(true);
+
                 // we save mainly to be able determine if an user data are created
                 // already or we need to create new set
-                viewModel.shaktiId.setValue((String) value.get("shaktiId"));
+                viewModel.shaktiId.setValue((String) value.get("shaktiID"));
 
                 personalInfoViewModel.firstName.setValue((String) value.get("firstName"));
                 personalInfoViewModel.middleName.setValue((String) value.get("middleName"));
                 personalInfoViewModel.lastName.setValue((String) value.get("lastName"));
 
+                personalInfoViewModel.birthDate.setValue((String) value.get("dob"));
+
+                Map<String, Object> postalAddress = CommonUtil.checkMap(value.get("address"));
+                if (postalAddress != null) {
+                    personalInfoViewModel.city.setValue((String) postalAddress.get("city"));
+                    personalInfoViewModel.postalCode.setValue((String) postalAddress.get("zipCode"));
+                    personalInfoViewModel.address1.setValue((String) postalAddress.get("address1"));
+                    personalInfoViewModel.address2.setValue((String) postalAddress.get("address2"));
+                    String countryCode = (String) postalAddress.get("countryCode");
+                    if (countryCode != null) {
+                        countryRepo.getCountry(countryCode, new OnCompleteListener<Country>() {
+                            @Override
+                            public void onComplete(Country value, Throwable error) {
+                                if (error != null) {
+                                    return;
+                                }
+                                personalInfoViewModel.selectedCountry.setValue(value);
+                            }
+                        });
+
+                        String stateProvinceCode = (String) postalAddress.get("stateProvinceCode");
+                        if (stateProvinceCode != null) {
+                            countryRepo.getSubdivisionsByCountry(countryCode, new OnCompleteListener<List<Subdivision>>() {
+                                @Override
+                                public void onComplete(List<Subdivision> subdivisions, Throwable error) {
+                                    if (error != null) {
+                                        return;
+                                    }
+
+                                    personalInfoViewModel.stateProvinceList.setValue(subdivisions);
+
+                                    for (Subdivision subdivision : subdivisions) {
+                                        if (stateProvinceCode.equals(subdivision.getSubdivision())) {
+                                            personalInfoViewModel.selectedState.setValue(subdivision);
+                                            break;
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }
+
+                personalInfoViewModel.emailAddress.setValue((String) value.get("secondaryEmail"));
+                personalInfoViewModel.phoneNumber.setValue((String) value.get("secondaryMobile"));
+                personalInfoViewModel.occupation.setValue((String) value.get("occupation"));
+                personalInfoViewModel.selectedEducationLevel.setValue((String) value.get("education1"));
+                Boolean emailAlert = (Boolean) value.get("emailAlert");
+                personalInfoViewModel.subscriptionConfirmed.set(emailAlert != null ? emailAlert : false);
             }
         });
-        // FIXME: commented out because the code uses obsolete userservice API
-//        userRepo.getUserInfo(Session.getUser().getId(), new OnCompleteListener<User>() {
-//            @Override
-//            public void onComplete(User user, Throwable error) {
-//                viewModel.getProgressBarTrigger().set(false);
-//                if (error != null) {
-//                    if (error instanceof UnauthorizedException) {
-//                        startActivity(Session.unauthorizedIntent(self));
-//                    }
-//                    return;
-//                }
-//
-//                List<Residence> residences = user.getResidence();
-//                if (residences != null && residences.size() > 0) {
-//                    Residence residence = residences.get(0);
-//                    countryRepo.getCountry(residence.getCountry_code(), new OnCompleteListener<Country>() {
-//                        @Override
-//                        public void onComplete(Country value, Throwable error) {
-//                            if (error != null) {
-//                                if (error instanceof UnauthorizedException) {
-//                                    startActivity(Session.unauthorizedIntent(self));
-//                                }
-//                                return;
-//                            }
-//                            personalInfoViewModel.selectedCountry.setValue(value);
-//                        }
-//                    });
-//                    if (residence.getSubdivision_id() != null) {
-//                        countryRepo.getSubdivision(residence.getCountry_code(), residence.getSubdivision_id(),
-//                                new OnCompleteListener<Subdivision>() {
-//                                    @Override
-//                                    public void onComplete(Subdivision value, Throwable error) {
-//                                        if (error != null) {
-//                                            if (error instanceof UnauthorizedException) {
-//                                                startActivity(Session.unauthorizedIntent(self));
-//                                            }
-//                                            return;
-//                                        }
-//                                        personalInfoViewModel.selectedState.setValue(value);
-//                                    }
-//                                });
-//                    }
-//                    personalInfoViewModel.address1.setValue(residence.getAddress_line_1());
-//                    personalInfoViewModel.address2.setValue(residence.getAddress_line_2());
-//                    personalInfoViewModel.city.setValue(residence.getCity());
-//                    personalInfoViewModel.postalCode.setValue(residence.getZip_code());
-//                }
-//
-//                personalInfoViewModel.firstName.setValue(user.getFirst_name());
-//                personalInfoViewModel.middleName.setValue(user.getMiddle_name());
-//                personalInfoViewModel.lastName.setValue(user.getLast_name());
-//                personalInfoViewModel.birthDate.setValue(user.getDate_of_birth());
-//                personalInfoViewModel.emailAddress.setValue(user.getEmail());
-//                personalInfoViewModel.phoneNumber.setValue(user.getMobile());
-//                personalInfoViewModel.occupation.setValue(user.getOccupation());
-//                personalInfoViewModel.selectedEducationLevel.setValue(user.getHighest_level_of_education());
-//
-//                List<Kinship> kindships = user.getKinship();
-//                if (kindships != null && kindships.size() > 0) {
-//                    Kinship kinship = kindships.get(0);
-//                    personalInfoViewModel.kinFullName.setValue(kinship.getFull_name());
-//                    personalInfoViewModel.kinContact.setValue(kinship.getEmail() != null ? kinship.getEmail() : kinship.getMobile());
-//                    personalInfoViewModel.kinRelationship.setValue(kinship.getRelation());
-//                }
-//            }
-//        });
 
         getSupportFragmentManager().addOnBackStackChangedListener(() -> {
             for (int i = 0; i < tags.length; i++) {
@@ -232,52 +227,36 @@ public class ProfileActivity extends DrawerActivity {
 
     public void onUpdatePersonalInfo(View v) {
         boolean validationSuccessful = true;
-//        if (personalInfoViewModel.selectedCountry.getValue() == null) {
-//            validationSuccessful = false;
-//            personalInfoViewModel.countriesErrMsg.setValue(getString(R.string.err_required));
-//        }
-//        if (TextUtils.isEmpty(personalInfoViewModel.city.getValue())) {
-//            validationSuccessful = false;
-//            personalInfoViewModel.cityErrMsg.setValue(getString(R.string.err_required));
-//        }
-//        if (TextUtils.isEmpty(personalInfoViewModel.address1.getValue())) {
-//            validationSuccessful = false;
-//            personalInfoViewModel.addressErrMsg.setValue(getString(R.string.err_required));
-//        }
-//        Country selectedCountry = personalInfoViewModel.selectedCountry.getValue();
-//        if (!Validator.isPostalCodeValid(
-//                selectedCountry != null ? selectedCountry.getCode() : null, personalInfoViewModel.postalCode.getValue())) {
-//            validationSuccessful = false;
-//            personalInfoViewModel.postalCodeErrMsg.setValue(getString(R.string.err_postalCode_requird));
-//        }
+        if (personalInfoViewModel.selectedCountry.getValue() == null) {
+            validationSuccessful = false;
+            personalInfoViewModel.countriesErrMsg.setValue(getString(R.string.err_required));
+        }
+        if (TextUtils.isEmpty(personalInfoViewModel.city.getValue())) {
+            validationSuccessful = false;
+            personalInfoViewModel.cityErrMsg.setValue(getString(R.string.err_required));
+        }
+        if (TextUtils.isEmpty(personalInfoViewModel.address1.getValue())) {
+            validationSuccessful = false;
+            personalInfoViewModel.addressErrMsg.setValue(getString(R.string.err_required));
+        }
+        Country selectedCountry = personalInfoViewModel.selectedCountry.getValue();
+        if (!Validator.isPostalCodeValid(
+                selectedCountry != null ? selectedCountry.getCode() : null, personalInfoViewModel.postalCode.getValue())) {
+            validationSuccessful = false;
+            personalInfoViewModel.postalCodeErrMsg.setValue(getString(R.string.err_postalCode_requird));
+        }
 
         if (validationSuccessful) {
             final Activity activity = this;
 
-            KycUserModel userData = new KycUserModel();
-
-            String firstName = personalInfoViewModel.firstName.getValue();
-            String middleName = personalInfoViewModel.middleName.getValue();
-            String lastName = personalInfoViewModel.lastName.getValue();
-
-            userData.setFirstName(firstName);
-            userData.setMiddleName(middleName);
-            userData.setLastName(lastName);
-
-            // build a full name
-            StringBuilder sb = new StringBuilder();
-            if (firstName != null) sb.append(firstName);
-            if (middleName != null) sb.append(" ").append(middleName);
-            if (lastName != null) sb.append(" ").append(lastName);
-            userData.setFullName(sb.toString());
-
             viewModel.getProgressBarTrigger().set(true);
+            KycUserModel userData = createUserModel();
             if (TextUtils.isEmpty(viewModel.shaktiId.getValue())) {
                 kycRepository.createUserDetails(userData, new OnCompleteListener<Map<String, Object>>() {
 
                     @Override
                     public void onComplete(Map<String, Object> value, Throwable error) {
-                        viewModel.getProgressBarTrigger().set(true);
+                        viewModel.getProgressBarTrigger().set(false);
                         if (error != null) {
                             Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
                             return;
@@ -290,7 +269,7 @@ public class ProfileActivity extends DrawerActivity {
 
                     @Override
                     public void onComplete(Map<String, Object> value, Throwable error) {
-                        viewModel.getProgressBarTrigger().set(true);
+                        viewModel.getProgressBarTrigger().set(false);
                         if (error != null) {
                             Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
                             return;
@@ -304,17 +283,17 @@ public class ProfileActivity extends DrawerActivity {
 
     public void onNextAdditionalInfo(View v) {
         boolean validationSuccessful = true;
-        if (!Validator.isEmail(additionInfoViewModel.emailAddress.getValue())) {
+        if (!Validator.isEmail(personalInfoViewModel.emailAddress.getValue())) {
             validationSuccessful = false;
-            additionInfoViewModel.emailAddressErrMsg.setValue(getString(R.string.err_email_required));
+            personalInfoViewModel.emailAddressErrMsg.setValue(getString(R.string.err_email_required));
         }
-        if (!Validator.isPhoneNumber(additionInfoViewModel.phoneNumber.getValue())) {
+        if (!Validator.isPhoneNumber(personalInfoViewModel.phoneNumber.getValue())) {
             validationSuccessful = false;
-            additionInfoViewModel.phoneNumberErrMsg.setValue(getString(R.string.err_phone_required));
+            personalInfoViewModel.phoneNumberErrMsg.setValue(getString(R.string.err_phone_required));
         }
-        if (TextUtils.isEmpty(additionInfoViewModel.occupation.getValue())) {
+        if (TextUtils.isEmpty(personalInfoViewModel.occupation.getValue())) {
             validationSuccessful = false;
-            additionInfoViewModel.occupationErrMsg.setValue(getString(R.string.err_required));
+            personalInfoViewModel.occupationErrMsg.setValue(getString(R.string.err_required));
         }
 
         if (validationSuccessful) {
@@ -324,22 +303,78 @@ public class ProfileActivity extends DrawerActivity {
 
     public void onUpdateAdditionalInfo(View v) {
         boolean validationSuccessful = true;
-        if (TextUtils.isEmpty(additionInfoViewModel.kinFullName.getValue())) {
+        // TODO: disabled temporarily
+        /*
+        if (TextUtils.isEmpty(personalInfoViewModel.kinFullName.getValue())) {
             validationSuccessful = false;
-            additionInfoViewModel.kinFullNameErrMsg.setValue(getString(R.string.err_required));
+            personalInfoViewModel.kinFullNameErrMsg.setValue(getString(R.string.err_required));
         }
-        if (!Validator.isEmailOrPhoneNumber(additionInfoViewModel.kinContact.getValue())) {
+        if (!Validator.isEmailOrPhoneNumber(personalInfoViewModel.kinContact.getValue())) {
             validationSuccessful = false;
-            additionInfoViewModel.kinContactErrMsg.setValue(getString(R.string.err_email_phone_required));
+            personalInfoViewModel.kinContactErrMsg.setValue(getString(R.string.err_email_phone_required));
         }
-        if (TextUtils.isEmpty(additionInfoViewModel.kinRelationship.getValue())) {
+        if (TextUtils.isEmpty(personalInfoViewModel.kinRelationship.getValue())) {
             validationSuccessful = false;
-            additionInfoViewModel.kinRelationshipErrMsg.setValue(getString(R.string.err_required));
+            personalInfoViewModel.kinRelationshipErrMsg.setValue(getString(R.string.err_required));
         }
+         */
 
         if (validationSuccessful) {
-            selectPage(4);
+            final Activity activity = this;
+
+            viewModel.getProgressBarTrigger().set(true);
+            KycUserModel userData = createUserModel();
+            kycRepository.updateUserDetails(userData, new OnCompleteListener<Map<String, Object>>() {
+
+                @Override
+                public void onComplete(Map<String, Object> value, Throwable error) {
+                    viewModel.getProgressBarTrigger().set(false);
+                    if (error != null) {
+                        Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                    selectPage(4);
+                }
+            });
         }
+    }
+
+    private KycUserModel createUserModel() {
+        KycUserModel model = new KycUserModel();
+
+        String firstName = personalInfoViewModel.firstName.getValue();
+        String middleName = personalInfoViewModel.middleName.getValue();
+        String lastName = personalInfoViewModel.lastName.getValue();
+
+        model.setFirstName(firstName);
+        model.setMiddleName(middleName);
+        model.setLastName(lastName);
+
+        // build a full name
+        StringBuilder sb = new StringBuilder();
+        if (firstName != null) sb.append(firstName);
+        if (middleName != null) sb.append(" ").append(middleName);
+        if (lastName != null) sb.append(" ").append(lastName);
+        model.setFullName(sb.toString());
+
+        model.setDob(personalInfoViewModel.birthDate.getValue());
+
+        Country country = personalInfoViewModel.selectedCountry.getValue();
+        Subdivision stateProvince = personalInfoViewModel.selectedState.getValue();
+
+        AddressModel address = new AddressModel(country.getName(), country.getCode(),
+                stateProvince != null ? stateProvince.getSubdivision() : null,
+                personalInfoViewModel.city.getValue(), personalInfoViewModel.address1.getValue(),
+                personalInfoViewModel.address2.getValue(), personalInfoViewModel.postalCode.getValue());
+        model.setAddress(address);
+
+        model.setSecondaryEmail(personalInfoViewModel.emailAddress.getValue());
+        model.setSecondaryMobile(personalInfoViewModel.phoneNumber.getValue());
+        model.setOccupation(personalInfoViewModel.occupation.getValue());
+        model.setEducation1(personalInfoViewModel.selectedEducationLevel.getValue());
+        model.setEmailAlert(personalInfoViewModel.subscriptionConfirmed.get());
+
+        return model;
     }
 
     public void onCancel(View v) {

@@ -1,10 +1,10 @@
 package com.shakticoin.app.util;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
-
 import com.shakticoin.app.BuildConfig;
 import com.shakticoin.app.R;
 import com.shakticoin.app.api.RemoteException;
@@ -66,17 +66,20 @@ public class Debug {
      */
     public static String getFailureMsg(Context context, Throwable e) {
         if (e != null) {
+            String errMsg = null;
             if (BuildConfig.DEBUG) {
-                return e.getMessage();
+                errMsg = e.getMessage();
             } else {
                 if (e instanceof RemoteException) {
-                    return e.getMessage();
+                    errMsg = e.getMessage();
                 }
             }
 
             if (e instanceof java.io.IOException && !Session.isNetworkConnected()) {
                 return context.getString(R.string.err_no_internet);
             }
+
+            return (TextUtils.isEmpty(errMsg)) ? context.getString(R.string.err_unexpected) : errMsg;
         }
         return context.getString(R.string.err_unexpected);
     }

@@ -28,7 +28,7 @@ public interface KYCService {
      * Returned data:<br/>
      * <pre>
      * {
-     *     "shaktiId":"65d8841d-c995-45dc-b4ad-61ad652293de",
+     *     "shaktiID":"65d8841d-c995-45dc-b4ad-61ad652293de",
      *     "firstName":"Oleg",
      *     "lastName":"Andr",
      *     "middleName":null,
@@ -78,6 +78,12 @@ public interface KYCService {
                                          @Body KycUserModel parameters);
 
 
+    /**
+     * Get KYC user document types
+     */
+    @Headers("Accept: application/json")
+    @GET("kyc/document-types")
+    Call<Map<String, Object>> getKycDocTypes(@Header("Authorization") String authorization);
 
     /**
         @deprecated

@@ -1,10 +1,12 @@
 package com.shakticoin.app.settings;
 
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 public class SettingsPersonalViewModel extends ViewModel {
 
-    //FIXME: the code uses obsolete userservice
-//    public MutableLiveData<User> user = new MutableLiveData<>();
+    public MutableLiveData<String> firstName = new MutableLiveData<>();
+    public MutableLiveData<String> middleName = new MutableLiveData<>();
+    public MutableLiveData<String> lastName = new MutableLiveData<>();
 
 }

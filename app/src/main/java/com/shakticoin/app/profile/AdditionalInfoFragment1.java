@@ -20,14 +20,14 @@ public class AdditionalInfoFragment1 extends Fragment {
     public static final String TAG = AdditionalInfoFragment1.class.getSimpleName();
 
     FragmentProfileAdditionalPage1Binding binding;
-    AdditionalInfoViewModel viewModel;
+    PersonalInfoViewModel viewModel;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentProfileAdditionalPage1Binding.inflate(inflater, container, false);
         binding.setLifecycleOwner(this);
-        viewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(AdditionalInfoViewModel.class);
+        viewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(PersonalInfoViewModel.class);
         binding.setViewModel(viewModel);
         View v = binding.getRoot();
 

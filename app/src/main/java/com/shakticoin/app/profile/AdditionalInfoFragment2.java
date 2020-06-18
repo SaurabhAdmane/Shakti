@@ -20,16 +20,19 @@ public class AdditionalInfoFragment2 extends Fragment {
     public static final String TAG = AdditionalInfoFragment2.class.getSimpleName();
 
     private FragmentProfileAdditionalPage2Binding binding;
-    private AdditionalInfoViewModel viewModel;
+    private PersonalInfoViewModel viewModel;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentProfileAdditionalPage2Binding.inflate(inflater, container, false);
         binding.setLifecycleOwner(this);
-        viewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(AdditionalInfoViewModel.class);
+        viewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(PersonalInfoViewModel.class);
         binding.setViewModel(viewModel);
         View v = binding.getRoot();
+
+        binding.educationLevel.setEnabled(false);
+        binding.educationLevel.setClickable(false);
 
         binding.phoneOrEmailLayout.setValidator((view, value) -> Validator.isEmailOrPhoneNumber(value));
 

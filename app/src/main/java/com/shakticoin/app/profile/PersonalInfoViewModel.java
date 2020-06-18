@@ -2,6 +2,7 @@ package com.shakticoin.app.profile;
 
 import android.view.View;
 
+import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -46,6 +47,8 @@ public class PersonalInfoViewModel extends ViewModel {
     public MutableLiveData<String> phoneNumber = new MutableLiveData<>();
     public MutableLiveData<String> occupation = new MutableLiveData<>();
 
+    public ObservableBoolean subscriptionConfirmed = new ObservableBoolean(false);
+
     public MutableLiveData<String> kinFullName = new MutableLiveData<>();
     public MutableLiveData<String> kinContact = new MutableLiveData<>();
     public MutableLiveData<String> kinRelationship = new MutableLiveData<>();
@@ -59,8 +62,8 @@ public class PersonalInfoViewModel extends ViewModel {
     public MutableLiveData<String> kinContactErrMsg = new MutableLiveData<>();
     public MutableLiveData<String> kinRelationshipErrMsg = new MutableLiveData<>();
 
-    //FIXME: uses obsolete userserve User class
-    //    public MutableLiveData<User> user;
+    // enable/disable triggers
+    public ObservableBoolean nextToSecondPersonalPage = new ObservableBoolean(false);
 
     public PersonalInfoViewModel() {
         CountryRepository repository = new CountryRepository();
@@ -81,8 +84,9 @@ public class PersonalInfoViewModel extends ViewModel {
     /** This method is bind to onItemSelected event */
     public void onStateSelected(View view, int position) {
         InlineLabelSpinner spinner = (InlineLabelSpinner) view;
-        if (spinner.isChoiceMade()) {
-            selectedState.setValue((Subdivision) spinner.getAdapter().getItem(position));
+        Object selection = spinner.getAdapter().getItem(position);
+        if (spinner.isChoiceMade() && selection instanceof Subdivision) {
+            selectedState.setValue((Subdivision) selection);
         }
     }
 
@@ -98,6 +102,12 @@ public class PersonalInfoViewModel extends ViewModel {
         InlineLabelSpinner spinner = (InlineLabelSpinner) view;
         if (spinner.isChoiceMade()) {
             kinSelectedEducationLevel.setValue((String) spinner.getAdapter().getItem(position));
+        }
+    }
+
+    public void onSubscribeConfirmed(boolean isChecked) {
+        if (subscriptionConfirmed.get() != isChecked) {
+            subscriptionConfirmed.set(isChecked);
         }
     }
 }

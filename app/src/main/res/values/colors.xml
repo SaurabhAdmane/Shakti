@@ -3,7 +3,8 @@
 
     <color name="colorPrimary">#62666A</color>
     <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAccent">#d3c5a9</color>
+    <color name="colorAccent">#ffd3c5a9</color>
+    <color name="colorAccentDisabled">#80d3c5a9</color>
     <color name="colorBrand">#FFD8C295</color>
     <color name="colorBrandDisabled">#80D8C295</color>
     <color name="colorAppGrey">#727473</color>

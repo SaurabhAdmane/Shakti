@@ -140,6 +140,7 @@ public class KYCRepository extends BackendRepository {
             @EverythingIsNonNull
             @Override
             public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
+                Debug.logDebug(response.toString());
                 if (response.isSuccessful()) {
                     listener.onComplete(response.body(), null);
                 } else {
@@ -160,6 +161,51 @@ public class KYCRepository extends BackendRepository {
             @EverythingIsNonNull
             @Override
             public void onFailure(Call<Map<String, Object>> call, Throwable t) {
+                returnError(listener, t);
+            }
+        });
+    }
+
+    public void getKycDocumentTypes(OnCompleteListener<List<Map<String, Object>>> listener) {
+        service.getDocumentTypes(Session.getAuthorizationHeader()).enqueue(new Callback<ResponseBody>() {
+            @EverythingIsNonNull
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Debug.logDebug(response.toString());
+                if (response.isSuccessful()) {
+                    ResponseBody body = response.body();
+                    if (body != null) {
+                        try {
+                            String content = body.string();
+                            Debug.logDebug(content);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                } else {
+                    switch (response.code()) {
+                        case 401:
+                            authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
+                                @Override
+                                public void onComplete(TokenResponse value, Throwable error) {
+                                    if (error != null) {
+                                        listener.onComplete(null, new UnauthorizedException());
+                                        return;
+                                    }
+                                    getKycDocumentTypes(listener);
+                                }
+                            });
+                            break;
+                        default:
+                            Debug.logErrorResponse(response);
+                            returnError(listener, response);
+                    }
+                }
+            }
+
+            @EverythingIsNonNull
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 returnError(listener, t);
             }
         });
