@@ -141,8 +141,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/lastNameLayout">
 
-                <!-- Temporarily disabled
-                    remove app:borderColor when enabled -->
                 <com.shakticoin.app.widget.InlineLabelTextView
                     android:id="@+id/birthDate"
                     android:layout_width="match_parent"
@@ -150,8 +148,6 @@
                     style="@style/AppTextField"
                     android:hint="@string/birthdate"
                     android:onClick="onSetBirthDate"
-                    android:enabled="false"
-                    app:borderColor="@color/colorBrandDisabled"
                     app:localizedDate="@{viewModel.birthDate}"/>
 
             </com.shakticoin.app.widget.TextInputLayout>
