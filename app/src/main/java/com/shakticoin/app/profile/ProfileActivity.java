@@ -157,7 +157,7 @@ public class ProfileActivity extends DrawerActivity {
                 personalInfoViewModel.emailAddress.setValue((String) value.get("secondaryEmail"));
                 personalInfoViewModel.phoneNumber.setValue((String) value.get("secondaryMobile"));
                 personalInfoViewModel.occupation.setValue((String) value.get("occupation"));
-                personalInfoViewModel.selectedEducationLevel.setValue((String) value.get("education1"));
+                personalInfoViewModel.educationLevel.setValue((String) value.get("education1"));
                 Boolean emailAlert = (Boolean) value.get("emailAlert");
                 personalInfoViewModel.subscriptionConfirmed.set(emailAlert != null ? emailAlert : false);
             }
@@ -339,6 +339,11 @@ public class ProfileActivity extends DrawerActivity {
         }
     }
 
+    /**
+     * KycUserModel is used when we update personal info and additional info. In both cases
+     * it should contains the same data. This is why we create an instance of this class in
+     * a separate method.
+     */
     private KycUserModel createUserModel() {
         KycUserModel model = new KycUserModel();
 
@@ -371,7 +376,7 @@ public class ProfileActivity extends DrawerActivity {
         model.setSecondaryEmail(personalInfoViewModel.emailAddress.getValue());
         model.setSecondaryMobile(personalInfoViewModel.phoneNumber.getValue());
         model.setOccupation(personalInfoViewModel.occupation.getValue());
-        model.setEducation1(personalInfoViewModel.selectedEducationLevel.getValue());
+        model.setEducation1(personalInfoViewModel.educationLevel.getValue());
         model.setEmailAlert(personalInfoViewModel.subscriptionConfirmed.get());
 
         return model;

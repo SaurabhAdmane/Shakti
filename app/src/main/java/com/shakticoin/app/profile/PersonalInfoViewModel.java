@@ -7,14 +7,11 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.shakticoin.app.R;
-import com.shakticoin.app.ShaktiApplication;
 import com.shakticoin.app.api.country.Country;
 import com.shakticoin.app.api.country.CountryRepository;
 import com.shakticoin.app.api.country.Subdivision;
 import com.shakticoin.app.widget.InlineLabelSpinner;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -43,6 +40,7 @@ public class PersonalInfoViewModel extends ViewModel {
 
     public MutableLiveData<List<String>> educationLevelList = new MutableLiveData<>();
     public MutableLiveData<String> selectedEducationLevel = new MutableLiveData<>();
+    public MutableLiveData<String> educationLevel = new MutableLiveData<>();
     public MutableLiveData<String> emailAddress = new MutableLiveData<>();
     public MutableLiveData<String> phoneNumber = new MutableLiveData<>();
     public MutableLiveData<String> occupation = new MutableLiveData<>();
@@ -68,9 +66,6 @@ public class PersonalInfoViewModel extends ViewModel {
     public PersonalInfoViewModel() {
         CountryRepository repository = new CountryRepository();
         countryList = repository.getCountries();
-
-        educationLevelList.setValue(Arrays.asList(
-                ShaktiApplication.getContext().getResources().getStringArray(R.array.education_levels)));
     }
 
     /** This method is bind to onItemSelected event */

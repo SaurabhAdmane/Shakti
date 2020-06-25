@@ -2,13 +2,6 @@
 
     <string name="stripe_pub_key" translatable="false">pk_test_wMi9qDrafbnRQfmWEGv4etOD</string>
 
-    <string-array name="education_levels">
-        <item>Associate degree</item>
-        <item>Bachelor\'s degree</item>
-        <item>Master\'s degree</item>
-        <item>Doctoral degree</item>
-    </string-array>
-
     <string name="kyc_file_name_template">doc_%1$d_%2$s.jpg</string>
 
     <string name="app_name" translatable="false">Shakti Coin</string>
