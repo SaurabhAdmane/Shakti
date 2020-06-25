@@ -47,6 +47,7 @@ public class KycDoctypeFragment extends Fragment {
         binding.documentType.setLayoutManager(new LinearLayoutManager(getContext()));
         KycCategory kycCategory = commonViewModel.kycCategory.getValue();
         if (kycCategory != null) {
+            binding.label.setText(kycCategory.getName().replace("\n", " "));
             List<KycDocType> docTypes = kycCategory.getDoc_types();
             // add line breaks to property/finance doc types
             if (kycCategory.getId() == 2) {
