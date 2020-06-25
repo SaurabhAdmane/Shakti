@@ -161,7 +161,7 @@ public class KycActivity extends DrawerActivity {
         }
 
         String timestamp = new SimpleDateFormat("yyyyMMddHHmmss", Locale.US).format(new Date());
-        int documentTypeId = viewModel.kycDocumentType != null ? viewModel.kycDocumentType.getId() : 0;
+        String documentTypeId = viewModel.kycDocumentType != null ? viewModel.kycDocumentType.getId() : "";
         String filename = getString(R.string.kyc_file_name_template, documentTypeId, timestamp);
         File imageFile = new File(categoryFiles, filename);
         return imageFile.createNewFile() ? imageFile : null;

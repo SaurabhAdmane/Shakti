@@ -2,7 +2,7 @@
 
     <string name="stripe_pub_key" translatable="false">pk_test_wMi9qDrafbnRQfmWEGv4etOD</string>
 
-    <string name="kyc_file_name_template">doc_%1$d_%2$s.jpg</string>
+    <string name="kyc_file_name_template">doc_%1$s_%2$s.jpg</string>
 
     <string name="app_name" translatable="false">Shakti Coin</string>
     <string name="err_not_implemented">Not implemented yet</string>
@@ -307,6 +307,14 @@
     <string name="kyc_skip">Skip to\nUpload file</string>
     <string name="kyc_document_match">Your document must match your name &amp; address.</string>
     <string name="kyc_select_option">Select an Option</string>
+    <string name="kyc_select_doctype_phone">Phone</string>
+    <string name="kyc_select_doctype_gas">Gas</string>
+    <string name="kyc_select_doctype_electricity">Electricity</string>
+    <string name="kyc_select_doctype_water">Water</string>
+    <string name="kyc_select_doctype_tax">Municipal Tax</string>
+    <string name="kyc_select_doctype_insurance">Insurance Coverage</string>
+    <string name="kyc_select_doctype_cable">Cable</string>
+    <string name="kyc_select_doctype_other">Other</string>
     <string name="kyc_opt_mining">Purchase a Mining License</string>
     <string name="kyc_opt_fee">Pay a small Fee to Validate</string>
     <string name="kyc_opt_propagreement"><b>Any Property Agreement:</b>\nRental\nLease\nHome\nTV/Phone Purchase</string>

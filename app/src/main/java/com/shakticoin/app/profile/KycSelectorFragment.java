@@ -29,7 +29,6 @@ import com.shakticoin.app.widget.CheckableRoundButton;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 public class KycSelectorFragment extends Fragment {
@@ -74,13 +73,6 @@ public class KycSelectorFragment extends Fragment {
 
         binding.doNext.setOnClickListener(v1 -> onNext());
 
-        if (activityViewModel != null) activityViewModel.getProgressBarTrigger().set(true);
-        kycRepository.getKycDocumentTypes(new OnCompleteListener<List<Map<String, Object>>>() {
-            @Override
-            public void onComplete(List<Map<String, Object>> value, Throwable error) {
-
-            }
-        });
         kycRepository.getKycCategories(new OnCompleteListener<List<KycCategory>>() {
             @Override
             public void onComplete(List<KycCategory> categories, Throwable error) {

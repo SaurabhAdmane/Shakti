@@ -19,7 +19,6 @@ import com.shakticoin.app.api.kyc.KycCategory;
 import com.shakticoin.app.api.kyc.KycDocType;
 import com.shakticoin.app.databinding.FragmentKycDoctypeBinding;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -49,7 +48,6 @@ public class KycDoctypeFragment extends Fragment {
         KycCategory kycCategory = commonViewModel.kycCategory.getValue();
         if (kycCategory != null) {
             List<KycDocType> docTypes = kycCategory.getDoc_types();
-            Collections.sort(docTypes, (o1, o2) -> o1.getOrder_no().compareTo(o2.getOrder_no()));
             // add line breaks to property/finance doc types
             if (kycCategory.getId() == 2) {
                 for (KycDocType docType : docTypes) {

@@ -3,17 +3,17 @@ package com.shakticoin.app.api.kyc;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class KycDocType implements Parcelable {
-    private Integer id;
-    private String name;
-    private Integer order_no;
-    private Integer category;
+import androidx.annotation.NonNull;
 
-    public Integer getId() {
+public class KycDocType implements Parcelable {
+    private String id;
+    private String name;
+
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -25,27 +25,16 @@ public class KycDocType implements Parcelable {
         this.name = name;
     }
 
-    public Integer getOrder_no() {
-        return order_no != null ? order_no : 0;
-    }
+    public KycDocType() {}
 
-    public void setOrder_no(Integer order_no) {
-        this.order_no = order_no;
-    }
-
-    public Integer getCategory() {
-        return category;
-    }
-
-    public void setCategory(Integer category) {
-        this.category = category;
+    public KycDocType(@NonNull String id, @NonNull String name) {
+        this.id = id;
+        this.name = name;
     }
 
     protected KycDocType(Parcel in) {
-        id = in.readByte() == 0x00 ? null : in.readInt();
+        id = in.readString();
         name = in.readString();
-        order_no = in.readByte() == 0x00 ? null : in.readInt();
-        category = in.readByte() == 0x00 ? null : in.readInt();
     }
 
     @Override
@@ -55,25 +44,8 @@ public class KycDocType implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        if (id == null) {
-            dest.writeByte((byte) (0x00));
-        } else {
-            dest.writeByte((byte) (0x01));
-            dest.writeInt(id);
-        }
+        dest.writeString(id);
         dest.writeString(name);
-        if (order_no == null) {
-            dest.writeByte((byte) (0x00));
-        } else {
-            dest.writeByte((byte) (0x01));
-            dest.writeInt(order_no);
-        }
-        if (category == null) {
-            dest.writeByte((byte) (0x00));
-        } else {
-            dest.writeByte((byte) (0x01));
-            dest.writeInt(category);
-        }
     }
 
     @SuppressWarnings("unused")

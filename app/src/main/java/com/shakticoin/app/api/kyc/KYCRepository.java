@@ -1,7 +1,11 @@
 package com.shakticoin.app.api.kyc;
 
+import android.content.Context;
+
 import androidx.annotation.NonNull;
 
+import com.shakticoin.app.R;
+import com.shakticoin.app.ShaktiApplication;
 import com.shakticoin.app.api.BackendRepository;
 import com.shakticoin.app.api.BaseUrl;
 import com.shakticoin.app.api.OnCompleteListener;
@@ -17,7 +21,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -213,45 +217,55 @@ public class KYCRepository extends BackendRepository {
 
     /**
      * Retrieve KYC information.
-     * @deprecated
      */
     public void getKycCategories(OnCompleteListener<List<KycCategory>> listener) {
-        service.getKycCategories(Session.getAuthorizationHeader()).enqueue(new Callback<List<KycCategory>>() {
-            @EverythingIsNonNull
-            @Override
-            public void onResponse(Call<List<KycCategory>> call, Response<List<KycCategory>> response) {
-                Debug.logDebug(response.toString());
-                if (response.isSuccessful()) {
-                    List<KycCategory> categories = response.body();
-                    if (categories != null && categories.size() > 0) {
-                        Collections.sort(categories,
-                                (o1, o2) -> o1.getOrder_no().compareTo(o2.getOrder_no()));
-                    }
-                    listener.onComplete(categories, null);
-                } else {
-                    if (response.code() == 401) {
-                        authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
-                            @Override
-                            public void onComplete(TokenResponse value, Throwable error) {
-                                if (error != null) {
-                                    listener.onComplete(null, new UnauthorizedException());
-                                    return;
-                                }
-                                getKycCategories(listener);
-                            }
-                        });
-                    } else {
-                        Debug.logErrorResponse(response);
-                        returnError(listener, response);
-                    }
-                }
-            }
+        Context context = ShaktiApplication.getContext();
 
-            @EverythingIsNonNull
-            @Override
-            public void onFailure(Call<List<KycCategory>> call, Throwable t) {
-                returnError(listener, t);
-            }
-        });
+        List<KycCategory> categories = new ArrayList<>();
+
+        KycCategory category = new KycCategory();
+        category.setId(1);
+        category.setName(context.getString(R.string.profile_kyc_utility_bills));
+        category.setDescription(context.getString(R.string.profile_kyc_utility_bills_desc));
+        List<KycDocType> docTypes = new ArrayList<>(8);
+        docTypes.add(new KycDocType("UTILITY_PHONE", context.getString(R.string.kyc_select_doctype_phone)));
+        docTypes.add(new KycDocType("UTILITY_GAS", context.getString(R.string.kyc_select_doctype_gas)));
+        docTypes.add(new KycDocType("UTILITY_ELECTRICITY", context.getString(R.string.kyc_select_doctype_electricity)));
+        docTypes.add(new KycDocType("UTILITY_WATER", context.getString(R.string.kyc_select_doctype_water)));
+        docTypes.add(new KycDocType("UTILITY_MUNICIPAL_TAX", context.getString(R.string.kyc_select_doctype_tax)));
+        docTypes.add(new KycDocType("UTILITY_INSURANCE_COVERAGE", context.getString(R.string.kyc_select_doctype_insurance)));
+        docTypes.add(new KycDocType("UTILITY_CABLE", context.getString(R.string.kyc_select_doctype_cable)));
+        docTypes.add(new KycDocType("UTILITY_OTHER", context.getString(R.string.kyc_select_doctype_other)));
+        category.setDoc_types(docTypes);
+        categories.add(category);
+
+        category = new KycCategory();
+        category.setId(2);
+        category.setName(context.getString(R.string.profile_kyc_property));
+        category.setDescription(context.getString(R.string.profile_kyc_property_desc));
+        docTypes = new ArrayList<>(3);
+        docTypes.add(new KycDocType("PROPERTY_ANY", context.getString(R.string.kyc_opt_propagreement)));
+        docTypes.add(new KycDocType("VEHICLE_ANY", context.getString(R.string.kyc_opt_vehicleagreement)));
+        docTypes.add(new KycDocType("FINANCE_ANY", context.getString(R.string.kyc_opt_financestmt)));
+        category.setDoc_types(docTypes);
+        categories.add(category);
+
+        category = new KycCategory();
+        category.setId(3);
+        category.setName(context.getString(R.string.profile_kyc_gov));
+        category.setDescription(context.getString(R.string.profile_kyc_gov_desc));
+        docTypes = new ArrayList<>(8);
+        docTypes.add(new KycDocType("AUTHORITY_SCHOOL_ADMISSION_LETTER", context.getString(R.string.kyc_opt_schooladmission)));
+        docTypes.add(new KycDocType("AUTHORITY_SCHOOL_REPORT_CARD", context.getString(R.string.kyc_opt_schoolreport)));
+        docTypes.add(new KycDocType("AUTHORITY_INCOME_TAX_RECEIPT", context.getString(R.string.kyc_opt_incometax)));
+        docTypes.add(new KycDocType("AUTHORITY_GOVT_ISSUED_ADDRESS", context.getString(R.string.kyc_opt_govid)));
+        docTypes.add(new KycDocType("AUTHORITY_PASSPORT", context.getString(R.string.kyc_opt_passport)));
+        docTypes.add(new KycDocType("AUTHORITY_NGO_ISSUED_ID", context.getString(R.string.kyc_opt_ngo)));
+        docTypes.add(new KycDocType("AUTHORITY_NGO_LETTER", context.getString(R.string.kyc_opt_ngoletter)));
+        docTypes.add(new KycDocType("AUTHORITY_JOB_LETTER", context.getString(R.string.kyc_opt_jobletter)));
+        category.setDoc_types(docTypes);
+        categories.add(category);
+
+        listener.onComplete(categories, null);
     }
 }

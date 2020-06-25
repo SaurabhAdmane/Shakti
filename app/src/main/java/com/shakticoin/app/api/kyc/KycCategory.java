@@ -53,6 +53,10 @@ public class KycCategory implements Parcelable {
         this.doc_types = doc_types;
     }
 
+    public KycCategory() {
+        doc_types = new ArrayList<>();
+    }
+
     protected KycCategory(Parcel in) {
         id = in.readByte() == 0x00 ? null : in.readInt();
         name = in.readString();
