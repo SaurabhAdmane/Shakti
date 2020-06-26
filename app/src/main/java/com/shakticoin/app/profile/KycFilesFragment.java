@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,6 +20,7 @@ import com.shakticoin.app.api.kyc.KycCategory;
 import com.shakticoin.app.databinding.FragmentKycFilesBinding;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -96,16 +98,47 @@ public class KycFilesFragment extends Fragment {
         }
     }
 
+    /** TODO: we delete a file w/o confirmation but it would be good to ask the user. */
+    private void removeFile(@NonNull KycDocumentObject doc, int position) {
+        File categoryDir = new File(imagesDir, Integer.toString(doc.getCategoryId()));
+        if (categoryDir.exists()) {
+            File[] files = categoryDir.listFiles(new FilenameFilter() {
+                @Override
+                public boolean accept(File dir, String name) {
+                    return name.equals(doc.getFileName());
+                }
+            });
+            if (files != null) {
+                for (File file : files) file.delete();
+                adapter.removeItem(position);
+            }
+        }
+    }
+
     class ViewHolder extends RecyclerView.ViewHolder {
         private TextView textView;
+        private ImageButton action;
+        private KycDocumentObject doc;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             textView = itemView.findViewById(R.id.text);
+            action = itemView.findViewById(R.id.action);
+            if (action != null) {
+                action.setOnClickListener(v -> {
+                    if (doc != null) {
+                        removeFile(doc, getAdapterPosition());
+                    }
+                });
+            }
         }
 
         public void setText(String text) {
             textView.setText(text);
+        }
+
+        public void setDocument(KycDocumentObject doc) {
+            this.doc = doc;
         }
     }
 
@@ -123,6 +156,10 @@ public class KycFilesFragment extends Fragment {
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             KycDocumentItem item = data.get(position);
             holder.setText(item.getTitle());
+            Object obj = item.get();
+            if (obj instanceof KycDocumentObject) {
+                holder.setDocument((KycDocumentObject) obj);
+            }
         }
 
         @Override
@@ -147,6 +184,11 @@ public class KycFilesFragment extends Fragment {
             KycDocumentObject document = new KycDocumentObject(fileName, categoryId, documentTypeId);
             data.add(new KycDocumentItem<>(document));
             notifyItemInserted(data.size()-1);
+        }
+
+        void removeItem(int position) {
+            data.remove(position);
+            notifyItemRemoved(position);
         }
 
         void clear() {

@@ -18,13 +18,14 @@
         android:textAlignment="center"
         android:textAppearance="@style/AppText.Body" />
 
-    <ImageView
-        android:id="@+id/icon"
+    <ImageButton
+        android:id="@+id/action"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_gravity="center_vertical"
         android:tint="@android:color/white"
+        android:background="@android:color/transparent"
         app:srcCompat="@drawable/ic_edit_upload"
         tools:ignore="ContentDescription" />
 

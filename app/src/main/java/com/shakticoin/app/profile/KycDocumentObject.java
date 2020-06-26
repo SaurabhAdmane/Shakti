@@ -17,4 +17,8 @@ class KycDocumentObject {
     String getFileName() {
         return fileName;
     }
+
+    int getCategoryId() {
+        return categoryId;
+    }
 }
