@@ -55,34 +55,6 @@
                 app:layout_constraintTop_toTopOf="@+id/label" />
 
             <com.shakticoin.app.widget.TextInputLayout
-                android:id="@+id/fullNameLayout"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="24dp"
-                style="@style/AppTextLayout"
-                app:labelTextSize="11sp"
-                app:labelFontTypeface="@font/lato"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/label">
-
-                <!-- Temporarily disabled
-                    remove app:borderColor when enabled -->
-                <com.shakticoin.app.widget.InlineLabelEditText
-                    android:id="@+id/fullName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/AppTextField"
-                    android:enabled="false"
-                    app:borderColor="@color/colorBrandDisabled"
-                    android:inputType="textCapWords|textPersonName"
-                    android:hint="@string/hint_full_name"
-                    android:text="@={viewModel.kinFullName}"/>
-            </com.shakticoin.app.widget.TextInputLayout>
-
-            <com.shakticoin.app.widget.TextInputLayout
                 android:id="@+id/phoneOrEmailLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -95,76 +67,17 @@
                 app:validationEnabled="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/fullNameLayout">
+                app:layout_constraintTop_toBottomOf="@+id/label">
 
-                <!-- Temporarily disabled
-                    remove app:borderColor when enabled -->
                 <com.shakticoin.app.widget.InlineLabelEditText
                     android:id="@+id/phoneOrEmail"
                     style="@style/AppTextField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/hint_phone_or_email"
+                    android:hint="@string/profile_additional_nextkin_id"
                     android:inputType="text"
-                    android:text="@={viewModel.kinContact}"
-                    android:enabled="false"
-                    app:borderColor="@color/colorBrandDisabled"/>
+                    android:text="@={viewModel.kinContact}"/>
             </com.shakticoin.app.widget.TextInputLayout>
-
-            <com.shakticoin.app.widget.TextInputLayout
-                android:id="@+id/relationshipLayout"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="24dp"
-                style="@style/AppTextLayout"
-                app:labelTextSize="11sp"
-                app:labelFontTypeface="@font/lato"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/phoneOrEmailLayout">
-
-                <com.shakticoin.app.widget.InlineLabelEditText
-                    android:id="@+id/relationship"
-                    style="@style/AppTextField"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/hint_relationship"
-                    android:inputType="textCapSentences"
-                    android:text="@={viewModel.kinRelationship}"
-                    android:enabled="false"
-                    app:borderColor="@color/colorBrandDisabled"/>
-            </com.shakticoin.app.widget.TextInputLayout>
-
-            <com.shakticoin.app.widget.SpinnerLayout
-                android:id="@+id/educationLevelLayout"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="24dp"
-                style="@style/AppTextLayout"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/relationshipLayout">
-
-                <!-- Temporarily disabled
-                    when enabled set app:spinnerBorderColor to colorBrand
-                    and change setEnabled/setClickable in the code -->
-                <com.shakticoin.app.widget.InlineLabelSpinner
-                    android:id="@+id/educationLevel"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:popupBackground="@android:color/transparent"
-                    android:entries="@{viewModel.educationLevelList}"
-                    android:onItemSelected="@{(parent, view, position, id) -> viewModel.onEducationLevelSelectedKin(view, position)}"
-                    app:newValue="@{viewModel.kinSelectedEducationLevel}"
-                    app:hint="@string/education_level"
-                    app:textColorHint="@color/colorHint"
-                    app:spinnerBorderColor="@color/colorBrandDisabled"/>
-            </com.shakticoin.app.widget.SpinnerLayout>
 
             <CheckBox
                 android:id="@+id/authShakti"
@@ -182,7 +95,7 @@
                 android:enabled="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/educationLevelLayout" />
+                app:layout_constraintTop_toBottomOf="@+id/phoneOrEmailLayout" />
 
             <CheckBox
                 android:id="@+id/consentAlerts"

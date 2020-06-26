@@ -245,6 +245,7 @@
     <string name="profile_personal_action">Update personal information</string>
     <string name="profile_additional_title">Additional info</string>
     <string name="profile_additional_nextkin">Your next of kin, just in case</string>
+    <string name="profile_additional_nextkin_id">Phone, email address, wallet ID, or bizVault</string>
     <string name="profile_additional_auth_stmt">
         I authorize Shakti network to enchance my Wallet security by accessing device <u>UDIDs</u>
     </string>

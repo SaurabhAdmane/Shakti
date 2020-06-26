@@ -26,6 +26,7 @@ import com.shakticoin.app.api.country.Subdivision;
 import com.shakticoin.app.api.kyc.AddressModel;
 import com.shakticoin.app.api.kyc.KYCRepository;
 import com.shakticoin.app.api.kyc.KycUserModel;
+import com.shakticoin.app.api.kyc.RelationModel;
 import com.shakticoin.app.api.user.UserRepository;
 import com.shakticoin.app.databinding.ActivityProfileBinding;
 import com.shakticoin.app.util.CommonUtil;
@@ -302,41 +303,22 @@ public class ProfileActivity extends DrawerActivity {
     }
 
     public void onUpdateAdditionalInfo(View v) {
-        boolean validationSuccessful = true;
-        // TODO: disabled temporarily
-        /*
-        if (TextUtils.isEmpty(personalInfoViewModel.kinFullName.getValue())) {
-            validationSuccessful = false;
-            personalInfoViewModel.kinFullNameErrMsg.setValue(getString(R.string.err_required));
-        }
-        if (!Validator.isEmailOrPhoneNumber(personalInfoViewModel.kinContact.getValue())) {
-            validationSuccessful = false;
-            personalInfoViewModel.kinContactErrMsg.setValue(getString(R.string.err_email_phone_required));
-        }
-        if (TextUtils.isEmpty(personalInfoViewModel.kinRelationship.getValue())) {
-            validationSuccessful = false;
-            personalInfoViewModel.kinRelationshipErrMsg.setValue(getString(R.string.err_required));
-        }
-         */
+        final Activity activity = this;
 
-        if (validationSuccessful) {
-            final Activity activity = this;
+        viewModel.getProgressBarTrigger().set(true);
+        KycUserModel userData = createUserModel();
+        kycRepository.updateUserDetails(userData, new OnCompleteListener<Map<String, Object>>() {
 
-            viewModel.getProgressBarTrigger().set(true);
-            KycUserModel userData = createUserModel();
-            kycRepository.updateUserDetails(userData, new OnCompleteListener<Map<String, Object>>() {
-
-                @Override
-                public void onComplete(Map<String, Object> value, Throwable error) {
-                    viewModel.getProgressBarTrigger().set(false);
-                    if (error != null) {
-                        Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
-                        return;
-                    }
-                    selectPage(4);
+            @Override
+            public void onComplete(Map<String, Object> value, Throwable error) {
+                viewModel.getProgressBarTrigger().set(false);
+                if (error != null) {
+                    Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
+                    return;
                 }
-            });
-        }
+                selectPage(4);
+            }
+        });
     }
 
     /**
@@ -378,6 +360,10 @@ public class ProfileActivity extends DrawerActivity {
         model.setOccupation(personalInfoViewModel.occupation.getValue());
         model.setEducation1(personalInfoViewModel.educationLevel.getValue());
         model.setEmailAlert(personalInfoViewModel.subscriptionConfirmed.get());
+
+        RelationModel relationModel = new RelationModel();
+        relationModel.setNextKin1(personalInfoViewModel.kinContact.getValue());
+        model.setRelation(relationModel);
 
         return model;
     }

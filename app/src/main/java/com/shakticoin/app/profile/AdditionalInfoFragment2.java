@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.shakticoin.app.databinding.FragmentProfileAdditionalPage2Binding;
-import com.shakticoin.app.util.Validator;
 
 import java.util.Objects;
 
@@ -31,29 +30,29 @@ public class AdditionalInfoFragment2 extends Fragment {
         binding.setViewModel(viewModel);
         View v = binding.getRoot();
 
-        binding.educationLevel.setEnabled(false);
-        binding.educationLevel.setClickable(false);
+//        binding.educationLevel.setEnabled(false);
+//        binding.educationLevel.setClickable(false);
 
-        binding.phoneOrEmailLayout.setValidator((view, value) -> Validator.isEmailOrPhoneNumber(value));
+//        binding.phoneOrEmailLayout.setValidator((view, value) -> Validator.isEmailOrPhoneNumber(value));
 
-        viewModel.kinFullNameErrMsg.observe(this, s -> {
-            if (!TextUtils.isEmpty(s)) {
-                binding.fullNameLayout.setError(s);
-                viewModel.kinFullNameErrMsg.setValue(null);
-            }
-        });
+//        viewModel.kinFullNameErrMsg.observe(this, s -> {
+//            if (!TextUtils.isEmpty(s)) {
+//                binding.fullNameLayout.setError(s);
+//                viewModel.kinFullNameErrMsg.setValue(null);
+//            }
+//        });
         viewModel.kinContactErrMsg.observe(this, s -> {
             if (!TextUtils.isEmpty(s)) {
                 binding.phoneOrEmailLayout.setError(s);
                 viewModel.kinContactErrMsg.setValue(null);
             }
         });
-        viewModel.kinRelationshipErrMsg.observe(this, s -> {
-            if (!TextUtils.isEmpty(s)) {
-                binding.relationshipLayout.setError(s);
-                viewModel.kinRelationshipErrMsg.setValue(null);
-            }
-        });
+//        viewModel.kinRelationshipErrMsg.observe(this, s -> {
+//            if (!TextUtils.isEmpty(s)) {
+//                binding.relationshipLayout.setError(s);
+//                viewModel.kinRelationshipErrMsg.setValue(null);
+//            }
+//        });
 
         return v;
     }
