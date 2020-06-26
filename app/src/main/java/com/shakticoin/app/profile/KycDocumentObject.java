@@ -6,9 +6,9 @@ package com.shakticoin.app.profile;
 class KycDocumentObject {
     private int categoryId;
     private String fileName;
-    private int fileType;
+    private String fileType;
 
-    KycDocumentObject(String fileName, int categoryId, int fileType) {
+    KycDocumentObject(String fileName, int categoryId, String fileType) {
         this.categoryId = categoryId;
         this.fileName = fileName;
         this.fileType = fileType;

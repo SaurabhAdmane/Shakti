@@ -1,7 +1,6 @@
 package com.shakticoin.app.profile;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,14 +71,22 @@ public class KycFilesFragment extends Fragment {
             for (KycCategory category : viewModel.kycCategories) {
                 File categoryDir = new File(imagesDir, category.getId().toString());
                 if (categoryDir.exists()) {
-                    adapter.addHeader(category.getName(), category.getId());
+                    String categoryName = category.getName().replace("\n", " ");
+                    adapter.addHeader(categoryName, category.getId());
                     String[] files = categoryDir.list();
                     if (files != null) {
                         for (String fileName : files) {
                             String[] parts = fileName.split("_");
-                            int documentTypeId = 0;
-                            if (TextUtils.isDigitsOnly(parts[1])) {
-                                documentTypeId = Integer.valueOf(parts[1]);
+                            String documentTypeId = "";
+                            // documentTypeId may contains underscores too, so we need to build it
+                            // from parts except first and last.
+                            if (parts.length > 2) {
+                                StringBuilder sb = new StringBuilder();
+                                for (int i = 1; i < parts.length-1; i++) {
+                                    if (sb.length() > 0) sb.append("_");
+                                    sb.append(parts[i]);
+                                }
+                                documentTypeId = sb.toString();
                             }
                             adapter.addItem(fileName, category.getId(), documentTypeId);
                         }
@@ -136,7 +143,7 @@ public class KycFilesFragment extends Fragment {
             notifyItemInserted(data.size()-1);
         }
 
-        void addItem(String fileName, int categoryId, int documentTypeId) {
+        void addItem(String fileName, int categoryId, String documentTypeId) {
             KycDocumentObject document = new KycDocumentObject(fileName, categoryId, documentTypeId);
             data.add(new KycDocumentItem<>(document));
             notifyItemInserted(data.size()-1);
