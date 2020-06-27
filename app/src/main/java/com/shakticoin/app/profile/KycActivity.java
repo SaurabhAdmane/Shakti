@@ -106,6 +106,7 @@ public class KycActivity extends DrawerActivity {
     }
 
     public void onReSelect(View v) {
+        viewModel.kycDocumentType = null;
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.mainFragment, new KycSelectorFragment())
