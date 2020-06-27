@@ -98,7 +98,6 @@ public class KycFilesFragment extends Fragment {
         }
     }
 
-    /** TODO: we delete a file w/o confirmation but it would be good to ask the user. */
     private void removeFile(@NonNull KycDocumentObject doc, int position) {
         File categoryDir = new File(imagesDir, Integer.toString(doc.getCategoryId()));
         if (categoryDir.exists()) {
@@ -111,6 +110,16 @@ public class KycFilesFragment extends Fragment {
             if (files != null) {
                 for (File file : files) file.delete();
                 adapter.removeItem(position);
+                // if the category is empty after deleting the last file we better to delete
+                // the category too
+                File[] remainingFiles = categoryDir.listFiles();
+                if (remainingFiles != null && remainingFiles.length == 0) {
+                    if (categoryDir.delete() && position > 0) {
+                        // basically, if we remove last file in category then the header must have
+                        // an index equals to position - 1
+                        adapter.removeItem(position - 1);
+                    }
+                }
             }
         }
     }
