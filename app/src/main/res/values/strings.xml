@@ -329,8 +329,10 @@
     <string name="kyc_opt_ngo">NGOs Issued IDs</string>
     <string name="kyc_opt_ngoletter">Letter from an NGO</string>
     <string name="kyc_opt_jobletter">Job Letter</string>
+    <string name="kyc_opt_doctype">Select a document type</string>
     <string name="kyc_files_ready">File is ready to be sent</string>
-    <string name="kyc_files_action_add">Add another Document</string>
+    <string name="kyc_files_action_add">Add Document</string>
+    <string name="kyc_files_action_select_cat">Select Category</string>
     <string name="kyc_files_action_send">Send Files</string>
     <string name="kyc_files_action_cancel">Cancel &amp; Discard</string>
     <string name="kyc_files_num_uploaded">%1$d of %2$d Documents Uploaded.</string>

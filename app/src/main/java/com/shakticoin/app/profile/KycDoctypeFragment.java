@@ -49,15 +49,6 @@ public class KycDoctypeFragment extends Fragment {
         if (kycCategory != null) {
             binding.label.setText(kycCategory.getName().replace("\n", " "));
             List<KycDocType> docTypes = kycCategory.getDoc_types();
-            // add line breaks to property/finance doc types
-            if (kycCategory.getId() == 2) {
-                for (KycDocType docType : docTypes) {
-                    String name = docType.getName();
-                    name = name.replace(":", ":\n");
-                    name = name.replace(",", "\n");
-                    docType.setName(name);
-                }
-            }
             binding.documentType.setAdapter(new DocumentTypeAdapter(docTypes));
         }
 

@@ -94,9 +94,21 @@ public class KycActivity extends DrawerActivity {
     }
 
     public void onOpenDocuments(View v) {
+        if (viewModel.kycDocumentType == null) {
+            Toast.makeText(this, R.string.kyc_opt_doctype, Toast.LENGTH_SHORT).show();
+            return;
+        }
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.mainFragment, new KycFilesFragment())
+                .addToBackStack(KycFilesFragment.class.getSimpleName())
+                .commit();
+    }
+
+    public void onReSelect(View v) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.mainFragment, new KycSelectorFragment())
                 .addToBackStack(KycFilesFragment.class.getSimpleName())
                 .commit();
     }
