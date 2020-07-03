@@ -339,6 +339,7 @@
     <string name="kyc_files_utility_docs">Utility Bills Document:</string>
     <string name="kyc_files_property_docs">Property &amp; Finance Document:</string>
     <string name="kyc_files_gov_docs">School, Gov. &amp; Other Doc.:</string>
+    <string name="kyc_files_nothing_upload">No documents for uploading</string>
     <string name="kyc_fasttr_title">Fast-track your KYC verification!</string>
     <string name="kyc_fasttr_desc">
         The KYC Validation can take weeks to be processed.\n\nPay small fee to fast-track your KYC

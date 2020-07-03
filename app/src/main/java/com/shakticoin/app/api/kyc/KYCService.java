@@ -3,7 +3,7 @@ package com.shakticoin.app.api.kyc;
 import java.util.List;
 import java.util.Map;
 
-import okhttp3.RequestBody;
+import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -86,18 +86,10 @@ public interface KYCService {
     Call<Map<String, Object>> getKycDocTypes(@Header("Authorization") String authorization);
 
     /**
-        @deprecated
-     */
-    @Headers("Accept: application/json")
-    @GET("userservice/v1/api/kyc/categories/")
-    Call<List<KycCategory>> getKycCategories(@Header("Authorization") String authorization);
-
-    /**
-     * @deprecated
+     * Upload KYC user's documents
      */
     @Multipart
-    @POST("userservice/v1/api/kyc/documents/upload/")
+    @POST("kyc/uploads")
     Call<Map<String, Object>> uploadDocument(@Header("Authorization") String authorization,
-                                             @Part List<FileDescriptor> content,
-                                             @Part RequestBody additionalProperties);
+                                             @Part List<MultipartBody.Part> files);
 }

@@ -19,6 +19,9 @@ public class KycCommonViewModel extends ViewModel implements ProgressBarModel {
     /** Read-only list of KYC categories */
     public List<KycCategory> kycCategories;
 
+    /** Setting this variable to true triggers refreshing the list of files */
+    public ObservableBoolean updateList = new ObservableBoolean(false);
+
     @Override
     public ObservableBoolean getProgressBarTrigger() {
         return progressBarTrigger;

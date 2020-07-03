@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -267,5 +268,56 @@ public class KYCRepository extends BackendRepository {
         categories.add(category);
 
         listener.onComplete(categories, null);
+    }
+
+    public void uploadDocument(List<MultipartBody.Part> files, OnCompleteListener<Void> listener) {
+        service.uploadDocument(Session.getAuthorizationHeader(), files).enqueue(new Callback<Map<String, Object>>() {
+            @EverythingIsNonNull
+            @Override
+            public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
+                Debug.logDebug(response.toString());
+                if (response.isSuccessful()) {
+                    Map<String, Object> body = response.body();
+                    Debug.logDebug(body.toString());
+                } else {
+                    switch (response.code()) {
+                        case 401:
+                            authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
+                                @Override
+                                public void onComplete(TokenResponse value, Throwable error) {
+                                    if (error != null) {
+                                        listener.onComplete(null, new UnauthorizedException());
+                                        return;
+                                    }
+                                    uploadDocument(files, listener);
+                                }
+                            });
+                            break;
+                        case 400:
+                            String errMsg = ShaktiApplication.getContext().getString(R.string.err_unexpected);
+                            ResponseBody errorBody = response.errorBody();
+                            if (errorBody != null) {
+                                try {
+                                    JSONObject errorJson = new JSONObject(errorBody.string());
+                                    if (errorJson.has("message")) errMsg = errorJson.getString("message");
+                                } catch (IOException | JSONException e) {
+                                    Debug.logException(e);
+                                }
+                            }
+                            listener.onComplete(null, new RemoteException(errMsg, response.code()));
+                            break;
+                        default:
+                            Debug.logErrorResponse(response);
+                            returnError(listener, response);
+                    }
+                }
+            }
+
+            @EverythingIsNonNull
+            @Override
+            public void onFailure(Call<Map<String, Object>> call, Throwable t) {
+                returnError(listener, t);
+            }
+        });
     }
 }

@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.Observable;
+import androidx.databinding.ObservableBoolean;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -50,6 +52,19 @@ public class KycFilesFragment extends Fragment {
         binding.list.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new KycFilesAdapter();
         binding.list.setAdapter(adapter);
+
+        // if this variable become true then we need to update the list and reset it back to false
+        viewModel.updateList.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+            @Override
+            public void onPropertyChanged(Observable sender, int propertyId) {
+                if (((ObservableBoolean) sender).get()) {
+                    adapter = new KycFilesAdapter();
+                    binding.list.setAdapter(adapter);
+                    ((ObservableBoolean) sender).set(false);
+                }
+            }
+        });
+
         return v;
     }
 
