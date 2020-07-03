@@ -1,6 +1,6 @@
 package com.shakticoin.app.settings;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,10 +12,10 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.shakticoin.app.BuildConfig;
 import com.shakticoin.app.R;
+import com.shakticoin.app.ShaktiApplication;
 import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.Session;
 import com.shakticoin.app.api.kyc.KYCRepository;
-import com.shakticoin.app.api.user.UserRepository;
 import com.shakticoin.app.databinding.ActivitySettingsBinding;
 import com.shakticoin.app.profile.KycActivity;
 import com.shakticoin.app.registration.SignInActivity;
@@ -27,7 +27,6 @@ import java.util.Map;
 public class SettingsActivity extends DrawerActivity {
     private ActivitySettingsBinding binding;
     private SettingsViewModel viewModel;
-    private UserRepository userRepo;
     private KYCRepository kycRepository = new KYCRepository();
 
     @Override
@@ -42,23 +41,25 @@ public class SettingsActivity extends DrawerActivity {
         onInitView(binding.getRoot(), getString(R.string.settings_title));
 
         binding.versionName.setText(getString(R.string.settings_version, BuildConfig.VERSION_NAME));
+    }
 
-        final Activity self = this;
-
+    @Override
+    protected void onStart() {
+        super.onStart();
         binding.progressBar.setVisibility(View.VISIBLE);
-        userRepo = new UserRepository();
-
         kycRepository.getUserDetails(new OnCompleteListener<Map<String, Object>>() {
             @Override
             public void onComplete(Map<String, Object> value, Throwable error) {
                 binding.progressBar.setVisibility(View.INVISIBLE);
                 if (error != null) {
-                    Toast.makeText(self, Debug.getFailureMsg(self, error), Toast.LENGTH_LONG).show();
+                    Context context = ShaktiApplication.getContext();
+                    Toast.makeText(context, Debug.getFailureMsg(context, error), Toast.LENGTH_LONG).show();
                     return;
                 }
 
                 binding.fullName.setText((String) value.get("fullName"));
                 binding.emailAddress.setText((String) value.get("primaryEmail"));
+                binding.kycStatus.setText((String) value.get("verificationStatus"));
             }
         });
     }
