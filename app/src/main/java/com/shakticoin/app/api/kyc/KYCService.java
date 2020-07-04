@@ -36,7 +36,15 @@ public interface KYCService {
      *     "dob":"1967-05-11",
      *     "referenceEmail":null,
      *     "referenceMobile":null,
-     *     "address":null,
+     *     "address": {
+     *          country: "United States of America",
+     *          countryCode: "US",
+     *          stateProvinceCode: "CA",
+     *          city: "Los Angeles",
+     *          address1: "Foxboro 1",
+     *          address2: "apt. 7",
+     *          zipCode: "90000"
+     *     },
      *     "primaryEmail":"andreyev.oleg@gmail.com",
      *     "primaryMobile":null,
      *     "secondaryEmail":null,
@@ -92,4 +100,10 @@ public interface KYCService {
     @POST("kyc/uploads")
     Call<Map<String, Object>> uploadDocument(@Header("Authorization") String authorization,
                                              @Part List<MultipartBody.Part> files);
+
+    /**
+     * Purchase KYC user license.
+     */
+    @PATCH("kyc/subscription")
+    Call<ResponseBody> subscription(@Header("Authorization") String authorization);
 }

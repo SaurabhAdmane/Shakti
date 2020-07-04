@@ -1,14 +1,24 @@
 package com.shakticoin.app.profile;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -25,9 +35,9 @@ import com.shakticoin.app.api.country.CountryRepository;
 import com.shakticoin.app.api.country.Subdivision;
 import com.shakticoin.app.api.kyc.AddressModel;
 import com.shakticoin.app.api.kyc.KYCRepository;
+import com.shakticoin.app.api.kyc.KycCategory;
 import com.shakticoin.app.api.kyc.KycUserModel;
 import com.shakticoin.app.api.kyc.RelationModel;
-import com.shakticoin.app.api.user.UserRepository;
 import com.shakticoin.app.databinding.ActivityProfileBinding;
 import com.shakticoin.app.util.CommonUtil;
 import com.shakticoin.app.util.Debug;
@@ -35,20 +45,29 @@ import com.shakticoin.app.util.Validator;
 import com.shakticoin.app.widget.DatePicker;
 import com.shakticoin.app.widget.DrawerActivity;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+
 public class ProfileActivity extends DrawerActivity {
+    private static final int REQUEST_IMAGE_CAPTURE      = 352;
+    private static final int REQUEST_CAMERA_PERMISSION  = 395;
+
     private ActivityProfileBinding binding;
     private KYCRepository kycRepository = new KYCRepository();
     private PersonalViewModel viewModel;
     private PersonalInfoViewModel personalInfoViewModel;
 
-    private UserRepository userRepo = new UserRepository();
     private CountryRepository countryRepo = new CountryRepository();
 
     private TextView toolbarTitle;
@@ -60,6 +79,27 @@ public class ProfileActivity extends DrawerActivity {
             AdditionalInfoFragment2.class.getSimpleName(),
             KycSelectorFragment.class.getSimpleName()};
     private ProfileFragmentAdapter adapter;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_IMAGE_CAPTURE) {
+            if (resultCode == RESULT_OK) {
+                // ?
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResult) {
+        if (requestCode == REQUEST_CAMERA_PERMISSION) {
+            if (grantResult.length > 0 && grantResult[0] == PackageManager.PERMISSION_GRANTED) {
+                takePhoto();
+            } else {
+                Toast.makeText(this, R.string.err_no_camera_permission, Toast.LENGTH_LONG).show();
+            }
+        }
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -175,7 +215,7 @@ public class ProfileActivity extends DrawerActivity {
             }
         });
         adapter = new ProfileFragmentAdapter(getSupportFragmentManager());
-        selectPage(0);
+        selectPage(PAGE_PERSONAL_FIRST);
     }
 
     private void selectPage(int index) {
@@ -187,7 +227,10 @@ public class ProfileActivity extends DrawerActivity {
         transaction.replace(binding.mainFragment.getId(), fragment, fragment.getClass().getSimpleName());
         transaction.commit();
 
-        binding.pageIndicator.setSelectedIndex(index+1);
+        // we have a few fragments which are used under the last page indicator active
+        if (index <= 4) {
+            binding.pageIndicator.setSelectedIndex(index + 1);
+        }
 
         if (index == 0 || index == 1) {
             toolbarTitle.setText(R.string.wallet_page_personal);
@@ -206,10 +249,6 @@ public class ProfileActivity extends DrawerActivity {
         return 4;
     }
 
-    public void onDoKYC(View v) {
-        Toast.makeText(this, R.string.err_not_implemented, Toast.LENGTH_SHORT).show();
-    }
-
     public void onNextPersonalInfo(View v) {
         boolean validationSuccessful = true;
         if (TextUtils.isEmpty(personalInfoViewModel.firstName.getValue())) {
@@ -222,7 +261,7 @@ public class ProfileActivity extends DrawerActivity {
         }
 
         if (validationSuccessful) {
-            selectPage(1);
+            selectPage(PAGE_PERSONAL_SECOND);
         }
     }
 
@@ -262,7 +301,7 @@ public class ProfileActivity extends DrawerActivity {
                             Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
                             return;
                         }
-                        selectPage(2);
+                        selectPage(PAGE_ADDITIONAL_FIRST);
                     }
                 });
             } else {
@@ -275,7 +314,7 @@ public class ProfileActivity extends DrawerActivity {
                             Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
                             return;
                         }
-                        selectPage(2);
+                        selectPage(PAGE_ADDITIONAL_FIRST);
                     }
                 });
             }
@@ -298,7 +337,7 @@ public class ProfileActivity extends DrawerActivity {
         }
 
         if (validationSuccessful) {
-            selectPage(3);
+            selectPage(PAGE_ADDITIONAL_SECOND);
         }
     }
 
@@ -316,9 +355,185 @@ public class ProfileActivity extends DrawerActivity {
                     Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
                     return;
                 }
-                selectPage(4);
+                selectPage(PAGE_CATEGORIES);
             }
         });
+    }
+
+    public void onSelectDoctype(View v) {
+        selectPage(PAGE_DOCUMENT_TYPES);
+    }
+
+    public void onOpenDocuments(View v) {
+        if (viewModel.kycDocumentType == null) {
+            Toast.makeText(this, R.string.kyc_opt_doctype, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        selectPage(PAGE_FILES);
+    }
+
+    /**
+     * Return from list of files to the category selector. This is necessary when a user
+     * want to add new file and must select category and document type again.
+     */
+    public void onReSelect(View v) {
+        viewModel.kycDocumentType = null;
+        selectPage(PAGE_CATEGORIES);
+    }
+
+    public void onAddDocument(View v) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
+        } else {
+            takePhoto();
+        }
+    }
+
+    private void takePhoto() {
+        PackageManager pm = getPackageManager();
+        if (!pm.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
+            Toast.makeText(this, R.string.err_no_camera, Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (cameraIntent.resolveActivity(pm) == null) {
+            Toast.makeText(this, R.string.err_no_camera_app, Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        File imageFile = null;
+        try {
+            imageFile = getPhotoFile();
+        } catch (IOException e) {
+            Debug.logException(e);
+            return;
+        }
+
+        if (imageFile != null) {
+            Uri imageUri = FileProvider.getUriForFile(this, "com.shakticoin.app.fileprovider", imageFile);
+            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+            startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+    private File documentDir() {
+        File files = getExternalFilesDir("kyc");
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            if (files != null) {
+                if (!Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState(files))) {
+                    return null;
+                }
+            } else {
+                return null;
+            }
+        }
+        return files;
+    }
+
+    private File getPhotoFile() throws IOException {
+        File files = documentDir();
+        if (files == null) return null;
+
+        KycCategory category = viewModel.selectedCategory.getValue();
+        if (category == null) return null;
+
+        File categoryFiles = new File(files, category.getId().toString());
+        if (!categoryFiles.exists()) {
+            if (!categoryFiles.mkdir()) {
+                Debug.logException(new Exception());
+                return null;
+            }
+        }
+
+        String timestamp = new SimpleDateFormat("yyyyMMddHHmmss", Locale.US).format(new Date());
+        String documentTypeId = viewModel.kycDocumentType != null ? viewModel.kycDocumentType.getId() : "";
+        String filename = getString(R.string.kyc_file_name_template, documentTypeId, timestamp);
+        File imageFile = new File(categoryFiles, filename);
+        return imageFile.createNewFile() ? imageFile : null;
+    }
+
+    public void onSend(View v) {
+        final Activity activity = this;
+        KYCRepository repository = new KYCRepository();
+        File documentDir = documentDir();
+        if (documentDir == null) {
+            Toast.makeText(this, R.string.kyc_files_nothing_upload, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        File[] categoryDirs = documentDir.listFiles();
+        if (categoryDirs == null || categoryDirs.length == 0) {
+            Toast.makeText(this, R.string.kyc_files_nothing_upload, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        final List<File> uploadList = new ArrayList<>();
+        List<MultipartBody.Part> uploadFileRequests = new ArrayList<>();
+
+        for (File categoryDir : categoryDirs) {
+            if (categoryDir.isDirectory()) {
+                File[] documents = categoryDir.listFiles();
+                if (documents != null && documents.length > 0) {
+                    for (File document : documents) {
+                        MediaType mediaType = null;
+                        String fileExt = MimeTypeMap.getFileExtensionFromUrl(Uri.fromFile(document).toString());
+                        if (!TextUtils.isEmpty(fileExt)) {
+                            MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+                            mediaType = MediaType.parse(mimeTypeMap.getMimeTypeFromExtension(fileExt));
+                        }
+                        if (mediaType == null) mediaType = MediaType.get("application/octet-stream");
+                        uploadList.add(document);
+                        String name = "document";
+                        switch (categoryDir.getName()) {
+                            case "1":
+                                name = "utility";
+                                break;
+                            case "2":
+                                name = "financial";
+                                break;
+                            case "3":
+                                name = "authority";
+                                break;
+                        }
+                        uploadFileRequests.add(
+                                MultipartBody.Part.createFormData(name, document.getName(), RequestBody.create(mediaType, document)));
+                    }
+                }
+            }
+        }
+
+        if (uploadFileRequests.size() == 0) {
+            Toast.makeText(this, R.string.kyc_files_nothing_upload, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        viewModel.getProgressBarTrigger().set(true);
+        repository.uploadDocument(uploadFileRequests, new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(Void value, Throwable error) {
+                viewModel.getProgressBarTrigger().set(false);
+                if (error != null) {
+                    Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
+                    // FIXME: temprorarily got to fast-track page from error branch
+                    offerFastTrack();
+                    return;
+                }
+
+                // remove documents that where uploaded
+                if (uploadList.size() > 0) {
+                    for (File f : uploadList) {
+                        f.delete();
+                    }
+                    viewModel.updateList.set(true);
+                }
+            }
+        });
+
+    }
+
+    public void offerFastTrack() {
+        selectPage(PAGE_FAST_TRACK);
     }
 
     /**
@@ -389,6 +604,15 @@ public class ProfileActivity extends DrawerActivity {
         picker.show(getSupportFragmentManager(), "date-picker");
     }
 
+    private static final int PAGE_PERSONAL_FIRST    = 0;
+    private static final int PAGE_PERSONAL_SECOND   = 1;
+    private static final int PAGE_ADDITIONAL_FIRST  = 2;
+    private static final int PAGE_ADDITIONAL_SECOND = 3;
+    private static final int PAGE_CATEGORIES        = 4;
+    private static final int PAGE_DOCUMENT_TYPES    = 5;
+    private static final int PAGE_FILES             = 6;
+    private static final int PAGE_FAST_TRACK        = 7;
+
     /** Collection of fragments for the activity */
     static class ProfileFragmentAdapter extends FragmentPagerAdapter {
         private ArrayList<Fragment> fragments;
@@ -396,12 +620,15 @@ public class ProfileActivity extends DrawerActivity {
         ProfileFragmentAdapter(FragmentManager fm) {
             super(fm, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
 
-            fragments = new ArrayList<>(5);
+            fragments = new ArrayList<>();
             fragments.add(new PersonalInfoFragment1());
             fragments.add(new PersonalInfoFragment2());
             fragments.add(new AdditionalInfoFragment1());
             fragments.add(new AdditionalInfoFragment2());
             fragments.add(new KycSelectorFragment());
+            fragments.add(new KycDoctypeFragment());
+            fragments.add(new KycFilesFragment());
+            fragments.add(new KycFastTrackFragment());
         }
 
         @NonNull

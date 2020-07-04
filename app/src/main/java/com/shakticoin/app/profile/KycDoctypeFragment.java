@@ -24,8 +24,7 @@ import java.util.Objects;
 
 public class KycDoctypeFragment extends Fragment {
     private FragmentKycDoctypeBinding binding;
-    private KycDoctypeViewModel viewModel;
-    private KycCommonViewModel commonViewModel;
+    private PersonalViewModel viewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,15 +36,13 @@ public class KycDoctypeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentKycDoctypeBinding.inflate(inflater, container, false);
         binding.setLifecycleOwner(this);
-        viewModel = ViewModelProviders.of(this).get(KycDoctypeViewModel.class);
-        commonViewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(KycCommonViewModel.class);
+        viewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(PersonalViewModel.class);
         binding.setViewModel(viewModel);
-        binding.setCommonViewModel(commonViewModel);
         View v = binding.getRoot();
 
         binding.documentType.setHasFixedSize(false);
         binding.documentType.setLayoutManager(new LinearLayoutManager(getContext()));
-        KycCategory kycCategory = commonViewModel.kycCategory.getValue();
+        KycCategory kycCategory = viewModel.selectedCategory.getValue();
         if (kycCategory != null) {
             binding.label.setText(kycCategory.getName().replace("\n", " "));
             List<KycDocType> docTypes = kycCategory.getDoc_types();
@@ -100,7 +97,7 @@ public class KycDoctypeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 selectedPosition = getAdapterPosition();
-                commonViewModel.kycDocumentType = docTypeList.get(selectedPosition);
+                viewModel.kycDocumentType = docTypeList.get(selectedPosition);
                 notifyDataSetChanged();
             }
         }

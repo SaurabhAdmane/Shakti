@@ -320,4 +320,47 @@ public class KYCRepository extends BackendRepository {
             }
         });
     }
+
+    public void subscription(@NonNull OnCompleteListener<Void> listener) {
+        Call<ResponseBody> call = service.subscription(Session.getAuthorizationHeader());
+        Debug.logDebug(call.request().toString());
+        call.enqueue(new Callback<ResponseBody>() {
+            @EverythingIsNonNull
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Debug.logDebug(response.toString());
+                if (response.isSuccessful()) {
+                    listener.onComplete(null, null);
+                } else {
+                    switch (response.code()) {
+                        case 401:
+                            authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
+                                @Override
+                                public void onComplete(TokenResponse value, Throwable error) {
+                                    if (error != null) {
+                                        listener.onComplete(null, new UnauthorizedException());
+                                        return;
+                                    }
+                                    subscription(listener);
+                                }
+                            });
+                            break;
+                        case 404:
+                            listener.onComplete(null, new RemoteException(
+                                    ShaktiApplication.getContext().getString(R.string.err_user_not_found), 404));
+                            break;
+                        default:
+                            Debug.logErrorResponse(response);
+                            returnError(listener, response);
+                    }
+                }
+            }
+
+            @EverythingIsNonNull
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                returnError(listener, t);
+            }
+        });
+    }
 }

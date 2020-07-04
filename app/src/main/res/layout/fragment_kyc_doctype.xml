@@ -4,11 +4,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <import type="android.view.View" alias="View"/>
-        <import type="com.shakticoin.app.profile.KycDoctypeViewModel.Options" alias="Options"/>
+        <import type="com.shakticoin.app.profile.PersonalViewModel.Options" alias="Options"/>
         <variable
-            name="viewModel" type="com.shakticoin.app.profile.KycDoctypeViewModel"/>
-        <variable
-            name="commonViewModel" type="com.shakticoin.app.profile.KycCommonViewModel" />
+            name="viewModel" type="com.shakticoin.app.profile.PersonalViewModel"/>
     </data>
     <ScrollView
         android:layout_width="match_parent"

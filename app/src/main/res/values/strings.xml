@@ -6,6 +6,7 @@
 
     <string name="app_name" translatable="false">Shakti Coin</string>
     <string name="err_not_implemented">Not implemented yet</string>
+    <string name="err_user_not_found">User not found</string>
     <string name="welcom_message">Welcome to Shakti Coin</string>
     <string name="username">Username</string>
     <string name="password">Password</string>

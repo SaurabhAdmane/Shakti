@@ -1,7 +1,5 @@
 package com.shakticoin.app.profile;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,12 +16,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.shakticoin.app.ProgressBarModel;
 import com.shakticoin.app.R;
-import com.shakticoin.app.ShaktiApplication;
 import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.kyc.KYCRepository;
 import com.shakticoin.app.api.kyc.KycCategory;
 import com.shakticoin.app.databinding.FragmentProfileKycSelectorBinding;
-import com.shakticoin.app.util.CommonUtil;
 import com.shakticoin.app.util.Debug;
 import com.shakticoin.app.widget.CheckableRoundButton;
 
@@ -35,10 +31,9 @@ public class KycSelectorFragment extends Fragment {
     public static final String TAG = KycSelectorFragment.class.getSimpleName();
 
     private FragmentProfileKycSelectorBinding binding;
-    private KycSelectorViewModel viewModel;
+    private PersonalViewModel viewModel;
     private ProgressBarModel activityViewModel;
 
-    private ArrayList<KycCategory> kycCategories;
     private SelectorAdapter adapter;
 
     private KYCRepository kycRepository = new KYCRepository();
@@ -46,15 +41,15 @@ public class KycSelectorFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = ViewModelProviders.of(this).get(KycSelectorViewModel.class);
+        viewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(PersonalViewModel.class);
 
         FragmentActivity activity = getActivity();
         if (activity != null) {
-            if (activity instanceof KycActivity) {
-                activityViewModel = ViewModelProviders.of(activity).get(KycCommonViewModel.class);
-            } else if (activity instanceof ProfileActivity) {
+//            if (activity instanceof KycActivity) {
+//                activityViewModel = ViewModelProviders.of(activity).get(KycCommonViewModel.class);
+//            } else if (activity instanceof ProfileActivity) {
                 activityViewModel = ViewModelProviders.of(activity).get(PersonalViewModel.class);
-            }
+//            }
         }
     }
 
@@ -71,8 +66,6 @@ public class KycSelectorFragment extends Fragment {
         adapter = new SelectorAdapter();
         binding.selector.setAdapter(adapter);
 
-        binding.doNext.setOnClickListener(v1 -> onNext());
-
         kycRepository.getKycCategories(new OnCompleteListener<List<KycCategory>>() {
             @Override
             public void onComplete(List<KycCategory> categories, Throwable error) {
@@ -81,7 +74,7 @@ public class KycSelectorFragment extends Fragment {
                     Toast.makeText(getContext(), Debug.getFailureMsg(getContext(), error), Toast.LENGTH_LONG).show();
                     return;
                 }
-                kycCategories = new ArrayList<>(categories);
+                viewModel.kycCategories = new ArrayList<>(categories);
                 if (categories.size() > 0) {
                     adapter = new SelectorAdapter(categories);
                     binding.selector.setAdapter(adapter);
@@ -117,27 +110,27 @@ public class KycSelectorFragment extends Fragment {
         return v;
     }
 
-    private void onNext() {
-        FragmentActivity activity = getActivity();
-        if (activity != null) {
-            if (activity instanceof KycActivity) {
-                KycCommonViewModel activityViewModel = ViewModelProviders.of(activity).get(KycCommonViewModel.class);
-                activityViewModel.kycCategories = kycCategories;
-                activityViewModel.kycCategory.setValue(viewModel.selectedCategory.getValue());
-                activity.getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.mainFragment, new KycDoctypeFragment())
-                        .addToBackStack(KycDoctypeFragment.class.getSimpleName())
-                        .commit();
-            } else {
-                Intent intent = new Intent(getActivity(), KycActivity.class);
-                Context context = ShaktiApplication.getContext();
-                intent.putExtra(CommonUtil.prefixed("KYC_CATEGORY", context), viewModel.selectedCategory.getValue());
-                intent.putParcelableArrayListExtra(CommonUtil.prefixed("KYC_CATEGORY_LIST", context), kycCategories);
-                startActivity(intent);
-            }
-        }
-    }
+//    private void onNext() {
+//        FragmentActivity activity = getActivity();
+//        if (activity != null) {
+//            if (activity instanceof KycActivity) {
+//                KycCommonViewModel activityViewModel = ViewModelProviders.of(activity).get(KycCommonViewModel.class);
+//                activityViewModel.kycCategories = kycCategories;
+//                activityViewModel.kycCategory.setValue(viewModel.selectedCategory.getValue());
+//                activity.getSupportFragmentManager()
+//                        .beginTransaction()
+//                        .replace(R.id.mainFragment, new KycDoctypeFragment())
+//                        .addToBackStack(KycDoctypeFragment.class.getSimpleName())
+//                        .commit();
+//            } else {
+//                Intent intent = new Intent(getActivity(), KycActivity.class);
+//                Context context = ShaktiApplication.getContext();
+//                intent.putExtra(CommonUtil.prefixed("KYC_CATEGORY", context), viewModel.selectedCategory.getValue());
+//                intent.putParcelableArrayListExtra(CommonUtil.prefixed("KYC_CATEGORY_LIST", context), kycCategories);
+//                startActivity(intent);
+//            }
+//        }
+//    }
 
     class SelectorViewHolder extends RecyclerView.ViewHolder {
         private CheckableRoundButton button;

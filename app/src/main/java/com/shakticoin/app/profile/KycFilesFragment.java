@@ -30,7 +30,7 @@ public class KycFilesFragment extends Fragment {
     private FragmentKycFilesBinding binding;
     private File imagesDir;
 
-    private KycCommonViewModel viewModel;
+    private PersonalViewModel viewModel;
 
     private KycFilesAdapter adapter;
 
@@ -38,7 +38,7 @@ public class KycFilesFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         imagesDir = ShaktiApplication.getContext().getExternalFilesDir("kyc");
-        viewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(KycCommonViewModel.class);
+        viewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(PersonalViewModel.class);
     }
 
     @Nullable

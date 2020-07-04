@@ -55,7 +55,7 @@
                 app:layout_constraintTop_toTopOf="@+id/label" />
 
             <Button
-                android:id="@+id/doAddDocument"
+                android:id="@+id/doPayFastVerification"
                 style="@style/AppButton.Rounded"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

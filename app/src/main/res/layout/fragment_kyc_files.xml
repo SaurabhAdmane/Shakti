@@ -64,7 +64,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/label" />
 
             <Button
-                android:id="@+id/doAddDocument"
+                android:id="@+id/doPayFastVerification"
                 style="@style/AppButton.Semi.Left"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -91,7 +91,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/doSend"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/doAddDocument" />
+                app:layout_constraintStart_toEndOf="@+id/doPayFastVerification" />
 
             <Button
                 android:id="@+id/doSend"
@@ -133,7 +133,7 @@
                 android:layout_marginBottom="30dp"
                 android:text="@{@string/kyc_files_num_uploaded(0, 0)}"
                 android:textAppearance="@style/AppText.Body"
-                app:layout_constraintBottom_toTopOf="@+id/doAddDocument"
+                app:layout_constraintBottom_toTopOf="@+id/doPayFastVerification"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
