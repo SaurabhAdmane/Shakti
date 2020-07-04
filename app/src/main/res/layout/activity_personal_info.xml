@@ -70,12 +70,10 @@
                         android:layout_marginTop="5dp"
                         android:layout_marginEnd="24dp"
                         android:textAppearance="@style/AppText.Body"
+                        app:localizedDate="@{viewModel.birthDate}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView96" />
-                    <!-- was
-                                            app:localizedDate="@{viewModel.user.date_of_birth}"
-                    -->
 
                     <TextView
                         android:id="@+id/textView98"
@@ -99,17 +97,15 @@
                         android:layout_marginTop="5dp"
                         android:layout_marginEnd="24dp"
                         android:textAppearance="@style/AppText.Body"
+                        app:addressLine1="@{viewModel.address1}"
+                        app:addressLine2="@{viewModel.address2}"
+                        app:city="@{viewModel.city}"
+                        app:subdivision="@{viewModel.stateProvince}"
+                        app:postalCode="@{viewModel.postalCode}"
+                        app:country="@{viewModel.country}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView98" />
-                    <!-- was
-                                            app:addressLine1="@{viewModel.user.residence[0].address_line_1}"
-                        app:addressLine2="@{viewModel.user.residence[0].address_line_2}"
-                        app:city="@{viewModel.user.residence[0].city}"
-                        app:subdivision="@{viewModel.user.residence[0].subdivision_name}"
-                        app:postalCode="@{viewModel.user.residence[0].zip_code}"
-                        app:country="@{viewModel.user.residence[0].country_name}"
-                    -->
 
                     <TextView
                         android:id="@+id/textView100"
@@ -132,7 +128,7 @@
                         android:layout_marginStart="24dp"
                         android:layout_marginTop="5dp"
                         android:layout_marginEnd="24dp"
-                        android:text=""
+                        android:text="@{viewModel.emailAddress}"
                         android:textAppearance="@style/AppText.Body"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -159,7 +155,7 @@
                         android:layout_marginStart="24dp"
                         android:layout_marginTop="5dp"
                         android:layout_marginEnd="24dp"
-                        android:text=""
+                        android:text="@{viewModel.phoneNumber}"
                         android:textAppearance="@style/AppText.Body"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -186,7 +182,7 @@
                         android:layout_marginStart="24dp"
                         android:layout_marginTop="5dp"
                         android:layout_marginEnd="24dp"
-                        android:text=""
+                        android:text="@{viewModel.occupation}"
                         android:textAppearance="@style/AppText.Body"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -213,7 +209,7 @@
                         android:layout_marginStart="24dp"
                         android:layout_marginTop="5dp"
                         android:layout_marginEnd="24dp"
-                        android:text=""
+                        android:text="@{viewModel.education}"
                         android:textAppearance="@style/AppText.Body"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
