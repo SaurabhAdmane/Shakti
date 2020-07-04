@@ -17,6 +17,7 @@ import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.Session;
 import com.shakticoin.app.api.kyc.KYCRepository;
 import com.shakticoin.app.databinding.ActivitySettingsBinding;
+import com.shakticoin.app.profile.ProfileActivity;
 import com.shakticoin.app.registration.SignInActivity;
 import com.shakticoin.app.util.Debug;
 import com.shakticoin.app.widget.DrawerActivity;
@@ -73,6 +74,9 @@ public class SettingsActivity extends DrawerActivity {
     }
 
     public void onKYCVerification(View v) {
+        Intent intent = new Intent(this, ProfileActivity.class);
+        intent.putExtra("showStatus", true);
+        startActivity(intent);
     }
 
     public void onOpenHelp(View v) {

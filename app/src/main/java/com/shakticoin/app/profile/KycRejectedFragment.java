@@ -1,5 +1,7 @@
 package com.shakticoin.app.profile;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,8 +21,17 @@ public class KycRejectedFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentKycRejectedBinding.inflate(inflater, container, false);
         binding.setLifecycleOwner(this);
-        View v = binding.getRoot();
 
-        return v;
+        binding.doOpenProfile.setOnClickListener(v -> openProfile());
+
+        return binding.getRoot();
+    }
+
+    private void openProfile() {
+        final Activity activity = getActivity();
+        if (activity != null) {
+            startActivity(new Intent(activity, ProfileActivity.class));
+            activity.finish();
+        }
     }
 }

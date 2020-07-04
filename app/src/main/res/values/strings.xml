@@ -366,7 +366,7 @@
     <string name="kyc_verifying_action">Invite your friends to Shakti</string>
     <string name="kyc_verified">Your validation was a success</string>
     <string name="kyc_verified_message">
-        <b>Congratulations!</b> Your amount has been verified. You\'ve passed all the compliance
+        <b>Congratulations!</b> Your account has been verified. You\'ve passed all the compliance
         validations and you\'re on your way to a great start!\n\n
         Your wallet is now active and ready to be used.
     </string>

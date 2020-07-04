@@ -27,6 +27,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.shakticoin.app.R;
+import com.shakticoin.app.ShaktiApplication;
 import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.Session;
 import com.shakticoin.app.api.UnauthorizedException;
@@ -123,7 +124,14 @@ public class ProfileActivity extends DrawerActivity {
                 getString(R.string.wallet_page_kyc)
         };
         binding.pageIndicator.setSizeAndLabels(pageIndicatorItems);
-        binding.pageIndicator.setSelectedIndex(1);
+
+        Intent intent = getIntent();
+        boolean showStatus = intent.getBooleanExtra("showStatus", false);
+        if (!showStatus) {
+            binding.pageIndicator.setSelectedIndex(1);
+        } else {
+            binding.pageIndicator.setSelectedIndex(5);
+        }
 
         viewModel.getProgressBarTrigger().set(true);
         final Activity self = this;
@@ -139,6 +147,10 @@ public class ProfileActivity extends DrawerActivity {
                         Toast.makeText(self, Debug.getFailureMsg(self, error), Toast.LENGTH_LONG).show();
                     }
                     return;
+                }
+
+                if (showStatus) {
+                    //TODO: analize status and decide which page must be selected
                 }
 
                 // enable button to the next page if the call for user details was successful
@@ -215,7 +227,7 @@ public class ProfileActivity extends DrawerActivity {
             }
         });
         adapter = new ProfileFragmentAdapter(getSupportFragmentManager());
-        selectPage(PAGE_PERSONAL_FIRST);
+        selectPage(showStatus ? PAGE_VERIFYING : PAGE_PERSONAL_FIRST);
     }
 
     private void selectPage(int index) {
@@ -536,6 +548,25 @@ public class ProfileActivity extends DrawerActivity {
         selectPage(PAGE_FAST_TRACK);
     }
 
+    public void payFastTrack(View v) {
+        viewModel.getProgressBarTrigger().set(true);
+        kycRepository.subscription(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(Void value, Throwable error) {
+                viewModel.getProgressBarTrigger().set(false);
+                if (error != null) {
+                    if (error instanceof UnauthorizedException) {
+                        startActivity(Session.unauthorizedIntent(ShaktiApplication.getContext()));
+                    } else {
+                        Toast.makeText(ShaktiApplication.getContext(), R.string.err_unexpected, Toast.LENGTH_SHORT).show();
+                    }
+                    return;
+                }
+                finish();
+            }
+        });
+    }
+
     /**
      * KycUserModel is used when we update personal info and additional info. In both cases
      * it should contains the same data. This is why we create an instance of this class in
@@ -612,6 +643,9 @@ public class ProfileActivity extends DrawerActivity {
     private static final int PAGE_DOCUMENT_TYPES    = 5;
     private static final int PAGE_FILES             = 6;
     private static final int PAGE_FAST_TRACK        = 7;
+    private static final int PAGE_VERIFYING         = 8;
+    private static final int PAGE_SUCCESS           = 9;
+    private static final int PAGE_REJECTED          = 10;
 
     /** Collection of fragments for the activity */
     static class ProfileFragmentAdapter extends FragmentPagerAdapter {
@@ -629,6 +663,9 @@ public class ProfileActivity extends DrawerActivity {
             fragments.add(new KycDoctypeFragment());
             fragments.add(new KycFilesFragment());
             fragments.add(new KycFastTrackFragment());
+            fragments.add(new KycVerifyingFragment());
+            fragments.add(new KycVerifiedFragment());
+            fragments.add(new KycRejectedFragment());
         }
 
         @NonNull
