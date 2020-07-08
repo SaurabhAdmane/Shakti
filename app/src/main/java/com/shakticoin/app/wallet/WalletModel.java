@@ -1,5 +1,6 @@
 package com.shakticoin.app.wallet;
 
+import androidx.databinding.ObservableBoolean;
 import androidx.databinding.ObservableField;
 import androidx.lifecycle.ViewModel;
 
@@ -19,6 +20,7 @@ public class WalletModel extends ViewModel {
     public ObservableField<BigDecimal> balance = new ObservableField<>();
     public ObservableField<BigDecimal> bonusBalance = new ObservableField<>(BigDecimal.ZERO);
 
+    public ObservableBoolean isProgressBarActive = new ObservableBoolean(false);
 
     public WalletModel() {
 //        progressBarTrigger.set(true);

@@ -3,6 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <data>
+        <import type="android.view.View" alias="View"/>
+        <variable
+            name="viewModel"
+            type="com.shakticoin.app.wallet.WalletModel"/>
     </data>
 
     <RelativeLayout
@@ -28,7 +32,7 @@
                     style="?android:attr/progressBarStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="invisible"
+                    android:visibility="@{viewModel.isProgressBarActive?View.VISIBLE:View.INVISIBLE}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -56,7 +60,7 @@
                     android:layout_marginStart="24dp"
                     android:layout_marginTop="27dp"
                     android:layout_marginEnd="24dp"
-                    android:text="@string/wallet_unknown_balance"
+                    android:text="@{viewModel.getFormattedBalance(viewModel.balance)}"
                     android:textAppearance="@style/AppText.Body"
                     android:textFontWeight="500"
                     android:textSize="36sp"
@@ -122,43 +126,16 @@
                     android:enabled="false"
                 -->
 
-                <View
-                    android:id="@+id/blackRect1"
+                <RelativeLayout
+                    android:id="@+id/wallet_actions"
                     android:layout_width="0dp"
                     android:layout_height="45dp"
-                    android:layout_marginTop="28dp"
-                    android:background="#80000000"
+                    android:layout_marginTop="31dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/doMainWallet" />
-
-                <Button
-                    android:id="@+id/doReceiveSXE"
-                    style="@style/AppButton.Rounded.Transparent.Gold"
-                    android:layout_width="wrap_content"
-                    android:layout_height="36dp"
-                    android:layout_marginEnd="8dp"
-                    android:text="@string/wallet_receive_sxe"
-                    android:onClick="onReceive"
-                    app:layout_constraintBottom_toBottomOf="@+id/doPaySXE"
-                    app:layout_constraintEnd_toStartOf="@+id/doPaySXE"
-                    app:layout_constraintHorizontal_chainStyle="packed"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/doPaySXE" />
-
-                <Button
-                    android:id="@+id/doPaySXE"
-                    style="@style/AppButton.Rounded"
-                    android:layout_width="wrap_content"
-                    android:layout_height="36dp"
-                    android:layout_marginStart="8dp"
-                    android:text="@string/wallet_pay_sxe"
-                    android:onClick="onPay"
-                    app:layout_constraintBottom_toBottomOf="@+id/blackRect1"
-                    app:layout_constraintEnd_toEndOf="@+id/blackRect1"
-                    app:layout_constraintStart_toEndOf="@+id/doReceiveSXE"
-                    app:layout_constraintTop_toTopOf="@+id/blackRect1" />
+                    app:layout_constraintTop_toBottomOf="@+id/doMainWallet">
+                </RelativeLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/list"
@@ -168,7 +145,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/blackRect1" >
+                    app:layout_constraintTop_toBottomOf="@+id/wallet_actions" >
                 </androidx.recyclerview.widget.RecyclerView>
 
                 <TextView
@@ -182,7 +159,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/blackRect1" />
+                    app:layout_constraintTop_toBottomOf="@+id/wallet_actions" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

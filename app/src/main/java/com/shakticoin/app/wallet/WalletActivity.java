@@ -9,17 +9,20 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.shakticoin.app.R;
 import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.Session;
-import com.shakticoin.app.api.user.UserRepository;
+import com.shakticoin.app.api.kyc.KYCRepository;
 import com.shakticoin.app.api.wallet.SessionException;
 import com.shakticoin.app.api.wallet.WalletRepository;
 import com.shakticoin.app.databinding.ActivityWalletBinding;
+import com.shakticoin.app.miner.MiningLicenseActivity;
 import com.shakticoin.app.registration.SignInActivity;
 import com.shakticoin.app.util.Debug;
+import com.shakticoin.app.vault.VaultChooserActivity;
 import com.shakticoin.app.widget.DrawerActivity;
 
 import java.math.BigDecimal;
@@ -28,8 +31,8 @@ public class WalletActivity extends DrawerActivity {
     private ActivityWalletBinding binding;
     private WalletModel viewModel;
 
-    private UserRepository userRepository = new UserRepository();
     private WalletRepository walletRepository = new WalletRepository();
+    private KYCRepository kycRepository = new KYCRepository();
 
     @Override
     public void onBackPressed() {
@@ -51,11 +54,8 @@ public class WalletActivity extends DrawerActivity {
         super.onInitView(binding.getRoot(), getString(R.string.wallet_toolbar_title));
 
         viewModel = ViewModelProviders.of(this).get(WalletModel.class);
+        binding.setViewModel(viewModel);
 
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.mainFragment, new MainFragment(), MainFragment.class.getSimpleName())
-                .commit();
     }
 
     @Override
@@ -64,6 +64,18 @@ public class WalletActivity extends DrawerActivity {
 
         // update wallet balance
         getWalletBalance();
+
+        kycRepository.isWalletUnlocked(new OnCompleteListener<Boolean>() {
+            @Override
+            public void onComplete(Boolean unlocked, Throwable error) {
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .add(R.id.wallet_actions, unlocked ?
+                                new WalletActionsFragment() :
+                                new KycVerificationRequiredFragment())
+                        .commit();
+            }
+        });
     }
 
     @Override
@@ -71,30 +83,56 @@ public class WalletActivity extends DrawerActivity {
         return 0;
     }
 
-    public void getWalletBalance() {
+    public void onAdminWallet(View v) {
+        startActivity(new Intent(this, WalletAdminActivity.class));
+    }
+
+    public void onBalanceHistory(View v) {
+        startActivity(new Intent(this, WalletHistoryActivity.class));
+    }
+
+    public void onShowBusinessVaultInfo(View v) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        DialogBusinessVault.newInstance(v1 -> {
+            Intent intent = new Intent(this, VaultChooserActivity.class);
+            startActivity(intent);
+        }).show(fragmentManager, DialogBusinessVault.TAG);
+    }
+
+    public void onShowMinerInfo(View v) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        DialogBecomeMiner.newInstance(v1 -> {
+            Intent intent = new Intent(this, MiningLicenseActivity.class);
+            startActivity(intent);
+        }).show(fragmentManager, DialogBecomeMiner.TAG);
+    }
+
+    public void onShowUnlockInfo(View v) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        DialogGrabWallet.newInstance().show(fragmentManager, DialogGrabWallet.TAG);
+    }
+
+    private void getWalletBalance() {
         if (Session.getWalletPassphrase() == null) {
-            DialogPass.getInstance(new DialogPass.OnPassListener() {
-                @Override
-                public void onPassEntered(@Nullable String password) {
-                    if (!TextUtils.isEmpty(password)) {
-                        Session.setWalletPassphrase(password);
-                    }
-                    getWalletBalance();
+            DialogPass.getInstance(password -> {
+                if (!TextUtils.isEmpty(password)) {
+                    Session.setWalletPassphrase(password);
                 }
+                getWalletBalance();
             }).show(getSupportFragmentManager(), DialogPass.class.getName());
             return;
         }
 
         Activity activity = this;
 
-        binding.progressBar.setVisibility(View.VISIBLE);
+        viewModel.isProgressBarActive.set(true);
         String walletBytes = walletRepository.getExistingWallet();
         if (walletBytes == null) {
             // we need to create a new wallet
             walletRepository.createWallet(Session.getWalletPassphrase(), new OnCompleteListener<String>() {
                 @Override
                 public void onComplete(String walletBytes, Throwable error) {
-                    binding.progressBar.setVisibility(View.INVISIBLE);
+                    viewModel.isProgressBarActive.set(false);
                     if (error != null) {
                         Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
                         return;
@@ -107,7 +145,7 @@ public class WalletActivity extends DrawerActivity {
             walletRepository.getBalance(new OnCompleteListener<BigDecimal>() {
                 @Override
                 public void onComplete(BigDecimal balance, Throwable error) {
-                    binding.progressBar.setVisibility(View.INVISIBLE);
+                    viewModel.isProgressBarActive.set(false);
                     if (error != null) {
                         Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
                         if (error instanceof SessionException) {
