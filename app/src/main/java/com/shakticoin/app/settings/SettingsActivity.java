@@ -61,7 +61,7 @@ public class SettingsActivity extends DrawerActivity {
                 binding.emailAddress.setText((String) value.get("primaryEmail"));
                 binding.kycStatus.setText((String) value.get("verificationStatus"));
             }
-        });
+        }, false);
     }
 
     @Override

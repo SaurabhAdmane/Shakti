@@ -81,7 +81,7 @@ public class SettingsPersonalActivity extends DrawerActivity {
                 }
 
             }
-        });
+        }, false);
     }
 
     @Override

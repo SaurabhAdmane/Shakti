@@ -56,7 +56,7 @@ public class KYCRepository extends BackendRepository {
         authRepository = new AuthRepository();
     }
 
-    public void getUserDetails(OnCompleteListener<Map<String, Object>> listener) {
+    public void getUserDetails(OnCompleteListener<Map<String, Object>> listener, boolean hasRecover401) {
         service.getUserDetails(Session.getAuthorizationHeader()).enqueue(new Callback<Map<String, Object>>() {
             @EverythingIsNonNull
             @Override
@@ -68,16 +68,21 @@ public class KYCRepository extends BackendRepository {
                 } else {
                     switch (response.code()) {
                         case 401:
-                            authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
-                                @Override
-                                public void onComplete(TokenResponse value, Throwable error) {
-                                    if (error != null) {
-                                        listener.onComplete(null, new UnauthorizedException());
-                                        return;
+                            if (!hasRecover401) {
+                                authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
+                                    @Override
+                                    public void onComplete(TokenResponse value, Throwable error) {
+                                        if (error != null) {
+                                            listener.onComplete(null, new UnauthorizedException());
+                                            return;
+                                        }
+                                        getUserDetails(listener, true);
                                     }
-                                    getUserDetails(listener);
-                                }
-                            });
+                                });
+                            } else {
+                                listener.onComplete(null, new UnauthorizedException());
+                                return;
+                            }
                             break;
                         case 404:
                             ResponseBody errorBody = response.errorBody();
@@ -362,5 +367,18 @@ public class KYCRepository extends BackendRepository {
                 returnError(listener, t);
             }
         });
+    }
+
+    public void isWalletUnlocked(@NonNull OnCompleteListener<Boolean> listener) {
+        getUserDetails(new OnCompleteListener<Map<String, Object>>() {
+            @Override
+            public void onComplete(Map<String, Object> value, Throwable error) {
+                if (error != null) {
+                    listener.onComplete(false, null);
+                    return;
+                }
+                listener.onComplete("UNLOCKED".equals(value.get("kycStatus")), null);
+            }
+        }, false);
     }
 }
