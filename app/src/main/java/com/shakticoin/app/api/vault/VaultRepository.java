@@ -5,7 +5,6 @@ import androidx.annotation.NonNull;
 import com.shakticoin.app.api.BackendRepository;
 import com.shakticoin.app.api.BaseUrl;
 import com.shakticoin.app.api.OnCompleteListener;
-import com.shakticoin.app.api.RemoteException;
 import com.shakticoin.app.api.Session;
 import com.shakticoin.app.api.UnauthorizedException;
 import com.shakticoin.app.api.auth.AuthRepository;
@@ -35,8 +34,11 @@ public class VaultRepository extends BackendRepository {
     }
 
 
-    public void getVaults(@NonNull OnCompleteListener<List<VaultExtended>> listener) {
 
+    public void getVaults(@NonNull OnCompleteListener<List<VaultExtended>> listener) {
+        getVaults(listener, false);
+    }
+    public void getVaults(@NonNull OnCompleteListener<List<VaultExtended>> listener, boolean hasRecover401) {
         service.getVaults(Session.getAuthorizationHeader(), Session.getLanguageHeader()).enqueue(new Callback<List<VaultExtended>>() {
             @EverythingIsNonNull
             @Override
@@ -45,7 +47,7 @@ public class VaultRepository extends BackendRepository {
                 if (response.isSuccessful()) {
                     listener.onComplete(response.body(), null);
                 } else {
-                    if (response.code() == 401) {
+                    if (response.code() == 401 && !hasRecover401) {
                         authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
                             @Override
                             public void onComplete(TokenResponse value, Throwable error) {
@@ -53,7 +55,7 @@ public class VaultRepository extends BackendRepository {
                                     listener.onComplete(null, new UnauthorizedException());
                                     return;
                                 }
-                                getVaults(listener);
+                                getVaults(listener, true);
                             }
                         });
                     } else {
@@ -72,6 +74,9 @@ public class VaultRepository extends BackendRepository {
     }
 
     public void getVault(Integer vaultId, @NonNull OnCompleteListener<VaultExtended> listener) {
+        getVault(vaultId, listener, false);
+    }
+    public void getVault(Integer vaultId, @NonNull OnCompleteListener<VaultExtended> listener, boolean hasRecover401) {
         service.getVault(Session.getAuthorizationHeader(), Session.getLanguageHeader(), vaultId).enqueue(new Callback<VaultExtended>() {
 
             @EverythingIsNonNull
@@ -81,7 +86,7 @@ public class VaultRepository extends BackendRepository {
                 if (response.isSuccessful()) {
                     listener.onComplete(response.body(), null);
                 } else {
-                    if (response.code() == 401) {
+                    if (response.code() == 401 && !hasRecover401) {
                         authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
                             @Override
                             public void onComplete(TokenResponse value, Throwable error) {
@@ -89,7 +94,7 @@ public class VaultRepository extends BackendRepository {
                                     listener.onComplete(null, new UnauthorizedException());
                                     return;
                                 }
-                                getVault(vaultId, listener);
+                                getVault(vaultId, listener, true);
                             }
                         });
                     } else {
@@ -108,6 +113,9 @@ public class VaultRepository extends BackendRepository {
     }
 
     public void getVaultPackages(@NonNull Integer vaultId, @NonNull OnCompleteListener<List<PackageExtended>> listener) {
+        getVaultPackages(vaultId, listener, false);
+    }
+    public void getVaultPackages(@NonNull Integer vaultId, @NonNull OnCompleteListener<List<PackageExtended>> listener, boolean hasRecover401) {
         service.getVaultPackages(Session.getAuthorizationHeader(), Session.getLanguageHeader(), vaultId)
                 .enqueue(new Callback<List<PackageExtended>>() {
             @EverythingIsNonNull
@@ -117,7 +125,7 @@ public class VaultRepository extends BackendRepository {
                 if (response.isSuccessful()) {
                     listener.onComplete(response.body(), null);
                 } else {
-                    if (response.code() == 401) {
+                    if (response.code() == 401 && !hasRecover401) {
                         authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
                             @Override
                             public void onComplete(TokenResponse value, Throwable error) {
@@ -125,7 +133,7 @@ public class VaultRepository extends BackendRepository {
                                     listener.onComplete(null, new UnauthorizedException());
                                     return;
                                 }
-                                getVaultPackages(vaultId, listener);
+                                getVaultPackages(vaultId, listener, true);
                             }
                         });
                     } else {
@@ -145,6 +153,10 @@ public class VaultRepository extends BackendRepository {
 
     public void getVaultPackage(@NonNull Integer vaultId, @NonNull Integer packageId,
                                 @NonNull OnCompleteListener<PackageExtended> listener) {
+        getVaultPackage(vaultId, packageId, listener, false);
+    }
+    public void getVaultPackage(@NonNull Integer vaultId, @NonNull Integer packageId,
+                                @NonNull OnCompleteListener<PackageExtended> listener, boolean hasRecover401) {
         service.getVaultPackage(Session.getAuthorizationHeader(), Session.getLanguageHeader(), vaultId, packageId)
                 .enqueue(new Callback<PackageExtended>() {
             @EverythingIsNonNull
@@ -155,16 +167,20 @@ public class VaultRepository extends BackendRepository {
                     listener.onComplete(response.body(), null);
                 } else {
                     if (response.code() == 401) {
-                        authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
-                            @Override
-                            public void onComplete(TokenResponse value, Throwable error) {
-                                if (error != null) {
-                                    listener.onComplete(null, new UnauthorizedException());
-                                    return;
+                        if (!hasRecover401) {
+                            authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
+                                @Override
+                                public void onComplete(TokenResponse value, Throwable error) {
+                                    if (error != null) {
+                                        listener.onComplete(null, new UnauthorizedException());
+                                        return;
+                                    }
+                                    getVaultPackage(vaultId, packageId, listener, true);
                                 }
-                                getVaultPackage(vaultId, packageId, listener);
-                            }
-                        });
+                            });
+                        } else {
+                            listener.onComplete(null, new UnauthorizedException());
+                        }
                     } else {
                         Debug.logErrorResponse(response);
                         returnError(listener, response);
@@ -181,7 +197,11 @@ public class VaultRepository extends BackendRepository {
     }
 
     public void getPackagePlans(@NonNull Integer vaultId, @NonNull Integer packageId,
-                         @NonNull OnCompleteListener<List<PackagePlanExtended>> listener) {
+                                @NonNull OnCompleteListener<List<PackagePlanExtended>> listener) {
+        getPackagePlans(vaultId, packageId, listener, false);
+    }
+    public void getPackagePlans(@NonNull Integer vaultId, @NonNull Integer packageId,
+                         @NonNull OnCompleteListener<List<PackagePlanExtended>> listener, boolean hasRecover401) {
         service.getVaultPackagePlans(Session.getAuthorizationHeader(), Session.getLanguageHeader(),
                 vaultId, packageId).enqueue(new Callback<List<PackagePlanExtended>>() {
             @EverythingIsNonNull
@@ -192,16 +212,20 @@ public class VaultRepository extends BackendRepository {
                     listener.onComplete(response.body(), null);
                 } else {
                     if (response.code() == 401) {
-                        authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
-                            @Override
-                            public void onComplete(TokenResponse value, Throwable error) {
-                                if (error != null) {
-                                    listener.onComplete(null, new UnauthorizedException());
-                                    return;
+                        if (!hasRecover401) {
+                            authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
+                                @Override
+                                public void onComplete(TokenResponse value, Throwable error) {
+                                    if (error != null) {
+                                        listener.onComplete(null, new UnauthorizedException());
+                                        return;
+                                    }
+                                    getPackagePlans(vaultId, packageId, listener, true);
                                 }
-                                getPackagePlans(vaultId, packageId, listener);
-                            }
-                        });
+                            });
+                        } else {
+                            listener.onComplete(null, new UnauthorizedException());
+                        }
                     } else {
                         Debug.logErrorResponse(response);
                         returnError(listener, response);

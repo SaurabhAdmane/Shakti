@@ -84,10 +84,14 @@ public class ReferralRepository extends BackendRepository {
         listener.onComplete(resultList, null);
     }
 
+
     /**
      * Add new referral.
      */
     public void addReferral(@NonNull ReferralParameters parameters, @NonNull OnCompleteListener<Referral> listener) {
+        addReferral(parameters, listener, false);
+    }
+    public void addReferral(@NonNull ReferralParameters parameters, @NonNull OnCompleteListener<Referral> listener, boolean hasRecover401) {
         service.addReferral(Session.getAuthorizationHeader(), parameters).enqueue(new Callback<Referral>() {
             @EverythingIsNonNull
             @Override
@@ -98,16 +102,21 @@ public class ReferralRepository extends BackendRepository {
                 } else {
                     switch (response.code()) {
                         case 401:
-                            authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
-                                @Override
-                                public void onComplete(TokenResponse value, Throwable error) {
-                                    if (error != null) {
-                                        listener.onComplete(null, new UnauthorizedException());
-                                        return;
+                            if (!hasRecover401) {
+                                authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
+                                    @Override
+                                    public void onComplete(TokenResponse value, Throwable error) {
+                                        if (error != null) {
+                                            listener.onComplete(null, new UnauthorizedException());
+                                            return;
+                                        }
+                                        addReferral(parameters, listener, true);
                                     }
-                                    addReferral(parameters, listener);
-                                }
-                            });
+                                });
+                            } else {
+                                listener.onComplete(null, new UnauthorizedException());
+                                return;
+                            }
                             break;
                         case 400:
                             ResponseBody errorBody = response.errorBody();
@@ -147,6 +156,9 @@ public class ReferralRepository extends BackendRepository {
      * Return personal data for user's referrals.
      */
     public void getReferrals(String status, @NonNull OnCompleteListener<List<Referral>> listener) {
+        getReferrals(status, listener, false);
+    }
+    public void getReferrals(String status, @NonNull OnCompleteListener<List<Referral>> listener, boolean hasRecover401) {
         service.getReferrals(Session.getAuthorizationHeader()).enqueue(new Callback<Map<String, Object>>() {
             @EverythingIsNonNull
             @Override
@@ -166,16 +178,20 @@ public class ReferralRepository extends BackendRepository {
                     listener.onComplete(results, null);
                 } else {
                     if (response.code() == 401) {
-                        authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
-                            @Override
-                            public void onComplete(TokenResponse value, Throwable error) {
-                                if (error != null) {
-                                    listener.onComplete(null, new UnauthorizedException());
-                                    return;
+                        if (!hasRecover401) {
+                            authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
+                                @Override
+                                public void onComplete(TokenResponse value, Throwable error) {
+                                    if (error != null) {
+                                        listener.onComplete(null, new UnauthorizedException());
+                                        return;
+                                    }
+                                    getReferrals(status, listener, true);
                                 }
-                                getReferrals(status, listener);
-                            }
-                        });
+                            });
+                        } else {
+                            listener.onComplete(null, new UnauthorizedException());
+                        }
                     } else {
                         Debug.logErrorResponse(response);
                         returnError(listener, response);
@@ -192,6 +208,9 @@ public class ReferralRepository extends BackendRepository {
     }
 
     public void getReferralsByReferrer(String id, @NonNull OnCompleteListener<List<Referral>> listener) {
+        getReferralsByReferrer(id, listener, false);
+    }
+    public void getReferralsByReferrer(String id, @NonNull OnCompleteListener<List<Referral>> listener, boolean hasRecover401) {
         service.findReferralByReferrer(Session.getAuthorizationHeader(), id).enqueue(new Callback<Map<String, Object>>() {
             @EverythingIsNonNull
             @Override
@@ -209,16 +228,20 @@ public class ReferralRepository extends BackendRepository {
                     listener.onComplete(results, null);
                 } else {
                     if (response.code() == 401) {
-                        authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
-                            @Override
-                            public void onComplete(TokenResponse value, Throwable error) {
-                                if (error != null) {
-                                    listener.onComplete(null, new UnauthorizedException());
-                                    return;
+                        if (!hasRecover401) {
+                            authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
+                                @Override
+                                public void onComplete(TokenResponse value, Throwable error) {
+                                    if (error != null) {
+                                        listener.onComplete(null, new UnauthorizedException());
+                                        return;
+                                    }
+                                    getReferralsByReferrer(id, listener, true);
                                 }
-                                getReferralsByReferrer(id, listener);
-                            }
-                        });
+                            });
+                        } else {
+                            listener.onComplete(null, new UnauthorizedException());
+                        }
                     } else {
                         Debug.logErrorResponse(response);
                         returnError(listener, response);

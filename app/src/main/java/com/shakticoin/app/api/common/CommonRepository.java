@@ -5,7 +5,6 @@ import androidx.annotation.NonNull;
 import com.shakticoin.app.api.BackendRepository;
 import com.shakticoin.app.api.BaseUrl;
 import com.shakticoin.app.api.OnCompleteListener;
-import com.shakticoin.app.api.RemoteException;
 import com.shakticoin.app.api.Session;
 import com.shakticoin.app.api.UnauthorizedException;
 import com.shakticoin.app.api.auth.AuthRepository;
@@ -36,6 +35,9 @@ public class CommonRepository extends BackendRepository {
     }
 
     public void getRequestReasons(@NonNull OnCompleteListener<List<RequestReason>> listener) {
+        getRequestReasons(listener, false);
+    }
+    public void getRequestReasons(@NonNull OnCompleteListener<List<RequestReason>> listener, boolean hasRecover401) {
         service.contactReasons(Session.getAuthorizationHeader(), Session.getLanguageHeader()).enqueue(new Callback<List<RequestReason>>() {
             @EverythingIsNonNull
             @Override
@@ -45,16 +47,20 @@ public class CommonRepository extends BackendRepository {
                     listener.onComplete(response.body(), null);
                 } else {
                     if (response.code() == 401) {
-                        authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
-                            @Override
-                            public void onComplete(TokenResponse value, Throwable error) {
-                                if (error != null) {
-                                    listener.onComplete(null, new UnauthorizedException());
-                                    return;
+                        if (!hasRecover401) {
+                            authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
+                                @Override
+                                public void onComplete(TokenResponse value, Throwable error) {
+                                    if (error != null) {
+                                        listener.onComplete(null, new UnauthorizedException());
+                                        return;
+                                    }
+                                    getRequestReasons(listener, true);
                                 }
-                                getRequestReasons(listener);
-                            }
-                        });
+                            });
+                        } else {
+                            listener.onComplete(null, new UnauthorizedException());
+                        }
                     } else {
                         Debug.logErrorResponse(response);
                         returnError(listener, response);
@@ -71,6 +77,9 @@ public class CommonRepository extends BackendRepository {
     }
 
     public void sendSupportMessage(@NonNull ContactUs newMessage, @NonNull OnCompleteListener<ContactUs> listener) {
+        sendSupportMessage(newMessage, listener, false);
+    }
+    public void sendSupportMessage(@NonNull ContactUs newMessage, @NonNull OnCompleteListener<ContactUs> listener, boolean hasRecover401) {
         service.sendMessage(Session.getAuthorizationHeader(), newMessage).enqueue(new Callback<ContactUs>() {
             @EverythingIsNonNull
             @Override
@@ -80,16 +89,20 @@ public class CommonRepository extends BackendRepository {
                     listener.onComplete(response.body(), null);
                 } else {
                     if (response.code() == 401) {
-                        authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
-                            @Override
-                            public void onComplete(TokenResponse value, Throwable error) {
-                                if (error != null) {
-                                    listener.onComplete(null, new UnauthorizedException());
-                                    return;
+                        if (!hasRecover401) {
+                            authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
+                                @Override
+                                public void onComplete(TokenResponse value, Throwable error) {
+                                    if (error != null) {
+                                        listener.onComplete(null, new UnauthorizedException());
+                                        return;
+                                    }
+                                    sendSupportMessage(newMessage, listener, true);
                                 }
-                                sendSupportMessage(newMessage, listener);
-                            }
-                        });
+                            });
+                        } else {
+                            listener.onComplete(null, new UnauthorizedException());
+                        }
                     } else {
                         Debug.logErrorResponse(response);
                         returnError(listener, response);

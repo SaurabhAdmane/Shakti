@@ -116,6 +116,9 @@ public class WalletRepository extends BackendRepository {
     }
 
     private void getWalletSession(@NonNull OnCompleteListener<Long> listener) {
+        getWalletSession(listener, false);
+    }
+    private void getWalletSession(@NonNull OnCompleteListener<Long> listener, boolean hasRecover401) {
         SessionModelRequest parameters =
                 new SessionModelRequest(null, Session.getWalletPassphrase(), getExistingWallet());
         service.getSession(Session.getAuthorizationHeader(), parameters).enqueue(new Callback<SessionModelResponse>() {
@@ -132,16 +135,21 @@ public class WalletRepository extends BackendRepository {
                     } else listener.onComplete(null, new IllegalStateException());
                 } else {
                     if (response.code() == 401) {
-                        authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
-                            @Override
-                            public void onComplete(TokenResponse value, Throwable error) {
-                                if (error != null) {
-                                    listener.onComplete(null, new UnauthorizedException());
-                                    return;
+                        if (!hasRecover401) {
+                            authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
+                                @Override
+                                public void onComplete(TokenResponse value, Throwable error) {
+                                    if (error != null) {
+                                        listener.onComplete(null, new UnauthorizedException());
+                                        return;
+                                    }
+                                    getWalletSession(listener, true);
                                 }
-                                getWalletSession(listener);
-                            }
-                        });
+                            });
+                        } else {
+                            listener.onComplete(null, new UnauthorizedException());
+                            return;
+                        }
                     } if (response.code() == 500) {
                         // this is a general service error but most probably it means incorrect passphrase
                         String errorMsg = response.message();
@@ -179,6 +187,9 @@ public class WalletRepository extends BackendRepository {
      *                   depends on user's account password.
      */
     public void createWallet(@Nullable String passphrase, @NonNull OnCompleteListener<String> listener) {
+        createWallet(passphrase, listener, false);
+    }
+    public void createWallet(@Nullable String passphrase, @NonNull OnCompleteListener<String> listener, boolean hasRecover401) {
         WalletModelRequest parameters = new WalletModelRequest(null, passphrase);
         service.createWallet(Session.getAuthorizationHeader(), parameters).enqueue(new Callback<Map<String, String>>() {
             @EverythingIsNonNull
@@ -195,16 +206,20 @@ public class WalletRepository extends BackendRepository {
                     } else listener.onComplete(null, new IllegalStateException());
                 } else {
                     if (response.code() == 401) {
-                        authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
-                            @Override
-                            public void onComplete(TokenResponse value, Throwable error) {
-                                if (error != null) {
-                                    listener.onComplete(null, new UnauthorizedException());
-                                    return;
+                        if (!hasRecover401) {
+                            authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
+                                @Override
+                                public void onComplete(TokenResponse value, Throwable error) {
+                                    if (error != null) {
+                                        listener.onComplete(null, new UnauthorizedException());
+                                        return;
+                                    }
+                                    createWallet(passphrase, listener, true);
                                 }
-                                createWallet(passphrase, listener);
-                            }
-                        });
+                            });
+                        } else {
+                            listener.onComplete(null, new UnauthorizedException());
+                        }
                     } else {
                         Debug.logErrorResponse(response);
                         returnError(listener, response);
@@ -221,6 +236,9 @@ public class WalletRepository extends BackendRepository {
     }
 
     public void getAddress(@NonNull OnCompleteListener<String> listener) {
+        getAddress(listener, false);
+    }
+    public void getAddress(@NonNull OnCompleteListener<String> listener, boolean hasRecover401) {
         Long sessionToken = Session.getWalletSessionToken();
         if (sessionToken == null) {
             getWalletSession(new OnCompleteListener<Long>() {
@@ -254,16 +272,20 @@ public class WalletRepository extends BackendRepository {
                     } else listener.onComplete(null, new IllegalStateException());
                 } else {
                     if (response.code() == 401) {
-                        authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
-                            @Override
-                            public void onComplete(TokenResponse value, Throwable error) {
-                                if (error != null) {
-                                    listener.onComplete(null, new UnauthorizedException());
-                                    return;
+                        if (!hasRecover401) {
+                            authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
+                                @Override
+                                public void onComplete(TokenResponse value, Throwable error) {
+                                    if (error != null) {
+                                        listener.onComplete(null, new UnauthorizedException());
+                                        return;
+                                    }
+                                    getAddress(listener, true);
                                 }
-                                getAddress(listener);
-                            }
-                        });
+                            });
+                        } else {
+                            listener.onComplete(null, new UnauthorizedException());
+                        }
                     } else {
                         Debug.logErrorResponse(response);
                         returnError(listener, response);
@@ -281,6 +303,9 @@ public class WalletRepository extends BackendRepository {
     }
 
     public void getBalance(@NonNull OnCompleteListener<BigDecimal> listener) {
+        getBalance(listener, false);
+    }
+    public void getBalance(@NonNull OnCompleteListener<BigDecimal> listener, boolean hasRecover401) {
         Long sessionToken = Session.getWalletSessionToken();
         if (sessionToken == null) {
             getWalletSession(new OnCompleteListener<Long>() {
@@ -318,16 +343,20 @@ public class WalletRepository extends BackendRepository {
                     } else listener.onComplete(null, new IllegalStateException());
                 } else {
                     if (response.code() == 401) {
-                        authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
-                            @Override
-                            public void onComplete(TokenResponse value, Throwable error) {
-                                if (error != null) {
-                                    listener.onComplete(null, new UnauthorizedException());
-                                    return;
+                        if (!hasRecover401) {
+                            authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
+                                @Override
+                                public void onComplete(TokenResponse value, Throwable error) {
+                                    if (error != null) {
+                                        listener.onComplete(null, new UnauthorizedException());
+                                        return;
+                                    }
+                                    getBalance(listener, true);
                                 }
-                                getBalance(listener);
-                            }
-                        });
+                            });
+                        } else {
+                            listener.onComplete(null, new UnauthorizedException());
+                        }
                     } else {
                         Debug.logErrorResponse(response);
                         returnError(listener, response);
@@ -345,6 +374,9 @@ public class WalletRepository extends BackendRepository {
     }
 
     public void transfer(@NonNull String address, @NonNull Long amount, @Nullable String message, @NonNull OnCompleteListener<TransferModelResponse> listener) {
+        transfer(address, amount, message, listener, false);
+    }
+    public void transfer(@NonNull String address, @NonNull Long amount, @Nullable String message, @NonNull OnCompleteListener<TransferModelResponse> listener, boolean hasRecover401) {
         Long sessionToken = Session.getWalletSessionToken();
         if (sessionToken == null) {
             getWalletSession(new OnCompleteListener<Long>() {
@@ -381,16 +413,20 @@ public class WalletRepository extends BackendRepository {
                     } else listener.onComplete(null, new IllegalStateException());
                 } else {
                     if (response.code() == 401) {
-                        authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
-                            @Override
-                            public void onComplete(TokenResponse value, Throwable error) {
-                                if (error != null) {
-                                    listener.onComplete(null, new UnauthorizedException());
-                                    return;
+                        if (!hasRecover401) {
+                            authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
+                                @Override
+                                public void onComplete(TokenResponse value, Throwable error) {
+                                    if (error != null) {
+                                        listener.onComplete(null, new UnauthorizedException());
+                                        return;
+                                    }
+                                    transfer(address, amount, message, listener, true);
                                 }
-                                transfer(address, amount, message, listener);
-                            }
-                        });
+                            });
+                        } else {
+                            listener.onComplete(null, new UnauthorizedException());
+                        }
                     } else {
                         Debug.logErrorResponse(response);
                         listener.onComplete(null,

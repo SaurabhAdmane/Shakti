@@ -56,6 +56,9 @@ public class KYCRepository extends BackendRepository {
         authRepository = new AuthRepository();
     }
 
+    public void getUserDetails(OnCompleteListener<Map<String, Object>> listener) {
+        getUserDetails(listener, false);
+    }
     public void getUserDetails(OnCompleteListener<Map<String, Object>> listener, boolean hasRecover401) {
         service.getUserDetails(Session.getAuthorizationHeader()).enqueue(new Callback<Map<String, Object>>() {
             @EverythingIsNonNull
@@ -177,6 +180,9 @@ public class KYCRepository extends BackendRepository {
     }
 
     public void getKycDocumentTypes(OnCompleteListener<List<Map<String, Object>>> listener) {
+        getKycDocumentTypes(listener, false);
+    }
+    public void getKycDocumentTypes(OnCompleteListener<List<Map<String, Object>>> listener, boolean hasRecover401) {
         service.getDocumentTypes(Session.getAuthorizationHeader()).enqueue(new Callback<ResponseBody>() {
             @EverythingIsNonNull
             @Override
@@ -195,16 +201,21 @@ public class KYCRepository extends BackendRepository {
                 } else {
                     switch (response.code()) {
                         case 401:
-                            authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
-                                @Override
-                                public void onComplete(TokenResponse value, Throwable error) {
-                                    if (error != null) {
-                                        listener.onComplete(null, new UnauthorizedException());
-                                        return;
+                            if (!hasRecover401) {
+                                authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
+                                    @Override
+                                    public void onComplete(TokenResponse value, Throwable error) {
+                                        if (error != null) {
+                                            listener.onComplete(null, new UnauthorizedException());
+                                            return;
+                                        }
+                                        getKycDocumentTypes(listener, true);
                                     }
-                                    getKycDocumentTypes(listener);
-                                }
-                            });
+                                });
+                            } else {
+                                listener.onComplete(null, new UnauthorizedException());
+                                return;
+                            }
                             break;
                         default:
                             Debug.logErrorResponse(response);
@@ -276,6 +287,9 @@ public class KYCRepository extends BackendRepository {
     }
 
     public void uploadDocument(List<MultipartBody.Part> files, OnCompleteListener<Void> listener) {
+        uploadDocument(files, listener, false);
+    }
+    public void uploadDocument(List<MultipartBody.Part> files, OnCompleteListener<Void> listener, boolean hasRecover401) {
         service.uploadDocument(Session.getAuthorizationHeader(), files).enqueue(new Callback<Map<String, Object>>() {
             @EverythingIsNonNull
             @Override
@@ -287,16 +301,21 @@ public class KYCRepository extends BackendRepository {
                 } else {
                     switch (response.code()) {
                         case 401:
-                            authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
-                                @Override
-                                public void onComplete(TokenResponse value, Throwable error) {
-                                    if (error != null) {
-                                        listener.onComplete(null, new UnauthorizedException());
-                                        return;
+                            if (!hasRecover401) {
+                                authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
+                                    @Override
+                                    public void onComplete(TokenResponse value, Throwable error) {
+                                        if (error != null) {
+                                            listener.onComplete(null, new UnauthorizedException());
+                                            return;
+                                        }
+                                        uploadDocument(files, listener, true);
                                     }
-                                    uploadDocument(files, listener);
-                                }
-                            });
+                                });
+                            } else {
+                                listener.onComplete(null, new UnauthorizedException());
+                                return;
+                            }
                             break;
                         case 400:
                             String errMsg = ShaktiApplication.getContext().getString(R.string.err_unexpected);
@@ -327,6 +346,9 @@ public class KYCRepository extends BackendRepository {
     }
 
     public void subscription(@NonNull OnCompleteListener<Void> listener) {
+        subscription(listener, false);
+    }
+    public void subscription(@NonNull OnCompleteListener<Void> listener, boolean hasRecover401) {
         Call<ResponseBody> call = service.subscription(Session.getAuthorizationHeader());
         Debug.logDebug(call.request().toString());
         call.enqueue(new Callback<ResponseBody>() {
@@ -339,16 +361,21 @@ public class KYCRepository extends BackendRepository {
                 } else {
                     switch (response.code()) {
                         case 401:
-                            authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
-                                @Override
-                                public void onComplete(TokenResponse value, Throwable error) {
-                                    if (error != null) {
-                                        listener.onComplete(null, new UnauthorizedException());
-                                        return;
+                            if (!hasRecover401) {
+                                authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
+                                    @Override
+                                    public void onComplete(TokenResponse value, Throwable error) {
+                                        if (error != null) {
+                                            listener.onComplete(null, new UnauthorizedException());
+                                            return;
+                                        }
+                                        subscription(listener, true);
                                     }
-                                    subscription(listener);
-                                }
-                            });
+                                });
+                            } else {
+                                listener.onComplete(null, new UnauthorizedException());
+                                return;
+                            }
                             break;
                         case 404:
                             listener.onComplete(null, new RemoteException(

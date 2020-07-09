@@ -108,6 +108,9 @@ public class UserRepository extends BackendRepository {
      * Retrieve a user by authorization token
      */
     public void getUserAccount(@NonNull OnCompleteListener<UserAccount> listener) {
+        getUserAccount(listener, false);
+    }
+    public void getUserAccount(@NonNull OnCompleteListener<UserAccount> listener, boolean hasRecover401) {
         userService.getUserAccount(Session.getAuthorizationHeader()).enqueue(new Callback<UserAccount>() {
             @EverythingIsNonNull
             @Override
@@ -121,16 +124,20 @@ public class UserRepository extends BackendRepository {
                     }
                 } else {
                     if (response.code() == 401) {
-                        authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
-                            @Override
-                            public void onComplete(TokenResponse value, Throwable error) {
-                                if (error != null) {
-                                    listener.onComplete(null, new UnauthorizedException());
-                                    return;
+                        if (!hasRecover401) {
+                            authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
+                                @Override
+                                public void onComplete(TokenResponse value, Throwable error) {
+                                    if (error != null) {
+                                        listener.onComplete(null, new UnauthorizedException());
+                                        return;
+                                    }
+                                    getUserAccount(listener, true);
                                 }
-                                getUserAccount(listener);
-                            }
-                        });
+                            });
+                        } else {
+                            listener.onComplete(null, new UnauthorizedException());
+                        }
                     } else {
                         Debug.logErrorResponse(response);
                         returnError(listener, response);

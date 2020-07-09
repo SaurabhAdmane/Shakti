@@ -1,10 +1,7 @@
 @file:JvmName("LicenceRepository")
 package com.shakticoin.app.api.license
 
-import com.shakticoin.app.api.BaseUrl
-import com.shakticoin.app.api.OnCompleteListener
-import com.shakticoin.app.api.RemoteException
-import com.shakticoin.app.api.Session
+import com.shakticoin.app.api.*
 import com.shakticoin.app.api.auth.AuthRepository
 import com.shakticoin.app.api.auth.TokenResponse
 import com.shakticoin.app.util.Debug
@@ -36,6 +33,9 @@ class LicenseRepository {
     val authRepository = AuthRepository();
 
     fun getLicenses(listener: OnCompleteListener<List<LicenseType>?>?) {
+        getLicenses(listener, false)
+    }
+    fun getLicenses(listener: OnCompleteListener<List<LicenseType>?>?, hasRecover401: Boolean = false) {
         licenseService.getLicenses(Session.getAuthorizationHeader()).enqueue(object : Callback<List<LicenseType>?> {
             override fun onResponse(call: Call<List<LicenseType>?>, response: Response<List<LicenseType>?>) {
                 Debug.logDebug(response.toString())
@@ -47,15 +47,20 @@ class LicenseRepository {
                     } else listener!!.onComplete(listOf(), null);
                 } else {
                     if (response.code() == 401) {
-                        authRepository.refreshToken(Session.getRefreshToken(), object: OnCompleteListener<TokenResponse?>() {
-                            override fun onComplete(value: TokenResponse?, error: Throwable?) {
-                                if (error != null) {
-                                    listener!!.onComplete(null, error)
-                                    return;
+                        if (!hasRecover401) {
+                            authRepository.refreshToken(Session.getRefreshToken(), object : OnCompleteListener<TokenResponse?>() {
+                                override fun onComplete(value: TokenResponse?, error: Throwable?) {
+                                    if (error != null) {
+                                        listener!!.onComplete(null, error)
+                                        return;
+                                    }
+                                    getLicenses(listener, true)
                                 }
-                                getLicenses(listener)
-                            }
-                        })
+                            })
+                        } else {
+                            listener!!.onComplete(null, UnauthorizedException());
+                            return;
+                        }
                     } else {
                         Debug.logErrorResponse(response)
                         listener!!.onComplete(null, RemoteException(response.message(), response.code()))
