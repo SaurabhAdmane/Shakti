@@ -108,8 +108,8 @@ public class SignInActivity extends AppCompatActivity {
                     Toast.makeText(self, R.string.err_login_failed, Toast.LENGTH_LONG).show();
                     return;
                 }
-                Session.setAccessToken(tokens.getAccess());
-                Session.setRefreshToken(tokens.getRefresh(), rememberMe);
+                Session.setAccessToken(tokens.getAccess_token());
+                Session.setRefreshToken(tokens.getRefresh_token(), rememberMe);
                 SharedPreferences prefs = getSharedPreferences(PreferenceHelper.GENERAL_PREFERENCES, Context.MODE_PRIVATE);
                 prefs.edit().putBoolean(PreferenceHelper.PREF_KEY_HAS_ACCOUNT, true).apply();
 

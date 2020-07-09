@@ -7,6 +7,7 @@ import com.shakticoin.app.api.BaseUrl;
 import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.Session;
 import com.shakticoin.app.api.UnauthorizedException;
+import com.shakticoin.app.api.UnsafeHttpClient;
 import com.shakticoin.app.util.Debug;
 
 import okhttp3.internal.annotations.EverythingIsNonNull;
@@ -18,10 +19,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class AuthRepository extends BackendRepository {
     public LoginService loginService;
+    private static String TEST_BASIC = "Basic OWIwOWNiZTgtYzg4My00YmU1LWFhZjgtNjlkYTRiYjNlOTQyOmVJWWc5Mlk4cyZGUg==";
 
     public AuthRepository() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BaseUrl.USERSERVICE_BASE_URL)
+                .baseUrl(BaseUrl.IAM_BASE_URL)
+                .client(UnsafeHttpClient.getUnsafeOkHttpClient())   // FIXME: this must be removed some day
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -32,11 +35,7 @@ public class AuthRepository extends BackendRepository {
      * Login to the backend and return user's information if successful.
      */
     public void login(@NonNull String username, @NonNull String password, @NonNull OnCompleteListener<TokenResponse> listener) {
-        Credentials credentials = new Credentials();
-        credentials.setUsername(username);
-        credentials.setPassword(password);
-
-        Call<TokenResponse> call = loginService.token(credentials);
+        Call<TokenResponse> call = loginService.token(TEST_BASIC, "password", "openid", username, password);
         call.enqueue(new Callback<TokenResponse>() {
             @Override
             public void onResponse(@NonNull Call<TokenResponse> call, @NonNull Response<TokenResponse> response) {
@@ -59,8 +58,7 @@ public class AuthRepository extends BackendRepository {
     }
 
     public void refreshToken(@NonNull String refreshToken, @NonNull OnCompleteListener<TokenResponse> listener) {
-        TokenParameters parameters = new TokenParameters(null, refreshToken);
-        loginService.refresh(parameters).enqueue(new Callback<TokenResponse>() {
+        loginService.refresh(TEST_BASIC, "refresh_token", refreshToken).enqueue(new Callback<TokenResponse>() {
             @EverythingIsNonNull
             @Override
             public void onResponse(Call<TokenResponse> call, Response<TokenResponse> response) {
@@ -68,9 +66,9 @@ public class AuthRepository extends BackendRepository {
                 if (response.isSuccessful()) {
                     TokenResponse resp = response.body();
                     if (resp != null) {
-                        Session.setAccessToken(resp.getAccess());
-                        if (resp.getRefresh() != null) {
-                            Session.setRefreshToken(resp.getRefresh());
+                        Session.setAccessToken(resp.getAccess_token());
+                        if (resp.getRefresh_token() != null) {
+                            Session.setRefreshToken(resp.getRefresh_token());
                         }
                         listener.onComplete(resp, null);
                         return;

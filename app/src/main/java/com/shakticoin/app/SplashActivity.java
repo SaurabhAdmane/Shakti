@@ -61,7 +61,7 @@ public class SplashActivity extends AppCompatActivity {
                                 return;
                             }
 
-                            Session.setAccessToken(value.getAccess());
+                            Session.setAccessToken(value.getAccess_token());
                             UserRepository userRepo = new UserRepository();
                             userRepo.getUserAccount(new OnCompleteListener<UserAccount>() {
                                 @Override
