@@ -1,6 +1,7 @@
 package com.shakticoin.app.widget;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -11,7 +12,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+import androidx.core.widget.ImageViewCompat;
+
 import com.shakticoin.app.R;
+import com.shakticoin.app.ShaktiApplication;
 
 public class PageIndicator extends LinearLayout {
     private static final int MAX_ITEMS = 5;
@@ -21,6 +26,9 @@ public class PageIndicator extends LinearLayout {
     private float pixelsPerDP;
 
     private int selectedIndex;
+
+    private int selectedTickmarkColor = 0;
+    private int unselectedTickmarkColor = 0;
 
     private LinearLayout[] pages = new LinearLayout[MAX_ITEMS];
     private ImageView[] tickmarks = new ImageView[MAX_ITEMS];
@@ -57,15 +65,24 @@ public class PageIndicator extends LinearLayout {
             tickmarkLabels[i] = pages[i].findViewWithTag("label" + (i+1));
         }
 
+        selectedTickmarkColor = ContextCompat.getColor(ShaktiApplication.getContext(), R.color.colorBrand);
+        unselectedTickmarkColor = ContextCompat.getColor(ShaktiApplication.getContext(), R.color.colorTickmark);
+
         updateIndicators();
     }
 
     private void updateIndicators() {
-        for (ImageView tickmark : tickmarks) tickmark.setAlpha(OFF);
+        for (ImageView tickmark : tickmarks) {
+            tickmark.setAlpha(OFF);
+            ImageViewCompat.setImageTintList(tickmark, ColorStateList.valueOf(unselectedTickmarkColor));
+        }
         for (TextView label : tickmarkLabels) label.setAlpha(OFF);
         for (int i = 0; i < selectedIndex; i++) {
             tickmarks[i].setAlpha(ON);
             tickmarkLabels[i].setAlpha(ON);
+            if (i == selectedIndex-1) {
+                ImageViewCompat.setImageTintList(tickmarks[i], ColorStateList.valueOf(selectedTickmarkColor));
+            }
         }
     }
 
