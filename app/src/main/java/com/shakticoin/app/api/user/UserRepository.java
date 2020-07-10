@@ -9,9 +9,7 @@ import com.shakticoin.app.api.BaseUrl;
 import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.RemoteException;
 import com.shakticoin.app.api.Session;
-import com.shakticoin.app.api.UnauthorizedException;
 import com.shakticoin.app.api.auth.AuthRepository;
-import com.shakticoin.app.api.auth.TokenResponse;
 import com.shakticoin.app.util.Debug;
 
 import org.json.JSONArray;
@@ -111,46 +109,48 @@ public class UserRepository extends BackendRepository {
         getUserAccount(listener, false);
     }
     public void getUserAccount(@NonNull OnCompleteListener<UserAccount> listener, boolean hasRecover401) {
-        userService.getUserAccount(Session.getAuthorizationHeader()).enqueue(new Callback<UserAccount>() {
-            @EverythingIsNonNull
-            @Override
-            public void onResponse(Call<UserAccount> call, Response<UserAccount> response) {
-                Debug.logDebug(response.toString());
-                if (response.isSuccessful()) {
-                    UserAccount user = response.body();
-                    if (user != null) {
-                        Session.setUserAccount(user);
-                        listener.onComplete(user, null);
-                    }
-                } else {
-                    if (response.code() == 401) {
-                        if (!hasRecover401) {
-                            authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
-                                @Override
-                                public void onComplete(TokenResponse value, Throwable error) {
-                                    if (error != null) {
-                                        listener.onComplete(null, new UnauthorizedException());
-                                        return;
-                                    }
-                                    getUserAccount(listener, true);
-                                }
-                            });
-                        } else {
-                            listener.onComplete(null, new UnauthorizedException());
-                        }
-                    } else {
-                        Debug.logErrorResponse(response);
-                        returnError(listener, response);
-                    }
-                }
-            }
-
-            @EverythingIsNonNull
-            @Override
-            public void onFailure(Call<UserAccount> call, Throwable t) {
-                returnError(listener, t);
-            }
-        });
+        // FIXME: temporarily disabled as the userservice is decommissioned
+        listener.onComplete(null, null);
+//        userService.getUserAccount(Session.getAuthorizationHeader()).enqueue(new Callback<UserAccount>() {
+//            @EverythingIsNonNull
+//            @Override
+//            public void onResponse(Call<UserAccount> call, Response<UserAccount> response) {
+//                Debug.logDebug(response.toString());
+//                if (response.isSuccessful()) {
+//                    UserAccount user = response.body();
+//                    if (user != null) {
+//                        Session.setUserAccount(user);
+//                        listener.onComplete(user, null);
+//                    }
+//                } else {
+//                    if (response.code() == 401) {
+//                        if (!hasRecover401) {
+//                            authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
+//                                @Override
+//                                public void onComplete(TokenResponse value, Throwable error) {
+//                                    if (error != null) {
+//                                        listener.onComplete(null, new UnauthorizedException());
+//                                        return;
+//                                    }
+//                                    getUserAccount(listener, true);
+//                                }
+//                            });
+//                        } else {
+//                            listener.onComplete(null, new UnauthorizedException());
+//                        }
+//                    } else {
+//                        Debug.logErrorResponse(response);
+//                        returnError(listener, response);
+//                    }
+//                }
+//            }
+//
+//            @EverythingIsNonNull
+//            @Override
+//            public void onFailure(Call<UserAccount> call, Throwable t) {
+//                returnError(listener, t);
+//            }
+//        });
     }
 
     /**
