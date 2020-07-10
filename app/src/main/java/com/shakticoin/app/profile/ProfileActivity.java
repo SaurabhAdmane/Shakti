@@ -29,6 +29,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.shakticoin.app.R;
 import com.shakticoin.app.ShaktiApplication;
 import com.shakticoin.app.api.OnCompleteListener;
+import com.shakticoin.app.api.RemoteException;
 import com.shakticoin.app.api.Session;
 import com.shakticoin.app.api.UnauthorizedException;
 import com.shakticoin.app.api.country.Country;
@@ -141,7 +142,12 @@ public class ProfileActivity extends DrawerActivity {
             public void onComplete(Map<String, Object> value, Throwable error) {
                 viewModel.getProgressBarTrigger().set(false);
                 if (error != null) {
-                    if (error instanceof UnauthorizedException) {
+                    if (error instanceof RemoteException && ((RemoteException) error).getResponseCode() == 404) {
+                        // not an error just no KYC data stored yet
+                        // enable button to the next page
+                        personalInfoViewModel.nextToSecondPersonalPage.set(true);
+                        return;
+                    } else if (error instanceof UnauthorizedException) {
                         startActivity(Session.unauthorizedIntent(self));
                     } else {
                         Toast.makeText(self, Debug.getFailureMsg(self, error), Toast.LENGTH_LONG).show();
