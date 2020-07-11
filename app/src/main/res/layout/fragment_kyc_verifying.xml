@@ -13,7 +13,10 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/scrollable_bottom_padding">
+            android:clickable="true"
+            android:onClick="onTapOutsideDrawers"
+            android:paddingBottom="@dimen/scrollable_bottom_padding"
+            tools:ignore="KeyboardInaccessibleWidget">
 
             <TextView
                 android:id="@+id/label"

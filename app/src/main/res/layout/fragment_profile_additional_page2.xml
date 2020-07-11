@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <variable
@@ -13,7 +14,10 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/scrollable_bottom_padding">
+            android:clickable="true"
+            android:onClick="onTapOutsideDrawers"
+            android:paddingBottom="@dimen/scrollable_bottom_padding"
+            tools:ignore="KeyboardInaccessibleWidget">
 
             <TextView
                 android:id="@+id/label"

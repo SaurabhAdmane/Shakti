@@ -71,6 +71,14 @@ public abstract class DrawerActivity extends AppCompatActivity {
         rightDrawer = root.findViewById(R.id.notificationContainer);
         mainFragment = root.findViewById(R.id.mainFragment);
 
+        // We must close both left and right drawers if user clicks inside a space between
+        // drawers. All views inside this area are children of mainFragment and we are trying
+        // to install a listener at the root of this hierarchy.
+        View rootChild = ((ViewGroup) mainFragment).getChildAt(0);
+        if (rootChild != null) {
+            rootChild.setOnClickListener(this::onTapOutsideDrawers);
+        }
+
         TextView toolbarTitle = root.findViewById(R.id.toolbarTitle);
         toolbarTitle.setText(title);
 
