@@ -100,7 +100,7 @@ public class SignInActivity extends AppCompatActivity {
         binding.progressBar.setVisibility(View.VISIBLE);
 
         final Activity self = this;
-        authRepository.login(username, password, new OnCompleteListener<TokenResponse>() {
+        authRepository.login(username, password, rememberMe, new OnCompleteListener<TokenResponse>() {
             @Override
             public void onComplete(TokenResponse tokens, Throwable error) {
                 binding.progressBar.setVisibility(View.INVISIBLE);
@@ -108,8 +108,7 @@ public class SignInActivity extends AppCompatActivity {
                     Toast.makeText(self, R.string.err_login_failed, Toast.LENGTH_LONG).show();
                     return;
                 }
-                Session.setAccessToken(tokens.getAccess_token());
-                Session.setRefreshToken(tokens.getRefresh_token(), rememberMe);
+
                 SharedPreferences prefs = getSharedPreferences(PreferenceHelper.GENERAL_PREFERENCES, Context.MODE_PRIVATE);
                 prefs.edit().putBoolean(PreferenceHelper.PREF_KEY_HAS_ACCOUNT, true).apply();
 
