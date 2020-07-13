@@ -2,6 +2,7 @@ package com.shakticoin.app.wallet;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -13,6 +14,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.shakticoin.app.R;
+import com.shakticoin.app.ShaktiApplication;
 import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.Session;
 import com.shakticoin.app.api.kyc.KYCRepository;
@@ -21,6 +23,9 @@ import com.shakticoin.app.api.wallet.WalletRepository;
 import com.shakticoin.app.databinding.ActivityWalletBinding;
 import com.shakticoin.app.miner.MiningLicenseActivity;
 import com.shakticoin.app.registration.SignInActivity;
+import com.shakticoin.app.room.AppDatabase;
+import com.shakticoin.app.room.LockStatusDao;
+import com.shakticoin.app.room.entity.LockStatus;
 import com.shakticoin.app.util.Debug;
 import com.shakticoin.app.vault.VaultChooserActivity;
 import com.shakticoin.app.widget.DrawerActivity;
@@ -33,6 +38,7 @@ public class WalletActivity extends DrawerActivity {
 
     private WalletRepository walletRepository = new WalletRepository();
     private KYCRepository kycRepository = new KYCRepository();
+    private static AsyncTask<Void, Void, Boolean> walletStatusCheckTask;
 
     @Override
     public void onBackPressed() {
@@ -65,17 +71,8 @@ public class WalletActivity extends DrawerActivity {
         // update wallet balance
         getWalletBalance();
 
-        kycRepository.isWalletUnlocked(new OnCompleteListener<Boolean>() {
-            @Override
-            public void onComplete(Boolean unlocked, Throwable error) {
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .add(R.id.wallet_actions, unlocked ?
-                                new WalletActionsFragment() :
-                                new KycVerificationRequiredFragment())
-                        .commit();
-            }
-        });
+        // check wallet lock status and display action buttons if unlocked
+        new CheckWalletLocked(getSupportFragmentManager()).execute();
     }
 
     @Override
@@ -157,6 +154,43 @@ public class WalletActivity extends DrawerActivity {
                     viewModel.balance.set(balance);
                 }
             });
+        }
+    }
+
+    static class CheckWalletLocked extends AsyncTask<Void, Void, Boolean> {
+        FragmentManager fragmentManager;
+
+        CheckWalletLocked(FragmentManager fragmentManager) {
+            this.fragmentManager = fragmentManager;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            LockStatusDao lockStatuses = AppDatabase.getDatabase(ShaktiApplication.getContext()).lockStatusDao();
+            LockStatus status = lockStatuses.getWalletKYCLockStatus();
+            return status != null && "UNLOCKED".equals(status.getStatus());
+        }
+
+        @Override
+        protected void onPostExecute(Boolean unlocked) {
+            if (unlocked) {
+                fragmentManager
+                        .beginTransaction()
+                        .add(R.id.wallet_actions, new WalletActionsFragment())
+                        .commit();
+            } else {
+                new KYCRepository().isWalletUnlocked(new OnCompleteListener<Boolean>() {
+                    @Override
+                    public void onComplete(Boolean unlocked, Throwable error) {
+                        fragmentManager
+                                .beginTransaction()
+                                .add(R.id.wallet_actions, unlocked ?
+                                        new WalletActionsFragment() :
+                                        new KycVerificationRequiredFragment())
+                                .commit();
+                    }
+                });
+            }
         }
     }
 }
