@@ -156,7 +156,9 @@ public class WalletRepository extends BackendRepository {
                         ResponseBody errorBody = response.errorBody();
                         if (errorBody != null) {
                             try {
-                                JSONObject errorJson = new JSONObject(errorBody.string());
+                                String errorBodyContent = errorBody.string();
+                                Debug.logDebug(errorBodyContent);
+                                JSONObject errorJson = new JSONObject(errorBodyContent);
                                 if (errorJson.has("message")) errorMsg = errorJson.getString("message");
                             } catch (JSONException | IOException e) {
                                 Debug.logException(e);
