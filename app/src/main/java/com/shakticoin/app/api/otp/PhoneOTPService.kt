@@ -20,9 +20,9 @@ interface PhoneOTPService {
 
     @Headers("Content-Type: application/json", "Accept: application/json")
     @POST("registration/request")
-    fun registrationRequest(@Body parameters : MobileRegistrationRequest) : Call<MainResponseBean?>?
+    fun registrationRequest(@Body parameters : MobileRegistrationRequest) : Call<MainResponseBean?>
 
     @Headers("Content-Type: application/json", "Accept: application/json")
     @POST("registration/confirm-registration")
-    fun confirmRegistration(@Body parameters : ConfirmRegistrationRequest) : Call<MainResponseBean?>?
+    fun confirmRegistration(@Body parameters : ConfirmRegistrationRequest) : Call<MainResponseBean?>
 }

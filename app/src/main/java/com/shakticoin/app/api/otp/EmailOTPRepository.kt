@@ -20,8 +20,7 @@ class EmailOTPRepository : BackendRepository() {
 
     val authRepository = AuthRepository();
 
-    fun requestRegistration(email: String, listener: OnCompleteListener<Void>) {requestRegistration(email, listener)}
-    fun requestRegistration(email: String, listener: OnCompleteListener<Void>, hasRecover401: Boolean = false) {
+    fun requestRegistration(email: String, listener: OnCompleteListener<Void>) {
         val parameters = EmailRegistrationRequest(null, email);
         service.registrationRequest(parameters).enqueue(object : Callback<MainResponseBean?> {
             override fun onResponse(call: Call<MainResponseBean?>, response: Response<MainResponseBean?>) {
@@ -46,6 +45,23 @@ class EmailOTPRepository : BackendRepository() {
     }
 
     fun confirmRegistration(token: String, listener: OnCompleteListener<Boolean>) {
+        service.confirmRegistration(token).enqueue(object : Callback<MainResponseBean?> {
+            override fun onResponse(call: Call<MainResponseBean?>, response: Response<MainResponseBean?>) {
+                Debug.logDebug(response.toString())
+                if (response.isSuccessful) {
+                    val resp = response.body();
+                    if (resp != null) {
+                        listener.onComplete(true, null);
+                    } else listener.onComplete(null, null);
+                } else {
+                    return returnError(listener, response);
+                }
+            }
 
+            override fun onFailure(call: Call<MainResponseBean?>, t: Throwable) {
+                Debug.logDebug(t.message)
+                returnError(listener, t)
+            }
+        })
     }
 }
