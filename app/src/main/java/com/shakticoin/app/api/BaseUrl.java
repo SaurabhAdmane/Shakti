@@ -12,4 +12,5 @@ public class BaseUrl {
     public static final String KYC_USER_SERVICE_BASE_URL = "https://kycuser.test.shakticoin.com/kyc-user-service/api/v1/";
     public static final String EMAIL_OTP_SERVICE_BASE_URL = "https://http://mobileotpservice.test.shakticoin.com/email-otp-service/api/v1/";
     public static final String PHONE_OTP_SERVICE_BASE_URL = "https://emailotpservice.test.shakticoin.com/sms-otp-service/api/v1/";
+    public static final String ONBOARD_SERVICE_BASE_URL = "https://onboard.test.shakticoin.com/onboardshaktiuser/api/v1/";
 }
