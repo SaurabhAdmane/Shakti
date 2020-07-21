@@ -29,6 +29,13 @@ public class BackendRepository {
      * It can return exception of different types depending on error code.
      */
     protected void returnError(@NonNull OnCompleteListener<?> listener, @NonNull Response<?> response) {
+        ResponseBody body = response.errorBody();
+        if (body != null) {
+            try {
+                Debug.logDebug(body.string());
+            } catch (IOException e) {
+            }
+        }
         if (response.code() == 401) {
             listener.onComplete(null, new UnauthorizedException());
         } else {

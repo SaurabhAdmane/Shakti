@@ -33,12 +33,12 @@ public class SignUpOTPActivity extends AppCompatActivity {
         phoneNumber = intent.getStringExtra(CommonUtil.prefixed("phoneNumber", this));
         password = intent.getStringExtra(CommonUtil.prefixed("password", this));
 
-        if (!TextUtils.isEmpty(emailAddress)) {
-            sendEmaiOTPRequest();
-        }
-//        if (!TextUtils.isEmpty(phoneNumber)) {
-//            sendPhoneOTPRequest();
+//        if (!TextUtils.isEmpty(emailAddress)) {
+//            sendEmaiOTPRequest();
 //        }
+        if (!TextUtils.isEmpty(phoneNumber)) {
+            sendPhoneOTPRequest();
+        }
     }
 
     private void sendEmaiOTPRequest() {
