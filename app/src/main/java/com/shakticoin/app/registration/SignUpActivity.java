@@ -1,6 +1,5 @@
 package com.shakticoin.app.registration;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -14,12 +13,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.shakticoin.app.R;
-import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.Session;
 import com.shakticoin.app.api.country.Country;
 import com.shakticoin.app.api.country.Subdivision;
-import com.shakticoin.app.api.user.UserAccount;
-import com.shakticoin.app.util.Debug;
+import com.shakticoin.app.util.CommonUtil;
 import com.shakticoin.app.util.Validator;
 
 import java.util.Arrays;
@@ -57,23 +54,28 @@ public class SignUpActivity extends AppCompatActivity implements TextView.OnEdit
     }
 
     public void startRegistration() {
-        final Activity activity = this;
-        viewModel.createUser(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(Void value, Throwable error) {
-                if (error != null) {
-                    Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
-                    Debug.logException(error);
-                    return;
-                }
-
-                UserAccount user = Session.getUserAccount();
-                // TODO: confirmation in email does not work yet
-
-                DialogConfirmEmail.getInstance(false)
-                        .show(getSupportFragmentManager(), DialogConfirmEmail.class.getSimpleName());
-            }
-        });
+        Intent intent = new Intent(this, SignUpOTPActivity.class);
+        intent.putExtra(CommonUtil.prefixed("emailAddress", this), viewModel.emailAddress.getValue());
+        intent.putExtra(CommonUtil.prefixed("phoneNumber", this), viewModel.phoneNumber.getValue());
+        intent.putExtra(CommonUtil.prefixed("password", this), viewModel.newPassword.getValue());
+        startActivity(intent);
+//        final Activity activity = this;
+//        viewModel.createUser(new OnCompleteListener<Void>() {
+//            @Override
+//            public void onComplete(Void value, Throwable error) {
+//                if (error != null) {
+//                    Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
+//                    Debug.logException(error);
+//                    return;
+//                }
+//
+//                UserAccount user = Session.getUserAccount();
+//                // TODO: confirmation in email does not work yet
+//
+//                DialogConfirmEmail.getInstance(false)
+//                        .show(getSupportFragmentManager(), DialogConfirmEmail.class.getSimpleName());
+//            }
+//        });
     }
 
     public void onGoBack(View view) {
@@ -93,6 +95,7 @@ public class SignUpActivity extends AppCompatActivity implements TextView.OnEdit
     /** Return true if all fields on the first page has valid values */
     private boolean validateContacts() {
         boolean hasErrors = false;
+        /*
         if (TextUtils.isEmpty(viewModel.firstName.getValue())) {
             viewModel.firstNameErrMsg.setValue(getString(R.string.err_required));
             hasErrors = true;
@@ -101,6 +104,7 @@ public class SignUpActivity extends AppCompatActivity implements TextView.OnEdit
             viewModel.lastNameErrMsg.setValue(getString(R.string.err_required));
             hasErrors = true;
         }
+        */
 
         boolean hasEmailAndPhone = true;
         if (!Validator.isPhoneNumber(viewModel.phoneNumber.getValue())) {

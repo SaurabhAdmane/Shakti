@@ -4,16 +4,24 @@ import com.shakticoin.app.api.BackendRepository
 import com.shakticoin.app.api.BaseUrl
 import com.shakticoin.app.api.OnCompleteListener
 import com.shakticoin.app.util.Debug
+import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 class PhoneOTPRepository : BackendRepository() {
+    var client = OkHttpClient.Builder()
+            .readTimeout(30, TimeUnit.SECONDS)
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .build()
+
     private val service: PhoneOTPService = Retrofit.Builder()
             .baseUrl(BaseUrl.PHONE_OTP_SERVICE_BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
+            .client(client)
             .build()
             .create(PhoneOTPService::class.java)
 
