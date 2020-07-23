@@ -9,14 +9,9 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.country.Country;
 import com.shakticoin.app.api.country.CountryRepository;
 import com.shakticoin.app.api.country.Subdivision;
-import com.shakticoin.app.api.user.CreateUserRequest;
-import com.shakticoin.app.api.user.UserAccount;
-import com.shakticoin.app.api.user.UserRepository;
-import com.shakticoin.app.util.Debug;
 import com.shakticoin.app.widget.InlineLabelSpinner;
 
 import java.util.Collections;
@@ -26,9 +21,7 @@ import java.util.Locale;
 
 public class SignUpActivityModel extends ViewModel {
     public MutableLiveData<String> firstName = new MutableLiveData<>();
-    MutableLiveData<String> firstNameErrMsg = new MutableLiveData<>();
     public MutableLiveData<String> lastName = new MutableLiveData<>();
-    MutableLiveData<String> lastNameErrMsg = new MutableLiveData<>();
     public MutableLiveData<String> emailAddress = new MutableLiveData<>();
     MutableLiveData<String> emailAddressErrMsg = new MutableLiveData<>();
     public MutableLiveData<String> phoneNumber = new MutableLiveData<>();
@@ -88,28 +81,5 @@ public class SignUpActivityModel extends ViewModel {
         if (spinner.isChoiceMade()) {
             stateProvinceCode.set((Subdivision) spinner.getAdapter().getItem(position));
         }
-    }
-
-    void createUser(OnCompleteListener<Void> listener) {
-        progressBarVisibility.set(View.VISIBLE);
-
-        CreateUserRequest request = new CreateUserRequest();
-        request.setMobile(phoneNumber.getValue());
-        String email = emailAddress.getValue();
-        request.setEmail(email);
-        request.setUsername(email);
-        request.setPassword(newPassword.getValue());
-
-        UserRepository repository = new UserRepository();
-        repository.createUserAccount(request, new OnCompleteListener<UserAccount>() {
-            @Override
-            public void onComplete(UserAccount value, Throwable error) {
-                progressBarVisibility.set(View.INVISIBLE);
-                if (error != null) {
-                    Debug.logException(error);
-                }
-                listener.onComplete(null, error);
-            }
-        });
     }
 }

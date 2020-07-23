@@ -70,18 +70,6 @@ public class SignUpContactsFragment extends Fragment {
         binding.phoneNumberLayout.setValidator((view, value) -> Validator.isPhoneNumber(value));
 
         // display error callout for the field if error message is set
-        viewModel.firstNameErrMsg.observe(this, s -> {
-            if (!TextUtils.isEmpty(s)) {
-                binding.firstNameLayout.setError(s);
-                viewModel.firstNameErrMsg.setValue(null);
-            }
-        });
-        viewModel.lastNameErrMsg.observe(this, s -> {
-            if (!TextUtils.isEmpty(s)) {
-                binding.lastNameLayout.setError(s);
-                viewModel.lastNameErrMsg.setValue(null);
-            }
-        });
         viewModel.emailAddressErrMsg.observe(this, s -> {
             if (!TextUtils.isEmpty(s)) {
                 binding.emailAddressLayout.setError(s);
