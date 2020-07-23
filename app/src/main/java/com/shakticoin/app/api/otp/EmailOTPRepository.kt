@@ -20,7 +20,7 @@ class EmailOTPRepository : BackendRepository() {
 
     val authRepository = AuthRepository();
 
-    fun requestRegistration(email: String, listener: OnCompleteListener<Void>) {
+    fun requestRegistration(email: String, listener: OnCompleteListener<Void?>) {
         val parameters = EmailRegistrationRequest(null, email);
         service.registrationRequest(parameters).enqueue(object : Callback<MainResponseBean?> {
             override fun onResponse(call: Call<MainResponseBean?>, response: Response<MainResponseBean?>) {

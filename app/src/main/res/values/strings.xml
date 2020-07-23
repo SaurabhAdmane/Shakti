@@ -697,4 +697,8 @@
     </string>
     <string name="dlg_pass__validation_msg1">The passphrase cannot be empty</string>
     <string name="dlg_pass__validation_msg2">The main passphrase and confirmation passphrase are not equal</string>
+    <string name="otp__description">You must confirm both email address and mobile phone number before proceed. Please click the link in the message you should find in your mailbox and enter verification code from the SMS.</string>
+    <string name="otp_smscode">SMS verification code</string>
+    <string name="otp_smscode_required">Please enter a verification code from the SMS</string>
+    <string name="otp__success">The account is created and you can log in now</string>
 </resources>

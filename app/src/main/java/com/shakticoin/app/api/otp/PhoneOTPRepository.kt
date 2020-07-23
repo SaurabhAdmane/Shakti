@@ -3,8 +3,11 @@ package com.shakticoin.app.api.otp
 import com.shakticoin.app.api.BackendRepository
 import com.shakticoin.app.api.BaseUrl
 import com.shakticoin.app.api.OnCompleteListener
+import com.shakticoin.app.api.RemoteMessageException
 import com.shakticoin.app.util.Debug
 import okhttp3.OkHttpClient
+import okhttp3.ResponseBody
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -25,7 +28,7 @@ class PhoneOTPRepository : BackendRepository() {
             .build()
             .create(PhoneOTPService::class.java)
 
-    fun requestRegistration(phoneNumber: String, listener: OnCompleteListener<Void>) {
+    fun requestRegistration(phoneNumber: String, listener: OnCompleteListener<Void?>) {
         val parameters = MobileRegistrationRequest();
         parameters.mobileNo = phoneNumber
         service.registrationRequest(parameters).enqueue(object: Callback<MainResponseBean?> {
@@ -49,7 +52,7 @@ class PhoneOTPRepository : BackendRepository() {
         });
     }
 
-    fun confirmRegistration(mobileNo: String, code: String, listener: OnCompleteListener<Boolean>) {
+    fun confirmRegistration(mobileNo: String, code: String, listener: OnCompleteListener<Boolean?>) {
         val parameters = ConfirmRegistrationRequest()
         parameters.mobileNo = mobileNo
         parameters.otp = code
@@ -62,12 +65,19 @@ class PhoneOTPRepository : BackendRepository() {
             override fun onResponse(call: Call<MainResponseBean?>, response: Response<MainResponseBean?>) {
                 Debug.logDebug(response.toString())
                 if (response.isSuccessful) {
-                    val resp = response.body()
-                    if (resp != null) {
-                        listener.onComplete(true, null)
-                    } else listener.onComplete(false, null)
+                    listener.onComplete(true, null)
                 } else {
-                    return returnError(listener, response)
+                    var errorMsg: String? = null
+                    val errorBody: ResponseBody? = response.errorBody()
+                    if (errorBody != null) {
+                        val content = errorBody.string()
+                        val json = JSONObject(content)
+                        if (json.has("responseMsg")) {
+                            errorMsg = json.getString("responseMsg")
+                        }
+                    }
+                    listener.onComplete(null, RemoteMessageException(errorMsg?:response.message(), response.code()))
+                    return;
                 }
             }
 

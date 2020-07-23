@@ -51,38 +51,10 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="24dp"
                 android:gravity="center_horizontal"
-                android:text="Enter verification codes that you have received in email and SMS verification requests."
+                android:text="@string/otp__description"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/title" />
-
-            <com.shakticoin.app.widget.TextInputLayout
-                android:id="@+id/emailOtpLayout"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="32dp"
-                android:layout_marginEnd="24dp"
-                app:labelFontTypeface="@font/lato"
-                app:labelTextSize="11sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/description"
-                tools:layout_conversion_absoluteHeight="1dp"
-                tools:layout_conversion_absoluteWidth="1dp">
-
-                <com.shakticoin.app.widget.InlineLabelEditText
-                    android:id="@+id/emailOtp"
-                    style="@style/AppTextField"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:enabled="false"
-                    android:hint="Email verification code"
-                    android:inputType="textCapWords|textPersonName"
-                    android:text="" />
-
-            </com.shakticoin.app.widget.TextInputLayout>
 
             <com.shakticoin.app.widget.TextInputLayout
                 android:id="@+id/phoneOtpLayout"
@@ -95,7 +67,7 @@
                 app:labelFontTypeface="@font/lato"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/emailOtpLayout"
+                app:layout_constraintTop_toBottomOf="@+id/description"
                 tools:layout_conversion_absoluteHeight="1dp"
                 tools:layout_conversion_absoluteWidth="1dp">
 
@@ -105,24 +77,36 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="SMS verification code"
-                    android:inputType="textCapWords|textPersonName"/>
+                    android:hint="@string/otp_smscode"
+                    android:imeOptions="actionDone"
+                    android:inputType="number"/>
 
             </com.shakticoin.app.widget.TextInputLayout>
 
             <Button
                 android:id="@+id/doMainAction"
-                style="@style/AppButton.Circle"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
+                style="@style/AppButton.Rounded"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="100dp"
+                android:layout_marginTop="48dp"
                 android:layout_marginEnd="24dp"
                 android:onClick="onMainAction"
-                android:text="@string/next"
+                android:text="@string/register_now"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/phoneOtpLayout"/>
+                app:layout_constraintTop_toBottomOf="@+id/phoneOtpLayout" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

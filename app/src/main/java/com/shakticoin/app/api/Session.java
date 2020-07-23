@@ -7,11 +7,11 @@ import android.os.Build;
 import android.os.LocaleList;
 import android.security.keystore.KeyGenParameterSpec;
 
+import androidx.annotation.NonNull;
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKeys;
 
 import com.shakticoin.app.ShaktiApplication;
-import com.shakticoin.app.api.user.UserAccount;
 import com.shakticoin.app.registration.SignInActivity;
 import com.shakticoin.app.util.Debug;
 import com.shakticoin.app.util.PreferenceHelper;
@@ -23,7 +23,7 @@ import java.util.Locale;
 public class Session {
     private static String accessToken;
     private static String refreshToken;
-    private static UserAccount userAccount;
+    private static String shaktiId;
     private static Long walletSessionToken;
     private static String walletPassphrase;
 
@@ -99,12 +99,12 @@ public class Session {
     }
 
 
-    public static UserAccount getUserAccount() {
-        return userAccount;
+    public static @NonNull String getShaktiId() {
+        return shaktiId;
     }
 
-    public static synchronized void setUserAccount(UserAccount userAccount) {
-        Session.userAccount = userAccount;
+    public static synchronized void setShaktiId(@NonNull String shaktiId) {
+        Session.shaktiId = shaktiId;
     }
 
     public static String getWalletPassphrase() {
@@ -118,7 +118,7 @@ public class Session {
     public static synchronized void clean() {
         accessToken         = null;
         refreshToken        = null;
-        userAccount         = null;
+        shaktiId            = null;
         walletSessionToken  = null;
         walletPassphrase    = null;
         Context context = ShaktiApplication.getContext();

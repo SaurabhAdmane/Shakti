@@ -1,25 +1,14 @@
 package com.shakticoin.app.api.user;
 
-import android.text.TextUtils;
-
 import androidx.annotation.NonNull;
 
 import com.shakticoin.app.api.BackendRepository;
 import com.shakticoin.app.api.BaseUrl;
 import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.RemoteException;
-import com.shakticoin.app.api.Session;
 import com.shakticoin.app.api.auth.AuthRepository;
 import com.shakticoin.app.util.Debug;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.util.Iterator;
-
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -39,67 +28,6 @@ public class UserRepository extends BackendRepository {
                 .build();
         userService = retrofit.create(UserService.class);
         authRepository = new AuthRepository();
-    }
-
-    /**
-     * Create a new user account.
-     */
-    public void createUserAccount(@NonNull CreateUserRequest parameters, @NonNull OnCompleteListener<UserAccount> listener) {
-        Call<UserAccount> call = userService.createUserAccount(parameters);
-        call.enqueue(new Callback<UserAccount>() {
-            @Override
-            public void onResponse(@NonNull Call<UserAccount> call, @NonNull Response<UserAccount> response) {
-                if (call.isExecuted()) {
-                    Debug.logDebug(response.toString());
-                    if (response.isSuccessful()) {
-                        UserAccount user = response.body();
-                        if (user != null) {
-                            Session.setUserAccount(user);
-                        }
-                        listener.onComplete(null,null);
-                    } else {
-                        try {
-                            // TODO: we need an universal way to parce error responsed
-                            // currently it can be
-                            // {"email":["This email already exists."],"profile":{"mobile":["This mobile number already exists."]}}
-                            ResponseBody errorBody = response.errorBody();
-                            if (errorBody != null) {
-                                String errorResponse = errorBody.string();
-                                Debug.logDebug(errorResponse);
-                                if (!TextUtils.isEmpty(errorResponse)) {
-                                    JSONObject json = new JSONObject(errorResponse);
-                                    if (json.has("email")) {
-                                        JSONArray emailMessages = json.getJSONArray("email");
-                                        listener.onComplete(null, new RemoteException("email", emailMessages.getString(0), response.code()));
-                                        return;
-                                    }
-                                    if (json.has("profile")) {
-                                        JSONObject jsonProfile = json.getJSONObject("profile");
-                                        Iterator<String> iter = jsonProfile.keys();
-                                        if (iter.hasNext()) {
-                                            String name = iter.next();
-                                            JSONArray messages = jsonProfile.getJSONArray(name);
-                                            listener.onComplete(null,
-                                                    new RemoteException(name, messages.getString(0), response.code()));
-                                            return;
-                                        }
-                                    }
-                                }
-                            }
-
-                        } catch (IOException | JSONException e) {
-                            Debug.logException(e);
-                        }
-                        listener.onComplete(null, new RemoteException(response.message(), response.code()));
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<UserAccount> call, @NonNull Throwable t) {
-                returnError(listener, t);
-            }
-        });
     }
 
     /**
