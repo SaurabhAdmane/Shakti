@@ -3,6 +3,7 @@ package com.shakticoin.app.api.onboard
 import com.shakticoin.app.api.*
 import com.shakticoin.app.api.auth.AuthRepository
 import com.shakticoin.app.api.auth.TokenResponse
+import com.shakticoin.app.util.Debug
 import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
@@ -54,6 +55,44 @@ class OnboardRepository : BackendRepository() {
                                             return
                                         }
                                         addUser(emailAddress, phoneNumber, password, listener, true);
+                                    }
+                                })
+                            } else {
+                                listener.onComplete(null, UnauthorizedException())
+                                return
+                            }
+                        }
+                        else -> return returnError(listener, response)
+                    }
+                }
+            }
+
+        })
+    }
+
+    fun createWallet(listener: OnCompleteListener<String>) {createWallet(listener, false)}
+    fun createWallet(listener: OnCompleteListener<String>, hasRecover401: Boolean) {
+        onboardService.createWallet(Session.getAuthorizationHeader()).enqueue(object: Callback<ResponseBean?> {
+            override fun onFailure(call: Call<ResponseBean?>, t: Throwable) {
+                return returnError(listener, t);
+            }
+
+            override fun onResponse(call: Call<ResponseBean?>, response: Response<ResponseBean?>) {
+                Debug.logDebug(response.toString())
+                if (response.isSuccessful) {
+                    val resp = response.body()
+                    Debug.logDebug("ok");
+                } else {
+                    when(response.code()) {
+                        401 -> {
+                            if (!hasRecover401) {
+                                authRepository.refreshToken(Session.getRefreshToken(), object: OnCompleteListener<TokenResponse>() {
+                                    override fun onComplete(value: TokenResponse?, error: Throwable?) {
+                                        if (error != null) {
+                                            listener.onComplete(null, error)
+                                            return
+                                        }
+                                        createWallet(listener, true);
                                     }
                                 })
                             } else {

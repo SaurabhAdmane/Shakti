@@ -18,6 +18,7 @@ import com.shakticoin.app.ShaktiApplication;
 import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.Session;
 import com.shakticoin.app.api.kyc.KYCRepository;
+import com.shakticoin.app.api.onboard.OnboardRepository;
 import com.shakticoin.app.api.wallet.SessionException;
 import com.shakticoin.app.api.wallet.WalletRepository;
 import com.shakticoin.app.databinding.ActivityWalletBinding;
@@ -38,6 +39,7 @@ public class WalletActivity extends DrawerActivity {
 
     private WalletRepository walletRepository = new WalletRepository();
     private KYCRepository kycRepository = new KYCRepository();
+    private OnboardRepository onboardRepository = new OnboardRepository();
     private static AsyncTask<Void, Void, Boolean> walletStatusCheckTask;
 
     @Override
@@ -126,7 +128,7 @@ public class WalletActivity extends DrawerActivity {
         String walletBytes = walletRepository.getExistingWallet();
         if (walletBytes == null) {
             // we need to create a new wallet
-            walletRepository.createWallet(Session.getWalletPassphrase(), new OnCompleteListener<String>() {
+            onboardRepository.createWallet(new OnCompleteListener<String>() {
                 @Override
                 public void onComplete(String walletBytes, Throwable error) {
                     viewModel.isProgressBarActive.set(false);

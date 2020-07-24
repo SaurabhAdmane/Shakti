@@ -14,5 +14,5 @@ interface OnboardService {
 
     @Headers("Accept: application/json")
     @POST("onboardShakti/wallet")
-    fun saveWallet(@Header("Authorization") authorization: String?) : Call<ResponseBean?>
+    fun createWallet(@Header("Authorization") authorization: String?) : Call<ResponseBean?>
 }

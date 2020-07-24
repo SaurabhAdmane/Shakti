@@ -82,6 +82,12 @@ public class WalletRepository extends BackendRepository {
         } catch (IOException | GeneralSecurityException e) {
             Debug.logException(e);
         }
+
+        /* this can be useful to restore test wallet
+        if (walletBytes == null) {
+            walletBytes = "mgTrj+OIsLneu0RxkiH1aqJ3+kSWQefA0R3gJ39ESQwBDoG/OmHC0rs63B8VSEHaj4fBI5DtU61qqVUW+Yuzdo0Gnoiz0fxESUjnA+HwsIuHXGfcoZGNAvr/YVe3RwG9z3eQU1Ct41HjFBn8ENAmFnbdeHP6uel8qS0e2X/HuqPysFdBLVxraG1hdvn9NStFPPNHOCcGWr2YAC/f1kRZOw";
+        }*/
+
         return walletBytes;
     }
 
