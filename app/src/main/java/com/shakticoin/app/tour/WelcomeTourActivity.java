@@ -21,7 +21,7 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.shakticoin.app.R;
-import com.shakticoin.app.registration.SignUpActivity;
+import com.shakticoin.app.registration.RegActivity;
 import com.shakticoin.app.util.CommonUtil;
 import com.shakticoin.app.util.PreferenceHelper;
 import com.shakticoin.app.wallet.WalletActivity;
@@ -123,7 +123,7 @@ public class WelcomeTourActivity extends AppCompatActivity {
         if (WalletActivity.class.getName().equals(finalDestination)) {
             startActivity(new Intent(this, WalletActivity.class));
         } else {
-            startActivity(new Intent(this, SignUpActivity.class));
+            startActivity(new Intent(this, RegActivity.class));
         }
 
         finish();

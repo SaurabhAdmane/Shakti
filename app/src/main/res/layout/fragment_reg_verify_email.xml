@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.shakticoin.app.registration.RegViewModel" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="24dp"
+            style="@style/AppText.Title"
+            android:gravity="center_horizontal"
+            android:text="@string/reg__email_confirmation"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="24dp"
+            style="@style/AppText.Body"
+            android:gravity="center_horizontal"
+            android:text="@string/reg__email_sent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
+        <Button
+            android:id="@+id/doContinue"
+            style="@style/AppButton.Rounded"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="24dp"
+            android:onClick="onEnterPhone"
+            android:text="@string/common_continue"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView11"
+            tools:layout_conversion_absoluteHeight="1dp"
+            tools:layout_conversion_absoluteWidth="1dp" />
+
+        <TextView
+            android:id="@+id/doReSend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="24dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="onReSendEmailRequest"
+            android:text="@string/reg__email_resend_link"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            style="@style/AppText.Body"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/doContinue"/>
+
+        <TextView
+            android:id="@+id/doGoBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="48dp"
+            android:layout_marginEnd="24dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="onGoBack"
+            android:text="@string/reg__email_letme_go_back"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            style="@style/AppText.Body"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/doReSend"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

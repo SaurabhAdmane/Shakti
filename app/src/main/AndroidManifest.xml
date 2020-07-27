@@ -239,6 +239,10 @@
             android:name=".registration.SignUpOTPActivity"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity"/>
+        <activity
+            android:name=".registration.RegActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"/>
 
         <provider
             android:name="androidx.core.content.FileProvider"

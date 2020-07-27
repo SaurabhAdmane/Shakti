@@ -147,7 +147,7 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     public void onRegisterNow(View view) {
-        Intent intent = new Intent(this, SignUpActivity.class);
+        Intent intent = new Intent(this, RegActivity.class);
         startActivity(intent);
     }
 }

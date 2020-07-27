@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.shakticoin.app.registration.RegViewModel" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="24dp"
+            style="@style/AppText.Title"
+            android:gravity="center_horizontal"
+            android:text="@string/reg__mobile_confirmation"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="24dp"
+            style="@style/AppText.Body"
+            android:gravity="center_horizontal"
+            android:text="@string/reg__mobile_sent_sms"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
+        <com.shakticoin.app.widget.SpinnerLayout
+            android:id="@+id/countryCodesLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="22dp"
+            android:layout_marginEnd="24dp"
+            style="@style/AppTextLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView11">
+            <com.shakticoin.app.widget.InlineLabelSpinner
+                android:id="@+id/countryCodes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:popupBackground="@android:color/transparent"
+                app:hint="@string/hint_country"
+                app:textColorHint="@color/colorHint"
+                app:spinnerBorderColor="@color/colorBrand"/>
+        </com.shakticoin.app.widget.SpinnerLayout>
+<!--                android:entries="@{viewModel.countryList}"
+                android:onItemSelected="@{(parent, view, position, id) -> viewModel.onCountrySelected(view, position)}"
+                app:newValue="@{viewModel.countryCode}"
+-->
+        <com.shakticoin.app.widget.TextInputLayout
+            android:id="@+id/phoneNumberLayout"
+            style="@style/AppTextLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="24dp"
+            app:errorMessage="@{viewModel.phoneNumberError}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/countryCodesLayout"
+            app:validationEnabled="true">
+
+            <com.shakticoin.app.widget.InlineLabelEditText
+                android:id="@+id/phoneNumber"
+                style="@style/AppTextField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/hint_phone_number"
+                android:imeOptions="actionNext"
+                android:inputType="phone"
+                android:text="@={viewModel.phoneNumber}" />
+        </com.shakticoin.app.widget.TextInputLayout>
+
+        <Button
+            android:id="@+id/doContinue"
+            style="@style/AppButton.Rounded"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="24dp"
+            android:onClick="onVerifyPhone"
+            android:text="@string/common_continue"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/phoneNumberLayout"/>
+
+        <TextView
+            android:id="@+id/doGoBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="48dp"
+            android:layout_marginEnd="24dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:tag="BackFromEnterMobile"
+            android:onClick="onGoBack"
+            android:text="@string/reg__email_letme_go_back"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            style="@style/AppText.Body"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/doContinue"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

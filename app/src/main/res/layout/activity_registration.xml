@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.view.View" alias="View"/>
+        <variable
+            name="viewModel"
+            type="com.shakticoin.app.registration.RegViewModel" />
+    </data>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/sign_up_background">
+
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="77dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="70dp"
+                app:layout_constraintDimensionRatio="w,1:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_shakti_symbol"
+                tools:ignore="contentDescription" />
+
+            <TextView
+                android:id="@+id/title"
+                style="@style/AppText.Title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="21dp"
+                android:layout_marginEnd="24dp"
+                android:gravity="center_horizontal"
+                android:text="@string/welcom_message"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/logo"
+                tools:layout_conversion_absoluteHeight="1dp"
+                tools:layout_conversion_absoluteWidth="1dp" />
+
+            <TextView
+                android:id="@+id/description"
+                style="@style/AppText.Body"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="21dp"
+                android:layout_marginEnd="24dp"
+                android:gravity="center_horizontal"
+                android:text="@string/reg__subtitle"
+                android:textColor="@color/colorGrey2"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/title" />
+
+            <View
+                android:id="@+id/view2"
+                android:layout_width="wrap_content"
+                android:layout_height="46dp"
+                android:layout_marginTop="22dp"
+                android:background="@android:color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/description" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="@{viewModel.progressOn?View.VISIBLE:View.INVISIBLE}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/page1"
+                android:layout_width="13dp"
+                android:layout_height="13dp"
+                android:layout_marginTop="11dp"
+                android:tint="@color/colorGrey1"
+                app:layout_constraintEnd_toStartOf="@+id/page1_2"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintStart_toStartOf="@+id/view2"
+                app:layout_constraintTop_toTopOf="@+id/view2"
+                app:srcCompat="@drawable/tickmark" />
+
+            <ImageView
+                android:id="@+id/page1_2"
+                android:layout_width="4dp"
+                android:layout_height="4dp"
+                android:layout_marginTop="16dp"
+                android:tint="@color/colorGrey1"
+                app:layout_constraintEnd_toStartOf="@+id/page2"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/page1"
+                app:layout_constraintTop_toTopOf="@+id/view2"
+                app:srcCompat="@drawable/tickmark" />
+
+            <ImageView
+                android:id="@+id/page2"
+                android:layout_width="13dp"
+                android:layout_height="13dp"
+                android:layout_marginTop="11dp"
+                android:tint="@color/colorGrey1"
+                app:layout_constraintEnd_toStartOf="@+id/page2_3"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/page1_2"
+                app:layout_constraintTop_toTopOf="@+id/view2"
+                app:srcCompat="@drawable/tickmark" />
+
+            <ImageView
+                android:id="@+id/page2_3"
+                android:layout_width="4dp"
+                android:layout_height="4dp"
+                android:layout_marginTop="16dp"
+                android:tint="@color/colorGrey1"
+                app:layout_constraintEnd_toStartOf="@+id/page3"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/page2"
+                app:layout_constraintTop_toTopOf="@+id/view2"
+                app:srcCompat="@drawable/tickmark" />
+
+            <ImageView
+                android:id="@+id/page3"
+                android:layout_width="13dp"
+                android:layout_height="13dp"
+                android:layout_marginTop="11dp"
+                android:tint="@color/colorGrey1"
+                app:layout_constraintEnd_toStartOf="@+id/page3_4"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/page2_3"
+                app:layout_constraintTop_toTopOf="@+id/view2"
+                app:srcCompat="@drawable/tickmark" />
+
+            <ImageView
+                android:id="@+id/page3_4"
+                android:layout_width="4dp"
+                android:layout_height="4dp"
+                android:layout_marginTop="16dp"
+                android:tint="@color/colorGrey1"
+                app:layout_constraintEnd_toStartOf="@+id/page4"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/page3"
+                app:layout_constraintTop_toTopOf="@+id/view2"
+                app:srcCompat="@drawable/tickmark" />
+
+            <ImageView
+                android:id="@+id/page4"
+                android:layout_width="13dp"
+                android:layout_height="13dp"
+                android:layout_marginTop="11dp"
+                android:tint="@color/colorGrey1"
+                app:layout_constraintEnd_toStartOf="@+id/page4_5"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/page3_4"
+                app:layout_constraintTop_toTopOf="@+id/view2"
+                app:srcCompat="@drawable/tickmark" />
+
+            <ImageView
+                android:id="@+id/page4_5"
+                android:layout_width="4dp"
+                android:layout_height="4dp"
+                android:layout_marginTop="16dp"
+                android:tint="@color/colorGrey1"
+                app:layout_constraintEnd_toStartOf="@+id/page5"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/page4"
+                app:layout_constraintTop_toTopOf="@+id/view2"
+                app:srcCompat="@drawable/tickmark" />
+
+            <ImageView
+                android:id="@+id/page5"
+                android:layout_width="13dp"
+                android:layout_height="13dp"
+                android:layout_marginTop="11dp"
+                android:tint="@color/colorGrey1"
+                app:layout_constraintEnd_toEndOf="@+id/view2"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/page4_5"
+                app:layout_constraintTop_toTopOf="@+id/view2"
+                app:srcCompat="@drawable/tickmark" />
+
+            <TextView
+                android:id="@+id/page_label_1"
+                style="@style/AppText.Body.Petit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="@string/reg__step1"
+                android:textColor="@color/colorGrey1"
+                app:layout_constraintEnd_toEndOf="@+id/page1"
+                app:layout_constraintStart_toStartOf="@+id/page1"
+                app:layout_constraintTop_toBottomOf="@+id/page1" />
+
+            <TextView
+                android:id="@+id/page_label_2"
+                style="@style/AppText.Body.Petit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="@string/reg__step2"
+                android:textColor="@color/colorGrey1"
+                app:layout_constraintEnd_toEndOf="@+id/page2"
+                app:layout_constraintStart_toStartOf="@+id/page2"
+                app:layout_constraintTop_toBottomOf="@+id/page2" />
+
+            <TextView
+                android:id="@+id/page_label_3"
+                style="@style/AppText.Body.Petit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="@string/reg__step3"
+                android:textColor="@color/colorGrey1"
+                app:layout_constraintEnd_toEndOf="@+id/page3"
+                app:layout_constraintStart_toStartOf="@+id/page3"
+                app:layout_constraintTop_toBottomOf="@+id/page3" />
+
+            <TextView
+                android:id="@+id/page_label_4"
+                style="@style/AppText.Body.Petit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="@string/reg__step4"
+                android:textColor="@color/colorGrey1"
+                app:layout_constraintEnd_toEndOf="@+id/page4"
+                app:layout_constraintStart_toStartOf="@+id/page4"
+                app:layout_constraintTop_toBottomOf="@+id/page4" />
+
+            <TextView
+                android:id="@+id/page_label_5"
+                style="@style/AppText.Body.Petit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="@string/reg__step5"
+                android:textColor="@color/colorGrey1"
+                app:layout_constraintEnd_toEndOf="@+id/page5"
+                app:layout_constraintStart_toStartOf="@+id/page5"
+                app:layout_constraintTop_toBottomOf="@+id/page5" />
+
+            <FrameLayout
+                android:id="@+id/fragments"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view2">
+
+            </FrameLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>

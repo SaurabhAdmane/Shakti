@@ -11,7 +11,6 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.databinding.BindingAdapter;
 
 import com.shakticoin.app.R;
-import com.shakticoin.app.api.country.Country;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -149,5 +148,10 @@ public class BindingAdapters {
             }
         }
         view.setText(sb.toString());
+    }
+
+    @BindingAdapter("app:errorMessage")
+    public static void setErrorMessage(TextInputLayout view, String errorMessage) {
+        view.setError(errorMessage);
     }
 }

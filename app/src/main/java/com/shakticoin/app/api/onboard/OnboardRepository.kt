@@ -13,7 +13,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 class OnboardRepository : BackendRepository() {
-    var client = OkHttpClient.Builder()
+    private val client = OkHttpClient.Builder()
             .readTimeout(30, TimeUnit.SECONDS)
             .connectTimeout(30, TimeUnit.SECONDS)
             .build()
@@ -39,6 +39,7 @@ class OnboardRepository : BackendRepository() {
             }
 
             override fun onResponse(call: Call<ResponseBean?>, response: Response<ResponseBean?>) {
+                Debug.logDebug(response.toString())
                 if (response.isSuccessful) {
                     val resp = response.body();
                     if (resp != null) {

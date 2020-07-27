@@ -1,8 +1,12 @@
 package com.shakticoin.app.api;
 
+import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.shakticoin.app.R;
+import com.shakticoin.app.ShaktiApplication;
 import com.shakticoin.app.util.Debug;
 
 import org.json.JSONArray;
@@ -70,5 +74,28 @@ public class BackendRepository {
         } catch (IOException e) {
             return null;
         }
+    }
+
+    /**
+     * Different API returns error messages differently but often this is a field of
+     * an object. This utility method provides a convenient method to extract error message
+     * from response body carrying a JSON object.
+     * @param name Name of the field
+     */
+    protected @NonNull String getResponseErrorMessage(@NonNull String name, @Nullable ResponseBody errorBody) {
+        if (errorBody != null) {
+            try {
+                String content = errorBody.string();
+                if (!TextUtils.isEmpty(content)) {
+                    JSONObject json = new JSONObject(content);
+                    if (json.has(name)) {
+                        return json.getString(name);
+                    }
+                }
+            } catch (IOException | JSONException e) {
+                Debug.logException(e);
+            }
+        }
+        return ShaktiApplication.getContext().getString(R.string.err_unexpected);
     }
 }

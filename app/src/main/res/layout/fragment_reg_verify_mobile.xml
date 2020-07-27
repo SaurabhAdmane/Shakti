@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.shakticoin.app.registration.RegViewModel" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="24dp"
+            style="@style/AppText.Title"
+            android:gravity="center_horizontal"
+            android:text="@string/reg__mobile_enter_code"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.shakticoin.app.widget.TextInputLayout
+            android:id="@+id/securityCodeLayout"
+            style="@style/AppTextLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="22dp"
+            android:layout_marginEnd="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView10"
+            app:validationEnabled="true">
+
+            <com.shakticoin.app.widget.InlineLabelEditText
+                android:id="@+id/securityCode"
+                style="@style/AppTextField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/reg__mobile_security_code"
+                android:imeOptions="actionNext"
+                android:inputType="numberDecimal"
+                android:text="@={viewModel.smsSecurityCode}"/>
+        </com.shakticoin.app.widget.TextInputLayout>
+
+        <Button
+            android:id="@+id/doContinue"
+            style="@style/AppButton.Rounded"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="24dp"
+            android:onClick="onSetPassword"
+            android:text="@string/common_continue"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/securityCodeLayout"/>
+
+        <TextView
+            android:id="@+id/doReSendSMS"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="17dp"
+            android:layout_marginEnd="24dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="onReSendSMS"
+            android:text="@string/reg__mobile_resend"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/doContinue"/>
+
+        <TextView
+            android:id="@+id/doGoBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="48dp"
+            android:layout_marginEnd="24dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="onGoBack"
+            android:text="@string/reg__email_letme_go_back"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            style="@style/AppText.Body"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/doReSendSMS"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

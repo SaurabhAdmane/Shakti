@@ -22,6 +22,7 @@
     <string name="common_yes">Yes</string>
     <string name="common_no">No</string>
     <string name="common_apply">Apply</string>
+    <string name="common_continue">Continue</string>
     <string name="and">&amp;</string>
     <string name="do_registration">Create Shakti ID</string>
     <string name="do_login"><u>Already have an account? Sign in</u></string>
@@ -85,7 +86,7 @@
     <string name="err_postalCode_requird">Plese enter a valid postal code/zip</string>
     <string name="err_unexpected">Unexpected error occurred</string>
     <string name="err_incorrect_password">Your password and confirmation password do not match</string>
-    <string name="err_password_not_strong">Your password must be at least 8 chars length and contain letters, digits, and special chars. Only 2 consecutive chars allowed.</string>
+    <string name="err_password_not_strong">Your password must be at least 8 chars length and contain uppercase and lowercase letters, digits, and special chars. Only 2 consecutive chars allowed.</string>
     <string name="err_required">You must provide a value for this field</string>
     <string name="err_all_fields_required">All fields are required</string>
     <string name="err_email_exists">The email address is already used.</string>
@@ -701,4 +702,30 @@
     <string name="otp_smscode">SMS verification code</string>
     <string name="otp_smscode_required">Please enter a verification code from the SMS</string>
     <string name="otp__success">The account is created and you can log in now</string>
+    <string name="reg__subtitle">The Next-Gen Financial Network</string>
+    <string name="reg__step1">Enter Email</string>
+    <string name="reg__step2">Verify Email</string>
+    <string name="reg__step3">Enter Mobile</string>
+    <string name="reg__step4">Verify Mobile</string>
+    <string name="reg__step5">Set Password</string>
+    <string name="reg__email_hint_address">Enter your Email Address</string>
+    <string name="reg__email_validation_err">The value must be a valid email address</string>
+    <string name="reg__email_confirmation">Thank You!\nConfirm your email address</string>
+    <string name="reg__email_sent">We just sent a link to your email address.\nClick the link to confirm your email.</string>
+    <string name="reg__email_resend_link"><u>Resend email confirmation link</u></string>
+    <string name="reg__email_letme_go_back"><u>Let me go back and correct something</u></string>
+    <string name="reg__mobile_confirmation">Email confirmed. Enter your mobile number to continue.</string>
+    <string name="reg__mobile_sent_sms">We will send you an SMS with a verification code.</string>
+    <string name="reg__mobile_enter_code">Enter verification code</string>
+    <string name="reg__mobile_security_code">SMS security code</string>
+    <string name="reg__mobile_resend"><u>Resend SMS code</u></string>
+    <string name="reg__mobile_validation_err">The value must be a valid phone number</string>
+    <string name="reg__pwd_set_password">Set Password</string>
+    <string name="reg__pwd_account_created">A ShaktiID has been created with a link to your email and your mobile number</string>
+    <string name="reg__pwd_strength">PASSWORD STRENGTH</string>
+    <string name="reg__pwd_strength_upper">Uppercase characters</string>
+    <string name="reg__pwd_strength_lower">Lowercase characters</string>
+    <string name="reg__pwd_strength_numbers">Numbers</string>
+    <string name="reg__pwd_strength_symbols">Symbols</string>
+
 </resources>

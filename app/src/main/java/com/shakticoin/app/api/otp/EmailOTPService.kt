@@ -23,4 +23,8 @@ interface EmailOTPService {
     @Headers("Accept: application/json")
     @GET("registration/confirm-registration")
     fun confirmRegistration(@Query("token") token : String) : Call<MainResponseBean?>
+
+    @Headers("Content-Type: application/json", "Accept: application/json")
+    @POST("inquiry/email")
+    fun getEmailStatus(@Body parameters : EmailStatusRequest) : Call<MainResponseBean?>
 }

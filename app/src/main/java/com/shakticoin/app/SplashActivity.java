@@ -17,8 +17,8 @@ import com.shakticoin.app.api.auth.AuthRepository;
 import com.shakticoin.app.api.auth.TokenResponse;
 import com.shakticoin.app.api.user.UserAccount;
 import com.shakticoin.app.api.user.UserRepository;
+import com.shakticoin.app.registration.RegActivity;
 import com.shakticoin.app.registration.SignInActivity;
-import com.shakticoin.app.registration.SignUpActivity;
 import com.shakticoin.app.tour.WelcomeTourActivity;
 import com.shakticoin.app.util.Debug;
 import com.shakticoin.app.util.PreferenceHelper;
@@ -84,7 +84,7 @@ public class SplashActivity extends AppCompatActivity {
                     });
                 }
             } else {
-                startActivity(new Intent(this, SignUpActivity.class));
+                startActivity(new Intent(this, RegActivity.class));
                 finish();
             }
         } else {

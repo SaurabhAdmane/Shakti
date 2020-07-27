@@ -11,7 +11,7 @@ public class BaseUrl {
     public static final String LICENSESERVICE_BASE_URL = "https://licenseservice-stg.shakticoin.com/license-service/api/v1/";
     public static final String KYC_USER_SERVICE_BASE_URL = "https://kycuser-stg.shakticoin.com/kyc-user-service/api/v1/";
     public static final String KYC_CORP_SERVICE_BASE_URL = "https://kyccorpservice-stg.shakticoin.com/???";
-    public static final String PHONE_OTP_SERVICE_BASE_URL = "https://mobileotpservice.test.shakticoin.com/sms-otp-service/api/v1/";
-    public static final String EMAIL_OTP_SERVICE_BASE_URL = "https://emailotpservice.test.shakticoin.com/email-otp-service/api/v1/";
-    public static final String ONBOARD_SERVICE_BASE_URL = "https://onboard.test.shakticoin.com/onboardshaktiuser/api/v1/";
+    public static final String PHONE_OTP_SERVICE_BASE_URL = "https://mobileotpservice-stg.shakticoin.com/sms-otp-service/api/v1/";
+    public static final String EMAIL_OTP_SERVICE_BASE_URL = "https://emailotpservice-stg.shakticoin.com/email-otp-service/api/v1/";
+    public static final String ONBOARD_SERVICE_BASE_URL = "https://onboarshaktiuserservice-stg.shakticoin.com/onboardshaktiuser/api/v1/";
 }
