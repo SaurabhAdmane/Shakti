@@ -2,8 +2,13 @@
 <layout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <data/>
-
+    <data>
+        <import type="com.shakticoin.app.util.FormatUtil" alias="FormatUtil"/>
+        <import type="java.math.BigDecimal" alias="BigDecimal"/>
+        <variable
+            name="viewModel"
+            type="com.shakticoin.app.referral.MyReferralsViewModel" />
+    </data>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -36,7 +41,7 @@
                 android:layout_marginTop="34dp"
                 android:layout_marginEnd="24dp"
                 android:gravity="center_horizontal"
-                android:text="SXE 1008.00"
+                android:text="@{FormatUtil.formatCoinAmount(BigDecimal.valueOf(viewModel.sxeBalance))}"
                 android:textAppearance="@style/AppText.Body"
                 android:textFontWeight="500"
                 android:textSize="36sp"
@@ -46,12 +51,11 @@
                 tools:ignore="UnusedAttribute" />
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/textWaitToUnlock"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="21dp"
-                android:text="@{@string/my_refs_tounlock(30)}"
-                android:textAppearance="@style/AppText.Body"
+                android:textColor="@android:color/white"
                 android:textSize="16sp"
                 android:clickable="true"
                 android:focusable="true"
@@ -69,11 +73,11 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginBottom="3dp"
                 android:tint="@android:color/white"
-                app:layout_constraintBottom_toBottomOf="@+id/textView3"
+                app:layout_constraintBottom_toBottomOf="@+id/textWaitToUnlock"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/textView3"
-                app:layout_constraintTop_toTopOf="@+id/textView3"
+                app:layout_constraintStart_toEndOf="@+id/textWaitToUnlock"
+                app:layout_constraintTop_toTopOf="@+id/textWaitToUnlock"
                 app:srcCompat="@drawable/ic_lock"
                 tools:ignore="ContentDescription" />
 
@@ -91,7 +95,7 @@
                 android:textColor="@color/colorBrand"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView3" />
+                app:layout_constraintTop_toBottomOf="@+id/textWaitToUnlock" />
 
             <View
                 android:layout_width="0dp"
@@ -256,7 +260,7 @@
                 android:layout_marginTop="6dp"
                 android:text="@string/my_refs_media_plus"
                 android:textAppearance="@style/AppText.Body"
-                android:textColor="#FFD9D9DA"
+                android:textColor="#FFABA79E"
                 app:layout_constraintEnd_toEndOf="@+id/doPlus"
                 app:layout_constraintStart_toStartOf="@+id/doPlus"
                 app:layout_constraintTop_toBottomOf="@+id/doPlus" />
@@ -275,29 +279,35 @@
 
             <ImageButton
                 android:id="@+id/doFacebook"
+                android:tag="FACEBOOK"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="34dp"
                 android:background="@android:color/transparent"
-                android:tint="@color/colorBrand"
+                android:tint="@color/colorBrandDisabled"
+                android:onClick="onGetPromoCode"
                 app:layout_constraintEnd_toStartOf="@+id/doInstagram"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView44"
-                app:srcCompat="@drawable/ic_media_facebook" />
+                app:srcCompat="@drawable/ic_media_facebook"
+                tools:ignore="ContentDescription" />
 
             <ImageButton
                 android:id="@+id/doInstagram"
+                android:tag="INSTAGRAM"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="34dp"
                 android:background="@android:color/transparent"
                 android:tint="@color/colorBrand"
+                android:onClick="onGetPromoCode"
                 app:layout_constraintEnd_toStartOf="@+id/doPlus"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/doFacebook"
                 app:layout_constraintTop_toBottomOf="@+id/textView44"
-                app:srcCompat="@drawable/ic_media_instagram" />
+                app:srcCompat="@drawable/ic_media_instagram"
+                tools:ignore="ContentDescription" />
 
             <ImageButton
                 android:id="@+id/doPlus"
@@ -305,12 +315,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="34dp"
                 android:background="@android:color/transparent"
-                android:tint="@color/colorBrand"
+                android:tint="#FFABA79E"
                 app:layout_constraintEnd_toStartOf="@+id/doLinkedIn"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/doInstagram"
                 app:layout_constraintTop_toBottomOf="@+id/textView44"
-                app:srcCompat="@drawable/ic_media_plus" />
+                app:srcCompat="@drawable/ic_media_plus"
+                tools:ignore="ContentDescription" />
 
             <ImageButton
                 android:id="@+id/doLinkedIn"
@@ -318,12 +329,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="34dp"
                 android:background="@android:color/transparent"
-                android:tint="@color/colorBrand"
+                android:tint="#FFABA79E"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/doPlus"
                 app:layout_constraintTop_toBottomOf="@+id/textView44"
-                app:srcCompat="@drawable/ic_media_linkedin" />
+                app:srcCompat="@drawable/ic_media_linkedin"
+                tools:ignore="ContentDescription" />
 
             <ImageButton
                 android:id="@+id/doPinterest"
@@ -331,25 +343,29 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="53dp"
                 android:background="@android:color/transparent"
-                android:tint="@color/colorBrand"
+                android:tint="#FFABA79E"
                 app:layout_constraintEnd_toStartOf="@+id/doSkype"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/doTwitter"
                 app:layout_constraintTop_toBottomOf="@+id/doInstagram"
-                app:srcCompat="@drawable/ic_media_pinterest" />
+                app:srcCompat="@drawable/ic_media_pinterest"
+                tools:ignore="ContentDescription" />
 
             <ImageButton
                 android:id="@+id/doTwitter"
+                android:tag="TWITTER"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="53dp"
                 android:background="@android:color/transparent"
                 android:tint="@color/colorBrand"
+                android:onClick="onGetPromoCode"
                 app:layout_constraintEnd_toStartOf="@+id/doPinterest"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/doFacebook"
-                app:srcCompat="@drawable/ic_media_twitter" />
+                app:srcCompat="@drawable/ic_media_twitter"
+                tools:ignore="ContentDescription" />
 
             <ImageButton
                 android:id="@+id/doSkype"
@@ -357,12 +373,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="53dp"
                 android:background="@android:color/transparent"
-                android:tint="@color/colorBrand"
+                android:tint="#FFABA79E"
                 app:layout_constraintEnd_toStartOf="@+id/doVK"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/doPinterest"
                 app:layout_constraintTop_toBottomOf="@+id/doPlus"
-                app:srcCompat="@drawable/ic_media_skype" />
+                app:srcCompat="@drawable/ic_media_skype"
+                tools:ignore="ContentDescription" />
 
             <ImageButton
                 android:id="@+id/doVK"
@@ -370,12 +387,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="53dp"
                 android:background="@android:color/transparent"
-                android:tint="@color/colorBrand"
+                android:tint="#FFABA79E"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/doSkype"
                 app:layout_constraintTop_toBottomOf="@+id/doLinkedIn"
-                app:srcCompat="@drawable/ic_media_vk" />
+                app:srcCompat="@drawable/ic_media_vk"
+                tools:ignore="ContentDescription" />
 
             <TextView
                 android:id="@+id/textView49"
@@ -427,12 +445,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="53dp"
                 android:background="@android:color/transparent"
-                android:tint="@color/colorBrand"
+                android:tint="#FFABA79E"
                 app:layout_constraintEnd_toStartOf="@+id/doTunblr"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/doTwitter"
-                app:srcCompat="@drawable/ic_media_wechat" />
+                app:srcCompat="@drawable/ic_media_wechat"
+                tools:ignore="ContentDescription" />
 
             <ImageButton
                 android:id="@+id/doTunblr"
@@ -440,25 +459,29 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="53dp"
                 android:background="@android:color/transparent"
-                android:tint="@color/colorBrand"
+                android:tint="#FFABA79E"
                 app:layout_constraintEnd_toStartOf="@+id/doEmail"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/doWeChat"
                 app:layout_constraintTop_toBottomOf="@+id/doPinterest"
-                app:srcCompat="@drawable/ic_media_tumblr" />
+                app:srcCompat="@drawable/ic_media_tumblr"
+                tools:ignore="ContentDescription" />
 
             <ImageButton
                 android:id="@+id/doEmail"
+                android:tag="EMAIL"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="53dp"
                 android:background="@android:color/transparent"
                 android:tint="@color/colorBrand"
+                android:onClick="onGetPromoCode"
                 app:layout_constraintEnd_toStartOf="@+id/doOtherMedia"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/doTunblr"
                 app:layout_constraintTop_toBottomOf="@+id/doSkype"
-                app:srcCompat="@drawable/ic_media_email" />
+                app:srcCompat="@drawable/ic_media_email"
+                tools:ignore="ContentDescription" />
 
             <ImageButton
                 android:id="@+id/doOtherMedia"
@@ -466,12 +489,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="53dp"
                 android:background="@android:color/transparent"
-                android:tint="@color/colorBrand"
+                android:tint="#FFABA79E"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/doEmail"
                 app:layout_constraintTop_toBottomOf="@+id/doVK"
-                app:srcCompat="@drawable/ic_media_other" />
+                app:srcCompat="@drawable/ic_media_other"
+                tools:ignore="ContentDescription" />
 
             <TextView
                 android:id="@+id/textView53"

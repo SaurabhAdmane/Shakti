@@ -14,4 +14,7 @@ public class PreferenceHelper {
 
     /** Wallet ID */
     public static final String PREF_WALLET_BYTES = "wallet";
+
+    /** We should display MyReferralsLockedFragment only one time and this key store information about this. */
+    public static final String PREF_KEY_SHOW_UNLOCK_BOUNTY_INFO  = "showUnlockBountyInfo";
 }

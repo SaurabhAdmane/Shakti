@@ -17,17 +17,18 @@ public class WalletModel extends ViewModel {
     public ObservableField<String> referralLink = new ObservableField<>();
 
     public ObservableField<BigDecimal> balance = new ObservableField<>();
-    public ObservableField<BigDecimal> bonusBalance = new ObservableField<>(BigDecimal.ZERO);
+    public ObservableField<BigDecimal> bonusBalance = new ObservableField<>();
 
     public ObservableBoolean isProgressBarActive = new ObservableBoolean(false);
 
     public String getFormattedBalance(BigDecimal amount) {
         if (amount == null) return ShaktiApplication.getContext().getString(R.string.wallet_unknown_balance);
-        return FormatUtil.formatCoinAmount(amount);
+        return FormatUtil.formatCoinAmountFromToshi(amount);
     }
 
-    public String getFormattedBonusBalance() {
-        return String.format(Locale.getDefault(), "SXE %1$.2f", bonusBalance.get());
+    public String getFormattedBonusBalance(BigDecimal amount) {
+        if (amount == null) return ShaktiApplication.getContext().getString(R.string.wallet_unknown_balance);
+        return String.format(Locale.getDefault(), "SXE %1$.2f", amount);
     }
 
 }

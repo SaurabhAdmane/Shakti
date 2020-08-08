@@ -16,31 +16,27 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.shakticoin.app.R;
 import com.shakticoin.app.api.OnCompleteListener;
-import com.shakticoin.app.api.referral.ReferralRepository;
-import com.shakticoin.app.api.referral.model.EffortRate;
+import com.shakticoin.app.api.bounty.BountyReferralData;
+import com.shakticoin.app.api.bounty.BountyRepository;
+import com.shakticoin.app.api.bounty.EffortRate;
 import com.shakticoin.app.databinding.FragmentEffortChartBinding;
 import com.shakticoin.app.util.Debug;
+import com.shakticoin.app.widget.MessageBox;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.shakticoin.app.api.referral.model.EffortRate.LEAD_SOURCE_EMAIL;
-import static com.shakticoin.app.api.referral.model.EffortRate.LEAD_SOURCE_FACEBOOK;
-import static com.shakticoin.app.api.referral.model.EffortRate.LEAD_SOURCE_INSTAGRAM;
-import static com.shakticoin.app.api.referral.model.EffortRate.LEAD_SOURCE_LINKEDIN;
-import static com.shakticoin.app.api.referral.model.EffortRate.LEAD_SOURCE_PINTEREST;
-import static com.shakticoin.app.api.referral.model.EffortRate.LEAD_SOURCE_PLUS;
-import static com.shakticoin.app.api.referral.model.EffortRate.LEAD_SOURCE_SKYPE;
-import static com.shakticoin.app.api.referral.model.EffortRate.LEAD_SOURCE_TUMBLR;
-import static com.shakticoin.app.api.referral.model.EffortRate.LEAD_SOURCE_TWITTER;
-import static com.shakticoin.app.api.referral.model.EffortRate.LEAD_SOURCE_VK;
-import static com.shakticoin.app.api.referral.model.EffortRate.LEAD_SOURCE_WECHAT;
-import static com.shakticoin.app.api.referral.model.EffortRate.LEAD_STATUS_CONVERTED;
-import static com.shakticoin.app.api.referral.model.EffortRate.LEAD_STATUS_INFLUENCED;
-import static com.shakticoin.app.api.referral.model.EffortRate.LEAD_STATUS_PROGRESSING;
+import static com.shakticoin.app.api.bounty.EffortRate.LEAD_STATUS_CONVERTED;
+import static com.shakticoin.app.api.bounty.EffortRate.LEAD_STATUS_INFLUENCED;
+import static com.shakticoin.app.api.bounty.EffortRate.LEAD_STATUS_PROGRESSING;
 
 public class EffortRatesChartFragment extends Fragment implements View.OnClickListener {
+    private static final int CAT_CONVERTED    = 0;
+    private static final int CAT_PROCESS      = 1;
+    private static final int CAT_INFLUENCE    = 2;
+
     private FragmentEffortChartBinding binding;
+    private BountyRepository bountyRepository;
 
     private EffortChartAdapter chartAdapter;
 
@@ -66,26 +62,46 @@ public class EffortRatesChartFragment extends Fragment implements View.OnClickLi
         chartAdapter = new EffortChartAdapter();
         binding.chart.setAdapter(chartAdapter);
 
-        ReferralRepository repository = new ReferralRepository();
-        repository.setLifecycleOwner(getViewLifecycleOwner());
-        repository.getEffortRates(new OnCompleteListener<List<EffortRate>>() {
+        bountyRepository = new BountyRepository();
+        bountyRepository.setLifecycleOwner(this);
+        bountyRepository.setLifecycleOwner(getViewLifecycleOwner());
+
+        binding.progressBar.setVisibility(View.VISIBLE);
+        bountyRepository.getBounties(new OnCompleteListener<BountyReferralData>() {
             @Override
-            public void onComplete(List<EffortRate> value, Throwable error) {
+            public void onComplete(BountyReferralData value, Throwable error) {
                 if (error != null) {
-                    Debug.logException(error);
+                    binding.progressBar.setVisibility(View.INVISIBLE);
+                    new MessageBox(Debug.getFailureMsg(context, error))
+                            .show(getActivity().getSupportFragmentManager(), null);
                     return;
                 }
 
-                if (value != null && value.size() > 0) {
-                    for (EffortRate effortRate : value) {
-                        chartAdapter.add(effortRate);
+                bountyRepository.getEffortRate(value.getId(), new OnCompleteListener<List<EffortRate>>() {
+                    @Override
+                    public void onComplete(List<EffortRate> value, Throwable error) {
+                        binding.progressBar.setVisibility(View.INVISIBLE);
+                        if (error != null) {
+                            new MessageBox(Debug.getFailureMsg(context, error))
+                                    .show(getActivity().getSupportFragmentManager(), null);
+                            return;
+                        }
+
+                        if (value != null && value.size() > 0) {
+                            for (EffortRate effortRate : value) {
+                                chartAdapter.add(effortRate);
+                            }
+                        }
                     }
-                }
+                });
             }
         });
 
+        binding.categoryConverted.setTag(CAT_CONVERTED);
         binding.categoryConverted.setOnClickListener(this);
+        binding.categoryInfluenced.setTag(CAT_INFLUENCE);
         binding.categoryInfluenced.setOnClickListener(this);
+        binding.categoryProcessing.setTag(CAT_PROCESS);
         binding.categoryProcessing.setOnClickListener(this);
 
         return v;
@@ -93,22 +109,22 @@ public class EffortRatesChartFragment extends Fragment implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.categoryConverted:
+        switch ((Integer) v.getTag()) {
+            case CAT_CONVERTED:
                 if (binding.categoryConverted.isChecked()) {
                     displayAllCategories();
                 } else {
                     selectConverted();
                 }
                 break;
-            case R.id.categoryInfluenced:
+            case CAT_INFLUENCE:
                 if (binding.categoryInfluenced.isChecked()) {
                     displayAllCategories();
                 } else {
                     selectInfluenced();
                 }
                 break;
-            case R.id.categoryProcessing:
+            case CAT_PROCESS:
                 if (binding.categoryProcessing.isChecked()) {
                     displayAllCategories();
                 } else {
@@ -159,10 +175,10 @@ public class EffortRatesChartFragment extends Fragment implements View.OnClickLi
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        private ImageView icon;
-        private EffortChartLine chartLine;
-        private View topDivider;
-        private View bottomDivider;
+        private final ImageView icon;
+        private final EffortChartLine chartLine;
+        private final View topDivider;
+        private final View bottomDivider;
         private int displayStage = -1;
 
         ViewHolder(@NonNull View itemView) {
@@ -222,7 +238,7 @@ public class EffortRatesChartFragment extends Fragment implements View.OnClickLi
     }
 
     class EffortChartAdapter extends RecyclerView.Adapter<ViewHolder> {
-        private List<EffortRate> dataset = new ArrayList<>();
+        private final List<EffortRate> dataset = new ArrayList<>();
         private int displayStage = -1; // default value - display all
 
         @NonNull
@@ -237,37 +253,34 @@ public class EffortRatesChartFragment extends Fragment implements View.OnClickLi
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             EffortRate effortRate = dataset.get(position);
             switch (effortRate.getLeadSource()) {
-                case LEAD_SOURCE_EMAIL:
+                case EMAIL:
                     holder.setIcon(R.drawable.ic_media_email);
                     break;
-                case LEAD_SOURCE_FACEBOOK:
+                case FACEBOOK:
                     holder.setIcon(R.drawable.ic_media_facebook);
                     break;
-                case LEAD_SOURCE_INSTAGRAM:
+                case INSTAGRAM:
                     holder.setIcon(R.drawable.ic_media_instagram);
                     break;
-                case LEAD_SOURCE_LINKEDIN:
+                case LINKEDIN:
                     holder.setIcon(R.drawable.ic_media_linkedin);
                     break;
-                case LEAD_SOURCE_PINTEREST:
+                case PINTEREST:
                     holder.setIcon(R.drawable.ic_media_pinterest);
                     break;
-                case LEAD_SOURCE_PLUS:
-                    holder.setIcon(R.drawable.ic_media_plus);
-                    break;
-                case LEAD_SOURCE_SKYPE:
+                case SKYPE:
                     holder.setIcon(R.drawable.ic_media_skype);
                     break;
-                case LEAD_SOURCE_TUMBLR:
+                case TUMBIR:
                     holder.setIcon(R.drawable.ic_media_tumblr);
                     break;
-                case LEAD_SOURCE_TWITTER:
+                case TWITTER:
                     holder.setIcon(R.drawable.ic_media_twitter);
                     break;
-                case LEAD_SOURCE_WECHAT:
+                case WECHAT:
                     holder.setIcon(R.drawable.ic_media_wechat);
                     break;
-                case LEAD_SOURCE_VK:
+                case WK:
                     holder.setIcon(R.drawable.ic_media_vk);
                     break;
                 default:

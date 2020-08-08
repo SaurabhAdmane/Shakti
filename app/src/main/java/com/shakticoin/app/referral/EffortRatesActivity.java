@@ -7,7 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 
 import com.shakticoin.app.R;
-import com.shakticoin.app.api.referral.model.EffortRate;
+import com.shakticoin.app.api.bounty.EffortRate;
 import com.shakticoin.app.databinding.ActivityEffortRatesBinding;
 import com.shakticoin.app.widget.DrawerActivity;
 

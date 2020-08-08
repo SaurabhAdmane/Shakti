@@ -1,46 +1,55 @@
-package com.shakticoin.app.api.referral.model;
+package com.shakticoin.app.api.bounty;
 
 import android.util.SparseIntArray;
 
 import java.math.BigDecimal;
 
 public class EffortRate {
+    public enum LeadSource {
+        UNKNOWN,
+        EMAIL,
+        PHONE_NUMBER,
+        FACEBOOK,
+        INSTAGRAM,
+        LINKEDIN,
+        PINTEREST,
+        SKYPE,
+        WECHAT,
+        TUMBIR,
+        WK,
+        TWITTER,
+        OTHER
+    }
     public static final int LEAD_STATUS_INFLUENCED    = 1;
     public static final int LEAD_STATUS_PROGRESSING   = 2;
     public static final int LEAD_STATUS_CONVERTED     = 3;
 
-    public static final int LEAD_SOURCE_UNKNOWN       = 0;
-    public static final int LEAD_SOURCE_FACEBOOK      = 1;
-    public static final int LEAD_SOURCE_INSTAGRAM     = 2;
-    public static final int LEAD_SOURCE_PLUS          = 3;
-    public static final int LEAD_SOURCE_LINKEDIN      = 4;
-    public static final int LEAD_SOURCE_TWITTER       = 5;
-    public static final int LEAD_SOURCE_PINTEREST     = 6;
-    public static final int LEAD_SOURCE_SKYPE         = 7;
-    public static final int LEAD_SOURCE_VK            = 8;
-    public static final int LEAD_SOURCE_EMAIL         = 9;
-    public static final int LEAD_SOURCE_TUMBLR        = 10;
-    public static final int LEAD_SOURCE_WECHAT        = 11;
+    private final SparseIntArray effortRate = new SparseIntArray();
+    private LeadSource source = LeadSource.UNKNOWN;
 
-    private SparseIntArray effortRate = new SparseIntArray();
-    private int source = -1;
-
-    public EffortRate(int leadSource) {
-        source = leadSource;
+    public EffortRate(String leadSource) {
+        if (leadSource != null) {
+            for (LeadSource enumValue : LeadSource.values()) {
+                if (leadSource.equals(enumValue.name())) {
+                    source = enumValue;
+                    break;
+                }
+            }
+        }
     }
 
-    public EffortRate(int leadSource, int converted, int progressing, int influenced) {
+    public EffortRate(String leadSource, int converted, int progressing, int influenced) {
         this(leadSource);
         setStageTotal(LEAD_STATUS_CONVERTED, converted);
         setStageTotal(LEAD_STATUS_PROGRESSING, progressing);
         setStageTotal(LEAD_STATUS_INFLUENCED, influenced);
     }
 
-    public void setLeadSource(int leadSource) {
+    public void setLeadSource(LeadSource leadSource) {
         source = leadSource;
     }
 
-    public int getLeadSource() {
+    public LeadSource getLeadSource() {
         return source;
     }
 

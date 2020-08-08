@@ -21,6 +21,7 @@ object BaseUrl {
     const val PHONE_OTP_SERVICE_BASE_URL = "https://mobileotpservice${ENV_CODE}.shakticoin.com/sms-otp-service/api/v1/"
     const val EMAIL_OTP_SERVICE_BASE_URL = "https://emailotpservice${ENV_CODE}.shakticoin.com/email-otp-service/api/v1/"
     const val ONBOARD_SERVICE_BASE_URL = "https://onboardshakti${ENV_CODE}.shakticoin.com/onboardshakti-service/api/v1/"
+    const val BOUNTY_SERVICE_BASE_URL = "https://referral${ENV_CODE}.shakticoin.com/bountyservice/api/v1/"
 
 
     const val BIZVAULT_SERVICE_BASE_URL = "https://bizvault${ENV_CODE}.shakticoin.com/bizvault/api/v1/bizvaults/"

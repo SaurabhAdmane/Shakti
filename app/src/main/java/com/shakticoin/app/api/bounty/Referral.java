@@ -1,4 +1,4 @@
-package com.shakticoin.app.api.referral.model;
+package com.shakticoin.app.api.bounty;
 
 import android.os.Parcel;
 import android.os.Parcelable;

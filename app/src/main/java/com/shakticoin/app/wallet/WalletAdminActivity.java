@@ -226,7 +226,7 @@ public class WalletAdminActivity extends DrawerActivity {
                         }
                         return;
                     }
-                    binding.balance.setText(FormatUtil.formatCoinAmount(balance));
+                    binding.balance.setText(FormatUtil.formatCoinAmountFromToshi(balance));
                 }
             });
         }

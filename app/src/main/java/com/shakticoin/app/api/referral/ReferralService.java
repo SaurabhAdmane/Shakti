@@ -1,6 +1,6 @@
 package com.shakticoin.app.api.referral;
 
-import com.shakticoin.app.api.referral.model.Referral;
+import com.shakticoin.app.api.bounty.Referral;
 
 import java.util.Map;
 

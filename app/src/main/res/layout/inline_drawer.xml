@@ -214,8 +214,8 @@
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
             android:clickable="true"
-            android:focusable="true">
-            <!-- android:onClick="onOpenBonusBounty" -->
+            android:focusable="true"
+            android:onClick="onOpenBonusBounty">
             <ImageView
                 android:id="@+id/referralsMenuIcon"
                 android:layout_width="24dp"
@@ -237,14 +237,6 @@
                 android:textColor="@color/drawerButtonNormal"
                 android:textSize="18sp"
                 tools:ignore="SmallSp" />
-            <!-- Remove this view when enabled -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_centerInParent="true"
-                android:layout_marginTop="3dp"
-                android:layout_marginBottom="3dp"
-                android:background="#80000000"/>
         </RelativeLayout>
 
         <View

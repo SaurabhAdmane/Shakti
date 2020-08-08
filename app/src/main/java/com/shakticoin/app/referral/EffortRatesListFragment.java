@@ -20,8 +20,8 @@ import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.shakticoin.app.R;
 import com.shakticoin.app.api.OnCompleteListener;
+import com.shakticoin.app.api.bounty.Referral;
 import com.shakticoin.app.api.referral.ReferralRepository;
-import com.shakticoin.app.api.referral.model.Referral;
 import com.shakticoin.app.databinding.FragmentEffortListBinding;
 import com.shakticoin.app.util.Debug;
 

@@ -3,9 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <data>
+        <import type="java.math.BigDecimal" alias="BigDecimal"/>
+        <import type="com.shakticoin.app.util.FormatUtil" alias="FormatUtil"/>
         <variable
-            name="referral"
-            type="com.shakticoin.app.api.referral.ReferralParameters" />
+            name="viewModel"
+            type="com.shakticoin.app.referral.AddReferralViewModel" />
     </data>
     <RelativeLayout
         android:layout_width="match_parent"
@@ -57,7 +59,7 @@
                         android:layout_marginTop="34dp"
                         android:layout_marginEnd="24dp"
                         android:gravity="center_horizontal"
-                        android:text="SXE 1008.00"
+                        android:text="@{FormatUtil.formatCoinAmount(BigDecimal.valueOf(viewModel.balance))}"
                         android:textAppearance="@style/AppText.Body"
                         android:textFontWeight="500"
                         android:textSize="36sp"
@@ -67,12 +69,11 @@
                         tools:ignore="UnusedAttribute" />
 
                     <TextView
-                        android:id="@+id/textView3"
+                        android:id="@+id/textWaitToUnlock"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="21dp"
-                        android:text="@{@string/my_refs_tounlock(0)}"
-                        android:textAppearance="@style/AppText.Body"
+                        android:textColor="@android:color/white"
                         android:textSize="16sp"
                         android:clickable="true"
                         android:focusable="true"
@@ -87,14 +88,14 @@
                         android:id="@+id/imageView1"
                         android:layout_width="13dp"
                         android:layout_height="21dp"
-                        android:layout_marginStart="3dp"
+                        android:layout_marginStart="10dp"
                         android:layout_marginBottom="3dp"
                         android:tint="@android:color/white"
-                        app:layout_constraintBottom_toBottomOf="@+id/textView3"
+                        app:layout_constraintBottom_toBottomOf="@+id/textWaitToUnlock"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toEndOf="@+id/textView3"
-                        app:layout_constraintTop_toTopOf="@+id/textView3"
+                        app:layout_constraintStart_toEndOf="@+id/textWaitToUnlock"
+                        app:layout_constraintTop_toTopOf="@+id/textWaitToUnlock"
                         app:srcCompat="@drawable/ic_lock"
                         tools:ignore="ContentDescription" />
 
@@ -107,12 +108,12 @@
                         android:layout_marginTop="19dp"
                         android:layout_marginEnd="8dp"
                         android:gravity="center_horizontal"
-                        android:text="@string/my_refs_refer_other"
+                        android:text="@string/add_ref_fillin"
                         android:textAppearance="@style/AppText.Body"
                         android:textColor="@color/colorBrand"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+                        app:layout_constraintTop_toBottomOf="@+id/textWaitToUnlock" />
 
                     <View
                         android:layout_width="0dp"
@@ -158,7 +159,7 @@
                             android:ems="10"
                             android:inputType="textEmailAddress"
                             android:hint="@string/hint_email_address"
-                            android:text="@={referral.email}"/>
+                            android:text="@={viewModel.emailAddress}"/>
                     </com.shakticoin.app.widget.TextInputLayout>
 
                     <com.shakticoin.app.widget.TextInputLayout
@@ -184,7 +185,7 @@
                             android:inputType="phone"
                             android:imeOptions="actionGo"
                             android:hint="@string/hint_mobile_number"
-                            android:text="@={referral.phone}"/>
+                            android:text="@={viewModel.phoneNumber}"/>
                     </com.shakticoin.app.widget.TextInputLayout>
 
                     <Button
@@ -196,7 +197,8 @@
                         android:layout_marginTop="40dp"
                         android:layout_marginEnd="48dp"
                         android:onClick="onAddReferral"
-                        android:text="@string/add_ref_action"
+                        android:text="@string/add_ref_action_contacts"
+                        android:enabled="false"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/phoneFieldLayout" />

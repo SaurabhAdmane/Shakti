@@ -210,7 +210,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
                         android:gravity="center_vertical|start"
-                        android:text="@{viewModel.formattedBonusBalance}"
+                        android:text="@{viewModel.getFormattedBonusBalance(viewModel.bonusBalance)}"
                         android:textAppearance="@style/AppText.Body"
                         android:textFontWeight="500"
                         android:textSize="24sp"

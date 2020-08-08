@@ -15,11 +15,21 @@
         android:fillViewport="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bounty_background"
             android:paddingBottom="@dimen/scrollable_bottom_padding">
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/title"
@@ -50,85 +60,16 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/title" />
 
-            <com.shakticoin.app.widget.CheckableRoundButton
-                android:id="@+id/onBounty1"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/selector"
                 android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginStart="8dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="28dp"
-                android:layout_marginEnd="8dp"
-                android:background="@android:color/transparent"
-                android:tag="BB1"
-                android:enabled="true"
-                app:is_checked="@={viewModel.bountyBonus1}"
+                android:scrollbars="none"
+                android:minHeight="300dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/subtitle"
-                app:srcCompat="@drawable/selector_btn_round" />
-
-            <com.shakticoin.app.widget.CheckableRoundButton
-                android:id="@+id/onBounty2"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="8dp"
-                android:background="@android:color/transparent"
-                android:tag="BB2"
-                android:enabled="true"
-                app:is_checked="@={viewModel.bountyBonus2}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/onBounty1"
-                app:srcCompat="@drawable/selector_btn_round" />
-
-            <com.shakticoin.app.widget.CheckableRoundButton
-                android:id="@+id/onBounty3"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="8dp"
-                android:background="@android:color/transparent"
-                android:tag="BB3"
-                android:enabled="true"
-                app:is_checked="@={viewModel.bountyBonus3}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/onBounty2"
-                app:srcCompat="@drawable/selector_btn_round" />
-
-            <com.shakticoin.app.widget.CheckableRoundButton
-                android:id="@+id/onBounty4"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="8dp"
-                android:background="@android:color/transparent"
-                android:tag="BB4"
-                android:enabled="true"
-                app:is_checked="@={viewModel.bountyBonus4}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/onBounty3"
-                app:srcCompat="@drawable/selector_btn_round" />
-
-            <com.shakticoin.app.widget.CheckableRoundButton
-                android:id="@+id/onBounty5"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="8dp"
-                android:background="@android:color/transparent"
-                android:tag="BB5"
-                android:enabled="true"
-                app:is_checked="@={viewModel.bountyBonus5}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/onBounty4"
-                app:srcCompat="@drawable/selector_btn_round" />
+                app:layout_constraintTop_toBottomOf="@+id/subtitle"/>
 
             <TextView
                 android:id="@+id/offer1"
@@ -140,9 +81,10 @@
                 android:gravity="center_horizontal"
                 android:text="@string/bonus_offer1"
                 android:textAppearance="@style/AppText.Body"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/onBounty5" />
+                app:layout_constraintTop_toBottomOf="@+id/selector" />
 
             <Button
                 android:id="@+id/doClaim"
@@ -154,6 +96,7 @@
                 android:layout_marginEnd="24dp"
                 android:text="@string/bonus_main_action"
                 android:onClick="onClaim"
+                android:enabled="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -173,9 +116,11 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:onClick="onViewPromotion"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/doClaim" />
+                app:layout_constraintTop_toBottomOf="@+id/doClaim"
+                tools:ignore="SmallSp" />
 
             <TextView
                 android:id="@+id/offer2"
@@ -185,11 +130,12 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="24dp"
                 android:gravity="center_horizontal"
-                android:text="@{viewModel.selectedBonus.formatPromoText(@string/bonus_offer2)}"
                 android:textAppearance="@style/AppText.Body"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/offer1" />
+            <!--android:text="@{viewModel.selectedBonus.formatPromoText(@string/bonus_offer2)}"-->
 
             <View
                 android:id="@+id/leftCircle"
@@ -198,10 +144,10 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:background="@drawable/bg_circular"
-                app:layout_constraintBottom_toBottomOf="@+id/onBounty3"
-                app:layout_constraintEnd_toStartOf="@+id/onBounty3"
+                app:layout_constraintBottom_toBottomOf="@+id/selector"
+                app:layout_constraintEnd_toStartOf="@+id/selector"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/onBounty3" />
+                app:layout_constraintTop_toTopOf="@+id/selector" />
 
             <View
                 android:id="@+id/rightCircle"
@@ -210,19 +156,19 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:background="@drawable/bg_circular"
-                app:layout_constraintBottom_toBottomOf="@+id/onBounty3"
+                app:layout_constraintBottom_toBottomOf="@+id/selector"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/onBounty3"
-                app:layout_constraintTop_toTopOf="@+id/onBounty3" />
+                app:layout_constraintStart_toEndOf="@+id/selector"
+                app:layout_constraintTop_toTopOf="@+id/selector" />
 
             <TextView
                 android:id="@+id/valueUSD"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:text="@{viewModel.selectedBonus.formatUSD()}"
                 android:textAppearance="@style/AppText.Title.Branded"
                 android:textStyle="bold"
+                android:text="@{viewModel.selectedBonus.formatUSD()}"
                 app:layout_constraintBottom_toBottomOf="@+id/leftCircle"
                 app:layout_constraintEnd_toEndOf="@+id/leftCircle"
                 app:layout_constraintStart_toStartOf="@+id/leftCircle"
@@ -239,7 +185,8 @@
                 android:textSize="10sp"
                 app:layout_constraintBottom_toTopOf="@+id/valueUSD"
                 app:layout_constraintEnd_toEndOf="@+id/leftCircle"
-                app:layout_constraintStart_toStartOf="@+id/leftCircle" />
+                app:layout_constraintStart_toStartOf="@+id/leftCircle"
+                tools:ignore="SmallSp" />
 
             <TextView
                 android:id="@+id/valueSXE"
@@ -247,12 +194,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:gravity="center_horizontal"
-                android:text="@{viewModel.selectedBonus.formatSXE()}"
                 android:textAppearance="@style/AppText.Body"
                 android:textSize="10sp"
+                android:text="@{viewModel.selectedBonus.formatSXE()}"
                 app:layout_constraintEnd_toEndOf="@+id/leftCircle"
                 app:layout_constraintStart_toStartOf="@+id/leftCircle"
-                app:layout_constraintTop_toBottomOf="@+id/valueUSD" />
+                app:layout_constraintTop_toBottomOf="@+id/valueUSD"
+                tools:ignore="SmallSp" />
 
             <TextView
                 android:id="@+id/date"
@@ -260,9 +208,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:gravity="center_horizontal"
-                android:text="@{viewModel.selectedBonus.formatDate()}"
                 android:textAppearance="@style/AppText.Title.Branded"
                 android:textStyle="bold"
+                android:text="@{viewModel.selectedBonus.formatDate()}"
                 app:layout_constraintBottom_toBottomOf="@+id/rightCircle"
                 app:layout_constraintEnd_toEndOf="@+id/rightCircle"
                 app:layout_constraintStart_toStartOf="@+id/rightCircle"
@@ -279,7 +227,8 @@
                 android:textSize="10sp"
                 app:layout_constraintBottom_toTopOf="@+id/date"
                 app:layout_constraintEnd_toEndOf="@+id/rightCircle"
-                app:layout_constraintStart_toStartOf="@+id/rightCircle" />
+                app:layout_constraintStart_toStartOf="@+id/rightCircle"
+                tools:ignore="SmallSp" />
 
             <TextView
                 android:id="@+id/year"
@@ -287,12 +236,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:gravity="center_horizontal"
-                android:text="@{viewModel.selectedBonus.formatYear()}"
                 android:textAppearance="@style/AppText.Body"
                 android:textSize="10sp"
+                android:text="@{viewModel.selectedBonus.formatYear()}"
                 app:layout_constraintEnd_toEndOf="@+id/rightCircle"
                 app:layout_constraintStart_toStartOf="@+id/rightCircle"
-                app:layout_constraintTop_toBottomOf="@+id/date" />
+                app:layout_constraintTop_toBottomOf="@+id/date"
+                tools:ignore="SmallSp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

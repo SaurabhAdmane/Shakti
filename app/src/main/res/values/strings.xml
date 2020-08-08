@@ -122,6 +122,10 @@
     <string name="bonus_secondary_action">View special <u>promotion details</u>.</string>
     <string name="bonus_valueof">Value of</string>
     <string name="bonus_expires">Expires on</string>
+    <string name="bonus__409_claimed_already">
+        You can only receive genesis bounty only one time. Good try \u2014 let\'s not be greedy.\nBy the way did you share your blessings with your loved ones?
+    </string>
+    <string name="bonus__410_expired">The offer is expired</string>
     <string name="dlg_confirm_email_title"><![CDATA[Confirmation<br/><font color="#D8C295"><b>Email Sent!</b></font>]]></string>
     <string name="dlg_confirm_email_text"><![CDATA[<p><b>You\'re almost there!</b></p><p>However,
         we need to make sure that there is no error and you provided us with a correct email address.
@@ -435,7 +439,7 @@
         Remember it is your effort that counts.
     </string>
     <string name="my_refs_unlocked_action">Start referring friends and family</string>
-    <string name="my_refs_tounlock"><u>%1$d months to unlock</u></string>
+    <string name="my_refs_tounlock"><![CDATA[<u>%1$d months to unlock</u>]]></string>
     <string name="my_refs_refer_other">Refer others to unlock SXE</string>
     <string name="my_refs_referred">%1$d Referred</string>
     <string name="my_refs_refer_note">
@@ -471,6 +475,7 @@
     <string name="dlg_howto_action">Refer a friend</string>
     <string name="add_ref_fillin">Fill in the referral info below</string>
     <string name="add_ref_action">Add Referral Info</string>
+    <string name="add_ref_action_contacts">Add from Contacts List</string>
     <string name="effort_rates_title">Effort Rates</string>
     <string name="effort_rates_chart_note">Tap the progress buttons to see the social specific leads.</string>
     <string name="effort_rates_converted">Converted</string>
@@ -772,5 +777,27 @@
     <string name="enter_your_passphrase">Enter your passphrase</string>
     <string name="enter_email">Enter email</string>
     <string name="enter_amount">Enter amount</string>
+    <string name="bounty_claim__title">Claim Your Bounty</string>
+    <string name="bounty_claim__subtitle">Select one method to unlock your bounty</string>
+    <string name="bounty_claim__select_option">Select this option</string>
+    <string name="bounty_claim__1_title">Refer and earn money</string>
+    <string name="bounty_claim__1_text">
+        You will earn USD 25.00 (five SXE coins) towards your birthday for each person you refer to,
+        and it will be unlocked just-in-time for your birthday celebration.
+    </string>
+    <string name="bounty_claim__2_title">Refer &amp; Cash-Out Fast</string>
+    <string name="bounty_claim__2_text">
+        Refer 84 participants to unlock your bounty and ensure at least five participants are from
+        the merchant community.
+    </string>
+    <string name="bounty_claim__3_title">Just use it</string>
+    <string name="bounty_claim__3_text">Just use the wallet once a month to unlock your bounty.</string>
+    <string name="bounty_claim__main_action" translatable="false">@string/bounty_claim__title</string>
+    <string name="bounty_claim__note">Note</string>
+    <string name="bounty_claim__note_text">
+        Your quantum genesis bonus bounty is released on your birthday only, whether it is a partial
+        or full payout when one of the above conditions are met.
+    </string>
+    <string name="errbox__ok">OK</string>
 
 </resources>
