@@ -3,7 +3,6 @@ package com.shakticoin.app.referral;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -80,15 +79,6 @@ public class AddReferralActivity extends DrawerActivity {
 
     public void onAddReferral(View v) {
         boolean validationSuccessful = true;
-        if (TextUtils.isEmpty(referral.getFirstName())) {
-            validationSuccessful = false;
-            binding.firstNameFieldLayout.setError(getString(R.string.err_required));
-        }
-        if (TextUtils.isEmpty(referral.getLastName())) {
-            validationSuccessful = false;
-            binding.lastNameFieldLayout.setError(getString(R.string.err_required));
-        }
-
         if (!Validator.isEmail(referral.getEmail())) {
             validationSuccessful = false;
             binding.emailFieldLayout.setError(getString(R.string.err_email_required));
@@ -106,11 +96,7 @@ public class AddReferralActivity extends DrawerActivity {
                             if (((RemoteMessageException) error).hasValidationErrors()) {
                                 Map<String, String> errors = ((RemoteMessageException) error).getValidationErrors();
                                 for (String field : errors.keySet()) {
-                                    if ("firstName".equals(field)) {
-                                        binding.firstNameFieldLayout.setError(errors.get(field));
-                                    } else if ("lastName".equals(field)) {
-                                        binding.lastNameFieldLayout.setError(errors.get(field));
-                                    } else if ("email".equals(field)) {
+                                    if ("email".equals(field)) {
                                         binding.emailFieldLayout.setError(errors.get(field));
                                     } else if ("phone".equals(field)) {
                                         binding.phoneFieldLayout.setError(errors.get(field));

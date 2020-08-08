@@ -137,55 +137,6 @@
                         app:layout_constraintTop_toTopOf="@+id/label" />
 
                     <com.shakticoin.app.widget.TextInputLayout
-                        android:id="@+id/firstNameFieldLayout"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginTop="24dp"
-                        android:layout_marginEnd="24dp"
-                        app:labelTextSize="11sp"
-                        app:labelFontTypeface="@font/lato"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/label">
-
-                        <com.shakticoin.app.widget.InlineLabelEditText
-                            android:id="@+id/firstName"
-                            style="@style/AppTextField"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:ems="10"
-                            android:hint="@string/hint_first_name"
-                            android:inputType="textPersonName|textCapWords"
-                            android:text="@={referral.firstName}" />
-                    </com.shakticoin.app.widget.TextInputLayout>
-
-                    <com.shakticoin.app.widget.TextInputLayout
-                        android:id="@+id/lastNameFieldLayout"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginEnd="24dp"
-                        app:labelTextSize="11sp"
-                        app:labelFontTypeface="@font/lato"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/firstNameFieldLayout">
-
-                        <com.shakticoin.app.widget.InlineLabelEditText
-                            android:id="@+id/lastName"
-                            style="@style/AppTextField"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:ems="10"
-                            android:hint="@string/hint_last_name"
-                            android:inputType="textPersonName|textCapWords"
-                            android:text="@={referral.lastName}" />
-
-                    </com.shakticoin.app.widget.TextInputLayout>
-
-                    <com.shakticoin.app.widget.TextInputLayout
                         android:id="@+id/emailFieldLayout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -197,7 +148,7 @@
                         app:validationEnabled="true"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/lastNameFieldLayout">
+                        app:layout_constraintTop_toBottomOf="@+id/label">
 
                         <com.shakticoin.app.widget.InlineLabelEditText
                             android:id="@+id/emailAddress"
@@ -237,18 +188,32 @@
                     </com.shakticoin.app.widget.TextInputLayout>
 
                     <Button
+                        android:id="@+id/doAddFromContacts"
+                        style="@style/AppButton.Rounded"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="48dp"
+                        android:layout_marginTop="40dp"
+                        android:layout_marginEnd="48dp"
+                        android:onClick="onAddReferral"
+                        android:text="@string/add_ref_action"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/phoneFieldLayout" />
+
+                    <Button
                         android:id="@+id/doAddReferral"
                         style="@style/AppButton.Rounded"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="48dp"
-                        android:layout_marginTop="76dp"
+                        android:layout_marginTop="30dp"
                         android:layout_marginEnd="48dp"
                         android:text="@string/add_ref_action"
                         android:onClick="onAddReferral"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/phoneFieldLayout" />
+                        app:layout_constraintTop_toBottomOf="@+id/doAddFromContacts" />
 
                     <ProgressBar
                         android:id="@+id/progressBar"
