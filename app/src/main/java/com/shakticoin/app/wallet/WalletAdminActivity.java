@@ -13,6 +13,7 @@ import androidx.databinding.DataBindingUtil;
 import com.shakticoin.app.R;
 import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.Session;
+import com.shakticoin.app.api.onboard.OnboardRepository;
 import com.shakticoin.app.api.wallet.SessionException;
 import com.shakticoin.app.api.wallet.WalletRepository;
 import com.shakticoin.app.databinding.ActivityWalletAdminBinding;
@@ -24,7 +25,8 @@ import java.math.BigDecimal;
 
 public class WalletAdminActivity extends DrawerActivity {
     private ActivityWalletAdminBinding binding;
-    private WalletRepository repository = new WalletRepository();
+    private WalletRepository walletRepository = new WalletRepository();
+    private OnboardRepository onboardRepository = new OnboardRepository();
 
 
     @Override
@@ -64,10 +66,10 @@ public class WalletAdminActivity extends DrawerActivity {
         Activity activity = this;
 
         binding.progressBar.setVisibility(View.VISIBLE);
-        String walletBytes = repository.getExistingWallet();
+        String walletBytes = walletRepository.getExistingWallet();
         if (walletBytes == null) {
             // we need to create a new wallet
-            repository.createWallet(null, new OnCompleteListener<String>() {
+            onboardRepository.createWallet(Session.getWalletPassphrase(), new OnCompleteListener<String>() {
                 @Override
                 public void onComplete(String walletBytes, Throwable error) {
                     binding.progressBar.setVisibility(View.INVISIBLE);
@@ -75,12 +77,12 @@ public class WalletAdminActivity extends DrawerActivity {
                         Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
                         return;
                     }
-                    repository.storeWallet(walletBytes);
+                    walletRepository.storeWallet(walletBytes);
                     getWalletBalance();
                 }
             });
         } else {
-            repository.getBalance(new OnCompleteListener<BigDecimal>() {
+            walletRepository.getBalance(new OnCompleteListener<BigDecimal>() {
                 @Override
                 public void onComplete(BigDecimal balance, Throwable error) {
                     binding.progressBar.setVisibility(View.INVISIBLE);

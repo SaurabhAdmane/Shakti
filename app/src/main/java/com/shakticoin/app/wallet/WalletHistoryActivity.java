@@ -33,6 +33,7 @@ import com.shakticoin.app.ShaktiApplication;
 import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.Session;
 import com.shakticoin.app.api.kyc.KYCRepository;
+import com.shakticoin.app.api.onboard.OnboardRepository;
 import com.shakticoin.app.api.wallet.SessionException;
 import com.shakticoin.app.api.wallet.Transaction;
 import com.shakticoin.app.api.wallet.WalletRepository;
@@ -58,7 +59,8 @@ import java.util.Map;
 
 public class WalletHistoryActivity extends DrawerActivity {
     private ActivityWalletHistoryBinding binding;
-    private WalletRepository repository;
+    private WalletRepository walletRepository;
+    private OnboardRepository onboardRepository = new OnboardRepository();
     private KYCRepository kycRepository = new KYCRepository();
     private TransactionAdapter adapter;
     private WalletModel viewModel;
@@ -73,7 +75,7 @@ public class WalletHistoryActivity extends DrawerActivity {
 
         onInitView(binding.getRoot(), getString(R.string.wallet_toolbar_title), true);
 
-        repository = new WalletRepository();
+        walletRepository = new WalletRepository();
 
         binding.list.setHasFixedSize(true);
         binding.list.setLayoutManager(new LinearLayoutManager(this));
@@ -90,10 +92,10 @@ public class WalletHistoryActivity extends DrawerActivity {
 
         getWalletBalance();
 
-        String walletBytes = repository.getExistingWallet();
+        String walletBytes = walletRepository.getExistingWallet();
         if (walletBytes != null) {
             viewModel.isProgressBarActive.set(true);
-            repository.getBalance(new OnCompleteListener<BigDecimal>() {
+            walletRepository.getBalance(new OnCompleteListener<BigDecimal>() {
                 @Override
                 public void onComplete(BigDecimal value, Throwable error) {
                     viewModel.isProgressBarActive.set(false);
@@ -105,7 +107,7 @@ public class WalletHistoryActivity extends DrawerActivity {
                 }
             });
 
-            repository.getTransactions(new OnCompleteListener<List<Transaction>>() {
+            walletRepository.getTransactions(new OnCompleteListener<List<Transaction>>() {
                 @Override
                 public void onComplete(List<Transaction> transactions, Throwable error) {
                     if (error != null) {
@@ -144,10 +146,10 @@ public class WalletHistoryActivity extends DrawerActivity {
         Activity activity = this;
 
         viewModel.isProgressBarActive.set(true);
-        String walletBytes = repository.getExistingWallet();
+        String walletBytes = walletRepository.getExistingWallet();
         if (walletBytes == null) {
             // we need to create a new wallet
-            repository.createWallet(null, new OnCompleteListener<String>() {
+            onboardRepository.createWallet(null, new OnCompleteListener<String>() {
                 @Override
                 public void onComplete(String walletBytes, Throwable error) {
                     viewModel.isProgressBarActive.set(false);
@@ -155,12 +157,12 @@ public class WalletHistoryActivity extends DrawerActivity {
                         Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
                         return;
                     }
-                    repository.storeWallet(walletBytes);
+                    walletRepository.storeWallet(walletBytes);
                     getWalletBalance();
                 }
             });
         } else {
-            repository.getBalance(new OnCompleteListener<BigDecimal>() {
+            walletRepository.getBalance(new OnCompleteListener<BigDecimal>() {
                 @Override
                 public void onComplete(BigDecimal balance, Throwable error) {
                     viewModel.isProgressBarActive.set(false);
@@ -175,7 +177,7 @@ public class WalletHistoryActivity extends DrawerActivity {
                     viewModel.balance.set(balance);
 
                     // if we get the balance successfully then we can request transactions
-                    repository.getTransactions(new OnCompleteListener<List<Transaction>>() {
+                    walletRepository.getTransactions(new OnCompleteListener<List<Transaction>>() {
                         @Override
                         public void onComplete(List<Transaction> transactions, Throwable error) {
                             if (error != null) {

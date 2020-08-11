@@ -1,5 +1,6 @@
 package com.shakticoin.app.api.onboard
 
+import android.text.TextUtils
 import com.shakticoin.app.api.*
 import com.shakticoin.app.api.auth.AuthRepository
 import com.shakticoin.app.api.auth.TokenResponse
@@ -71,9 +72,11 @@ class OnboardRepository : BackendRepository() {
         })
     }
 
-    fun createWallet(listener: OnCompleteListener<String>) {createWallet(listener, false)}
-    fun createWallet(listener: OnCompleteListener<String>, hasRecover401: Boolean) {
-        onboardService.createWallet(Session.getAuthorizationHeader()).enqueue(object: Callback<ResponseBean?> {
+    fun createWallet(passphrase: String, listener: OnCompleteListener<String>) {createWallet(passphrase, listener, false)}
+    fun createWallet(passphrase: String, listener: OnCompleteListener<String>, hasRecover401: Boolean) {
+        val parameters = WalletRequest()
+        parameters.passphrase = passphrase
+        onboardService.createWallet(Session.getAuthorizationHeader(), parameters).enqueue(object: Callback<ResponseBean?> {
             override fun onFailure(call: Call<ResponseBean?>, t: Throwable) {
                 return returnError(listener, t);
             }
@@ -82,7 +85,15 @@ class OnboardRepository : BackendRepository() {
                 Debug.logDebug(response.toString())
                 if (response.isSuccessful) {
                     val resp = response.body()
-                    Debug.logDebug("ok");
+                    // it return success if wallet exists already for the account but w/o wallet bytes
+                    if (resp != null) {
+                        val details = resp.details
+                        if (TextUtils.isEmpty(details?.get("walletBytes") as String)) {
+                            listener.onComplete(null, RemoteException(details["message"] as String, response.code()))
+                            return;
+                        }
+                        listener.onComplete(details["walletBytes"] as String, null)
+                    } else listener.onComplete(null, null)
                 } else {
                     when(response.code()) {
                         401 -> {
@@ -93,7 +104,7 @@ class OnboardRepository : BackendRepository() {
                                             listener.onComplete(null, error)
                                             return
                                         }
-                                        createWallet(listener, true);
+                                        createWallet(passphrase, listener, true);
                                     }
                                 })
                             } else {

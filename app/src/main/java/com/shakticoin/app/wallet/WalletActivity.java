@@ -128,7 +128,7 @@ public class WalletActivity extends DrawerActivity {
         String walletBytes = walletRepository.getExistingWallet();
         if (walletBytes == null) {
             // we need to create a new wallet
-            onboardRepository.createWallet(new OnCompleteListener<String>() {
+            onboardRepository.createWallet(Session.getWalletPassphrase(), new OnCompleteListener<String>() {
                 @Override
                 public void onComplete(String walletBytes, Throwable error) {
                     viewModel.isProgressBarActive.set(false);
