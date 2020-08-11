@@ -16,7 +16,6 @@ import com.shakticoin.app.R;
 import com.shakticoin.app.api.Session;
 import com.shakticoin.app.api.country.Country;
 import com.shakticoin.app.api.country.Subdivision;
-import com.shakticoin.app.util.CommonUtil;
 import com.shakticoin.app.util.Validator;
 
 import java.util.Arrays;
@@ -54,11 +53,6 @@ public class SignUpActivity extends AppCompatActivity implements TextView.OnEdit
     }
 
     public void startRegistration() {
-        Intent intent = new Intent(this, SignUpOTPActivity.class);
-        intent.putExtra(CommonUtil.prefixed("emailAddress", this), viewModel.emailAddress.getValue());
-        intent.putExtra(CommonUtil.prefixed("phoneNumber", this), viewModel.phoneNumber.getValue());
-        intent.putExtra(CommonUtil.prefixed("password", this), viewModel.newPassword.getValue());
-        startActivity(intent);
 //        final Activity activity = this;
 //        viewModel.createUser(new OnCompleteListener<Void>() {
 //            @Override
