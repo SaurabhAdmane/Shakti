@@ -24,50 +24,11 @@ public interface KYCService {
     Call<ResponseBody> getDocumentTypes(@Header("Authorization") String authorization);
 
     /**
-     * Get KYC user details.<br/>
-     * Returned data:<br/>
-     * <pre>
-     * {
-     *     "shaktiID":"65d8841d-c995-45dc-b4ad-61ad652293de",
-     *     "firstName":"Oleg",
-     *     "lastName":"Andr",
-     *     "middleName":null,
-     *     "fullName":"Oleg Andr",
-     *     "dob":"1967-05-11",
-     *     "referenceEmail":null,
-     *     "referenceMobile":null,
-     *     "address": {
-     *          country: "United States of America",
-     *          countryCode: "US",
-     *          stateProvinceCode: "CA",
-     *          city: "Los Angeles",
-     *          address1: "Foxboro 1",
-     *          address2: "apt. 7",
-     *          zipCode: "90000"
-     *     },
-     *     "primaryEmail":"andreyev.oleg@gmail.com",
-     *     "primaryMobile":null,
-     *     "secondaryEmail":null,
-     *     "secondaryMobile":null,
-     *     "relationshipStatus":null,
-     *     "relation":null,
-     *     "education1":null,
-     *     "education2":null,
-     *     "deviceUDID":null,
-     *     "emailAlert":false,
-     *     "occupation":null,
-     *     "fastTrack":false,
-     *     "subscriptionId":null,
-     *     "paymentStatus":null,
-     *     "verificationStatus":null,
-     *     "verificationComments":null,
-     *     "kycStatus":"LOCKED"
-     * }
-     * </pre>
+     * Get KYC user details.
      */
     @Headers("Accept: application/json")
     @GET("kyc/details")
-    Call<Map<String, Object>> getUserDetails(@Header("Authorization") String authorization);
+    Call<KycUserView> getUserDetails(@Header("Authorization") String authorization);
 
     /**
      * Create KYC user.
@@ -98,8 +59,8 @@ public interface KYCService {
      */
     @Multipart
     @POST("kyc/uploads")
-    Call<Map<String, Object>> uploadDocument(@Header("Authorization") String authorization,
-                                             @Part List<MultipartBody.Part> files);
+    Call<Map<String, Object>> uploadDocuments(@Header("Authorization") String authorization,
+                                              @Part List<MultipartBody.Part> files);
 
     /**
      * Purchase KYC user license.

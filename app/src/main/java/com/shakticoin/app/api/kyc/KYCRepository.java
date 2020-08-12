@@ -1,6 +1,7 @@
 package com.shakticoin.app.api.kyc;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
@@ -56,17 +57,17 @@ public class KYCRepository extends BackendRepository {
         authRepository = new AuthRepository();
     }
 
-    public void getUserDetails(OnCompleteListener<Map<String, Object>> listener) {
+    public void getUserDetails(OnCompleteListener<KycUserView> listener) {
         getUserDetails(listener, false);
     }
-    public void getUserDetails(OnCompleteListener<Map<String, Object>> listener, boolean hasRecover401) {
-        service.getUserDetails(Session.getAuthorizationHeader()).enqueue(new Callback<Map<String, Object>>() {
+    public void getUserDetails(OnCompleteListener<KycUserView> listener, boolean hasRecover401) {
+        service.getUserDetails(Session.getAuthorizationHeader()).enqueue(new Callback<KycUserView>() {
             @EverythingIsNonNull
             @Override
-            public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
+            public void onResponse(Call<KycUserView> call, Response<KycUserView> response) {
                 Debug.logDebug(response.toString());
                 if (response.isSuccessful()) {
-                    Map<String, Object> values = response.body();
+                    KycUserView values = response.body();
                     listener.onComplete(values, null);
                 } else {
                     switch (response.code()) {
@@ -112,13 +113,16 @@ public class KYCRepository extends BackendRepository {
 
             @EverythingIsNonNull
             @Override
-            public void onFailure(Call<Map<String, Object>> call, Throwable t) {
+            public void onFailure(Call<KycUserView> call, Throwable t) {
                 returnError(listener, t);
             }
         });
     }
 
     public void createUserDetails(@NonNull KycUserModel parameters, @NonNull OnCompleteListener<Map<String, Object>> listener) {
+        createUserDetails(parameters, listener, false);
+    }
+    public void createUserDetails(@NonNull KycUserModel parameters, @NonNull OnCompleteListener<Map<String, Object>> listener, boolean hasRecover401) {
         service.createUserDetails(Session.getAuthorizationHeader(), parameters).enqueue(new Callback<Map<String, Object>>() {
             @EverythingIsNonNull
             @Override
@@ -126,17 +130,37 @@ public class KYCRepository extends BackendRepository {
                 if (response.isSuccessful()) {
                     listener.onComplete(response.body(), null);
                 } else {
-                    JSONObject jsonResponse = errorBodyJSON(response.errorBody());
-                    if (jsonResponse != null && jsonResponse.has("rootArray")) {
-                        try {
-                            JSONArray msgArray = jsonResponse.getJSONArray("rootArray");
-                            listener.onComplete(null, new RemoteException(msgArray.getString(0)));
-                            return;
-                        } catch (JSONException e) {
-                            Debug.logDebug(e.getMessage());
-                        }
+                    switch (response.code()) {
+                        case 401:
+                            if (!hasRecover401) {
+                                authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
+                                    @Override
+                                    public void onComplete(TokenResponse value, Throwable error) {
+                                        if (error != null) {
+                                            listener.onComplete(null, new UnauthorizedException());
+                                            return;
+                                        }
+                                        createUserDetails(parameters, listener, true);
+                                    }
+                                });
+                            } else {
+                                listener.onComplete(null, new UnauthorizedException());
+                                return;
+                            }
+                            break;
+                        default:
+                            JSONObject jsonResponse = errorBodyJSON(response.errorBody());
+                            if (jsonResponse != null && jsonResponse.has("rootArray")) {
+                                try {
+                                    JSONArray msgArray = jsonResponse.getJSONArray("rootArray");
+                                    listener.onComplete(null, new RemoteException(msgArray.getString(0)));
+                                    return;
+                                } catch (JSONException e) {
+                                    Debug.logDebug(e.getMessage());
+                                }
+                            }
+                            returnError(listener, response);
                     }
-                    returnError(listener, response);
                 }
             }
 
@@ -149,6 +173,9 @@ public class KYCRepository extends BackendRepository {
     }
 
     public void updateUserDetails(KycUserModel parameters, OnCompleteListener<Map<String, Object>> listener) {
+        updateUserDetails(parameters, listener, false);
+    }
+    public void updateUserDetails(KycUserModel parameters, OnCompleteListener<Map<String, Object>> listener, boolean hasRecover401) {
         service.updateUserDetails(Session.getAuthorizationHeader(), parameters).enqueue(new Callback<Map<String, Object>>() {
             @EverythingIsNonNull
             @Override
@@ -157,17 +184,41 @@ public class KYCRepository extends BackendRepository {
                 if (response.isSuccessful()) {
                     listener.onComplete(response.body(), null);
                 } else {
-                    JSONObject jsonResponse = errorBodyJSON(response.errorBody());
-                    if (jsonResponse != null && jsonResponse.has("rootArray")) {
-                        try {
-                            JSONArray msgArray = jsonResponse.getJSONArray("rootArray");
-                            listener.onComplete(null, new RemoteException(msgArray.getString(0)));
-                            return;
-                        } catch (JSONException e) {
-                            Debug.logDebug(e.getMessage());
-                        }
+                    switch (response.code()) {
+                        case 401:
+                            if (!hasRecover401) {
+                                authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
+                                    @Override
+                                    public void onComplete(TokenResponse value, Throwable error) {
+                                        if (error != null) {
+                                            listener.onComplete(null, new UnauthorizedException());
+                                            return;
+                                        }
+                                        updateUserDetails(parameters, listener, true);
+                                    }
+                                });
+                            } else {
+                                listener.onComplete(null, new UnauthorizedException());
+                                return;
+                            }
+                            break;
+                        case 400:
+                            String errMsg = getResponseErrorMessage("message", response.errorBody());
+                            listener.onComplete(null, new RemoteException(errMsg, response.code()));
+                            break;
+                        default:
+                            JSONObject jsonResponse = errorBodyJSON(response.errorBody());
+                            if (jsonResponse != null && jsonResponse.has("rootArray")) {
+                                try {
+                                    JSONArray msgArray = jsonResponse.getJSONArray("rootArray");
+                                    listener.onComplete(null, new RemoteException(msgArray.getString(0)));
+                                    return;
+                                } catch (JSONException e) {
+                                    Debug.logDebug(e.getMessage());
+                                }
+                            }
+                            returnError(listener, response);
                     }
-                    returnError(listener, response);
                 }
             }
 
@@ -290,7 +341,7 @@ public class KYCRepository extends BackendRepository {
         uploadDocument(files, listener, false);
     }
     public void uploadDocument(List<MultipartBody.Part> files, OnCompleteListener<Void> listener, boolean hasRecover401) {
-        service.uploadDocument(Session.getAuthorizationHeader(), files).enqueue(new Callback<Map<String, Object>>() {
+        service.uploadDocuments(Session.getAuthorizationHeader(), files).enqueue(new Callback<Map<String, Object>>() {
             @EverythingIsNonNull
             @Override
             public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
@@ -298,6 +349,7 @@ public class KYCRepository extends BackendRepository {
                 if (response.isSuccessful()) {
                     Map<String, Object> body = response.body();
                     Debug.logDebug(body.toString());
+                    listener.onComplete(null, null);
                 } else {
                     switch (response.code()) {
                         case 401:
@@ -318,15 +370,9 @@ public class KYCRepository extends BackendRepository {
                             }
                             break;
                         case 400:
-                            String errMsg = ShaktiApplication.getContext().getString(R.string.err_unexpected);
-                            ResponseBody errorBody = response.errorBody();
-                            if (errorBody != null) {
-                                try {
-                                    JSONObject errorJson = new JSONObject(errorBody.string());
-                                    if (errorJson.has("message")) errMsg = errorJson.getString("message");
-                                } catch (IOException | JSONException e) {
-                                    Debug.logException(e);
-                                }
+                            String errMsg = getResponseErrorMessage("message", response.errorBody());
+                            if (TextUtils.isEmpty(errMsg)) {
+                                errMsg = ShaktiApplication.getContext().getString(R.string.err_unexpected);
                             }
                             listener.onComplete(null, new RemoteException(errMsg, response.code()));
                             break;
@@ -397,14 +443,14 @@ public class KYCRepository extends BackendRepository {
     }
 
     public void isWalletUnlocked(@NonNull OnCompleteListener<Boolean> listener) {
-        getUserDetails(new OnCompleteListener<Map<String, Object>>() {
+        getUserDetails(new OnCompleteListener<KycUserView>() {
             @Override
-            public void onComplete(Map<String, Object> value, Throwable error) {
+            public void onComplete(KycUserView value, Throwable error) {
                 if (error != null) {
                     listener.onComplete(false, null);
                     return;
                 }
-                listener.onComplete("UNLOCKED".equals(value.get("kycStatus")), null);
+                listener.onComplete(KycUserView.STATUS_UNLOCKED.equals(value.getKycStatus()), null);
             }
         }, false);
     }

@@ -14,13 +14,12 @@ import com.shakticoin.app.R;
 import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.Session;
 import com.shakticoin.app.api.UnauthorizedException;
+import com.shakticoin.app.api.kyc.AddressModel;
 import com.shakticoin.app.api.kyc.KYCRepository;
+import com.shakticoin.app.api.kyc.KycUserView;
 import com.shakticoin.app.databinding.ActivityPersonalInfoBinding;
-import com.shakticoin.app.util.CommonUtil;
 import com.shakticoin.app.util.Debug;
 import com.shakticoin.app.widget.DrawerActivity;
-
-import java.util.Map;
 
 public class SettingsPersonalActivity extends DrawerActivity {
     private ActivityPersonalInfoBinding binding;
@@ -44,9 +43,9 @@ public class SettingsPersonalActivity extends DrawerActivity {
 
         final Activity activity = this;
         binding.progressBar.setVisibility(View.VISIBLE);
-        kycRepository.getUserDetails(new OnCompleteListener<Map<String, Object>>() {
+        kycRepository.getUserDetails(new OnCompleteListener<KycUserView>() {
             @Override
-            public void onComplete(Map<String, Object> values, Throwable error) {
+            public void onComplete(KycUserView userinfo, Throwable error) {
                 binding.progressBar.setVisibility(View.INVISIBLE);
                 if (error != null) {
                     if (error instanceof UnauthorizedException) {
@@ -57,27 +56,27 @@ public class SettingsPersonalActivity extends DrawerActivity {
                     return;
                 }
 
-                viewModel.firstName.setValue((String) values.get("firstName"));
-                viewModel.middleName.setValue((String) values.get("middleName"));
-                viewModel.lastName.setValue((String) values.get("lastName"));
-                viewModel.birthDate.setValue((String) values.get("dob"));
-                String emailAddress = (String) values.get("primaryEmail");
-                if (TextUtils.isEmpty(emailAddress)) emailAddress = (String) values.get("secondaryEmail");
+                viewModel.firstName.setValue(userinfo.getFirstName());
+                viewModel.middleName.setValue(userinfo.getMiddleName());
+                viewModel.lastName.setValue(userinfo.getLastName());
+                viewModel.birthDate.setValue(userinfo.getDob());
+                String emailAddress = userinfo.getPrimaryEmail();
+                if (TextUtils.isEmpty(emailAddress)) emailAddress = userinfo.getSecondaryEmail();
                 viewModel.emailAddress.setValue(emailAddress);
-                String phoneNumber = (String) values.get("primaryMobile");
-                if (TextUtils.isEmpty(phoneNumber)) phoneNumber = (String) values.get("secondaryMobile");
+                String phoneNumber = userinfo.getPrimaryMobile();
+                if (TextUtils.isEmpty(phoneNumber)) phoneNumber = userinfo.getSecondaryMobile();
                 viewModel.phoneNumber.setValue(phoneNumber);
-                viewModel.occupation.setValue((String) values.get("occupation"));
-                viewModel.education.setValue((String) values.get("education1"));
+                viewModel.occupation.setValue(userinfo.getOccupation());
+                viewModel.education.setValue(userinfo.getEducation1());
 
-                Map<String, String> address = CommonUtil.checkMap(values.get("address"));
-                if (address != null && address.size() > 0) {
-                    viewModel.address1.setValue(address.get("address1"));
-                    viewModel.address2.setValue(address.get("address2"));
-                    viewModel.city.setValue(address.get("city"));
-                    viewModel.stateProvince.setValue(address.get("stateProvinceCode"));
-                    viewModel.country.setValue(address.get("country"));
-                    viewModel.postalCode.setValue(address.get("zipCode"));
+                AddressModel address = userinfo.getAddress();
+                if (address != null) {
+                    viewModel.address1.setValue(address.getAddress1());
+                    viewModel.address2.setValue(address.getAddress2());
+                    viewModel.city.setValue(address.getCity());
+                    viewModel.stateProvince.setValue(address.getStateProvinceCode());
+                    viewModel.country.setValue(address.getCountry());
+                    viewModel.postalCode.setValue(address.getZipCode());
                 }
 
             }

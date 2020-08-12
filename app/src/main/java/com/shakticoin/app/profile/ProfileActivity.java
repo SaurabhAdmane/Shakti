@@ -39,9 +39,9 @@ import com.shakticoin.app.api.kyc.AddressModel;
 import com.shakticoin.app.api.kyc.KYCRepository;
 import com.shakticoin.app.api.kyc.KycCategory;
 import com.shakticoin.app.api.kyc.KycUserModel;
+import com.shakticoin.app.api.kyc.KycUserView;
 import com.shakticoin.app.api.kyc.RelationModel;
 import com.shakticoin.app.databinding.ActivityProfileBinding;
-import com.shakticoin.app.util.CommonUtil;
 import com.shakticoin.app.util.Debug;
 import com.shakticoin.app.util.Validator;
 import com.shakticoin.app.widget.DatePicker;
@@ -137,9 +137,9 @@ public class ProfileActivity extends DrawerActivity {
         viewModel.getProgressBarTrigger().set(true);
         final Activity self = this;
 
-        kycRepository.getUserDetails(new OnCompleteListener<Map<String, Object>>() {
+        kycRepository.getUserDetails(new OnCompleteListener<KycUserView>() {
             @Override
-            public void onComplete(Map<String, Object> value, Throwable error) {
+            public void onComplete(KycUserView value, Throwable error) {
                 viewModel.getProgressBarTrigger().set(false);
                 if (error != null) {
                     if (error instanceof RemoteException && ((RemoteException) error).getResponseCode() == 404) {
@@ -164,21 +164,21 @@ public class ProfileActivity extends DrawerActivity {
 
                 // we save mainly to be able determine if an user data are created
                 // already or we need to create new set
-                viewModel.shaktiId.setValue((String) value.get("shaktiID"));
+                viewModel.shaktiId.setValue((String) value.getShaktiID());
 
-                personalInfoViewModel.firstName.setValue((String) value.get("firstName"));
-                personalInfoViewModel.middleName.setValue((String) value.get("middleName"));
-                personalInfoViewModel.lastName.setValue((String) value.get("lastName"));
+                personalInfoViewModel.firstName.setValue((String) value.getFirstName());
+                personalInfoViewModel.middleName.setValue((String) value.getMiddleName());
+                personalInfoViewModel.lastName.setValue((String) value.getLastName());
 
-                personalInfoViewModel.birthDate.setValue((String) value.get("dob"));
+                personalInfoViewModel.birthDate.setValue((String) value.getDob());
 
-                Map<String, Object> postalAddress = CommonUtil.checkMap(value.get("address"));
+                AddressModel postalAddress = value.getAddress();
                 if (postalAddress != null) {
-                    personalInfoViewModel.city.setValue((String) postalAddress.get("city"));
-                    personalInfoViewModel.postalCode.setValue((String) postalAddress.get("zipCode"));
-                    personalInfoViewModel.address1.setValue((String) postalAddress.get("address1"));
-                    personalInfoViewModel.address2.setValue((String) postalAddress.get("address2"));
-                    String countryCode = (String) postalAddress.get("countryCode");
+                    personalInfoViewModel.city.setValue((String) postalAddress.getCity());
+                    personalInfoViewModel.postalCode.setValue((String) postalAddress.getZipCode());
+                    personalInfoViewModel.address1.setValue((String) postalAddress.getAddress1());
+                    personalInfoViewModel.address2.setValue((String) postalAddress.getAddress2());
+                    String countryCode = (String) postalAddress.getCountryCode();
                     if (countryCode != null) {
                         countryRepo.getCountry(countryCode, new OnCompleteListener<Country>() {
                             @Override
@@ -190,7 +190,7 @@ public class ProfileActivity extends DrawerActivity {
                             }
                         });
 
-                        String stateProvinceCode = (String) postalAddress.get("stateProvinceCode");
+                        String stateProvinceCode = (String) postalAddress.getStateProvinceCode();
                         if (stateProvinceCode != null) {
                             countryRepo.getSubdivisionsByCountry(countryCode, new OnCompleteListener<List<Subdivision>>() {
                                 @Override
@@ -213,11 +213,11 @@ public class ProfileActivity extends DrawerActivity {
                     }
                 }
 
-                personalInfoViewModel.emailAddress.setValue((String) value.get("secondaryEmail"));
-                personalInfoViewModel.phoneNumber.setValue((String) value.get("secondaryMobile"));
-                personalInfoViewModel.occupation.setValue((String) value.get("occupation"));
-                personalInfoViewModel.educationLevel.setValue((String) value.get("education1"));
-                Boolean emailAlert = (Boolean) value.get("emailAlert");
+                personalInfoViewModel.emailAddress.setValue((String) value.getSecondaryEmail());
+                personalInfoViewModel.phoneNumber.setValue((String) value.getSecondaryMobile());
+                personalInfoViewModel.occupation.setValue((String) value.getOccupation());
+                personalInfoViewModel.educationLevel.setValue((String) value.getEducation1());
+                Boolean emailAlert = (Boolean) value.getEmailAlert();
                 personalInfoViewModel.subscriptionConfirmed.set(emailAlert != null ? emailAlert : false);
             }
         }, false);
@@ -533,18 +533,18 @@ public class ProfileActivity extends DrawerActivity {
                 viewModel.getProgressBarTrigger().set(false);
                 if (error != null) {
                     Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
-                    // FIXME: temprorarily got to fast-track page from error branch
-                    offerFastTrack();
                     return;
                 }
 
                 // remove documents that where uploaded
-                if (uploadList.size() > 0) {
-                    for (File f : uploadList) {
-                        f.delete();
-                    }
-                    viewModel.updateList.set(true);
-                }
+//                if (uploadList.size() > 0) {
+//                    for (File f : uploadList) {
+//                        f.delete();
+//                    }
+//                    viewModel.updateList.set(true);
+//                }
+
+                offerFastTrack();
             }
         });
 

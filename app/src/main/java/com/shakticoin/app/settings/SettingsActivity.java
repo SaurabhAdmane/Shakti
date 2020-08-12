@@ -16,13 +16,12 @@ import com.shakticoin.app.ShaktiApplication;
 import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.Session;
 import com.shakticoin.app.api.kyc.KYCRepository;
+import com.shakticoin.app.api.kyc.KycUserView;
 import com.shakticoin.app.databinding.ActivitySettingsBinding;
 import com.shakticoin.app.profile.ProfileActivity;
 import com.shakticoin.app.registration.SignInActivity;
 import com.shakticoin.app.util.Debug;
 import com.shakticoin.app.widget.DrawerActivity;
-
-import java.util.Map;
 
 public class SettingsActivity extends DrawerActivity {
     private ActivitySettingsBinding binding;
@@ -47,9 +46,9 @@ public class SettingsActivity extends DrawerActivity {
     protected void onStart() {
         super.onStart();
         binding.progressBar.setVisibility(View.VISIBLE);
-        kycRepository.getUserDetails(new OnCompleteListener<Map<String, Object>>() {
+        kycRepository.getUserDetails(new OnCompleteListener<KycUserView>() {
             @Override
-            public void onComplete(Map<String, Object> value, Throwable error) {
+            public void onComplete(KycUserView userinfo, Throwable error) {
                 binding.progressBar.setVisibility(View.INVISIBLE);
                 if (error != null) {
                     Context context = ShaktiApplication.getContext();
@@ -57,9 +56,9 @@ public class SettingsActivity extends DrawerActivity {
                     return;
                 }
 
-                binding.fullName.setText((String) value.get("fullName"));
-                binding.emailAddress.setText((String) value.get("primaryEmail"));
-                binding.kycStatus.setText((String) value.get("verificationStatus"));
+                binding.fullName.setText((String) userinfo.getFullName());
+                binding.emailAddress.setText((String) userinfo.getPrimaryEmail());
+                binding.kycStatus.setText((String) userinfo.getVerificationStatus());
             }
         }, false);
     }
