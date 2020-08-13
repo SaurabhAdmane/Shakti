@@ -15,8 +15,8 @@ import java.util.concurrent.TimeUnit
 
 class OnboardRepository : BackendRepository() {
     private val client = OkHttpClient.Builder()
-            .readTimeout(30, TimeUnit.SECONDS)
-            .connectTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
+            .connectTimeout(60, TimeUnit.SECONDS)
             .build()
     private val onboardService: OnboardService = Retrofit.Builder()
             .baseUrl(BaseUrl.ONBOARD_SERVICE_BASE_URL)
@@ -64,6 +64,7 @@ class OnboardRepository : BackendRepository() {
                                 return
                             }
                         }
+                        409 -> listener.onComplete(null, RemoteException(getResponseErrorMessage("details", response.errorBody())))
                         else -> return returnError(listener, response)
                     }
                 }

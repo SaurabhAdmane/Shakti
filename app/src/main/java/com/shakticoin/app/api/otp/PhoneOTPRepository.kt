@@ -1,13 +1,14 @@
 package com.shakticoin.app.api.otp
 
+import android.widget.Toast
+import com.shakticoin.app.R
+import com.shakticoin.app.ShaktiApplication
 import com.shakticoin.app.api.BackendRepository
 import com.shakticoin.app.api.BaseUrl
 import com.shakticoin.app.api.OnCompleteListener
 import com.shakticoin.app.api.RemoteMessageException
 import com.shakticoin.app.util.Debug
 import okhttp3.OkHttpClient
-import okhttp3.ResponseBody
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -17,8 +18,8 @@ import java.util.concurrent.TimeUnit
 
 class PhoneOTPRepository : BackendRepository() {
     var client = OkHttpClient.Builder()
-            .readTimeout(30, TimeUnit.SECONDS)
-            .connectTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
+            .connectTimeout(60, TimeUnit.SECONDS)
             .build()
 
     private val service: PhoneOTPService = Retrofit.Builder()
@@ -65,17 +66,15 @@ class PhoneOTPRepository : BackendRepository() {
             override fun onResponse(call: Call<MainResponseBean?>, response: Response<MainResponseBean?>) {
                 Debug.logDebug(response.toString())
                 if (response.isSuccessful) {
+                    val resp = response.body()
+                    if (resp?.responseMsg != null) {
+                        val context = ShaktiApplication.getContext()
+                        Toast.makeText(context, resp.responseMsg, Toast.LENGTH_LONG).show()
+                    }
                     listener.onComplete(true, null)
                 } else {
-                    var errorMsg: String? = null
-                    val errorBody: ResponseBody? = response.errorBody()
-                    if (errorBody != null) {
-                        val content = errorBody.string()
-                        val json = JSONObject(content)
-                        if (json.has("responseMsg")) {
-                            errorMsg = json.getString("responseMsg")
-                        }
-                    }
+                    var errorMsg: String? = getResponseErrorMessage("responseMsg", response.errorBody())
+                    if (errorMsg == null) errorMsg = ShaktiApplication.getContext().getString(R.string.err_unexpected)
                     listener.onComplete(null, RemoteMessageException(errorMsg?:response.message(), response.code()))
                     return;
                 }

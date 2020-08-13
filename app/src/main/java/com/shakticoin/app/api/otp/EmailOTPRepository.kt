@@ -16,8 +16,8 @@ import java.util.concurrent.TimeUnit
 
 class EmailOTPRepository : BackendRepository() {
     private val http = OkHttpClient.Builder()
-            .readTimeout(30, TimeUnit.SECONDS)
-            .connectTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
+            .connectTimeout(60, TimeUnit.SECONDS)
             .build();
 
     private val service: EmailOTPService = Retrofit.Builder()
@@ -84,9 +84,6 @@ class EmailOTPRepository : BackendRepository() {
         try {
             val response: Response<MainResponseBean?> = service.getEmailStatus(parameters).execute();
             if (response.isSuccessful) {
-                val resp = response.body()
-                //TODO: we need to decode response and return either true or false depending on
-                // email verification status
                 return true
             } else {
                 when (response.code()) {
@@ -96,7 +93,7 @@ class EmailOTPRepository : BackendRepository() {
             }
         } catch (e : Exception) {
             Debug.logException(e)
-            return null
+            return false
         }
     }
 }

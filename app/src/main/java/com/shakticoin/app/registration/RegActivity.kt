@@ -32,20 +32,16 @@ class RegActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityRegistrationBinding.inflate(layoutInflater)
         binding.lifecycleOwner = this
-        viewModel = ViewModelProviders.of(this).get(RegViewModel::class.java);
+        viewModel = ViewModelProviders.of(this).get(RegViewModel::class.java)
         binding.viewModel = viewModel
         setContentView(binding.root)
 
-        viewModel?.currentStep?.observe(this, object: Observer<RegViewModel.Step> {
-            override fun onChanged(t: RegViewModel.Step?) {
-                t?.let { updateIndicator(it) }
-            }
-        })
+        viewModel?.currentStep?.observe(this, Observer<RegViewModel.Step> { t -> t?.let { updateIndicator(it) } })
 
         supportFragmentManager
                 .beginTransaction()
                 .add(binding.fragments.id, RegEnterEmailFragment())
-                .commit();
+                .commit()
     }
 
     /** Initiates OTP verification for the email address and advances the process to the next step. */
@@ -59,7 +55,7 @@ class RegActivity : AppCompatActivity() {
                     viewModel?.progressOn?.value = false
                     if (error != null) {
                         Toast.makeText(self, Debug.getFailureMsg(self, error), Toast.LENGTH_LONG).show()
-                        return;
+                        return
                     }
                     self.supportFragmentManager
                             .beginTransaction()
@@ -75,7 +71,7 @@ class RegActivity : AppCompatActivity() {
 
     /** Sends another request to email otp service w/o changing the current page */
     fun onReSendEmailRequest(v: View) {
-        val self: AppCompatActivity = this;
+        val self: AppCompatActivity = this
         val emailAddress = viewModel?.emailAddress?.value
         if (emailAddress != null) {
             viewModel?.progressOn?.value = true
@@ -84,7 +80,7 @@ class RegActivity : AppCompatActivity() {
                     viewModel?.progressOn?.value = false
                     if (error != null) {
                         Toast.makeText(self, Debug.getFailureMsg(self, error), Toast.LENGTH_LONG).show()
-                        return;
+                        return
                     }
                 }
             })
@@ -111,13 +107,13 @@ class RegActivity : AppCompatActivity() {
                         viewModel?.progressOn?.value = false
                         if (error != null) {
                             Toast.makeText(self, Debug.getFailureMsg(self, error), Toast.LENGTH_LONG).show()
-                            return;
+                            return
                         }
                         supportFragmentManager
                                 .beginTransaction()
                                 .replace(binding.fragments.id, RegVerifyMobileFragment())
                                 .addToBackStack(null)
-                                .commit();
+                                .commit()
                     }
                 })
             }
@@ -136,7 +132,7 @@ class RegActivity : AppCompatActivity() {
                     viewModel?.progressOn?.value = false
                     if (error != null) {
                         Toast.makeText(self, Debug.getFailureMsg(self, error), Toast.LENGTH_LONG).show()
-                        return;
+                        return
                     }
                 }
             })
@@ -144,11 +140,25 @@ class RegActivity : AppCompatActivity() {
     }
 
     fun onSetPassword(v: View?) {
-        supportFragmentManager
-                .beginTransaction()
-                .replace(binding.fragments.id, RegPasswordFragment())
-                .addToBackStack(null)
-                .commit()
+        val activity = this
+        viewModel?.progressOn?.value = true
+        otpPhoneRepository.confirmRegistration(viewModel?.phoneNumber?.value!!, viewModel?.smsSecurityCode?.value!!,
+                object: OnCompleteListener<Boolean?>() {
+                    override fun onComplete(value: Boolean?, error: Throwable?) {
+                        viewModel?.progressOn?.value = false
+                        if (error != null) {
+                            Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show()
+                            return;
+                        }
+
+                        supportFragmentManager
+                                .beginTransaction()
+                                .replace(binding.fragments.id, RegPasswordFragment())
+                                .addToBackStack(null)
+                                .commit()
+                    }
+
+                });
     }
 
     fun onCreateAccount(v: View) {
@@ -157,7 +167,7 @@ class RegActivity : AppCompatActivity() {
                 !Validator.isPasswordStrong(viewModel?.password1?.value) ||
                 TextUtils.isEmpty(viewModel?.password1?.value)) {
             Toast.makeText(this, R.string.err_password_not_strong, Toast.LENGTH_LONG).show()
-            return;
+            return
         }
         if (viewModel?.password1?.value != viewModel?.password2?.value) {
             Toast.makeText(this, R.string.err_incorrect_password, Toast.LENGTH_LONG).show()
@@ -175,7 +185,7 @@ class RegActivity : AppCompatActivity() {
                     return
                 }
                 Toast.makeText(self, R.string.activation_active, Toast.LENGTH_LONG).show()
-                startActivity(Session.unauthorizedIntent(self));
+                startActivity(Session.unauthorizedIntent(self))
             }
         })
     }
@@ -193,7 +203,7 @@ class RegActivity : AppCompatActivity() {
      * Just reset the task and go to login screen
      */
     fun onGoLogin(v: View) {
-        startActivity(Session.unauthorizedIntent(this));
+        startActivity(Session.unauthorizedIntent(this))
     }
 
     /**
@@ -201,11 +211,6 @@ class RegActivity : AppCompatActivity() {
      */
     fun updateIndicator(step: RegViewModel.Step) {
         val currentColor = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            getColor(R.color.colorBrand)
-        } else {
-            resources.getColor(R.color.colorBrand)
-        }
-        val pastColor = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             getColor(R.color.colorBrand)
         } else {
             resources.getColor(R.color.colorBrand)

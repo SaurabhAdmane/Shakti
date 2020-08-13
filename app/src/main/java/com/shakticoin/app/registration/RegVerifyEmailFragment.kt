@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.shakticoin.app.api.RemoteException
 import com.shakticoin.app.api.otp.EmailOTPRepository
 import com.shakticoin.app.databinding.FragmentRegVerifyEmailBinding
+import com.shakticoin.app.util.Debug
 
 class RegVerifyEmailFragment : Fragment() {
     private var binding: FragmentRegVerifyEmailBinding? = null
@@ -38,6 +39,7 @@ class RegVerifyEmailFragment : Fragment() {
         viewModel?.currentStep?.value = RegViewModel.Step.VerifyEmail
 
         // start polling the status of the email address verification
+        viewModel?.progressOn?.value = true
         taskPollStatus = PollEmailStatus()
         taskPollStatus?.execute(viewModel?.emailAddress?.value)
     }
@@ -58,6 +60,7 @@ class RegVerifyEmailFragment : Fragment() {
             while(true) {
                 if (isCancelled) break
                 try {
+                    Debug.logDebug("Poll email verification status")
                     if (params.size > 0) {
                         val emailAddress = params[0]
                         emailAddress?.let {
@@ -65,13 +68,15 @@ class RegVerifyEmailFragment : Fragment() {
                             if (isCancelled) return null
                             if (isVerified == null) return null
                             if (isVerified) {
+                                Debug.logDebug("Email verification is confirmed")
                                 return true
                             }
                         }
                     } else {
-                        break;
+                        break
                     }
                 } catch (e: RemoteException) {
+                    Debug.logException(e)
                     return null
                 }
             }
@@ -79,6 +84,7 @@ class RegVerifyEmailFragment : Fragment() {
         }
 
         override fun onPostExecute(result: Boolean?) {
+            viewModel?.progressOn?.value = false
             if (result != null && result) {
                 (activity as RegActivity).onEnterPhone(null)
             }

@@ -19,8 +19,8 @@ val MINING_PLANS: List<String> = listOf("M101W", "T100W", "T200W", "T300W", "T40
 class LicenseRepository {
 
     private val http = OkHttpClient.Builder()
-            .readTimeout(30, TimeUnit.SECONDS)
-            .connectTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
+            .connectTimeout(60, TimeUnit.SECONDS)
             .build();
 
     private val licenseService: LicenseService = Retrofit.Builder()

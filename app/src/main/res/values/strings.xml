@@ -715,6 +715,7 @@
     <string name="reg__email_sent">We just sent a link to your email address.\nClick the link to confirm your email.</string>
     <string name="reg__email_resend_link"><u>Resend email confirmation link</u></string>
     <string name="reg__email_letme_go_back"><u>Let me go back and correct something</u></string>
+    <string name="reg__email_err_already_registered">Your email is registered already, please try another.</string>
     <string name="reg__mobile_confirmation">Email confirmed. Enter your mobile number to continue.</string>
     <string name="reg__mobile_sent_sms">We will send you an SMS with a verification code.</string>
     <string name="reg__mobile_enter_code">Enter verification code</string>
