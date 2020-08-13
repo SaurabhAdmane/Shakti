@@ -537,14 +537,18 @@ public class ProfileActivity extends DrawerActivity {
                 }
 
                 // remove documents that where uploaded
-//                if (uploadList.size() > 0) {
-//                    for (File f : uploadList) {
-//                        f.delete();
-//                    }
-//                    viewModel.updateList.set(true);
-//                }
+                if (uploadList.size() > 0) {
+                    for (File f : uploadList) {
+                        f.delete();
+                    }
+                    viewModel.updateList.set(true);
+                }
 
-                offerFastTrack();
+                // TODO: looks like this is not a correct finishing of the uploading - temporarily
+                Toast.makeText(activity, R.string.kyc_files__uploaded, Toast.LENGTH_LONG).show();
+                finish();
+
+//                offerFastTrack();
             }
         });
 
