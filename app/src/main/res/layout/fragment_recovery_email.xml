@@ -7,108 +7,114 @@
             name="viewModel"
             type="com.shakticoin.app.registration.RecoveryPasswordModel"/>
     </data>
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-        <ImageView
-            android:id="@+id/icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:tint="@android:color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.110000014"
-            app:srcCompat="@drawable/ic_lock"
-            tools:ignore="ContentDescription"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="22dp"
-            android:layout_marginTop="25dp"
-            android:layout_marginEnd="22dp"
-            android:text="@string/recovery_email_title"
-            android:textAppearance="@style/AppText.Title"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/icon" />
-
-        <TextView
-            android:id="@+id/subtitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="22dp"
-            android:layout_marginTop="13dp"
-            android:layout_marginEnd="22dp"
-            android:text="@string/recovery_email_subtitle"
-            android:textAppearance="@style/AppText.Subtitle"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/title" />
-
-        <com.shakticoin.app.widget.TextInputLayout
-            android:id="@+id/emailAddressLayout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="22dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="22dp"
-            style="@style/AppTextLayout"
-            app:validationEnabled="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/subtitle">
-            <com.shakticoin.app.widget.InlineLabelEditText
-                android:id="@+id/email_address"
-                style="@style/AppTextField"
-                android:layout_width="match_parent"
+            <ImageView
+                android:id="@+id/icon"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@={viewModel.emailAddress}"
-                android:ems="10"
-                android:hint="@string/hint_email_address"
-                android:inputType="textEmailAddress"
-                android:imeOptions="actionSend"/>
-        </com.shakticoin.app.widget.TextInputLayout>
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:tint="@android:color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.110000014"
+                app:srcCompat="@drawable/ic_lock"
+                tools:ignore="ContentDescription"/>
 
-        <Button
-            android:id="@+id/do_send"
-            style="@style/AppButton.Rounded"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="22dp"
-            android:layout_marginEnd="22dp"
-            android:layout_marginBottom="16dp"
-            android:onClick="onSend"
-            android:text="@string/do_send"
-            app:layout_constraintBottom_toTopOf="@+id/do_cancel"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent" />
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="22dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginEnd="22dp"
+                android:text="@string/recovery_email_title"
+                android:textAppearance="@style/AppText.Title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/icon" />
 
-        <TextView
-            android:id="@+id/do_cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:onClick="onCancel"
-            android:text="@string/add_password_cancel"
-            android:textAppearance="@style/AppText.Body"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.98" />
+            <TextView
+                android:id="@+id/subtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="22dp"
+                android:layout_marginTop="13dp"
+                android:layout_marginEnd="22dp"
+                android:text="@string/recovery_email_subtitle"
+                android:textAppearance="@style/AppText.Subtitle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/title" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <com.shakticoin.app.widget.TextInputLayout
+                android:id="@+id/emailAddressLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="22dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="22dp"
+                style="@style/AppTextLayout"
+                app:validationEnabled="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/subtitle">
+                <com.shakticoin.app.widget.InlineLabelEditText
+                    android:id="@+id/email_address"
+                    style="@style/AppTextField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@={viewModel.emailAddress}"
+                    android:ems="10"
+                    android:hint="@string/hint_email_address"
+                    android:inputType="textEmailAddress"
+                    android:imeOptions="actionSend"/>
+            </com.shakticoin.app.widget.TextInputLayout>
+
+            <Button
+                android:id="@+id/do_send"
+                style="@style/AppButton.Rounded"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="22dp"
+                android:layout_marginEnd="22dp"
+                android:layout_marginBottom="16dp"
+                android:onClick="onSend"
+                android:text="@string/do_send"
+                app:layout_constraintBottom_toTopOf="@+id/do_cancel"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/do_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onCancel"
+                android:text="@string/add_password_cancel"
+                android:textAppearance="@style/AppText.Body"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.98" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </layout>

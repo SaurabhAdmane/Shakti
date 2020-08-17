@@ -2,17 +2,16 @@ package com.shakticoin.app.registration;
 
 import android.app.Activity;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
-
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.shakticoin.app.databinding.FragmentRecoveryEmailBinding;
 import com.shakticoin.app.util.Validator;
@@ -21,7 +20,7 @@ import com.shakticoin.app.util.Validator;
 public class RecoveryEmailFragment extends Fragment {
 
     private RecoveryPasswordModel viewModel;
-    FragmentRecoveryEmailBinding binding;
+    private FragmentRecoveryEmailBinding binding;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,7 +53,7 @@ public class RecoveryEmailFragment extends Fragment {
         binding.emailAddressLayout.setValidator((view, value) -> Validator.isEmail(value));
 
         // display an error callout if activity is set an error message
-        viewModel.emailAddressErrMsg.observe(this, s -> {
+        viewModel.emailAddressErrMsg.observe(getViewLifecycleOwner(), s -> {
             if (!TextUtils.isEmpty(s)) {
                 binding.emailAddressLayout.setError(s);
                 viewModel.emailAddressErrMsg.setValue(null);

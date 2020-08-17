@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -15,6 +14,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.shakticoin.app.R;
+import com.shakticoin.app.databinding.ActivityRecoveryBinding;
 import com.shakticoin.app.util.CommonUtil;
 import com.shakticoin.app.util.Validator;
 
@@ -22,17 +22,16 @@ import java.util.Objects;
 
 public class RecoveryPasswordActivity extends AppCompatActivity {
     private RecoveryPasswordModel viewModel;
-    private ProgressBar progressBar;
+    private ActivityRecoveryBinding binding;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recovery);
+        binding = ActivityRecoveryBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         FragmentManager manager = getSupportFragmentManager();
         manager.beginTransaction().hide(Objects.requireNonNull(manager.findFragmentById(R.id.sent_fragment))).commit();
-
-        progressBar = findViewById(R.id.progressBar);
 
         viewModel = ViewModelProviders.of(this).get(RecoveryPasswordModel.class);
 
@@ -54,7 +53,7 @@ public class RecoveryPasswordActivity extends AppCompatActivity {
     }
 
     public void onCancel(View view) {
-        progressBar.setVisibility(View.INVISIBLE);
+        binding.progressBar.setVisibility(View.INVISIBLE);
         NavUtils.navigateUpFromSameTask(this);
     }
 
