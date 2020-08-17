@@ -4,7 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.crashlytics.android.Crashlytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.shakticoin.app.BuildConfig;
 import com.shakticoin.app.R;
 import com.shakticoin.app.api.RemoteException;
@@ -32,7 +32,7 @@ public class Debug {
                 }
                 Log.d("com.shakticoin.app", errMsg, e);
             } else {
-                Crashlytics.logException(e);
+                FirebaseCrashlytics.getInstance().recordException(e);
             }
         }
     }
