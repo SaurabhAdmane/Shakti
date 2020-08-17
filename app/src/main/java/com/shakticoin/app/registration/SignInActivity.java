@@ -18,15 +18,10 @@ import androidx.databinding.DataBindingUtil;
 
 import com.shakticoin.app.R;
 import com.shakticoin.app.api.OnCompleteListener;
-import com.shakticoin.app.api.Session;
-import com.shakticoin.app.api.UnauthorizedException;
 import com.shakticoin.app.api.auth.AuthRepository;
 import com.shakticoin.app.api.auth.TokenResponse;
-import com.shakticoin.app.api.user.UserAccount;
-import com.shakticoin.app.api.user.UserRepository;
 import com.shakticoin.app.databinding.ActivitySigninBinding;
 import com.shakticoin.app.util.CommonUtil;
-import com.shakticoin.app.util.Debug;
 import com.shakticoin.app.util.PreferenceHelper;
 import com.shakticoin.app.util.Validator;
 import com.shakticoin.app.wallet.WalletActivity;
@@ -37,7 +32,6 @@ public class SignInActivity extends AppCompatActivity {
     private ActivitySigninBinding binding;
 
     private AuthRepository authRepository = new AuthRepository();
-    private UserRepository userRepository = new UserRepository();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -107,25 +101,8 @@ public class SignInActivity extends AppCompatActivity {
                 SharedPreferences prefs = getSharedPreferences(PreferenceHelper.GENERAL_PREFERENCES, Context.MODE_PRIVATE);
                 prefs.edit().putBoolean(PreferenceHelper.PREF_KEY_HAS_ACCOUNT, true).apply();
 
-                binding.progressBar.setVisibility(View.VISIBLE);
-                userRepository.getUserAccount(new OnCompleteListener<UserAccount>() {
-                    @Override
-                    public void onComplete(UserAccount value, Throwable error) {
-                        binding.progressBar.setVisibility(View.INVISIBLE);
-                        if (error != null) {
-                            if (error instanceof UnauthorizedException) {
-                                startActivity(Session.unauthorizedIntent(self));
-                            } else {
-                                Toast.makeText(self, Debug.getFailureMsg(self, error), Toast.LENGTH_LONG).show();
-                                Debug.logException(error);
-                            }
-                            return;
-                        }
-
-                        // go to the wallet
-                        startActivity(new Intent(self, WalletActivity.class));
-                    }
-                });
+                // go to the wallet
+                startActivity(new Intent(self, WalletActivity.class));
             }
         });
     }

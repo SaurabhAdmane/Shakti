@@ -14,17 +14,13 @@ import androidx.fragment.app.DialogFragment;
 
 import com.shakticoin.app.R;
 import com.shakticoin.app.api.user.FamilyMember;
-import com.shakticoin.app.api.user.UserRepository;
 import com.shakticoin.app.databinding.DialogFamilyMemberBinding;
 import com.shakticoin.app.util.Validator;
 import com.shakticoin.app.widget.PanelDialog;
 
-import java.util.Objects;
-
 public class DialogAddFamilyMember extends DialogFragment {
     private DialogFamilyMemberBinding binding;
     private FamilyMember familyMember;
-    private UserRepository userRepository = new UserRepository();
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
@@ -35,7 +31,7 @@ public class DialogAddFamilyMember extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        Dialog dialog = new PanelDialog(Objects.requireNonNull(getContext()));
+        Dialog dialog = new PanelDialog(requireContext());
         binding = DialogFamilyMemberBinding.inflate(LayoutInflater.from(getContext()), null, false);
         dialog.setContentView(binding.getRoot());
 

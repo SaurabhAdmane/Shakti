@@ -15,8 +15,6 @@ import com.shakticoin.app.api.Session;
 import com.shakticoin.app.api.UnauthorizedException;
 import com.shakticoin.app.api.auth.AuthRepository;
 import com.shakticoin.app.api.auth.TokenResponse;
-import com.shakticoin.app.api.user.UserAccount;
-import com.shakticoin.app.api.user.UserRepository;
 import com.shakticoin.app.registration.RegActivity;
 import com.shakticoin.app.registration.SignInActivity;
 import com.shakticoin.app.tour.WelcomeTourActivity;
@@ -62,24 +60,8 @@ public class SplashActivity extends AppCompatActivity {
                             }
 
                             Session.setAccessToken(value.getAccess_token());
-                            UserRepository userRepo = new UserRepository();
-                            userRepo.getUserAccount(new OnCompleteListener<UserAccount>() {
-                                @Override
-                                public void onComplete(UserAccount value, Throwable error) {
-                                    if (error != null) {
-                                        if (error instanceof UnauthorizedException) {
-                                            startActivity(Session.unauthorizedIntent(self));
-                                        } else {
-                                            Toast.makeText(self, Debug.getFailureMsg(self, error), Toast.LENGTH_LONG).show();
-                                            Debug.logException(error);
-                                        }
-                                        return;
-                                    }
 
-                                    // go to the wallet
-                                    startActivity(new Intent(self, WalletActivity.class));
-                                }
-                            });
+                            startActivity(new Intent(self, WalletActivity.class));
                         }
                     });
                 }

@@ -16,14 +16,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.shakticoin.app.R;
 import com.shakticoin.app.api.user.FamilyMember;
-import com.shakticoin.app.api.user.UserRepository;
 import com.shakticoin.app.widget.DrawerActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FamilyTreeActivity extends DrawerActivity implements DialogInterface.OnDismissListener {
-    private UserRepository userRepository = new UserRepository();
 
     private FamilyMembersAdapter adapter;
     private ProgressBar progressBar;

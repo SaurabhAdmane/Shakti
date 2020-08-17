@@ -15,10 +15,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.shakticoin.app.R;
-import com.shakticoin.app.api.OnCompleteListener;
-import com.shakticoin.app.api.user.UserRepository;
 import com.shakticoin.app.util.CommonUtil;
-import com.shakticoin.app.util.Debug;
 import com.shakticoin.app.util.Validator;
 
 import java.util.Objects;
@@ -75,18 +72,7 @@ public class RecoveryPasswordActivity extends AppCompatActivity {
 
         final Activity self = this;
 
-        progressBar.setVisibility(View.VISIBLE);
-        UserRepository userRepo = new UserRepository();
-        userRepo.resetPassword(emailAddress, new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(Void value, Throwable error) {
-                progressBar.setVisibility(View.INVISIBLE);
-                if (error != null) {
-                    Toast.makeText(self, Debug.getFailureMsg(self, error), Toast.LENGTH_LONG).show();
-                    return;
-                }
-                if (!viewModel.isRequestSent()) nextPage();
-            }
-        });
+        // FIXME: not implemented
+        Toast.makeText(this, R.string.err_not_implemented, Toast.LENGTH_SHORT).show();
     }
 }

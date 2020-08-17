@@ -5,18 +5,14 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.shakticoin.app.R;
-import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.Session;
-import com.shakticoin.app.api.user.UserRepository;
 
 import java.util.List;
 
@@ -40,20 +36,7 @@ public class ActivationActivity extends AppCompatActivity {
             String userId = segments.get(segments.size()-2);
             if (!TextUtils.isEmpty(token) && TextUtils.isDigitsOnly(userId)) {
                 Activity self = this;
-                progressBar.setVisibility(View.VISIBLE);
-                UserRepository repository = new UserRepository();
-                repository.acvivateUser(Integer.valueOf(userId), token, new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(Void value, Throwable error) {
-                        progressBar.setVisibility(View.INVISIBLE);
-                        if (error != null) {
-                            message.setText(R.string.activation_failed);
-                            return;
-                        }
-                        Toast.makeText(self, R.string.activation_active, Toast.LENGTH_LONG).show();
-                        startActivity(Session.unauthorizedIntent(self));
-                    }
-                });
+                // FIXME: decomissined user api is removed. Should we remove the entire activity?
             } else {
                 message.setText(R.string.activation_failed);
                 startActivity(Session.unauthorizedIntent(this));
