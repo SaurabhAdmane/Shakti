@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.shakticoin.app.R;
 import com.shakticoin.app.ShaktiApplication;
 import com.shakticoin.app.api.OnCompleteListener;
+import com.shakticoin.app.api.RemoteException;
 import com.shakticoin.app.api.Session;
 import com.shakticoin.app.api.kyc.KYCRepository;
 import com.shakticoin.app.api.onboard.OnboardRepository;
@@ -127,19 +128,25 @@ public class WalletActivity extends DrawerActivity {
         viewModel.isProgressBarActive.set(true);
         String walletBytes = walletRepository.getExistingWallet();
         if (walletBytes == null) {
-            // we need to create a new wallet
-            onboardRepository.createWallet(Session.getWalletPassphrase(), new OnCompleteListener<String>() {
-                @Override
-                public void onComplete(String walletBytes, Throwable error) {
-                    viewModel.isProgressBarActive.set(false);
-                    if (error != null) {
-                        Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
-                        return;
+            String passphrase = Session.getWalletPassphrase();
+            if (!TextUtils.isEmpty(passphrase)) {
+                // we need to create a new wallet
+                onboardRepository.createWallet(Session.getWalletPassphrase(), new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(String walletBytes, Throwable error) {
+                        viewModel.isProgressBarActive.set(false);
+                        if (error != null) {
+                            Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
+                            if (error instanceof RemoteException && ((RemoteException) error).getResponseCode() == 201) {
+                                Session.setWalletPassphrase(null);
+                            }
+                            return;
+                        }
+                        walletRepository.storeWallet(walletBytes);
+                        getWalletBalance();
                     }
-                    walletRepository.storeWallet(walletBytes);
-                    getWalletBalance();
-                }
-            });
+                });
+            }
         } else {
             walletRepository.getBalance(new OnCompleteListener<BigDecimal>() {
                 @Override

@@ -89,11 +89,15 @@ class OnboardRepository : BackendRepository() {
                     // it return success if wallet exists already for the account but w/o wallet bytes
                     if (resp != null) {
                         val details = resp.details
-                        if (TextUtils.isEmpty(details?.get("walletBytes") as String)) {
+                        val walletBytes = details?.get("walletBytes") as String
+                        // This is in fact an error situation in spite of success code 201.
+                        // It means that the network knows about the user's wallet but the user
+                        // either did not store wallet bytes locally or lost it.
+                        if (TextUtils.isEmpty(walletBytes)) {
                             listener.onComplete(null, RemoteException(details["message"] as String, response.code()))
                             return;
                         }
-                        listener.onComplete(details["walletBytes"] as String, null)
+                        listener.onComplete(walletBytes, null)
                     } else listener.onComplete(null, null)
                 } else {
                     when(response.code()) {

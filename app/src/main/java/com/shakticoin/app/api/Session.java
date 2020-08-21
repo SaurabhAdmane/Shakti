@@ -107,6 +107,13 @@ public class Session {
         Session.shaktiId = shaktiId;
     }
 
+    /**
+     * Return a wallet passphrase that user entered when the wallet was opened first time. The passphrase
+     * is mandatory but there is a case when it can be empty. If local storage does not have
+     * wallet bytes and create wallet call return that the wallet was already created then we clear
+     * passprase. This effectively mean that if no wallet bytes and passphrase then callWallet
+     * is skipped.
+     */
     public static String getWalletPassphrase() {
         return walletPassphrase;
     }
