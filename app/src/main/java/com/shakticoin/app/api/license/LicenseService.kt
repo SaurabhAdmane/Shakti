@@ -23,9 +23,15 @@ interface LicenseService {
             @Query("city") city: String?): Call<ResponseBody?>?
 
     @GET("node-operator")
-    fun getNodeOperator(@Header("Authorization") authorization: String?): Call<ResponseBody?>
+    fun getNodeOperator(@Header("Authorization") authorization: String?): Call<NodeOperatorModel?>
 
     @PATCH("node-operator")
     fun updateNodeOperator(@Header("Authorization") authorization: String?,
-                           @Body parameters: NodeOperatorUpdateModel): Call<ResponseBody?>
+                           @Body parameters: NodeOperatorUpdateModel): Call<NodeOperatorModel?>
+
+    @POST("node-operator/cancellation")
+    fun cancelLicence(@Header("Authorization") authorization: String?,
+                      @Body parameters: SubscribedLicenseModel) : Call<SubscribedLicenseModel?>
+
+
 }

@@ -12,8 +12,16 @@ class NodeOperatorUpdateModel {
 }
 
 class NodeOperatorModel {
-    var planCode: String? = null
+    var nodeID: String? = null
+    var walletID: String? = null
+    var bizVaultID: String? = null
+    var vanityID1: String? = null
+    var vanityID2: String? = null
+    var brandID: String? = null
+    var email: String? = null
+    var mobileNumber: String? = null
     var address: AddressModel? = null
+    var subscribedLicenses: List<SubscribedLicenseModel>? = null
 }
 
 class AddressModel {
@@ -41,6 +49,7 @@ class SubscribedLicenseModel {
     var action: String? = null
     /** Value is on of PMNT_ constants */
     var paymentStatus: String? = null
+    var dateOfPurchase: Long? = null
 
     companion object {
         const val ACTION_INITIATED = "INITIATED"

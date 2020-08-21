@@ -41,6 +41,7 @@ class LicenseType() : Parcelable {
     var bonus: String? = null
     var licCategory: String? = null
     var orderNumber: Int? = null
+    var additionalPay: Int? = null
 
     constructor(parcel: Parcel) : this() {
         id = parcel.readString()
@@ -52,6 +53,7 @@ class LicenseType() : Parcelable {
         bonus = parcel.readString()
         licCategory = parcel.readString()
         orderNumber = parcel.readValue(Int::class.java.classLoader) as? Int
+        additionalPay = parcel.readValue(Int::class.java.classLoader) as? Int
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -64,6 +66,7 @@ class LicenseType() : Parcelable {
         parcel.writeString(bonus)
         parcel.writeString(licCategory)
         parcel.writeValue(orderNumber)
+        parcel.writeValue(additionalPay)
     }
 
     override fun describeContents(): Int {
