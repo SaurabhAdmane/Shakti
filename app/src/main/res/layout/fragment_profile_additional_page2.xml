@@ -84,24 +84,6 @@
             </com.shakticoin.app.widget.TextInputLayout>
 
             <CheckBox
-                android:id="@+id/authShakti"
-                style="@style/AppCheckbox"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="24dp"
-                android:button="@drawable/checkbox_states"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
-                android:text="@string/profile_additional_auth_stmt"
-                android:checked="true"
-                android:enabled="false"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/phoneOrEmailLayout" />
-
-            <CheckBox
                 android:id="@+id/consentAlerts"
                 style="@style/AppCheckbox"
                 android:layout_width="0dp"
@@ -117,7 +99,7 @@
                 android:onCheckedChanged="@{(view, checked) -> viewModel.onSubscribeConfirmed(checked)}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/authShakti" />
+                app:layout_constraintTop_toBottomOf="@+id/phoneOrEmailLayout" />
 
 
             <Button
