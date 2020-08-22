@@ -34,4 +34,8 @@ interface LicenseService {
                       @Body parameters: SubscribedLicenseModel) : Call<SubscribedLicenseModel?>
 
 
+    @Headers("Content-Type: application/json", "Accept: application/json")
+    @POST("node-operator/checkout/subscription")
+    fun checkoutSubscription(@Header("Authorization") authorization: String?,
+                 @Body parameters: CheckoutModel) : Call<CheckoutResponse?>
 }

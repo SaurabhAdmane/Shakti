@@ -1,5 +1,8 @@
 package com.shakticoin.app.api.license
 
+val MINING_PLANS: List<String> = listOf("M101W", "T100W", "T200W", "T300W", "T400W",
+        "M101M", "T100M", "T200M", "T300M", "T400M", "M101Y", "T100Y", "T200Y", "T300Y", "T400Y")
+
 class NodeOperatorUpdateModel {
     var nodeID: String? = null
     var walletID: String? = null
@@ -22,6 +25,17 @@ class NodeOperatorModel {
     var mobileNumber: String? = null
     var address: AddressModel? = null
     var subscribedLicenses: List<SubscribedLicenseModel>? = null
+}
+
+class CheckoutModel {
+    var planCode: String? = null
+    var address: AddressModel? = null
+}
+
+class CheckoutResponse {
+    var status: Boolean? = null
+    var message: String? = null
+    var hostedpage: String? = null
 }
 
 class AddressModel {

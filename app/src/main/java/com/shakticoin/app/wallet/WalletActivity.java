@@ -23,7 +23,7 @@ import com.shakticoin.app.api.onboard.OnboardRepository;
 import com.shakticoin.app.api.wallet.SessionException;
 import com.shakticoin.app.api.wallet.WalletRepository;
 import com.shakticoin.app.databinding.ActivityWalletBinding;
-import com.shakticoin.app.miner.MiningLicenseActivity;
+import com.shakticoin.app.miner.BecomeMinerActivity;
 import com.shakticoin.app.registration.SignInActivity;
 import com.shakticoin.app.room.AppDatabase;
 import com.shakticoin.app.room.LockStatusDao;
@@ -99,12 +99,8 @@ public class WalletActivity extends DrawerActivity {
         }).show(fragmentManager, DialogBusinessVault.TAG);
     }
 
-    public void onShowMinerInfo(View v) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        DialogBecomeMiner.newInstance(v1 -> {
-            Intent intent = new Intent(this, MiningLicenseActivity.class);
-            startActivity(intent);
-        }).show(fragmentManager, DialogBecomeMiner.TAG);
+    public void onBecomeMiner(View v) {
+        startActivity(new Intent(this, BecomeMinerActivity.class));
     }
 
     public void onShowUnlockInfo(View v) {

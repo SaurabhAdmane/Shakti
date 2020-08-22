@@ -220,7 +220,7 @@ public class ProfileActivity extends DrawerActivity {
                 Boolean emailAlert = (Boolean) value.getEmailAlert();
                 personalInfoViewModel.subscriptionConfirmed.set(emailAlert != null ? emailAlert : false);
             }
-        }, false);
+        });
 
         getSupportFragmentManager().addOnBackStackChangedListener(() -> {
             for (int i = 0; i < tags.length; i++) {

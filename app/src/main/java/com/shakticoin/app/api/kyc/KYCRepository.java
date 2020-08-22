@@ -60,7 +60,7 @@ public class KYCRepository extends BackendRepository {
     public void getUserDetails(OnCompleteListener<KycUserView> listener) {
         getUserDetails(listener, false);
     }
-    public void getUserDetails(OnCompleteListener<KycUserView> listener, boolean hasRecover401) {
+    private void getUserDetails(OnCompleteListener<KycUserView> listener, boolean hasRecover401) {
         service.getUserDetails(Session.getAuthorizationHeader()).enqueue(new Callback<KycUserView>() {
             @EverythingIsNonNull
             @Override

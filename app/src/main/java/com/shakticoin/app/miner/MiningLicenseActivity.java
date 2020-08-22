@@ -15,9 +15,9 @@ import androidx.lifecycle.ViewModelProviders;
 import com.shakticoin.app.R;
 import com.shakticoin.app.ShaktiApplication;
 import com.shakticoin.app.api.OnCompleteListener;
-import com.shakticoin.app.api.license.LicenceRepository;
 import com.shakticoin.app.api.license.LicenseRepository;
 import com.shakticoin.app.api.license.LicenseType;
+import com.shakticoin.app.api.license.ModelsKt;
 import com.shakticoin.app.api.vault.VaultRepository;
 import com.shakticoin.app.databinding.ActivityMiningLicenseBinding;
 import com.shakticoin.app.payment.PaymentOptionsActivity;
@@ -85,7 +85,7 @@ public class MiningLicenseActivity extends DrawerActivity {
                 // we need only year mining licenses in this activity
                 List<LicenseType> yearMiningLics = new ArrayList<>();
                 for (LicenseType t : licenseTypes) {
-                    if (LicenceRepository.getMINING_PLANS().contains(t.getPlanCode())
+                    if (ModelsKt.getMINING_PLANS().contains(t.getPlanCode())
                             && Integer.valueOf(1).equals(t.getCycle())) {
                         yearMiningLics.add(t);
                     }

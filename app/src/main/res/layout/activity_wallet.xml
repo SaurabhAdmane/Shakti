@@ -256,7 +256,7 @@
                             android:textSize="10sp"
                             android:clickable="true"
                             android:focusable="true"
-                            android:onClick="onShowMinerInfo"
+                            android:onClick="onBecomeMiner"
                             tools:ignore="SmallSp" />
                     </RelativeLayout>
 

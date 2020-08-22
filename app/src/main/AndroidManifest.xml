@@ -236,11 +236,12 @@
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".registration.SignUpOTPActivity"
+            android:name=".registration.RegActivity"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity"/>
         <activity
-            android:name=".registration.RegActivity"
+            android:name=".payment.PaymentFlowActivity"
+            android:parentActivityName=".wallet.WalletActivity"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity"/>
 
