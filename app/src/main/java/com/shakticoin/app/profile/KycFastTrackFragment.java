@@ -12,8 +12,6 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.shakticoin.app.databinding.FragmentKycFasttrackBinding;
 
-import java.util.Objects;
-
 public class KycFastTrackFragment extends Fragment {
     private FragmentKycFasttrackBinding binding;
     private PersonalViewModel viewModel;
@@ -23,7 +21,7 @@ public class KycFastTrackFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentKycFasttrackBinding.inflate(inflater, container, false);
         binding.setLifecycleOwner(this);
-        viewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(PersonalViewModel.class);
+        viewModel = ViewModelProviders.of(requireActivity()).get(PersonalViewModel.class);
         binding.setViewModel(viewModel);
 
         return binding.getRoot();

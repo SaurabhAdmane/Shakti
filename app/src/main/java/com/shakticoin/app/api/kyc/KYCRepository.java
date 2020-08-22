@@ -15,6 +15,7 @@ import com.shakticoin.app.api.Session;
 import com.shakticoin.app.api.UnauthorizedException;
 import com.shakticoin.app.api.auth.AuthRepository;
 import com.shakticoin.app.api.auth.TokenResponse;
+import com.shakticoin.app.api.license.CheckoutResponse;
 import com.shakticoin.app.util.Debug;
 
 import org.json.JSONArray;
@@ -391,19 +392,19 @@ public class KYCRepository extends BackendRepository {
         });
     }
 
-    public void subscription(@NonNull OnCompleteListener<Void> listener) {
+    public void subscription(@NonNull OnCompleteListener<String> listener) {
         subscription(listener, false);
     }
-    public void subscription(@NonNull OnCompleteListener<Void> listener, boolean hasRecover401) {
-        Call<ResponseBody> call = service.subscription(Session.getAuthorizationHeader());
-        Debug.logDebug(call.request().toString());
-        call.enqueue(new Callback<ResponseBody>() {
+    private void subscription(@NonNull OnCompleteListener<String> listener, boolean hasRecover401) {
+        Call<CheckoutResponse> call = service.subscription(Session.getAuthorizationHeader());
+        call.enqueue(new Callback<CheckoutResponse>() {
             @EverythingIsNonNull
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(Call<CheckoutResponse> call, Response<CheckoutResponse> response) {
                 Debug.logDebug(response.toString());
                 if (response.isSuccessful()) {
-                    listener.onComplete(null, null);
+                    CheckoutResponse resp = response.body();
+                    listener.onComplete(resp != null ? resp.getHostedpage() : null, null);
                 } else {
                     switch (response.code()) {
                         case 401:
@@ -436,7 +437,7 @@ public class KYCRepository extends BackendRepository {
 
             @EverythingIsNonNull
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<CheckoutResponse> call, Throwable t) {
                 returnError(listener, t);
             }
         });

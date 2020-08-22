@@ -1,5 +1,7 @@
 package com.shakticoin.app.api.kyc;
 
+import com.shakticoin.app.api.license.CheckoutResponse;
+
 import java.util.List;
 import java.util.Map;
 
@@ -65,6 +67,7 @@ public interface KYCService {
     /**
      * Purchase KYC user license.
      */
+    @Headers("Accept: application/json")
     @PATCH("kyc/subscription")
-    Call<ResponseBody> subscription(@Header("Authorization") String authorization);
+    Call<CheckoutResponse> subscription(@Header("Authorization") String authorization);
 }

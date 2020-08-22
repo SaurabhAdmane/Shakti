@@ -42,6 +42,8 @@ import com.shakticoin.app.api.kyc.KycUserModel;
 import com.shakticoin.app.api.kyc.KycUserView;
 import com.shakticoin.app.api.kyc.RelationModel;
 import com.shakticoin.app.databinding.ActivityProfileBinding;
+import com.shakticoin.app.payment.PaymentFlowActivity;
+import com.shakticoin.app.util.CommonUtil;
 import com.shakticoin.app.util.Debug;
 import com.shakticoin.app.util.Validator;
 import com.shakticoin.app.widget.DatePicker;
@@ -233,7 +235,7 @@ public class ProfileActivity extends DrawerActivity {
             }
         });
         adapter = new ProfileFragmentAdapter(getSupportFragmentManager());
-        selectPage(showStatus ? PAGE_VERIFYING : PAGE_PERSONAL_FIRST);
+        selectPage(showStatus ? PAGE_FAST_TRACK : PAGE_PERSONAL_FIRST);
     }
 
     private void selectPage(int index) {
@@ -548,7 +550,6 @@ public class ProfileActivity extends DrawerActivity {
                 Toast.makeText(activity, R.string.kyc_files__uploaded, Toast.LENGTH_LONG).show();
                 finish();
 
-//                offerFastTrack();
             }
         });
 
@@ -559,10 +560,11 @@ public class ProfileActivity extends DrawerActivity {
     }
 
     public void payFastTrack(View v) {
+        Activity activity = this;
         viewModel.getProgressBarTrigger().set(true);
-        kycRepository.subscription(new OnCompleteListener<Void>() {
+        kycRepository.subscription(new OnCompleteListener<String>() {
             @Override
-            public void onComplete(Void value, Throwable error) {
+            public void onComplete(String targetUrl, Throwable error) {
                 viewModel.getProgressBarTrigger().set(false);
                 if (error != null) {
                     if (error instanceof UnauthorizedException) {
@@ -572,7 +574,12 @@ public class ProfileActivity extends DrawerActivity {
                     }
                     return;
                 }
-                finish();
+
+                if (targetUrl != null) {
+                    Intent intent = new Intent(activity, PaymentFlowActivity.class);
+                    intent.putExtra(CommonUtil.prefixed("targetUrl", activity), targetUrl);
+                    startActivity(intent);
+                }
             }
         });
     }
