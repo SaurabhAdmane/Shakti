@@ -352,6 +352,10 @@
     <string name="price_usd">$%1$.2f USD</string>
     <string name="kyc_fasttr_action">Pay to fast-track your KYC</string>
     <string name="kyc_fasttr_cancel">Cancel &amp; Discard</string>
+    <string name="kyc__verification_none">None</string>
+    <string name="kyc__verification_initiated">Initiated</string>
+    <string name="kyc__verification_succes">Success</string>
+    <string name="kyc__verification_rejected">Rejected</string>
     <string name="kyc_verifying">Your KYC is being processed</string>
     <string name="kyc_verifying_title">Verifying KYC Files</string>
     <string name="kyc_verifying_note">

@@ -28,6 +28,9 @@ public class SettingsActivity extends DrawerActivity {
     private SettingsViewModel viewModel;
     private KYCRepository kycRepository = new KYCRepository();
 
+    private String verificationStatus = "NONE";
+    private Boolean fastTrackEnabled = false;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,8 +46,8 @@ public class SettingsActivity extends DrawerActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onResume() {
+        super.onResume();
         binding.progressBar.setVisibility(View.VISIBLE);
         kycRepository.getUserDetails(new OnCompleteListener<KycUserView>() {
             @Override
@@ -56,9 +59,24 @@ public class SettingsActivity extends DrawerActivity {
                     return;
                 }
 
+                verificationStatus = userinfo.getVerificationStatus();
+                fastTrackEnabled = userinfo.getFastTrack();
+
                 binding.fullName.setText((String) userinfo.getFullName());
                 binding.emailAddress.setText((String) userinfo.getPrimaryEmail());
-                binding.kycStatus.setText((String) userinfo.getVerificationStatus());
+
+                // Find friendly status message.
+                if ("INITIATED".equals(verificationStatus)) {
+                    binding.kycStatus.setText(getString(R.string.kyc__verification_initiated));
+                } else if ("SUCCESS".equals(verificationStatus)) {
+                    binding.kycStatus.setText(getString(R.string.kyc__verification_succes));
+                } else if ("REJECTED".equals(verificationStatus)) {
+                    binding.kycStatus.setText(getString(R.string.kyc__verification_rejected));
+                } else if ("NONE".equals(verificationStatus)) {
+                    binding.kycStatus.setText(getString(R.string.kyc__verification_none));
+                } else {
+                    binding.kycStatus.setText(verificationStatus);
+                }
             }
         });
     }
