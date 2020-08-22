@@ -19,6 +19,9 @@ import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.RemoteException;
 import com.shakticoin.app.api.Session;
 import com.shakticoin.app.api.kyc.KYCRepository;
+import com.shakticoin.app.api.license.LicenseRepository;
+import com.shakticoin.app.api.license.NodeOperatorModel;
+import com.shakticoin.app.api.license.SubscribedLicenseModel;
 import com.shakticoin.app.api.onboard.OnboardRepository;
 import com.shakticoin.app.api.wallet.SessionException;
 import com.shakticoin.app.api.wallet.WalletRepository;
@@ -33,6 +36,7 @@ import com.shakticoin.app.vault.VaultChooserActivity;
 import com.shakticoin.app.widget.DrawerActivity;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class WalletActivity extends DrawerActivity {
     private ActivityWalletBinding binding;
@@ -41,7 +45,7 @@ public class WalletActivity extends DrawerActivity {
     private WalletRepository walletRepository = new WalletRepository();
     private KYCRepository kycRepository = new KYCRepository();
     private OnboardRepository onboardRepository = new OnboardRepository();
-    private static AsyncTask<Void, Void, Boolean> walletStatusCheckTask;
+    private LicenseRepository licenseRepository = new LicenseRepository();
 
     @Override
     public void onBackPressed() {
@@ -73,6 +77,25 @@ public class WalletActivity extends DrawerActivity {
 
         // update wallet balance
         getWalletBalance();
+
+        // Decides if we should display call-to-action "Become a miner".
+        // Basically, if the user has a license then do not display.
+        Activity activity = this;
+        licenseRepository.getNodeOperator(new OnCompleteListener<NodeOperatorModel>() {
+            @Override
+            public void onComplete(NodeOperatorModel value, Throwable error) {
+                if (error != null) {
+                    Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
+                    return;
+                }
+                List<SubscribedLicenseModel> licences = value.getSubscribedLicenses();
+                if (licences != null && !licences.isEmpty()) {
+                    binding.becomeMinerBox.setVisibility(View.GONE);
+                } else {
+                    binding.becomeMinerBox.setVisibility(View.VISIBLE);
+                }
+            }
+        });
 
         // check wallet lock status and display action buttons if unlocked
         new CheckWalletLocked(getSupportFragmentManager()).execute();

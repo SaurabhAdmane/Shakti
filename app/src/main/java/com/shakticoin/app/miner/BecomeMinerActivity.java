@@ -12,16 +12,18 @@ import androidx.databinding.DataBindingUtil;
 
 import com.shakticoin.app.R;
 import com.shakticoin.app.api.OnCompleteListener;
-import com.shakticoin.app.api.kyc.KYCRepository;
 import com.shakticoin.app.api.license.LicenseRepository;
+import com.shakticoin.app.api.license.LicenseType;
 import com.shakticoin.app.databinding.ActivityBecomeMinerBinding;
 import com.shakticoin.app.payment.PaymentFlowActivity;
 import com.shakticoin.app.util.CommonUtil;
+import com.shakticoin.app.util.Debug;
 import com.shakticoin.app.widget.DrawerActivity;
+
+import java.util.List;
 
 public class BecomeMinerActivity extends DrawerActivity {
     private ActivityBecomeMinerBinding binding;
-    private KYCRepository kycRepository = new KYCRepository();
     private LicenseRepository licenceRepository = new LicenseRepository();
 
     @Override
@@ -33,6 +35,31 @@ public class BecomeMinerActivity extends DrawerActivity {
         onInitView(binding.getRoot(), getString(R.string.miner_intro_toolbar));
 
         binding.textNote.setText(Html.fromHtml(getString(R.string.miner_intro_text)));
+
+        // we need display a price for licence plan with code M101Y
+        Activity activity = this;
+        binding.progressBar.setVisibility(View.VISIBLE);
+        licenceRepository.getLicenses(new OnCompleteListener<List<LicenseType>>() {
+            @Override
+            public void onComplete(List<LicenseType> value, Throwable error) {
+                binding.progressBar.setVisibility(View.INVISIBLE);
+                if (error != null) {
+                    Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                if (value != null && !value.isEmpty()) {
+                    for (LicenseType licenseType : value) {
+                        if ("M101Y".equals(licenseType.getPlanCode())) {
+                            Double price = licenseType.getPrice();
+                            if (price != null) {
+                                binding.amount.setText(getString(R.string.price_usd, price));
+                            }
+                        }
+                    }
+                }
+            }
+        });
     }
 
     @Override

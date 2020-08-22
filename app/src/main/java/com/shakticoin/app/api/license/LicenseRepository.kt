@@ -73,6 +73,45 @@ class LicenseRepository : BackendRepository() {
         })
     }
 
+    fun getNodeOperator(listener: OnCompleteListener<NodeOperatorModel?>) {
+        getNodeOperator(listener, false)
+    }
+    private fun getNodeOperator(listener: OnCompleteListener<NodeOperatorModel?>, hasRecover401: Boolean) {
+        licenseService.getNodeOperator(Session.getAuthorizationHeader()).enqueue(object: Callback<NodeOperatorModel?> {
+            override fun onResponse(call: Call<NodeOperatorModel?>, response: Response<NodeOperatorModel?>) {
+                Debug.logDebug(response.toString())
+                if (response.isSuccessful) {
+                    listener.onComplete(response.body(), null)
+                } else {
+                    when(response.code()) {
+                        401 -> {
+                            if (!hasRecover401) {
+                                authRepository.refreshToken(Session.getRefreshToken(), object : OnCompleteListener<TokenResponse?>() {
+                                    override fun onComplete(value: TokenResponse?, error: Throwable?) {
+                                        if (error != null) {
+                                            listener.onComplete(null, error)
+                                            return
+                                        }
+                                        getNodeOperator(listener, true)
+                                    }
+                                })
+                            } else {
+                                listener.onComplete(null, UnauthorizedException())
+                                return
+                            }
+                        }
+                        else -> returnError(listener, response)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<NodeOperatorModel?>, t: Throwable) {
+                return returnError(listener, t);
+            }
+
+        })
+    }
+
     fun checkoutSubscription(planCode: String?, listener: OnCompleteListener<String>) {
         checkoutSubscription(planCode, listener, false)
     }

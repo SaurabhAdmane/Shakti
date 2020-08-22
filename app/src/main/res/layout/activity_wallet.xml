@@ -204,13 +204,14 @@
                         app:layout_constraintTop_toTopOf="@+id/lockedBlackRect2" />
 
                     <RelativeLayout
-                        android:id="@+id/rect1"
+                        android:id="@+id/becomeMinerBox"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
                         android:layout_marginTop="20dp"
                         android:layout_marginEnd="20dp"
                         android:background="#B3000000"
+                        android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/lockedBlackRect2">
@@ -274,7 +275,7 @@
                         android:paddingBottom="15dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/rect1">
+                        app:layout_constraintTop_toBottomOf="@+id/becomeMinerBox">
 
                         <TextView
                             android:id="@+id/label7"
