@@ -37,7 +37,7 @@ public class RecoveryPasswordActivity extends AppCompatActivity {
 
         // user may entered email in login activity
         Intent intent = getIntent();
-        String emailAddressKey = CommonUtil.prefixed("emailAddress", this);
+        String emailAddressKey = CommonUtil.prefixed("emailAddress");
         if (intent.hasExtra(emailAddressKey)) {
             viewModel.emailAddress.setValue(intent.getStringExtra(emailAddressKey));
         }

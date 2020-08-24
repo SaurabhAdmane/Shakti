@@ -339,7 +339,7 @@ public abstract class DrawerActivity extends AppCompatActivity {
 
     public void onOpenHome(View v) {
         Intent intent = new Intent(this, WelcomeTourActivity.class);
-        intent.putExtra(CommonUtil.prefixed("finalDestination", this), WalletActivity.class.getName());
+        intent.putExtra(CommonUtil.prefixed("finalDestination"), WalletActivity.class.getName());
         startActivity(intent);
         closeDrawers();
     }

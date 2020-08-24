@@ -47,8 +47,8 @@ public class PaymentOptionsActivity extends DrawerActivity {
 
         if (savedInstanceState == null) {
             Intent intent = getIntent();
-            licenseTypeId = intent.getStringExtra(CommonUtil.prefixed("licenseTypeId", this));
-            licenseTypesAll = intent.getParcelableArrayListExtra(CommonUtil.prefixed("licenses", this));
+            licenseTypeId = intent.getStringExtra(CommonUtil.prefixed("licenseTypeId"));
+            licenseTypesAll = intent.getParcelableArrayListExtra(CommonUtil.prefixed("licenses"));
         } else {
             licenseTypeId = savedInstanceState.getString("licenseTypeId");
             licenseTypesAll = savedInstanceState.getParcelableArrayList("licenses");

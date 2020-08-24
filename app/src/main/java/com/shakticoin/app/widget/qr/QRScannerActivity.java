@@ -74,7 +74,7 @@ public class QRScannerActivity extends AppCompatActivity {
 
             if (!TextUtils.isEmpty(referralCode)) {
                 Intent intent = new Intent();
-                intent.putExtra(CommonUtil.prefixed(KEY_REFERRAL_CODE, this), referralCode);
+                intent.putExtra(CommonUtil.prefixed(KEY_REFERRAL_CODE), referralCode);
                 this.setResult(RESULT_OK, intent);
             } else {
                 Toast.makeText(this, R.string.err_qr_incorrect, Toast.LENGTH_LONG).show();

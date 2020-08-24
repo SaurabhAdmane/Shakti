@@ -79,8 +79,8 @@ public class BecomeMinerActivity extends DrawerActivity {
                 }
 
                 Intent intent = new Intent(activity, PaymentFlowActivity.class);
-                intent.putExtra(CommonUtil.prefixed("planCode", activity), "M101Y");
-                intent.putExtra(CommonUtil.prefixed("targetUrl", activity), targetUrl);
+                intent.putExtra(CommonUtil.prefixed("planCode"), "M101Y");
+                intent.putExtra(CommonUtil.prefixed("targetUrl"), targetUrl);
                 startActivity(intent);
             }
         });

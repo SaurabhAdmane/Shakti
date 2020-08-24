@@ -81,7 +81,7 @@ public class VaultChooserActivity extends DrawerActivity {
             if (VaultExtended.PACKAGE_VIEW.equals(transition)) {
 
                 Intent intent = new Intent(this, MiningLicenseActivity.class);
-                intent.putExtra(CommonUtil.prefixed("vaultId", this), selectedVault.getId());
+                intent.putExtra(CommonUtil.prefixed("vaultId"), selectedVault.getId());
                 startActivity(intent);
 
             } if (VaultExtended.COMPANY_INFO_VIEW.equals(transition)) {

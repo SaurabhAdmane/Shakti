@@ -119,7 +119,7 @@ public class SignInActivity extends AppCompatActivity {
         String emailAddress = Objects.requireNonNull(binding.username.getText()).toString();
         Intent intent = new Intent(this, RecoveryPasswordActivity.class);
         if (Validator.isEmail(emailAddress))
-            intent.putExtra(CommonUtil.prefixed("emailAddress", this), emailAddress);
+            intent.putExtra(CommonUtil.prefixed("emailAddress"), emailAddress);
         startActivity(intent);
     }
 

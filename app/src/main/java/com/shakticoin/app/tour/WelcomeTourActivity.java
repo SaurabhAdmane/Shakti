@@ -119,7 +119,7 @@ public class WelcomeTourActivity extends AppCompatActivity {
         prefs.edit().putBoolean(PreferenceHelper.PREF_KEY_TOUR_DONE, true).apply();
 
         Intent intent = getIntent();
-        String finalDestination = intent.getStringExtra(CommonUtil.prefixed("finalDestination", this));
+        String finalDestination = intent.getStringExtra(CommonUtil.prefixed("finalDestination"));
         if (WalletActivity.class.getName().equals(finalDestination)) {
             startActivity(new Intent(this, WalletActivity.class));
         } else {

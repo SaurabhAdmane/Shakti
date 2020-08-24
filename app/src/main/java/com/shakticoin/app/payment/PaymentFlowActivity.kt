@@ -18,7 +18,7 @@ class PaymentFlowActivity : AppCompatActivity() {
         binding = ActivityPaymentFlowBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val hostedPage = intent.getStringExtra(CommonUtil.prefixed("targetUrl", this))
+        val hostedPage = intent.getStringExtra(CommonUtil.prefixed("targetUrl"))
 
         binding.webView.settings.javaScriptEnabled = true
         val activity = this

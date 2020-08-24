@@ -27,7 +27,7 @@ public class ReferralActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == QRScannerActivity.REQUEST_QR) {
             if (resultCode == RESULT_OK) {
-                String referralCodeKey = CommonUtil.prefixed(QRScannerActivity.KEY_REFERRAL_CODE, this);
+                String referralCodeKey = CommonUtil.prefixed(QRScannerActivity.KEY_REFERRAL_CODE);
                 if (data != null && data.hasExtra(referralCodeKey)) {
                     String referralCode = data.getStringExtra(referralCodeKey);
                     // TODO: initially we put the referral code to the corresponding field but now

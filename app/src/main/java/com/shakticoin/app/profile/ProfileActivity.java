@@ -577,7 +577,7 @@ public class ProfileActivity extends DrawerActivity {
 
                 if (targetUrl != null) {
                     Intent intent = new Intent(activity, PaymentFlowActivity.class);
-                    intent.putExtra(CommonUtil.prefixed("targetUrl", activity), targetUrl);
+                    intent.putExtra(CommonUtil.prefixed("targetUrl"), targetUrl);
                     startActivity(intent);
                 }
             }

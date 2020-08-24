@@ -2,6 +2,8 @@ package com.shakticoin.app.util;
 
 import android.content.Context;
 
+import com.shakticoin.app.ShaktiApplication;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,7 +12,8 @@ public class CommonUtil {
      * <p>It prefix a key with application package name.<br>
      * Typically should be used to prefix extra data keys with intents.</p>
      */
-    public static String prefixed(String extraKey, Context context) {
+    public static String prefixed(String extraKey) {
+        Context context = ShaktiApplication.getContext();
         if (context == null) {
             return extraKey;
         }

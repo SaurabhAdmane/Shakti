@@ -144,8 +144,8 @@ public class MiningLicenseActivity extends DrawerActivity {
         Intent intent = new Intent(this, PaymentOptionsActivity.class);
 //        intent.putExtra(CommonUtil.prefixed("vaultId", this), vaultId);
         LicenseType licenseType = viewModel.getSelectedPackage();
-        intent.putExtra(CommonUtil.prefixed("licenseTypeId", this), licenseType.getId());
-        intent.putParcelableArrayListExtra(CommonUtil.prefixed("licenses", this), licenseTypesAll);
+        intent.putExtra(CommonUtil.prefixed("licenseTypeId"), licenseType.getId());
+        intent.putParcelableArrayListExtra(CommonUtil.prefixed("licenses"), licenseTypesAll);
         startActivity(intent);
     }
 

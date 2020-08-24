@@ -38,13 +38,13 @@ public class StripeActivity extends DrawerActivity {
         super.onInitView(binding.getRoot(), getString(R.string.miner_intro_toolbar), true);
 
         Intent intent = getIntent();
-        period = intent.getIntExtra(CommonUtil.prefixed("period", this), -1);
-        packageName = intent.getStringExtra(CommonUtil.prefixed("packageName", this));
-        String orderName = intent.getStringExtra(CommonUtil.prefixed(KEY_ORDER_NAME, this));
+        period = intent.getIntExtra(CommonUtil.prefixed("period"), -1);
+        packageName = intent.getStringExtra(CommonUtil.prefixed("packageName"));
+        String orderName = intent.getStringExtra(CommonUtil.prefixed(KEY_ORDER_NAME));
         // TODO: test stuff - remove when data is available
         orderName = getString(R.string.pmnt_stripe_order_name, "M101");
         binding.orderName.setText(packageName);
-        Double orderAmount = intent.getDoubleExtra(CommonUtil.prefixed(KEY_ORDER_AMOUNT, this), 0.0);
+        Double orderAmount = intent.getDoubleExtra(CommonUtil.prefixed(KEY_ORDER_AMOUNT), 0.0);
         // always format money according to US rules and currency
         NumberFormat formater = NumberFormat.getCurrencyInstance(Locale.US);
         formater.setCurrency(Currency.getInstance("USD"));
