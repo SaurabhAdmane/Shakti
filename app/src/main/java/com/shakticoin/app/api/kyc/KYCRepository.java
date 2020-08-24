@@ -448,7 +448,7 @@ public class KYCRepository extends BackendRepository {
             @Override
             public void onComplete(KycUserView value, Throwable error) {
                 if (error != null) {
-                    listener.onComplete(false, null);
+                    listener.onComplete(false, error);
                     return;
                 }
                 listener.onComplete(KycUserView.STATUS_UNLOCKED.equals(value.getKycStatus()), null);
