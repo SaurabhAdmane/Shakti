@@ -14,8 +14,6 @@ import androidx.lifecycle.ViewModelProviders;
 import com.shakticoin.app.databinding.FragmentProfileAdditionalPage1Binding;
 import com.shakticoin.app.util.Validator;
 
-import java.util.Objects;
-
 public class AdditionalInfoFragment1 extends Fragment {
     public static final String TAG = AdditionalInfoFragment1.class.getSimpleName();
 
@@ -27,7 +25,7 @@ public class AdditionalInfoFragment1 extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentProfileAdditionalPage1Binding.inflate(inflater, container, false);
         binding.setLifecycleOwner(this);
-        viewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(PersonalInfoViewModel.class);
+        viewModel = ViewModelProviders.of(requireActivity()).get(PersonalInfoViewModel.class);
         binding.setViewModel(viewModel);
         View v = binding.getRoot();
 

@@ -20,7 +20,6 @@ import com.shakticoin.app.util.Debug;
 import com.shakticoin.app.widget.PanelDialog;
 
 import java.math.BigDecimal;
-import java.util.Objects;
 
 public class DialogPaySXE extends DialogFragment {
 
@@ -41,7 +40,7 @@ public class DialogPaySXE extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        Dialog dialog = new PanelDialog(Objects.requireNonNull(getContext()));
+        Dialog dialog = new PanelDialog(requireContext());
         dialog.setContentView(R.layout.dialog_pay_sxe);
 
         vRecipient = dialog.findViewById(R.id.recipient);

@@ -46,7 +46,7 @@ public class PaymentOptionsPlanFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(PaymentOptionsViewModel.class);
+        viewModel = ViewModelProviders.of(requireActivity()).get(PaymentOptionsViewModel.class);
         pageViewModel = ViewModelProviders.of(this).get(OptionsPageViewModel.class);
     }
 

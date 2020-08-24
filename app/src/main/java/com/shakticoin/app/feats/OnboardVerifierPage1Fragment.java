@@ -12,8 +12,6 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.shakticoin.app.databinding.FragmentFeatsVerifierPage1Binding;
 
-import java.util.Objects;
-
 public class OnboardVerifierPage1Fragment extends Fragment {
     private OnboardVerifierViewModel viewModel;
     private FragmentFeatsVerifierPage1Binding binding;
@@ -21,7 +19,7 @@ public class OnboardVerifierPage1Fragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(OnboardVerifierViewModel.class);
+        viewModel = ViewModelProviders.of(requireActivity()).get(OnboardVerifierViewModel.class);
     }
 
     @Nullable

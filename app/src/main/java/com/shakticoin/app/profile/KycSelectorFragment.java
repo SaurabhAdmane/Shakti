@@ -41,7 +41,7 @@ public class KycSelectorFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(PersonalViewModel.class);
+        viewModel = ViewModelProviders.of(requireActivity()).get(PersonalViewModel.class);
 
         FragmentActivity activity = getActivity();
         if (activity != null) {

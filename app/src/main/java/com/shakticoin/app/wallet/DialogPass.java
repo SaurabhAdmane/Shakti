@@ -20,8 +20,6 @@ import com.shakticoin.app.ShaktiApplication;
 import com.shakticoin.app.api.wallet.WalletRepository;
 import com.shakticoin.app.widget.PanelDialog;
 
-import java.util.Objects;
-
 public class DialogPass extends DialogFragment {
 
     public interface OnPassListener {
@@ -41,7 +39,7 @@ public class DialogPass extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        Dialog dialog = new PanelDialog(Objects.requireNonNull(getContext()));
+        Dialog dialog = new PanelDialog(requireContext());
         dialog.setContentView(R.layout.dialog_pass);
         dialog.setCanceledOnTouchOutside(false);
         dialog.setCancelable(false);

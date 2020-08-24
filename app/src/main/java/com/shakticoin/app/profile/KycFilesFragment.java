@@ -24,7 +24,6 @@ import com.shakticoin.app.databinding.FragmentKycFilesBinding;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class KycFilesFragment extends Fragment {
     private FragmentKycFilesBinding binding;
@@ -38,7 +37,7 @@ public class KycFilesFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         imagesDir = ShaktiApplication.getContext().getExternalFilesDir("kyc");
-        viewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(PersonalViewModel.class);
+        viewModel = ViewModelProviders.of(requireActivity()).get(PersonalViewModel.class);
     }
 
     @Nullable

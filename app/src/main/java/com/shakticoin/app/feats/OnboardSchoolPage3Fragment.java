@@ -12,8 +12,6 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.shakticoin.app.databinding.FragmentFeatsSchoolPage3Binding;
 
-import java.util.Objects;
-
 public class OnboardSchoolPage3Fragment extends Fragment {
     private FragmentFeatsSchoolPage3Binding binding;
     private OnboardSchoolViewModel viewModel;
@@ -21,7 +19,7 @@ public class OnboardSchoolPage3Fragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(OnboardSchoolViewModel.class);
+        viewModel = ViewModelProviders.of(requireActivity()).get(OnboardSchoolViewModel.class);
     }
 
     @Nullable

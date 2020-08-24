@@ -20,7 +20,6 @@ import com.shakticoin.app.api.kyc.KycDocType;
 import com.shakticoin.app.databinding.FragmentKycDoctypeBinding;
 
 import java.util.List;
-import java.util.Objects;
 
 public class KycDoctypeFragment extends Fragment {
     private FragmentKycDoctypeBinding binding;
@@ -36,7 +35,7 @@ public class KycDoctypeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentKycDoctypeBinding.inflate(inflater, container, false);
         binding.setLifecycleOwner(this);
-        viewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(PersonalViewModel.class);
+        viewModel = ViewModelProviders.of(requireActivity()).get(PersonalViewModel.class);
         binding.setViewModel(viewModel);
         View v = binding.getRoot();
 

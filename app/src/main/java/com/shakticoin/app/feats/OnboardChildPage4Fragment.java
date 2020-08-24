@@ -12,8 +12,6 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.shakticoin.app.databinding.FragmentFeatsChildPage4Binding;
 
-import java.util.Objects;
-
 public class OnboardChildPage4Fragment extends Fragment {
     private FragmentFeatsChildPage4Binding binding;
     private OnboardChildViewModel viewModel;
@@ -21,7 +19,7 @@ public class OnboardChildPage4Fragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(OnboardChildViewModel.class);
+        viewModel = ViewModelProviders.of(requireActivity()).get(OnboardChildViewModel.class);
     }
 
     @Nullable

@@ -27,7 +27,6 @@ import com.shakticoin.app.payment.DialogPaySXE;
 import com.shakticoin.app.util.Debug;
 
 import java.math.BigDecimal;
-import java.util.Objects;
 
 public class WalletActionsFragment extends Fragment {
     private FragmentInlineWalletActionsBinding binding;
@@ -37,7 +36,7 @@ public class WalletActionsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(WalletModel.class);
+        viewModel = ViewModelProviders.of(requireActivity()).get(WalletModel.class);
     }
 
     @Nullable
@@ -54,7 +53,7 @@ public class WalletActionsFragment extends Fragment {
 
     public void onPay(View v) {
         DialogPaySXE.getInstance(this::makeSxePayment)
-                .show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), DialogPaySXE.class.getSimpleName());
+                .show(requireActivity().getSupportFragmentManager(), DialogPaySXE.class.getSimpleName());
     }
 
     public void onReceive(View v) {
@@ -63,7 +62,7 @@ public class WalletActionsFragment extends Fragment {
         // So, I use this button to advertise his own wallet address to a user that he can share with
         // a payer. But this is temporarily.
         final String[] address = new String[1];
-        final AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()))
+        final AlertDialog.Builder builder = new AlertDialog.Builder(requireContext())
                 .setTitle("You wallet address")
                 .setNegativeButton("Close", null)
                 .setNeutralButton("Copy to cliboard", new DialogInterface.OnClickListener() {

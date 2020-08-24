@@ -21,7 +21,6 @@ import com.shakticoin.app.util.PostalCodeValidator;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 public class OnboardChildPage2Fragment extends Fragment {
     private FragmentFeatsChildPage2Binding binding;
@@ -31,7 +30,7 @@ public class OnboardChildPage2Fragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(OnboardChildViewModel.class);
+        viewModel = ViewModelProviders.of(requireActivity()).get(OnboardChildViewModel.class);
     }
 
     @Nullable

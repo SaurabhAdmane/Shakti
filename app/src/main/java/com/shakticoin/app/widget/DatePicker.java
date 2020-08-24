@@ -9,7 +9,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import java.util.Calendar;
-import java.util.Objects;
 
 public class DatePicker extends DialogFragment {
     private DatePickerDialog.OnDateSetListener listener;
@@ -26,6 +25,6 @@ public class DatePicker extends DialogFragment {
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
 
-        return new DatePickerDialog(Objects.requireNonNull(getActivity()), listener, year, month, day);
+        return new DatePickerDialog(requireActivity(), listener, year, month, day);
     }
 }
