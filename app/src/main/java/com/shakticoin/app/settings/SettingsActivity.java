@@ -1,10 +1,8 @@
 package com.shakticoin.app.settings;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -12,15 +10,11 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.shakticoin.app.BuildConfig;
 import com.shakticoin.app.R;
-import com.shakticoin.app.ShaktiApplication;
-import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.Session;
 import com.shakticoin.app.api.kyc.KYCRepository;
-import com.shakticoin.app.api.kyc.KycUserView;
 import com.shakticoin.app.databinding.ActivitySettingsBinding;
 import com.shakticoin.app.profile.ProfileActivity;
 import com.shakticoin.app.registration.SignInActivity;
-import com.shakticoin.app.util.Debug;
 import com.shakticoin.app.widget.DrawerActivity;
 
 public class SettingsActivity extends DrawerActivity {
@@ -48,6 +42,7 @@ public class SettingsActivity extends DrawerActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        /* TODO: temporarily disabled for QA
         binding.progressBar.setVisibility(View.VISIBLE);
         kycRepository.getUserDetails(new OnCompleteListener<KycUserView>() {
             @Override
@@ -79,6 +74,7 @@ public class SettingsActivity extends DrawerActivity {
                 }
             }
         });
+         */
     }
 
     @Override
