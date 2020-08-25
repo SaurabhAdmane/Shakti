@@ -42,7 +42,9 @@ public class WalletAdminActivity extends DrawerActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        /* TODO: temporarily disabled for QA
         getWalletBalance();
+         */
     }
 
     @Override

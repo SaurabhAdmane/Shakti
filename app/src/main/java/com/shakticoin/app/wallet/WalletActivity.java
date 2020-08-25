@@ -77,7 +77,9 @@ public class WalletActivity extends DrawerActivity {
         super.onResume();
 
         // update wallet balance
+        /* TODO: temporarily disabled for QA
         getWalletBalance();
+         */
 
         // Decides if we should display call-to-action "Become a miner".
         // Basically, if the user has a license then do not display.

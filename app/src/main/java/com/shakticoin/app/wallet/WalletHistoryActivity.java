@@ -91,6 +91,7 @@ public class WalletHistoryActivity extends DrawerActivity {
 
         final Activity activity = this;
 
+        /* TODO: temporarily commented for QA
         getWalletBalance();
 
         String walletBytes = walletRepository.getExistingWallet();
@@ -120,6 +121,8 @@ public class WalletHistoryActivity extends DrawerActivity {
                 }
             });
         }
+
+        */
 
         // check wallet lock status and display action buttons if unlocked
         new CheckWalletLocked(getSupportFragmentManager()).execute();
