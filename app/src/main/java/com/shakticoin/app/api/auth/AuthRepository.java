@@ -19,7 +19,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class AuthRepository extends BackendRepository {
     public LoginService loginService;
-    private static String TEST_BASIC = "Basic OWIwOWNiZTgtYzg4My00YmU1LWFhZjgtNjlkYTRiYjNlOTQyOmVJWWc5Mlk4cyZGUg==";
+    private static String IAM_STG = "Basic OWIwOWNiZTgtYzg4My00YmU1LWFhZjgtNjlkYTRiYjNlOTQyOmVJWWc5Mlk4cyZGUg==";
+    private static String IAM_QA = "Basic Mzg5ZmQ3ODMtOTUzMy00YTliLTgyMTUtODFjMWQ5YmFhMDdkOmk1S0tTcFBDRzFsa3BCREdNTk92Z2E0RE9vdVdyOHhVY1l1cnRHWU0=";
 
     public AuthRepository() {
         Retrofit retrofit = new Retrofit.Builder()
@@ -35,7 +36,7 @@ public class AuthRepository extends BackendRepository {
      * Login to the backend and return user's information if successful.
      */
     public void login(@NonNull String username, @NonNull String password, boolean rememberMe, @NonNull OnCompleteListener<TokenResponse> listener) {
-        Call<TokenResponse> call = loginService.token(TEST_BASIC, "password", "openid+profile", username, password);
+        Call<TokenResponse> call = loginService.token(IAM_QA, "password", "openid+profile", username, password);
         call.enqueue(new Callback<TokenResponse>() {
             @Override
             public void onResponse(@NonNull Call<TokenResponse> call, @NonNull Response<TokenResponse> response) {
@@ -62,7 +63,7 @@ public class AuthRepository extends BackendRepository {
     }
 
     public void refreshToken(@NonNull String refreshToken, @NonNull OnCompleteListener<TokenResponse> listener) {
-        loginService.refresh(TEST_BASIC, "refresh_token", refreshToken).enqueue(new Callback<TokenResponse>() {
+        loginService.refresh(IAM_QA, "refresh_token", refreshToken).enqueue(new Callback<TokenResponse>() {
             @EverythingIsNonNull
             @Override
             public void onResponse(Call<TokenResponse> call, Response<TokenResponse> response) {
