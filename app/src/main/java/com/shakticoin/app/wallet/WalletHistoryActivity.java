@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -125,7 +126,7 @@ public class WalletHistoryActivity extends DrawerActivity {
         */
 
         // check wallet lock status and display action buttons if unlocked
-        new CheckWalletLocked(getSupportFragmentManager()).execute();
+        new CheckWalletLocked(getSupportFragmentManager(), binding.walletActionsProgressBar).execute();
     }
 
     @Override
@@ -372,9 +373,11 @@ public class WalletHistoryActivity extends DrawerActivity {
 
     static class CheckWalletLocked extends AsyncTask<Void, Void, Boolean> {
         FragmentManager fragmentManager;
+        ProgressBar walletActionsProgressBar;
 
-        CheckWalletLocked(FragmentManager fragmentManager) {
+        CheckWalletLocked(FragmentManager fragmentManager, ProgressBar progressBar) {
             this.fragmentManager = fragmentManager;
+            this.walletActionsProgressBar = progressBar;
         }
 
         @Override
@@ -387,6 +390,7 @@ public class WalletHistoryActivity extends DrawerActivity {
         @Override
         protected void onPostExecute(Boolean unlocked) {
             if (unlocked) {
+                walletActionsProgressBar.setVisibility(View.GONE);
                 fragmentManager
                         .beginTransaction()
                         .add(R.id.wallet_actions, new WalletActionsFragment())
@@ -395,6 +399,7 @@ public class WalletHistoryActivity extends DrawerActivity {
                 new KYCRepository().isWalletUnlocked(new OnCompleteListener<Boolean>() {
                     @Override
                     public void onComplete(Boolean unlocked, Throwable error) {
+                        walletActionsProgressBar.setVisibility(View.GONE);
                         fragmentManager
                                 .beginTransaction()
                                 .add(R.id.wallet_actions, unlocked ?
