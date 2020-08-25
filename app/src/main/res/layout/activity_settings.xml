@@ -95,13 +95,15 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="24dp"
                         android:background="@android:color/transparent"
-                        android:onClick="onOpenPersonalInfo"
-                        android:tint="@android:color/white"
+                        android:tint="@color/whiteDisabled"
                         app:layout_constraintBottom_toBottomOf="@+id/textView76"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/textView76"
                         app:srcCompat="@drawable/ic_round_keyboard_arrow_right_24px"
                         tools:ignore="ContentDescription" />
+                    <!-- Restore when enabled
+                    android:onClick="onOpenPersonalInfo"
+                    android:tint="@android:color/white"-->
 
                     <TextView
                         android:id="@+id/textView77"
@@ -121,13 +123,15 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="24dp"
                         android:background="@android:color/transparent"
-                        android:onClick="onKYCVerification"
-                        android:tint="@android:color/white"
+                        android:tint="@color/whiteDisabled"
                         app:layout_constraintBottom_toBottomOf="@+id/textView77"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/textView77"
                         app:srcCompat="@drawable/ic_round_keyboard_arrow_right_24px"
                         tools:ignore="ContentDescription" />
+                    <!-- Restore when enabled
+                    android:onClick="onKYCVerification"
+                    android:tint="@android:color/white"-->
 
                     <TextView
                         android:id="@+id/kycStatus"
