@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LifecycleOwner;
 
 import com.shakticoin.app.R;
 import com.shakticoin.app.ShaktiApplication;
@@ -454,5 +455,11 @@ public class KYCRepository extends BackendRepository {
                 listener.onComplete(KycUserView.STATUS_UNLOCKED.equals(value.getKycStatus()), null);
             }
         }, false);
+    }
+
+    @Override
+    public void setLifecycleOwner(LifecycleOwner lifecycleOwner) {
+        super.setLifecycleOwner(lifecycleOwner);
+        authRepository.setLifecycleOwner(lifecycleOwner);
     }
 }

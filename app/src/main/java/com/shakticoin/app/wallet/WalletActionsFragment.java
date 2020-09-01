@@ -30,7 +30,7 @@ import java.math.BigDecimal;
 
 public class WalletActionsFragment extends Fragment {
     private FragmentInlineWalletActionsBinding binding;
-    private WalletRepository walletRepository = new WalletRepository();
+    private WalletRepository walletRepository;
     private WalletModel viewModel;
 
     @Override
@@ -44,6 +44,9 @@ public class WalletActionsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentInlineWalletActionsBinding.inflate(getLayoutInflater(), container, false);
         binding.setLifecycleOwner(this);
+
+        walletRepository = new WalletRepository();
+        walletRepository.setLifecycleOwner(getViewLifecycleOwner());
 
         binding.doPaySXE.setOnClickListener(this::onPay);
         binding.doReceiveSXE.setOnClickListener(this::onReceive);

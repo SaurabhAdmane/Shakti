@@ -20,7 +20,7 @@ import com.shakticoin.app.widget.DrawerActivity;
 public class SettingsActivity extends DrawerActivity {
     private ActivitySettingsBinding binding;
     private SettingsViewModel viewModel;
-    private KYCRepository kycRepository = new KYCRepository();
+    private KYCRepository kycRepository;
 
     private String verificationStatus = "NONE";
     private Boolean fastTrackEnabled = false;
@@ -35,6 +35,9 @@ public class SettingsActivity extends DrawerActivity {
         binding.setViewModel(viewModel);
 
         onInitView(binding.getRoot(), getString(R.string.settings_title));
+
+        kycRepository = new KYCRepository();
+        kycRepository.setLifecycleOwner(this);
 
         binding.versionName.setText(getString(R.string.settings_version, BuildConfig.VERSION_NAME));
     }

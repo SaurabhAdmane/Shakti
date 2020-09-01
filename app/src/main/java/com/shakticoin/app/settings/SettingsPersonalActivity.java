@@ -24,7 +24,7 @@ import com.shakticoin.app.widget.DrawerActivity;
 public class SettingsPersonalActivity extends DrawerActivity {
     private ActivityPersonalInfoBinding binding;
     private SettingsPersonalViewModel viewModel;
-    private KYCRepository kycRepository = new KYCRepository();
+    private KYCRepository kycRepository;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,6 +35,9 @@ public class SettingsPersonalActivity extends DrawerActivity {
         binding.setViewModel(viewModel);
 
         onInitView(binding.getRoot(), getString(R.string.settings_personal_title), true);
+
+        kycRepository = new KYCRepository();
+        kycRepository.setLifecycleOwner(this);
     }
 
     @Override

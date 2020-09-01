@@ -62,8 +62,8 @@ import java.util.Map;
 public class WalletHistoryActivity extends DrawerActivity {
     private ActivityWalletHistoryBinding binding;
     private WalletRepository walletRepository;
-    private OnboardRepository onboardRepository = new OnboardRepository();
-    private KYCRepository kycRepository = new KYCRepository();
+    private OnboardRepository onboardRepository;
+    private KYCRepository kycRepository;
     private TransactionAdapter adapter;
     private WalletModel viewModel;
 
@@ -78,6 +78,11 @@ public class WalletHistoryActivity extends DrawerActivity {
         onInitView(binding.getRoot(), getString(R.string.wallet_toolbar_title), true);
 
         walletRepository = new WalletRepository();
+        walletRepository.setLifecycleOwner(this);
+        kycRepository = new KYCRepository();
+        kycRepository.setLifecycleOwner(this);
+        onboardRepository = new OnboardRepository();
+        onboardRepository.setLifecycleOwner(this);
 
         binding.list.setHasFixedSize(true);
         binding.list.setLayoutManager(new LinearLayoutManager(this));

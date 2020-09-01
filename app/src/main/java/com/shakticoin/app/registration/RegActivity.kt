@@ -24,9 +24,9 @@ class RegActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegistrationBinding
     private var viewModel: RegViewModel? = null
 
-    private val otpEmailRepository: EmailOTPRepository = EmailOTPRepository()
-    private val otpPhoneRepository: PhoneOTPRepository = PhoneOTPRepository()
-    private val onboardRepository: OnboardRepository = OnboardRepository()
+    private lateinit var otpEmailRepository: EmailOTPRepository
+    private lateinit var otpPhoneRepository: PhoneOTPRepository
+    private lateinit var onboardRepository: OnboardRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +37,13 @@ class RegActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         viewModel?.currentStep?.observe(this, Observer<RegViewModel.Step> { t -> t?.let { updateIndicator(it) } })
+
+        onboardRepository = OnboardRepository()
+        onboardRepository.setLifecycleOwner(this)
+        otpPhoneRepository = PhoneOTPRepository()
+        otpPhoneRepository.setLifecycleOwner(this)
+        otpEmailRepository = EmailOTPRepository()
+        otpEmailRepository.setLifecycleOwner(this)
 
         supportFragmentManager
                 .beginTransaction()

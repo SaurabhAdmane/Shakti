@@ -67,6 +67,7 @@ public class EffortRatesChartFragment extends Fragment implements View.OnClickLi
         binding.chart.setAdapter(chartAdapter);
 
         ReferralRepository repository = new ReferralRepository();
+        repository.setLifecycleOwner(getViewLifecycleOwner());
         repository.getEffortRates(new OnCompleteListener<List<EffortRate>>() {
             @Override
             public void onComplete(List<EffortRate> value, Throwable error) {

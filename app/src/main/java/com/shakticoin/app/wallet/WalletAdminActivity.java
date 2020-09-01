@@ -26,8 +26,8 @@ import java.math.BigDecimal;
 
 public class WalletAdminActivity extends DrawerActivity {
     private ActivityWalletAdminBinding binding;
-    private WalletRepository walletRepository = new WalletRepository();
-    private OnboardRepository onboardRepository = new OnboardRepository();
+    private WalletRepository walletRepository;
+    private OnboardRepository onboardRepository;
 
 
     @Override
@@ -37,6 +37,11 @@ public class WalletAdminActivity extends DrawerActivity {
         binding.setLifecycleOwner(this);
 
         onInitView(binding.getRoot(), getString(R.string.wallet_toolbar_title), true);
+
+        walletRepository = new WalletRepository();
+        walletRepository.setLifecycleOwner(this);
+        onboardRepository = new OnboardRepository();
+        onboardRepository.setLifecycleOwner(this);
     }
 
     @Override

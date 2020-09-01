@@ -1,5 +1,6 @@
 package com.shakticoin.app.api.license
 
+import androidx.lifecycle.LifecycleOwner
 import com.shakticoin.app.api.*
 import com.shakticoin.app.api.auth.AuthRepository
 import com.shakticoin.app.api.auth.TokenResponse
@@ -170,5 +171,11 @@ class LicenseRepository : BackendRepository() {
                 })
             }
         })
+    }
+
+    override fun setLifecycleOwner(lifecycleOwner: LifecycleOwner?) {
+        super.setLifecycleOwner(lifecycleOwner)
+        authRepository.setLifecycleOwner(lifecycleOwner)
+        kycRepository.setLifecycleOwner(lifecycleOwner)
     }
 }

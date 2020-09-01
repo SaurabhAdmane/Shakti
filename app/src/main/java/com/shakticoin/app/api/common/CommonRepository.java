@@ -1,6 +1,7 @@
 package com.shakticoin.app.api.common;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LifecycleOwner;
 
 import com.shakticoin.app.api.BackendRepository;
 import com.shakticoin.app.api.BaseUrl;
@@ -116,5 +117,11 @@ public class CommonRepository extends BackendRepository {
                 returnError(listener, t);
             }
         });
+    }
+
+    @Override
+    public void setLifecycleOwner(LifecycleOwner lifecycleOwner) {
+        super.setLifecycleOwner(lifecycleOwner);
+        authRepository.setLifecycleOwner(lifecycleOwner);
     }
 }

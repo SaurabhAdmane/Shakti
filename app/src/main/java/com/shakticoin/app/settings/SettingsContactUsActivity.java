@@ -27,7 +27,7 @@ import java.util.List;
 public class SettingsContactUsActivity extends DrawerActivity {
     private ActivityContactUsBinding binding;
     private ContactUsViewModel viewModel;
-    private CommonRepository commonRepository = new CommonRepository();
+    private CommonRepository commonRepository;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,6 +36,9 @@ public class SettingsContactUsActivity extends DrawerActivity {
         binding.setLifecycleOwner(this);
         viewModel = ViewModelProviders.of(this).get(ContactUsViewModel.class);
         binding.setViewModel(viewModel);
+
+        commonRepository = new CommonRepository();
+        commonRepository.setLifecycleOwner(this);
 
         onInitView(binding.getRoot(), getString(R.string.settings_contact_us_title), true);
 

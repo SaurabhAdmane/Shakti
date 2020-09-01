@@ -68,11 +68,11 @@ public class ProfileActivity extends DrawerActivity {
     private static final int REQUEST_CAMERA_PERMISSION  = 395;
 
     private ActivityProfileBinding binding;
-    private KYCRepository kycRepository = new KYCRepository();
+    private KYCRepository kycRepository;
     private PersonalViewModel viewModel;
     private PersonalInfoViewModel personalInfoViewModel;
 
-    private CountryRepository countryRepo = new CountryRepository();
+    private CountryRepository countryRepo;
 
     private TextView toolbarTitle;
 
@@ -127,6 +127,11 @@ public class ProfileActivity extends DrawerActivity {
                 getString(R.string.wallet_page_kyc)
         };
         binding.pageIndicator.setSizeAndLabels(pageIndicatorItems);
+
+        countryRepo = new CountryRepository();
+        countryRepo.setLifecycleOwner(this);
+        kycRepository = new KYCRepository();
+        kycRepository.setLifecycleOwner(this);
 
         Intent intent = getIntent();
         boolean showStatus = intent.getBooleanExtra("showStatus", false);
@@ -475,7 +480,6 @@ public class ProfileActivity extends DrawerActivity {
 
     public void onSend(View v) {
         final Activity activity = this;
-        KYCRepository repository = new KYCRepository();
         File documentDir = documentDir();
         if (documentDir == null) {
             Toast.makeText(this, R.string.kyc_files_nothing_upload, Toast.LENGTH_SHORT).show();
@@ -529,7 +533,7 @@ public class ProfileActivity extends DrawerActivity {
         }
 
         viewModel.getProgressBarTrigger().set(true);
-        repository.uploadDocument(uploadFileRequests, new OnCompleteListener<Void>() {
+        kycRepository.uploadDocument(uploadFileRequests, new OnCompleteListener<Void>() {
             @Override
             public void onComplete(Void value, Throwable error) {
                 viewModel.getProgressBarTrigger().set(false);

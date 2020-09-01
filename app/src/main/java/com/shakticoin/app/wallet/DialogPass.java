@@ -63,6 +63,7 @@ public class DialogPass extends DialogFragment {
         doMainAction.setOnClickListener(v -> onSubmit());
 
         WalletRepository repository = new WalletRepository();
+        repository.setLifecycleOwner(this);
         isNew = repository.getExistingWallet() == null;
         if (isNew) {
             vConfirmPassphrase.setVisibility(View.VISIBLE);

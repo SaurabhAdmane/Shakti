@@ -43,10 +43,10 @@ public class WalletActivity extends DrawerActivity {
     private ActivityWalletBinding binding;
     private WalletModel viewModel;
 
-    private WalletRepository walletRepository = new WalletRepository();
-    private KYCRepository kycRepository = new KYCRepository();
-    private OnboardRepository onboardRepository = new OnboardRepository();
-    private LicenseRepository licenseRepository = new LicenseRepository();
+    private WalletRepository walletRepository;
+    private KYCRepository kycRepository;
+    private OnboardRepository onboardRepository;
+    private LicenseRepository licenseRepository;
 
     @Override
     public void onBackPressed() {
@@ -70,6 +70,14 @@ public class WalletActivity extends DrawerActivity {
         viewModel = ViewModelProviders.of(this).get(WalletModel.class);
         binding.setViewModel(viewModel);
 
+        kycRepository = new KYCRepository();
+        kycRepository.setLifecycleOwner(this);
+        licenseRepository = new LicenseRepository();
+        licenseRepository.setLifecycleOwner(this);
+        walletRepository = new WalletRepository();
+        walletRepository.setLifecycleOwner(this);
+        onboardRepository = new OnboardRepository();
+        onboardRepository.setLifecycleOwner(this);
     }
 
     @Override
