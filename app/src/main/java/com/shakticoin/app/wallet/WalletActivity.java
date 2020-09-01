@@ -12,6 +12,8 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.shakticoin.app.R;
@@ -109,7 +111,7 @@ public class WalletActivity extends DrawerActivity {
         });
 
         // check wallet lock status and display action buttons if unlocked
-        new CheckWalletLocked(getSupportFragmentManager(), binding.walletActionsProgressBar).execute();
+        new CheckWalletLocked(getSupportFragmentManager(), binding.walletActionsProgressBar, this).execute();
     }
 
     @Override
@@ -197,42 +199,39 @@ public class WalletActivity extends DrawerActivity {
     }
 
     static class CheckWalletLocked extends AsyncTask<Void, Void, Boolean> {
-        FragmentManager fragmentManager;
-        ProgressBar walletActionsProgressBar;
+        private FragmentManager fragmentManager;
+        private ProgressBar walletActionsProgressBar;
+        private LifecycleOwner lifecycleOwner;
 
-        CheckWalletLocked(FragmentManager fragmentManager, ProgressBar progressBar) {
+        CheckWalletLocked(FragmentManager fragmentManager, ProgressBar progressBar, LifecycleOwner lifecycleOwner) {
             this.fragmentManager = fragmentManager;
             walletActionsProgressBar = progressBar;
+            this.lifecycleOwner = lifecycleOwner;
         }
 
         @Override
         protected Boolean doInBackground(Void... voids) {
             LockStatusDao lockStatuses = AppDatabase.getDatabase(ShaktiApplication.getContext()).lockStatusDao();
             LockStatus status = lockStatuses.getWalletKYCLockStatus();
-            return status != null && "UNLOCKED".equals(status.getStatus());
+            boolean isUnlocked = status != null && "UNLOCKED".equals(status.getStatus());
+            if (!isUnlocked) {
+                KYCRepository repository = new KYCRepository();
+                if (repository.isWalletUnlocked()) isUnlocked = true;
+            }
+            return isUnlocked;
         }
 
         @Override
         protected void onPostExecute(Boolean unlocked) {
-            if (unlocked) {
-                walletActionsProgressBar.setVisibility(View.GONE);
+            walletActionsProgressBar.setVisibility(View.GONE);
+            if (lifecycleOwner != null
+                    && lifecycleOwner.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED)) {
                 fragmentManager
                         .beginTransaction()
-                        .add(R.id.wallet_actions, new WalletActionsFragment())
+                        .add(R.id.wallet_actions, unlocked ?
+                                new WalletActionsFragment() :
+                                new KycVerificationRequiredFragment())
                         .commit();
-            } else {
-                new KYCRepository().isWalletUnlocked(new OnCompleteListener<Boolean>() {
-                    @Override
-                    public void onComplete(Boolean unlocked, Throwable error) {
-                        walletActionsProgressBar.setVisibility(View.GONE);
-                        fragmentManager
-                                .beginTransaction()
-                                .add(R.id.wallet_actions, error == null && unlocked ?
-                                        new WalletActionsFragment() :
-                                        new KycVerificationRequiredFragment())
-                                .commit();
-                    }
-                });
             }
         }
     }

@@ -444,17 +444,19 @@ public class KYCRepository extends BackendRepository {
         });
     }
 
-    public void isWalletUnlocked(@NonNull OnCompleteListener<Boolean> listener) {
-        getUserDetails(new OnCompleteListener<KycUserView>() {
-            @Override
-            public void onComplete(KycUserView value, Throwable error) {
-                if (error != null) {
-                    listener.onComplete(false, error);
-                    return;
+    public boolean isWalletUnlocked() {
+        try {
+            Response<KycUserView> response = service.getUserDetails(Session.getAuthorizationHeader()).execute();
+            if (response.isSuccessful()) {
+                KycUserView details = response.body();
+                if (details != null) {
+                    return KycUserView.STATUS_UNLOCKED.equals(details.getKycStatus());
                 }
-                listener.onComplete(KycUserView.STATUS_UNLOCKED.equals(value.getKycStatus()), null);
             }
-        }, false);
+        } catch (IOException e) {
+            Debug.logException(e);
+        }
+        return false;
     }
 
     @Override
