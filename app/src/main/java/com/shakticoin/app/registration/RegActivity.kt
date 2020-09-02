@@ -55,20 +55,41 @@ class RegActivity : AppCompatActivity() {
     fun onVerifyEmail(v: View?) {
         val self: AppCompatActivity = this
         val emailAddress = viewModel?.emailAddress?.value
-        if (Validator.isEmail(emailAddress)) {
+        if (emailAddress != null && Validator.isEmail(emailAddress)) {
             viewModel?.progressOn?.value = true
-            otpEmailRepository.requestRegistration(emailAddress!!, object: OnCompleteListener<Void?>() {
-                override fun onComplete(value: Void?, error: Throwable?) {
-                    viewModel?.progressOn?.value = false
+            otpEmailRepository.checkEmailStatus(emailAddress, object: OnCompleteListener<Boolean?>() {
+                override fun onComplete(isVerified: Boolean?, error: Throwable?) {
                     if (error != null) {
+                        viewModel?.progressOn?.value = false
                         Toast.makeText(self, Debug.getFailureMsg(self, error), Toast.LENGTH_LONG).show()
-                        return
+                        return;
                     }
-                    self.supportFragmentManager
-                            .beginTransaction()
-                            .replace(binding.fragments.id, RegVerifyEmailFragment())
-                            .addToBackStack(null)
-                            .commit()
+
+                    if (isVerified != null) {
+                        if (isVerified) {
+                            // the email address has been verified already and we can proceed with
+                            // phone verification
+                            viewModel?.progressOn?.value = false
+                            onEnterPhone(null)
+
+                        } else {
+                            // verification for email address is required
+                            otpEmailRepository.requestRegistration(emailAddress, object : OnCompleteListener<Void?>() {
+                                override fun onComplete(value: Void?, error: Throwable?) {
+                                    viewModel?.progressOn?.value = false
+                                    if (error != null) {
+                                        Toast.makeText(self, Debug.getFailureMsg(self, error), Toast.LENGTH_LONG).show()
+                                        return
+                                    }
+                                    self.supportFragmentManager
+                                            .beginTransaction()
+                                            .replace(binding.fragments.id, RegVerifyEmailFragment())
+                                            .addToBackStack(null)
+                                            .commit()
+                                }
+                            })
+                        }
+                    }
                 }
             })
         } else {
