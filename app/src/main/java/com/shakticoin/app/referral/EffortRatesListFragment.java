@@ -45,6 +45,7 @@ public class EffortRatesListFragment extends Fragment {
         binding.list.setAdapter(adapter);
 
         ReferralRepository repository = new ReferralRepository();
+        repository.setLifecycleOwner(getViewLifecycleOwner());
         repository.getReferrals(null, new OnCompleteListener<List<Referral>>() {
             @Override
             public void onComplete(List<Referral> referrals, Throwable error) {

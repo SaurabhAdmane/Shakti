@@ -1,6 +1,12 @@
 package com.shakticoin.app.registration;
 
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -10,24 +16,15 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProviders;
 
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.country.Country;
 import com.shakticoin.app.api.country.CountryRepository;
 import com.shakticoin.app.api.country.Subdivision;
 import com.shakticoin.app.databinding.FragmentSignupAddressBinding;
 import com.shakticoin.app.util.PostalCodeValidator;
-import com.shakticoin.app.util.Validator;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 public class SignUpAddressFragment extends Fragment {
     private SignUpActivityModel viewModel;
@@ -42,6 +39,7 @@ public class SignUpAddressFragment extends Fragment {
             viewModel = ViewModelProviders.of(activity).get(SignUpActivityModel.class);
         }
         countryRepo = new CountryRepository();
+        countryRepo.setLifecycleOwner(this);
     }
 
     @Nullable
@@ -85,37 +83,37 @@ public class SignUpAddressFragment extends Fragment {
         });
 
         // display error callout for the field if error message is set
-        viewModel.countryCodeErrMsg.observe(this, s -> {
+        viewModel.countryCodeErrMsg.observe(getViewLifecycleOwner(), s -> {
             if (!TextUtils.isEmpty(s)) {
                 binding.countriesLayout.setError(s);
                 viewModel.countryCodeErrMsg.setValue(null);
             }
         });
-        viewModel.citizenshipCodeErrMsg.observe(this, s -> {
+        viewModel.citizenshipCodeErrMsg.observe(getViewLifecycleOwner(), s -> {
             if (!TextUtils.isEmpty(s)) {
                 binding.citizenshipLayout.setError(s);
                 viewModel.citizenshipCodeErrMsg.setValue(null);
             }
         });
-        viewModel.addressErrMsg.observe(this, s -> {
+        viewModel.addressErrMsg.observe(getViewLifecycleOwner(), s -> {
             if (!TextUtils.isEmpty(s)) {
                 binding.addressLayout.setError(s);
                 viewModel.addressErrMsg.setValue(null);
             }
         });
-        viewModel.cityErrMsg.observe(this, s -> {
+        viewModel.cityErrMsg.observe(getViewLifecycleOwner(), s -> {
             if (!TextUtils.isEmpty(s)) {
                 binding.cityLayout.setError(s);
                 viewModel.cityErrMsg.setValue(null);
             }
         });
-        viewModel.postalCodeErrMsg.observe(this, s -> {
+        viewModel.postalCodeErrMsg.observe(getViewLifecycleOwner(), s -> {
             if (!TextUtils.isEmpty(s)) {
                 binding.postalCodeLayout.setError(s);
                 viewModel.postalCodeErrMsg.setValue(null);
             }
         });
-        viewModel.stateErrMsg.observe(this, s -> {
+        viewModel.stateErrMsg.observe(getViewLifecycleOwner(), s -> {
             if (!TextUtils.isEmpty(s)) {
                 binding.stateLayout.setError(s);
                 viewModel.stateErrMsg.setValue(null);

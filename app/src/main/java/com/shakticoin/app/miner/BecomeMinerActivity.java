@@ -24,7 +24,7 @@ import java.util.List;
 
 public class BecomeMinerActivity extends DrawerActivity {
     private ActivityBecomeMinerBinding binding;
-    private LicenseRepository licenceRepository = new LicenseRepository();
+    private LicenseRepository licenceRepository;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -33,6 +33,9 @@ public class BecomeMinerActivity extends DrawerActivity {
         binding.setLifecycleOwner(this);
 
         onInitView(binding.getRoot(), getString(R.string.miner_intro_toolbar));
+
+        licenceRepository = new LicenseRepository();
+        licenceRepository.setLifecycleOwner(this);
 
         binding.textNote.setText(Html.fromHtml(getString(R.string.miner_intro_text)));
 

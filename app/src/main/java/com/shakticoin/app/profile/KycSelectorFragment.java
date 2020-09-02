@@ -36,12 +36,15 @@ public class KycSelectorFragment extends Fragment {
 
     private SelectorAdapter adapter;
 
-    private KYCRepository kycRepository = new KYCRepository();
+    private KYCRepository kycRepository;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(requireActivity()).get(PersonalViewModel.class);
+
+        kycRepository = new KYCRepository();
+        kycRepository.setLifecycleOwner(this);
 
         FragmentActivity activity = getActivity();
         if (activity != null) {

@@ -46,6 +46,7 @@ public class SplashActivity extends AppCompatActivity {
                 } else {
                     Activity self = this;
                     AuthRepository authRepo = new AuthRepository();
+                    authRepo.setLifecycleOwner(this);
                     authRepo.refreshToken(refreshToken, new OnCompleteListener<TokenResponse>() {
                         @Override
                         public void onComplete(TokenResponse value, Throwable error) {

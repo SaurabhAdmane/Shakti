@@ -25,12 +25,15 @@ import java.util.List;
 public class OnboardChildPage2Fragment extends Fragment {
     private FragmentFeatsChildPage2Binding binding;
     private OnboardChildViewModel viewModel;
-    private CountryRepository countryRepo = new CountryRepository();
+    private CountryRepository countryRepo;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(requireActivity()).get(OnboardChildViewModel.class);
+
+        countryRepo = new CountryRepository();
+        countryRepo.setLifecycleOwner(this);
     }
 
     @Nullable
@@ -41,7 +44,7 @@ public class OnboardChildPage2Fragment extends Fragment {
         binding.setViewModel(viewModel);
         View v = binding.getRoot();
 
-        viewModel.selectedCountry.observe(this, new Observer<Country>() {
+        viewModel.selectedCountry.observe(getViewLifecycleOwner(), new Observer<Country>() {
             @Override
             public void onChanged(Country country) {
                 if (country != null) {

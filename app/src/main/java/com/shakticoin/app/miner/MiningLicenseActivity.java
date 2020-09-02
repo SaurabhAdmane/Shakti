@@ -34,8 +34,8 @@ public class MiningLicenseActivity extends DrawerActivity {
 
     private ActivityMiningLicenseBinding binding;
     private MiningLicenseModel viewModel;
-    private VaultRepository vaultRepository = new VaultRepository();
-    private LicenseRepository licenseRepository = new LicenseRepository();
+    private VaultRepository vaultRepository;
+    private LicenseRepository licenseRepository;
 
     private int vaultId = -1;
 
@@ -55,6 +55,11 @@ public class MiningLicenseActivity extends DrawerActivity {
 
         viewModel = ViewModelProviders.of(this).get(MiningLicenseModel.class);
         binding.setViewModel(viewModel);
+
+        licenseRepository = new LicenseRepository();
+        licenseRepository.setLifecycleOwner(this);
+        vaultRepository = new VaultRepository();
+        vaultRepository.setLifecycleOwner(this);
 
         final AppCompatActivity self = this;
 

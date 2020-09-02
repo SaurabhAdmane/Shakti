@@ -47,6 +47,7 @@ public class VaultChooserActivity extends DrawerActivity {
 
         final AppCompatActivity self = this;
         VaultRepository vaultRepo = new VaultRepository();
+        vaultRepo.setLifecycleOwner(this);
         binding.progressBar.setVisibility(View.VISIBLE);
         vaultRepo.getVaults(new OnCompleteListener<List<VaultExtended>>() {
             @Override

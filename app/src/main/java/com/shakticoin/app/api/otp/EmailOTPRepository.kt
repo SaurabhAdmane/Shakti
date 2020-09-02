@@ -1,5 +1,7 @@
 package com.shakticoin.app.api.otp
 
+import com.shakticoin.app.R
+import com.shakticoin.app.ShaktiApplication
 import com.shakticoin.app.api.BackendRepository
 import com.shakticoin.app.api.BaseUrl
 import com.shakticoin.app.api.OnCompleteListener
@@ -29,9 +31,12 @@ class EmailOTPRepository : BackendRepository() {
 
     val authRepository = AuthRepository();
 
+    var callReqRegEmail : Call<MainResponseBean?>? = null
     fun requestRegistration(email: String, listener: OnCompleteListener<Void?>) {
+        if (callReqRegEmail != null && !callReqRegEmail!!.isCanceled) callReqRegEmail?.cancel()
         val parameters = EmailRegistrationRequest(null, email);
-        service.registrationRequest(parameters).enqueue(object : Callback<MainResponseBean?> {
+        callReqRegEmail = service.registrationRequest(parameters)
+        callReqRegEmail!!.enqueue(object : Callback<MainResponseBean?> {
             override fun onResponse(call: Call<MainResponseBean?>, response: Response<MainResponseBean?>) {
                 Debug.logDebug(response.toString())
                 if (response.isSuccessful) {
@@ -41,8 +46,12 @@ class EmailOTPRepository : BackendRepository() {
                         listener.onComplete(null, null)
                     } else listener.onComplete(null, null);
                 } else {
-                    listener.onComplete(null, RemoteException(
-                            getResponseErrorMessage("responseMsg", response.errorBody()), response.code()))
+                    when(response.code()) {
+                        409 -> listener.onComplete(null, RemoteException(
+                                ShaktiApplication.getContext().getString(R.string.reg__email_err_already_registered), 409))
+                        else -> listener.onComplete(null, RemoteException(
+                                getResponseErrorMessage("responseMsg", response.errorBody()), response.code()))
+                    }
                 }
             }
 
@@ -53,8 +62,10 @@ class EmailOTPRepository : BackendRepository() {
         })
     }
 
+    var callConfReg : Call<MainResponseBean?>? = null
     fun confirmRegistration(token: String, listener: OnCompleteListener<Boolean>) {
-        service.confirmRegistration(token).enqueue(object : Callback<MainResponseBean?> {
+        callConfReg = service.confirmRegistration(token)
+        callConfReg!!.enqueue(object : Callback<MainResponseBean?> {
             override fun onResponse(call: Call<MainResponseBean?>, response: Response<MainResponseBean?>) {
                 Debug.logDebug(response.toString())
                 if (response.isSuccessful) {
@@ -94,6 +105,48 @@ class EmailOTPRepository : BackendRepository() {
         } catch (e : Exception) {
             Debug.logException(e)
             return false
+        }
+    }
+
+    var callCheckEmailStatus : Call<MainResponseBean?>? = null
+
+    /**
+     * Verifies OTP status of an email address.
+     * The same as getEmailStatus but asynchronous.
+     */
+    fun checkEmailStatus(email: String, listener: OnCompleteListener<Boolean?>) {
+        val parameters = EmailStatusRequest()
+        parameters.email = email
+        callCheckEmailStatus = service.getEmailStatus(parameters)
+        callCheckEmailStatus!!.enqueue(object : Callback<MainResponseBean?> {
+            override fun onResponse(call: Call<MainResponseBean?>, response: Response<MainResponseBean?>) {
+                Debug.logDebug(response.toString())
+                if (response.isSuccessful) {
+                    listener.onComplete(true, null)
+                } else {
+                    when(response.code()) {
+                        404 -> listener.onComplete(false, null) // not found
+                        else -> returnError(listener, response)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<MainResponseBean?>, t: Throwable) {
+                return returnError(listener, t)
+            }
+        })
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (callCheckEmailStatus != null && !callCheckEmailStatus!!.isCanceled) {
+            callCheckEmailStatus?.cancel()
+        }
+        if (callReqRegEmail != null && !callReqRegEmail!!.isCanceled) {
+            callReqRegEmail?.cancel();
+        }
+        if (callConfReg != null && !callConfReg!!.isCanceled) {
+            callConfReg?.cancel()
         }
     }
 }

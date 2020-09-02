@@ -1,6 +1,7 @@
 package com.shakticoin.app.api.referral;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LifecycleOwner;
 
 import com.shakticoin.app.api.BackendRepository;
 import com.shakticoin.app.api.BaseUrl;
@@ -255,5 +256,11 @@ public class ReferralRepository extends BackendRepository {
                 returnError(listener, t);
             }
         });
+    }
+
+    @Override
+    public void setLifecycleOwner(LifecycleOwner lifecycleOwner) {
+        super.setLifecycleOwner(lifecycleOwner);
+        authRepository.setLifecycleOwner(lifecycleOwner);
     }
 }

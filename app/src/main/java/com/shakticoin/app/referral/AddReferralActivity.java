@@ -28,7 +28,7 @@ import java.util.Map;
 public class AddReferralActivity extends DrawerActivity {
     private ActivityAddReferralBinding binding;
     private ReferralParameters referral;
-    private ReferralRepository referralRepository = new ReferralRepository();
+    private ReferralRepository referralRepository;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,6 +40,9 @@ public class AddReferralActivity extends DrawerActivity {
         binding.phoneFieldLayout.setValidator((view, value) -> Validator.isPhoneNumber(value));
 
         onInitView(binding.getRoot(), getString(R.string.my_refs_title), true);
+
+        referralRepository = new ReferralRepository();
+        referralRepository.setLifecycleOwner(this);
 
         if (savedInstanceState != null) {
             referral = savedInstanceState.getParcelable("referral");

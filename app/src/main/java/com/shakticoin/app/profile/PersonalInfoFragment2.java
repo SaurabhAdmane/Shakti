@@ -27,7 +27,7 @@ public class PersonalInfoFragment2 extends Fragment {
     private FragmentProfilePersonalPage2Binding binding;
     private PersonalInfoViewModel viewModel;
 
-    private CountryRepository countryRepo = new CountryRepository();
+    private CountryRepository countryRepo;
 
     @Nullable
     @Override
@@ -38,13 +38,16 @@ public class PersonalInfoFragment2 extends Fragment {
         binding.setViewModel(viewModel);
         View v = binding.getRoot();
 
+        countryRepo = new CountryRepository();
+        countryRepo.setLifecycleOwner(getViewLifecycleOwner());
+
         binding.postalCodeLayout.setValidator(new PostalCodeValidator(null));
         if (viewModel.selectedState.getValue() != null) {
             binding.stateProvinceLayout.setVisibility(View.VISIBLE);
         }
 
         // update list of states when selected country is changed.
-        viewModel.selectedCountry.observe(this, country -> {
+        viewModel.selectedCountry.observe(getViewLifecycleOwner(), country -> {
             if (country != null) {
                 binding.postalCodeLayout.setValidator(new PostalCodeValidator(country.getCode()));
                 countryRepo.getSubdivisionsByCountry(country.getCode(), new OnCompleteListener<List<Subdivision>>() {
@@ -66,25 +69,25 @@ public class PersonalInfoFragment2 extends Fragment {
 
         });
 
-        viewModel.countriesErrMsg.observe(this, s -> {
+        viewModel.countriesErrMsg.observe(getViewLifecycleOwner(), s -> {
             if (!TextUtils.isEmpty(s)) {
                 binding.countriesLayout.setError(s);
                 viewModel.countriesErrMsg.setValue(null);
             }
         });
-        viewModel.cityErrMsg.observe(this, s -> {
+        viewModel.cityErrMsg.observe(getViewLifecycleOwner(), s -> {
             if (!TextUtils.isEmpty(s)) {
                 binding.cityLayout.setError(s);
                 viewModel.cityErrMsg.setValue(null);
             }
         });
-        viewModel.addressErrMsg.observe(this, s -> {
+        viewModel.addressErrMsg.observe(getViewLifecycleOwner(), s -> {
             if (!TextUtils.isEmpty(s)) {
                 binding.address1Layout.setError(s);
                 viewModel.addressErrMsg.setValue(null);
             }
         });
-        viewModel.postalCodeErrMsg.observe(this, s -> {
+        viewModel.postalCodeErrMsg.observe(getViewLifecycleOwner(), s -> {
             if (!TextUtils.isEmpty(s)) {
                 binding.postalCodeLayout.setError(s);
                 viewModel.postalCodeErrMsg.setValue(null);

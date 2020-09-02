@@ -29,10 +29,12 @@ class PhoneOTPRepository : BackendRepository() {
             .build()
             .create(PhoneOTPService::class.java)
 
+    var callReqReg : Call<MainResponseBean?>? = null
     fun requestRegistration(phoneNumber: String, listener: OnCompleteListener<Void?>) {
         val parameters = MobileRegistrationRequest();
         parameters.mobileNo = phoneNumber
-        service.registrationRequest(parameters).enqueue(object: Callback<MainResponseBean?> {
+        callReqReg = service.registrationRequest(parameters)
+        callReqReg!!.enqueue(object: Callback<MainResponseBean?> {
             override fun onFailure(call: Call<MainResponseBean?>, t: Throwable) {
                 Debug.logDebug(t.message)
                 return returnError(listener, t)
@@ -53,11 +55,13 @@ class PhoneOTPRepository : BackendRepository() {
         });
     }
 
+    var callConfReg : Call<MainResponseBean?>? = null
     fun confirmRegistration(mobileNo: String, code: String, listener: OnCompleteListener<Boolean?>) {
         val parameters = ConfirmRegistrationRequest()
         parameters.mobileNo = mobileNo
         parameters.otp = code
-        service.confirmRegistration(parameters).enqueue(object: Callback<MainResponseBean?> {
+        callConfReg = service.confirmRegistration(parameters)
+        callConfReg!!.enqueue(object: Callback<MainResponseBean?> {
             override fun onFailure(call: Call<MainResponseBean?>, t: Throwable) {
                 Debug.logDebug(t.message)
                 return returnError(listener, t)
@@ -81,5 +85,11 @@ class PhoneOTPRepository : BackendRepository() {
             }
 
         })
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (callReqReg != null && !callReqReg!!.isCanceled) callReqReg?.cancel()
+        if (callConfReg != null && !callConfReg!!.isCanceled) callConfReg?.cancel()
     }
 }

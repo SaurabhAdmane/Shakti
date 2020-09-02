@@ -25,6 +25,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -62,8 +64,8 @@ import java.util.Map;
 public class WalletHistoryActivity extends DrawerActivity {
     private ActivityWalletHistoryBinding binding;
     private WalletRepository walletRepository;
-    private OnboardRepository onboardRepository = new OnboardRepository();
-    private KYCRepository kycRepository = new KYCRepository();
+    private OnboardRepository onboardRepository;
+    private KYCRepository kycRepository;
     private TransactionAdapter adapter;
     private WalletModel viewModel;
 
@@ -78,6 +80,11 @@ public class WalletHistoryActivity extends DrawerActivity {
         onInitView(binding.getRoot(), getString(R.string.wallet_toolbar_title), true);
 
         walletRepository = new WalletRepository();
+        walletRepository.setLifecycleOwner(this);
+        kycRepository = new KYCRepository();
+        kycRepository.setLifecycleOwner(this);
+        onboardRepository = new OnboardRepository();
+        onboardRepository.setLifecycleOwner(this);
 
         binding.list.setHasFixedSize(true);
         binding.list.setLayoutManager(new LinearLayoutManager(this));
@@ -126,7 +133,7 @@ public class WalletHistoryActivity extends DrawerActivity {
         */
 
         // check wallet lock status and display action buttons if unlocked
-        new CheckWalletLocked(getSupportFragmentManager(), binding.walletActionsProgressBar).execute();
+        new CheckWalletLocked(getSupportFragmentManager(), binding.walletActionsProgressBar, this).execute();
     }
 
     @Override
@@ -372,12 +379,14 @@ public class WalletHistoryActivity extends DrawerActivity {
     }
 
     static class CheckWalletLocked extends AsyncTask<Void, Void, Boolean> {
-        FragmentManager fragmentManager;
-        ProgressBar walletActionsProgressBar;
+        private FragmentManager fragmentManager;
+        private ProgressBar walletActionsProgressBar;
+        private LifecycleOwner lifecycleOwner;
 
-        CheckWalletLocked(FragmentManager fragmentManager, ProgressBar progressBar) {
+        CheckWalletLocked(FragmentManager fragmentManager, ProgressBar progressBar, LifecycleOwner lifecycleOwner) {
             this.fragmentManager = fragmentManager;
             this.walletActionsProgressBar = progressBar;
+            this.lifecycleOwner = lifecycleOwner;
         }
 
         @Override
@@ -389,25 +398,15 @@ public class WalletHistoryActivity extends DrawerActivity {
 
         @Override
         protected void onPostExecute(Boolean unlocked) {
-            if (unlocked) {
-                walletActionsProgressBar.setVisibility(View.GONE);
+            walletActionsProgressBar.setVisibility(View.GONE);
+            if (lifecycleOwner != null
+                    && lifecycleOwner.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED)) {
                 fragmentManager
                         .beginTransaction()
-                        .add(R.id.wallet_actions, new WalletActionsFragment())
+                        .add(R.id.wallet_actions, unlocked ?
+                                new WalletActionsFragment() :
+                                new KycVerificationRequiredFragment())
                         .commit();
-            } else {
-                new KYCRepository().isWalletUnlocked(new OnCompleteListener<Boolean>() {
-                    @Override
-                    public void onComplete(Boolean unlocked, Throwable error) {
-                        walletActionsProgressBar.setVisibility(View.GONE);
-                        fragmentManager
-                                .beginTransaction()
-                                .add(R.id.wallet_actions, unlocked ?
-                                        new WalletActionsFragment() :
-                                        new KycVerificationRequiredFragment())
-                                .commit();
-                    }
-                });
             }
         }
     }

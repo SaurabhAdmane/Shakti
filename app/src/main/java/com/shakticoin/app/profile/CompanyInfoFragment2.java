@@ -22,12 +22,15 @@ import java.util.List;
 public class CompanyInfoFragment2 extends Fragment {
     private FragmentCompanyInfoPage2Binding binding;
     private CompanyProfileViewModel viewModel;
-    private CountryRepository countryRepository = new CountryRepository();
+    private CountryRepository countryRepository;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(this).get(CompanyProfileViewModel.class);
+
+        countryRepository = new CountryRepository();
+        countryRepository.setLifecycleOwner(this);
     }
 
     @Nullable
@@ -38,7 +41,7 @@ public class CompanyInfoFragment2 extends Fragment {
         binding.setViewModel(viewModel);
         View v = binding.getRoot();
 
-        viewModel.selectedCountry.observe(this, new Observer<Country>() {
+        viewModel.selectedCountry.observe(getViewLifecycleOwner(), new Observer<Country>() {
             @Override
             public void onChanged(Country country) {
                 countryRepository.getSubdivisionsByCountry(country.getCode(), new OnCompleteListener<List<Subdivision>>() {

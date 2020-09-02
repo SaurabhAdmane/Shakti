@@ -1,6 +1,7 @@
 package com.shakticoin.app.api.country;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -212,5 +213,11 @@ public class CountryRepository extends BackendRepository {
                 listener.onComplete(null, t);
             }
         });
+    }
+
+    @Override
+    public void setLifecycleOwner(LifecycleOwner lifecycleOwner) {
+        super.setLifecycleOwner(lifecycleOwner);
+        authRepository.setLifecycleOwner(lifecycleOwner);
     }
 }

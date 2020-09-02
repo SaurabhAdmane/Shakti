@@ -31,13 +31,16 @@ import java.util.Objects;
 public class SignInActivity extends AppCompatActivity {
     private ActivitySigninBinding binding;
 
-    private AuthRepository authRepository = new AuthRepository();
+    private AuthRepository authRepository;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_signin);
         binding.setLifecycleOwner(this);
+
+        authRepository = new AuthRepository();
+        authRepository.setLifecycleOwner(this);
 
         binding.password.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {

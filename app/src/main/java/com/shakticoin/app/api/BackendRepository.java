@@ -4,6 +4,10 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.OnLifecycleEvent;
 
 import com.shakticoin.app.R;
 import com.shakticoin.app.ShaktiApplication;
@@ -18,7 +22,23 @@ import java.io.IOException;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 
-public class BackendRepository {
+public class BackendRepository implements LifecycleObserver {
+    private LifecycleOwner lifecycleOwner;
+
+    public void setLifecycleOwner(LifecycleOwner lifecycleOwner) {
+        this.lifecycleOwner = lifecycleOwner;
+        if (this.lifecycleOwner != null) {
+            this.lifecycleOwner.getLifecycle().addObserver(this);
+        }
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+    protected void onStop() {
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+    protected  void onPause() {
+    }
 
     /**
      * Call the callback for a repository method in order to report an error.
