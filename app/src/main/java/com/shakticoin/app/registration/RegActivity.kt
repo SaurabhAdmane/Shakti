@@ -1,10 +1,12 @@
 package com.shakticoin.app.registration
 
+import android.app.Activity
 import android.content.res.ColorStateList
 import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.ImageViewCompat
@@ -28,6 +30,8 @@ class RegActivity : AppCompatActivity() {
     private lateinit var otpPhoneRepository: PhoneOTPRepository
     private lateinit var onboardRepository: OnboardRepository
 
+    private var imm : InputMethodManager? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRegistrationBinding.inflate(layoutInflater)
@@ -45,6 +49,8 @@ class RegActivity : AppCompatActivity() {
         otpEmailRepository = EmailOTPRepository()
         otpEmailRepository.setLifecycleOwner(this)
 
+        imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager?
+
         supportFragmentManager
                 .beginTransaction()
                 .add(binding.fragments.id, RegEnterEmailFragment())
@@ -53,6 +59,7 @@ class RegActivity : AppCompatActivity() {
 
     /** Initiates OTP verification for the email address and advances the process to the next step. */
     fun onVerifyEmail(v: View?) {
+        imm?.hideSoftInputFromWindow(binding.root.windowToken, 0)
         val self: AppCompatActivity = this
         val emailAddress = viewModel?.emailAddress?.value
         if (emailAddress != null && Validator.isEmail(emailAddress)) {
@@ -62,7 +69,7 @@ class RegActivity : AppCompatActivity() {
                     if (error != null) {
                         viewModel?.progressOn?.value = false
                         Toast.makeText(self, Debug.getFailureMsg(self, error), Toast.LENGTH_LONG).show()
-                        return;
+                        return
                     }
 
                     if (isVerified != null) {
@@ -124,6 +131,7 @@ class RegActivity : AppCompatActivity() {
     }
 
     fun onVerifyPhone(v: View?) {
+        imm?.hideSoftInputFromWindow(binding.root.windowToken, 0)
         val self: AppCompatActivity = this
         // TODO: we need to add list of phone codes at some moment
         val phoneNumber = viewModel?.phoneNumber?.value
@@ -176,7 +184,7 @@ class RegActivity : AppCompatActivity() {
                         viewModel?.progressOn?.value = false
                         if (error != null) {
                             Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show()
-                            return;
+                            return
                         }
 
                         supportFragmentManager
@@ -186,7 +194,7 @@ class RegActivity : AppCompatActivity() {
                                 .commit()
                     }
 
-                });
+                })
     }
 
     fun onCreateAccount(v: View) {

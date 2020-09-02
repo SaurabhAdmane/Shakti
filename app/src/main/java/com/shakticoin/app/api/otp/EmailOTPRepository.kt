@@ -31,9 +31,12 @@ class EmailOTPRepository : BackendRepository() {
 
     val authRepository = AuthRepository();
 
+    var callReqRegEmail : Call<MainResponseBean?>? = null
     fun requestRegistration(email: String, listener: OnCompleteListener<Void?>) {
+        if (callReqRegEmail != null && !callReqRegEmail!!.isCanceled) callReqRegEmail?.cancel()
         val parameters = EmailRegistrationRequest(null, email);
-        service.registrationRequest(parameters).enqueue(object : Callback<MainResponseBean?> {
+        callReqRegEmail = service.registrationRequest(parameters)
+        callReqRegEmail!!.enqueue(object : Callback<MainResponseBean?> {
             override fun onResponse(call: Call<MainResponseBean?>, response: Response<MainResponseBean?>) {
                 Debug.logDebug(response.toString())
                 if (response.isSuccessful) {
@@ -59,8 +62,10 @@ class EmailOTPRepository : BackendRepository() {
         })
     }
 
+    var callConfReg : Call<MainResponseBean?>? = null
     fun confirmRegistration(token: String, listener: OnCompleteListener<Boolean>) {
-        service.confirmRegistration(token).enqueue(object : Callback<MainResponseBean?> {
+        callConfReg = service.confirmRegistration(token)
+        callConfReg!!.enqueue(object : Callback<MainResponseBean?> {
             override fun onResponse(call: Call<MainResponseBean?>, response: Response<MainResponseBean?>) {
                 Debug.logDebug(response.toString())
                 if (response.isSuccessful) {
@@ -136,6 +141,12 @@ class EmailOTPRepository : BackendRepository() {
         super.onStop()
         if (callCheckEmailStatus != null && !callCheckEmailStatus!!.isCanceled) {
             callCheckEmailStatus?.cancel()
+        }
+        if (callReqRegEmail != null && !callReqRegEmail!!.isCanceled) {
+            callReqRegEmail?.cancel();
+        }
+        if (callConfReg != null && !callConfReg!!.isCanceled) {
+            callConfReg?.cancel()
         }
     }
 }
