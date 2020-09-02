@@ -3,10 +3,7 @@ package com.shakticoin.app.api.otp
 import android.widget.Toast
 import com.shakticoin.app.R
 import com.shakticoin.app.ShaktiApplication
-import com.shakticoin.app.api.BackendRepository
-import com.shakticoin.app.api.BaseUrl
-import com.shakticoin.app.api.OnCompleteListener
-import com.shakticoin.app.api.RemoteMessageException
+import com.shakticoin.app.api.*
 import com.shakticoin.app.util.Debug
 import okhttp3.OkHttpClient
 import retrofit2.Call
@@ -48,7 +45,11 @@ class PhoneOTPRepository : BackendRepository() {
                         listener.onComplete(null, null)
                     } else listener.onComplete(null, null)
                 } else {
-                    returnError(listener, response)
+                    when(response.code()) {
+                        503 -> listener.onComplete(null, RemoteException(
+                                getResponseErrorMessage("responseMsg", response.errorBody()), response.code()))
+                        else -> returnError(listener, response)
+                    }
                 }
             }
 
