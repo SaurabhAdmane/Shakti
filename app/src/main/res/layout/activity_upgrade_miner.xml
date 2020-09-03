@@ -118,7 +118,7 @@
                             android:id="@+id/option3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/miner_upg_next_steps_1"
+                            android:text="@string/miner_upg_next_steps_3"
                             android:textColor="@android:color/white"
                             app:buttonTint="@color/colorBrand" />
 
@@ -126,7 +126,7 @@
                             android:id="@+id/option4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/miner_upg_next_steps_1"
+                            android:text="@string/miner_upg_next_steps_4"
                             android:textColor="@android:color/white"
                             app:buttonTint="@color/colorBrand" />
                     </RadioGroup>
