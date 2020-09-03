@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.shakticoin.app.R;
 import com.shakticoin.app.feats.ParticipantsActivity;
+import com.shakticoin.app.miner.UpgradeMinerActivity;
 import com.shakticoin.app.profile.CompanySummaryActivity;
 import com.shakticoin.app.profile.FamilyTreeActivity;
 import com.shakticoin.app.referral.MyReferralsActivity;
@@ -292,6 +293,12 @@ public abstract class DrawerActivity extends AppCompatActivity {
     public void onOpenReferrals(View v) {
         Intent intent = new Intent(this, MyReferralsActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
+        closeDrawers();
+    }
+
+    public void onSelectLicense(View v) {
+        Intent intent = new Intent(this, UpgradeMinerActivity.class);
         startActivity(intent);
         closeDrawers();
     }

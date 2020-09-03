@@ -184,6 +184,21 @@
             android:textColor="@color/drawerButtonNormal"
             android:onClick="onOpenReferrals" -->
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/drawer_item_height"
+                android:paddingStart="64dp"
+                android:paddingEnd="8dp"
+                android:gravity="start|center_vertical"
+                android:fontFamily="@font/lato_light"
+                android:text="@string/drawer_license"
+                android:textColor="@color/drawerButtonNormal"
+                android:textSize="18sp"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onSelectLicense"
+                tools:ignore="SmallSp" />
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"

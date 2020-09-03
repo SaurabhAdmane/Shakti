@@ -195,24 +195,10 @@
                         android:layout_marginTop="31dp"
                         android:layout_marginEnd="32dp"
                         android:text="@string/miner_upg_action"
+                        android:onClick="onUpgrade"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView67" />
-
-                    <ImageButton
-                        android:id="@+id/doExpand"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginTop="22dp"
-                        android:layout_marginEnd="24dp"
-                        android:tint="@color/colorBrand"
-                        android:background="@android:color/transparent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/doUpgrade"
-                        app:srcCompat="@drawable/ic_round_expand_more_24px"
-                        tools:ignore="ContentDescription" />
 
                     <TextView
                         android:id="@+id/textView68"
@@ -226,7 +212,7 @@
                         android:textAppearance="@style/AppText.Body"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/doExpand" />
+                        app:layout_constraintTop_toBottomOf="@+id/doUpgrade" />
 
                     <TextView
                         android:id="@+id/textView70"
