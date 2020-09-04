@@ -73,9 +73,11 @@ public class BecomeMinerActivity extends DrawerActivity {
     public void onPayLicense(View v) {
         Activity activity = this;
 
+        binding.progressBar.setVisibility(View.VISIBLE);
         licenceRepository.checkoutSubscription("M101Y", new OnCompleteListener<String>() {
             @Override
             public void onComplete(String targetUrl, Throwable error) {
+                binding.progressBar.setVisibility(View.INVISIBLE);
                 if (error != null) {
                     Toast.makeText(activity, R.string.err_unexpected, Toast.LENGTH_LONG).show();
                     return;
