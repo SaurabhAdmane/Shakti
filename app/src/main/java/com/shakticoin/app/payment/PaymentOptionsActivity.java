@@ -18,6 +18,7 @@ import com.shakticoin.app.R;
 import com.shakticoin.app.api.license.LicenseType;
 import com.shakticoin.app.databinding.ActivityPaymentOptionsBinding;
 import com.shakticoin.app.util.CommonUtil;
+import com.shakticoin.app.wallet.WalletActivity;
 import com.shakticoin.app.widget.DrawerActivity;
 
 import java.util.ArrayList;
@@ -42,8 +43,6 @@ public class PaymentOptionsActivity extends DrawerActivity {
         binding.setViewModel(viewModel);
 
         super.onInitView(binding.getRoot(), getString(R.string.miner_intro_toolbar));
-
-        final Activity self = this;
 
         if (savedInstanceState == null) {
             Intent intent = getIntent();
@@ -124,83 +123,18 @@ public class PaymentOptionsActivity extends DrawerActivity {
 
     public void onMainAction(View v) {
         final Activity activity = this;
-
-//        PackagePlanExtended plan = viewModel.selectedPlan.get();
-//        PackageExtended pkg = viewModel.selectedPackage.getValue();
-//        // pay the order
-//        Intent intent = new Intent(activity, StripeActivity.class);
-//        intent.putExtra(CommonUtil.prefixed(StripeActivity.KEY_ORDER_AMOUNT, activity), plan.getFiat_price());
-//        intent.putExtra(CommonUtil.prefixed(StripeActivity.KEY_ORDER_NAME, activity),
-//                String.format("%1$s - %2$s", "M101", "Tier description"));
-//        intent.putExtra(CommonUtil.prefixed("packageName", this), pkg.getName());
-//        intent.putExtra(CommonUtil.prefixed("period", this), plan.getPeriod());
-//        startActivityForResult(intent, STRIPE_PAYMENT);
     }
-
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        if (requestCode == STRIPE_PAYMENT) {
-//            switch (resultCode) {
-//                case RESULT_OK:
-//                    if (data != null) {
-//                        long orderId = data.getLongExtra(CommonUtil.prefixed(StripeActivity.KEY_ORDER_ID, this), -1);
-//                        completePayment(data.getStringExtra(CommonUtil.prefixed(StripeActivity.KEY_TOKEN, this)), orderId);
-//                    }
-//                    break;
-//                case RESULT_CANCELED:
-//                    Toast.makeText(this, R.string.err_payment_cancelled, Toast.LENGTH_SHORT).show();
-//                    openWallet();
-//                    break;
-//            }
-//        } else {
-//            super.onActivityResult(requestCode, resultCode, data);
-//        }
-//    }
-
-//    private void completePayment(@Nullable String token, long orderId) {
-//        if (token == null) return; // perhaps not possible
-//        if (orderId < 0) return;
-//
-//        final Activity activity = this;
-//
-////        binding.progressBar.setVisibility(View.VISIBLE);
-//        PaymentRepository repository = new PaymentRepository();
-//        repository.makeStripePayment(orderId, token, new OnCompleteListener<Void>() {
-//            @Override
-//            public void onComplete(Void value, Throwable error) {
-//                if (error != null) {
-//                    Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
-//
-//                // we can consider the registration completed at this point
-//                UserRepository userRepository = new UserRepository();
-////                userRepository.updateRegistrationStatus(Constants.RegistrationStatus.REGST_COMPL, new OnCompleteListener<Void>() {
-////                    @Override
-////                    public void onComplete(Void value, Throwable error) {
-//////                        binding.progressBar.setVisibility(View.INVISIBLE);
-////                        if (error != null) {
-////                            Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_SHORT).show();
-////                            return;
-////                        }
-////
-////                        openWallet();
-////                    }
-////                });
-//            }
-//        });
-//    }
 
     /**
      * Open wallet and reset back stack.
      * It does not make sense to navigate back though the registration screens after the payment is
      * completed successfully.
      */
-//    private void openWallet() {
-//        Intent intent = new Intent(this, WalletActivity.class);
-//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//        startActivity(intent);
-//    }
+    private void openWallet() {
+        Intent intent = new Intent(this, WalletActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
 
     public void onNext(View v) {
         int currentIndex = binding.mainFragment.getCurrentItem();

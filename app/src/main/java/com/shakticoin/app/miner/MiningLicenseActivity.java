@@ -18,6 +18,7 @@ import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.license.LicenseRepository;
 import com.shakticoin.app.api.license.LicenseType;
 import com.shakticoin.app.api.license.ModelsKt;
+import com.shakticoin.app.api.license.NodeOperatorModel;
 import com.shakticoin.app.api.vault.VaultRepository;
 import com.shakticoin.app.databinding.ActivityMiningLicenseBinding;
 import com.shakticoin.app.payment.PaymentOptionsActivity;
@@ -60,12 +61,6 @@ public class MiningLicenseActivity extends DrawerActivity {
         licenseRepository.setLifecycleOwner(this);
         vaultRepository = new VaultRepository();
         vaultRepository.setLifecycleOwner(this);
-
-        final AppCompatActivity self = this;
-
-//        if (savedInstanceState != null) {
-//        } else {
-//        }
     }
 
     @Override
@@ -102,6 +97,17 @@ public class MiningLicenseActivity extends DrawerActivity {
                     LicenseType licenseType = viewModel.getSelectedPackage();
                     if (licenseType != null) {
                         updateDetails(licenseType);
+                    }
+                });
+
+                // retrieve information about node operator and licenses he might bought
+                licenseRepository.getNodeOperator(new OnCompleteListener<NodeOperatorModel>() {
+                    @Override
+                    public void onComplete(NodeOperatorModel value, Throwable error) {
+                        if (error != null) {
+                            Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
+                            return;
+                        }
                     }
                 });
             }

@@ -54,6 +54,8 @@ class PlanCodeRequest {
 class CheckoutPlanRequest {
     var planCode: String? = null
     var subscriptionId: String? = null
+    var action: String? = null
+    var paymentStatus : String? = null
 }
 
 class SubscribedLicenseModel {

@@ -21,6 +21,7 @@ import com.shakticoin.app.ShaktiApplication;
 import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.RemoteException;
 import com.shakticoin.app.api.Session;
+import com.shakticoin.app.api.UnauthorizedException;
 import com.shakticoin.app.api.kyc.KYCRepository;
 import com.shakticoin.app.api.license.LicenseRepository;
 import com.shakticoin.app.api.onboard.OnboardRepository;
@@ -96,14 +97,30 @@ public class WalletActivity extends DrawerActivity {
             @Override
             public void onComplete(NodeOperatorModel value, Throwable error) {
                 if (error != null) {
+                    if (error instanceof UnauthorizedException) {
+                        startActivity(Session.unauthorizedIntent(activity));
+                        return;
+                    } else if (error instanceof RemoteException) {
+                        int responseCode = ((RemoteException) error).getResponseCode();
+                        if (responseCode == 404) {
+                            binding.becomeMinerBox.setVisibility(View.VISIBLE);
+                            return;
+                        }
+                    }
                     Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
                     return;
                 }
+                View drawerLicenseDisabled = activity.findViewById(R.id.drawerLicenceDisabled);
+                View drawerLicenseEnabled = activity.findViewById(R.id.drawerLicenceEnabled);
                 List<SubscribedLicenseModel> licences = value.getSubscribedLicenses();
                 if (licences != null && !licences.isEmpty()) {
                     binding.becomeMinerBox.setVisibility(View.GONE);
+                    drawerLicenseEnabled.setVisibility(View.VISIBLE);
+                    drawerLicenseDisabled.setVisibility(View.GONE);
                 } else {
                     binding.becomeMinerBox.setVisibility(View.VISIBLE);
+                    drawerLicenseEnabled.setVisibility(View.GONE);
+                    drawerLicenseDisabled.setVisibility(View.VISIBLE);
                 }
             }
         });

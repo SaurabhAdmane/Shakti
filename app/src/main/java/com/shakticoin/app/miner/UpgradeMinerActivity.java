@@ -21,6 +21,11 @@ public class UpgradeMinerActivity extends DrawerActivity {
         binding.setLifecycleOwner(this);
 
         onInitView(binding.getRoot(), getString(R.string.miner_intro_toolbar));
+
+        View drawerLicenseDisabled = findViewById(R.id.drawerLicenceDisabled);
+        View drawerLicenseEnabled = findViewById(R.id.drawerLicenceEnabled);
+        drawerLicenseEnabled.setVisibility(View.VISIBLE);
+        drawerLicenseDisabled.setVisibility(View.GONE);
     }
 
     @Override

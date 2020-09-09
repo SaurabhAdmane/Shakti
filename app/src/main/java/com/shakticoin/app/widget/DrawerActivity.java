@@ -2,6 +2,7 @@ package com.shakticoin.app.widget;
 
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
@@ -25,7 +26,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.shakticoin.app.R;
+import com.shakticoin.app.api.OnCompleteListener;
+import com.shakticoin.app.api.license.LicenseRepository;
+import com.shakticoin.app.api.license.NodeOperatorModel;
+import com.shakticoin.app.api.license.SubscribedLicenseModel;
 import com.shakticoin.app.feats.ParticipantsActivity;
+import com.shakticoin.app.miner.MiningLicenseActivity;
 import com.shakticoin.app.miner.UpgradeMinerActivity;
 import com.shakticoin.app.profile.CompanySummaryActivity;
 import com.shakticoin.app.profile.FamilyTreeActivity;
@@ -34,12 +40,15 @@ import com.shakticoin.app.registration.BonusBountyActivity;
 import com.shakticoin.app.settings.SettingsActivity;
 import com.shakticoin.app.tour.WelcomeTourActivity;
 import com.shakticoin.app.util.CommonUtil;
+import com.shakticoin.app.util.Debug;
 import com.shakticoin.app.wallet.WalletActivity;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @SuppressLint("Registered")
 public abstract class DrawerActivity extends AppCompatActivity {
@@ -298,8 +307,46 @@ public abstract class DrawerActivity extends AppCompatActivity {
     }
 
     public void onSelectLicense(View v) {
-        Intent intent = new Intent(this, UpgradeMinerActivity.class);
-        startActivity(intent);
+        // Open UpgradeMinerActivity if node operator owns M101 only.
+        // Otherwise call license selector.
+        Activity activity = this;
+        LicenseRepository repository = new LicenseRepository();
+        repository.getNodeOperator(new OnCompleteListener<NodeOperatorModel>() {
+            @Override
+            public void onComplete(NodeOperatorModel value, Throwable error) {
+                if (error != null) {
+                    Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                List<SubscribedLicenseModel> licenseModels = value.getSubscribedLicenses();
+                Set<String> activeLicenses = new HashSet<>();
+                if (licenseModels != null) {
+                    for (SubscribedLicenseModel licenseModel : licenseModels) {
+                        if (SubscribedLicenseModel.ACTION_JOINED.equals(licenseModel.getAction())) {
+                            activeLicenses.add(licenseModel.getPlanCode());
+                        }
+                    }
+                }
+
+                String onlyPlan = null;
+                if (activeLicenses.size() == 1) {
+                    onlyPlan = activeLicenses.iterator().next();
+                }
+
+                // if user has any number of M101Y licenses then he just bought basic license and
+                // need make an initial choice. We open UpgradeMinerActivity. Otherwise we
+                // redirect him to license selector. Though I am not sure this is correct behaviour.
+                if ("M101Y".equals(onlyPlan)) {
+                    Intent intent = new Intent(activity, UpgradeMinerActivity.class);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(activity, MiningLicenseActivity.class);
+                    startActivity(intent);
+                }
+            }
+        });
+
         closeDrawers();
     }
 

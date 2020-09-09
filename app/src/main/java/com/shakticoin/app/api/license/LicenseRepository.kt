@@ -32,11 +32,13 @@ class LicenseRepository : BackendRepository() {
     private val authRepository = AuthRepository()
     private val kycRepository = KYCRepository()
 
+    private var callLics : Call<List<LicenseType>?>? = null
     fun getLicenses(listener: OnCompleteListener<List<LicenseType>?>?) {
         getLicenses(listener, false)
     }
     private fun getLicenses(listener: OnCompleteListener<List<LicenseType>?>?, hasRecover401: Boolean = false) {
-        licenseService.getLicenses(Session.getAuthorizationHeader()).enqueue(object : Callback<List<LicenseType>?> {
+        callLics = licenseService.getLicenses(Session.getAuthorizationHeader())
+        callLics!!.enqueue(object : Callback<List<LicenseType>?> {
             override fun onResponse(call: Call<List<LicenseType>?>, response: Response<List<LicenseType>?>) {
                 Debug.logDebug(response.toString())
                 if (response.isSuccessful) {
@@ -74,11 +76,13 @@ class LicenseRepository : BackendRepository() {
         })
     }
 
+    private var callNodeOp : Call<NodeOperatorModel?>? = null
     fun getNodeOperator(listener: OnCompleteListener<NodeOperatorModel?>) {
         getNodeOperator(listener, false)
     }
     private fun getNodeOperator(listener: OnCompleteListener<NodeOperatorModel?>, hasRecover401: Boolean) {
-        licenseService.getNodeOperator(Session.getAuthorizationHeader()).enqueue(object: Callback<NodeOperatorModel?> {
+        callNodeOp = licenseService.getNodeOperator(Session.getAuthorizationHeader())
+        callNodeOp!!.enqueue(object: Callback<NodeOperatorModel?> {
             override fun onResponse(call: Call<NodeOperatorModel?>, response: Response<NodeOperatorModel?>) {
                 Debug.logDebug(response.toString())
                 if (response.isSuccessful) {
@@ -177,5 +181,11 @@ class LicenseRepository : BackendRepository() {
         super.setLifecycleOwner(lifecycleOwner)
         authRepository.setLifecycleOwner(lifecycleOwner)
         kycRepository.setLifecycleOwner(lifecycleOwner)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (callLics != null && !callLics!!.isCanceled) callLics?.cancel()
+        if (callNodeOp != null && !callNodeOp!!.isCanceled) callNodeOp?.cancel()
     }
 }
