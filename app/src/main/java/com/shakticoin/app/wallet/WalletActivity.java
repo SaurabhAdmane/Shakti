@@ -21,13 +21,13 @@ import com.shakticoin.app.ShaktiApplication;
 import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.RemoteException;
 import com.shakticoin.app.api.Session;
-import com.shakticoin.app.api.UnauthorizedException;
 import com.shakticoin.app.api.kyc.KYCRepository;
 import com.shakticoin.app.api.license.LicenseRepository;
 import com.shakticoin.app.api.onboard.OnboardRepository;
 import com.shakticoin.app.api.wallet.SessionException;
 import com.shakticoin.app.api.wallet.WalletRepository;
 import com.shakticoin.app.databinding.ActivityWalletBinding;
+import com.shakticoin.app.miner.BecomeMinerActivity;
 import com.shakticoin.app.registration.SignInActivity;
 import com.shakticoin.app.room.AppDatabase;
 import com.shakticoin.app.room.LockStatusDao;
@@ -154,9 +154,7 @@ public class WalletActivity extends DrawerActivity {
     }
 
     public void onBecomeMiner(View v) {
-        /* TODO: temporarily disabled for QA
         startActivity(new Intent(this, BecomeMinerActivity.class));
-         */
     }
 
     public void onShowUnlockInfo(View v) {
