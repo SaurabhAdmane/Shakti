@@ -124,6 +124,7 @@ class LicenseRepository : BackendRepository() {
         kycRepository.getUserDetails(object: OnCompleteListener<KycUserView>() {
             override fun onComplete(user: KycUserView?, error: Throwable?) {
                 if (error != null) {
+                    listener.onComplete(null, error)
                     return
                 }
 

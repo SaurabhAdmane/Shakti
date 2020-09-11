@@ -79,7 +79,7 @@ public class BecomeMinerActivity extends DrawerActivity {
             public void onComplete(String targetUrl, Throwable error) {
                 binding.progressBar.setVisibility(View.INVISIBLE);
                 if (error != null) {
-                    Toast.makeText(activity, R.string.err_unexpected, Toast.LENGTH_LONG).show();
+                    Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
                     return;
                 }
 
