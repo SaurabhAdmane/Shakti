@@ -20,9 +20,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class AuthRepository extends BackendRepository {
     public LoginService loginService;
     private static String IAM_STG = "Basic OWIwOWNiZTgtYzg4My00YmU1LWFhZjgtNjlkYTRiYjNlOTQyOmVJWWc5Mlk4cyZGUg==";
-    private static String IAM_QA = "Basic Mzg5ZmQ3ODMtOTUzMy00YTliLTgyMTUtODFjMWQ5YmFhMDdkOmk1S0tTcFBDRzFsa3BCREdNTk92Z2E0RE9vdVdyOHhVY1l1cnRHWU0=";
+    private static String IAM_QA = "Basic M2EzMDU1ZGMtZmMxNy00ZTZjLTlmYmEtMWE5Y2YyY2E0M2FlOkY2Y21RMDduMkx4SkdySFJHOGFjVFhCcEE2SHFxTHBYbU12TG1kRzc=";
     private static String IAM_PROD = "Basic YmY2NjE3OGUtM2YwNi00N2QwLWE4YzUtYjEyYmRkMDcyZTZhOlhwQW95a3E2T2V1dTVSdHBIYzE3YlhqYWFBU05CNlVOVGdkM0hQd08=";
-    private static String IAM_AUTH_HEADER = IAM_STG;
+    private static String IAM_AUTH_HEADER = IAM_QA;
 
     public AuthRepository() {
         Retrofit retrofit = new Retrofit.Builder()
