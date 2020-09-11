@@ -15,8 +15,8 @@ import java.util.concurrent.TimeUnit
 
 class PhoneOTPRepository : BackendRepository() {
     var client = OkHttpClient.Builder()
-            .readTimeout(60, TimeUnit.SECONDS)
-            .connectTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(120, TimeUnit.SECONDS)
+            .connectTimeout(120, TimeUnit.SECONDS)
             .build()
 
     private val service: PhoneOTPService = Retrofit.Builder()
@@ -78,11 +78,42 @@ class PhoneOTPRepository : BackendRepository() {
                     }
                     listener.onComplete(true, null)
                 } else {
-                    var errorMsg: String? = getResponseErrorMessage("responseMsg", response.errorBody())
-                    if (errorMsg == null) errorMsg = ShaktiApplication.getContext().getString(R.string.err_unexpected)
-                    listener.onComplete(null, RemoteMessageException(errorMsg?:response.message(), response.code()))
-                    return;
+                    var msg: String? = getResponseErrorMessage("responseMsg", response.errorBody())
+                    if (msg == null) msg = ShaktiApplication.getContext().getString(R.string.err_unexpected)
+                    when (response.code()) {
+                        409 -> {
+                            val context = ShaktiApplication.getContext()
+                            Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
+                            listener.onComplete(true, null)
+                        } // verified already
+                        else -> listener.onComplete(null, RemoteMessageException(msg?:response.message(), response.code()))
+                    }
                 }
+            }
+
+        })
+    }
+
+    var callInquiryNum : Call<MainResponseBean?>? = null
+    fun checkPhoneNumberStatus(phoneNumber: String, listener: OnCompleteListener<Boolean>) {
+        val parameters = MobileRegistrationRequest()
+        parameters.mobileNo = phoneNumber;
+        callInquiryNum = service.inquiryPhoneNumber(parameters)
+        callInquiryNum?.enqueue(object: Callback<MainResponseBean?> {
+            override fun onResponse(call: Call<MainResponseBean?>, response: Response<MainResponseBean?>) {
+                Debug.logDebug(response.toString())
+                if (response.isSuccessful) {
+                    listener.onComplete(true, null)
+                } else {
+                    when(response.code()) {
+                        404 -> listener.onComplete(false, null) // not found
+                        else -> returnError(listener, response)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<MainResponseBean?>, t: Throwable) {
+                return returnError(listener, t)
             }
 
         })
@@ -92,5 +123,6 @@ class PhoneOTPRepository : BackendRepository() {
         super.onStop()
         if (callReqReg != null && !callReqReg!!.isCanceled) callReqReg?.cancel()
         if (callConfReg != null && !callConfReg!!.isCanceled) callConfReg?.cancel()
+        if (callInquiryNum != null && !callInquiryNum!!.isCanceled) callInquiryNum?.cancel()
     }
 }

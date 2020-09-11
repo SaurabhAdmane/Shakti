@@ -138,18 +138,37 @@ class RegActivity : AppCompatActivity() {
         if (Validator.isPhoneNumber(phoneNumber)) {
             phoneNumber?.let {
                 viewModel?.progressOn?.value = true
-                otpPhoneRepository.requestRegistration(it, object: OnCompleteListener<Void?>() {
-                    override fun onComplete(value: Void?, error: Throwable?) {
-                        viewModel?.progressOn?.value = false
+                otpPhoneRepository.checkPhoneNumberStatus(it, object : OnCompleteListener<Boolean>() {
+                    override fun onComplete(isVerified: Boolean?, error: Throwable?) {
                         if (error != null) {
+                            viewModel?.progressOn?.value = false
                             Toast.makeText(self, Debug.getFailureMsg(self, error), Toast.LENGTH_LONG).show()
-                            return
+                            return;
                         }
-                        supportFragmentManager
-                                .beginTransaction()
-                                .replace(binding.fragments.id, RegVerifyMobileFragment())
-                                .addToBackStack(null)
-                                .commit()
+
+                        if (isVerified != null && isVerified) {
+                            viewModel?.progressOn?.value = false
+                            supportFragmentManager
+                                    .beginTransaction()
+                                    .replace(binding.fragments.id, RegPasswordFragment())
+                                    .addToBackStack(null)
+                                    .commit()
+                        } else {
+                            otpPhoneRepository.requestRegistration(it, object: OnCompleteListener<Void?>() {
+                                override fun onComplete(value: Void?, error: Throwable?) {
+                                    viewModel?.progressOn?.value = false
+                                    if (error != null) {
+                                        Toast.makeText(self, Debug.getFailureMsg(self, error), Toast.LENGTH_LONG).show()
+                                        return
+                                    }
+                                    supportFragmentManager
+                                            .beginTransaction()
+                                            .replace(binding.fragments.id, RegVerifyMobileFragment())
+                                            .addToBackStack(null)
+                                            .commit()
+                                }
+                            })
+                        }
                     }
                 })
             }

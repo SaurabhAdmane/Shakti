@@ -25,4 +25,8 @@ interface PhoneOTPService {
     @Headers("Content-Type: application/json", "Accept: application/json")
     @POST("registration/confirm-registration")
     fun confirmRegistration(@Body parameters : ConfirmRegistrationRequest) : Call<MainResponseBean?>
+
+    @Headers("Content-Type: application/json", "Accept: application/json")
+    @POST("inquiry/sms")
+    fun inquiryPhoneNumber(@Body parameters: MobileRegistrationRequest) : Call<MainResponseBean?>
 }
