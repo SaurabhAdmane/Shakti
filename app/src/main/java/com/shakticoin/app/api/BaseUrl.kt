@@ -1,16 +1,19 @@
-package com.shakticoin.app.api;
+package com.shakticoin.app.api
 
 /**
  * Convenience class to obtain different URL for debug and release modes.
  */
-public class BaseUrl {
-    public static final String BASE_URL = "https://dev-api.shakticoin.com/";
-    public static final String IAM_BASE_URL = "https://iam-qa.shakticoin.com/oxauth/restv1/";
-    public static final String WALLETSERVICE_BASE_URL = "https://walletservice-qa.shakticoin.com/walletservice/api/v1/";
-    public static final String LICENSESERVICE_BASE_URL = "https://licenseservice-qa.shakticoin.com/license-service/api/v1/";
-    public static final String KYC_USER_SERVICE_BASE_URL = "http://kycuser-qa.shakticoin.com/kyc-user-service/api/v1/";
-    public static final String KYC_CORP_SERVICE_BASE_URL = "https://kyccorpservice-qa.shakticoin.com/???";
-    public static final String PHONE_OTP_SERVICE_BASE_URL = "https://mobileotpservice-qa.shakticoin.com/sms-otp-service/api/v1/";
-    public static final String EMAIL_OTP_SERVICE_BASE_URL = "https://emailotpservice-qa.shakticoin.com/email-otp-service/api/v1/";
-    public static final String ONBOARD_SERVICE_BASE_URL = "https://onboardshakti-qa.shakticoin.com/onboardshakti-service/api/v1/";
+object BaseUrl {
+    /** Possible values "-stg", "-qa", and empty string  */
+    private const val ENV_CODE = "-stg"
+
+    const val BASE_URL = "https://dev-api.shakticoin.com/"
+    const val IAM_BASE_URL = "https://iam${ENV_CODE}.shakticoin.com/oxauth/restv1/"
+    const val WALLETSERVICE_BASE_URL = "https://walletservice${ENV_CODE}.shakticoin.com/walletservice/api/v1/"
+    const val LICENSESERVICE_BASE_URL = "https://licenseservice${ENV_CODE}.shakticoin.com/license-service/api/v1/"
+    const val KYC_USER_SERVICE_BASE_URL = "http://kycuser${ENV_CODE}.shakticoin.com/kyc-user-service/api/v1/"
+    const val KYC_CORP_SERVICE_BASE_URL = "https://kyccorpservice${ENV_CODE}.shakticoin.com/???"
+    const val PHONE_OTP_SERVICE_BASE_URL = "https://mobileotpservice${ENV_CODE}.shakticoin.com/sms-otp-service/api/v1/"
+    const val EMAIL_OTP_SERVICE_BASE_URL = "https://emailotpservice${ENV_CODE}.shakticoin.com/email-otp-service/api/v1/"
+    const val ONBOARD_SERVICE_BASE_URL = "https://onboardshakti${ENV_CODE}.shakticoin.com/onboardshakti-service/api/v1/"
 }
