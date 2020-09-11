@@ -22,6 +22,7 @@ public class AuthRepository extends BackendRepository {
     private static String IAM_STG = "Basic OWIwOWNiZTgtYzg4My00YmU1LWFhZjgtNjlkYTRiYjNlOTQyOmVJWWc5Mlk4cyZGUg==";
     private static String IAM_QA = "Basic Mzg5ZmQ3ODMtOTUzMy00YTliLTgyMTUtODFjMWQ5YmFhMDdkOmk1S0tTcFBDRzFsa3BCREdNTk92Z2E0RE9vdVdyOHhVY1l1cnRHWU0=";
     private static String IAM_PROD = "Basic YmY2NjE3OGUtM2YwNi00N2QwLWE4YzUtYjEyYmRkMDcyZTZhOlhwQW95a3E2T2V1dTVSdHBIYzE3YlhqYWFBU05CNlVOVGdkM0hQd08=";
+    private static String IAM_AUTH_HEADER = IAM_STG;
 
     public AuthRepository() {
         Retrofit retrofit = new Retrofit.Builder()
@@ -37,7 +38,7 @@ public class AuthRepository extends BackendRepository {
      * Login to the backend and return user's information if successful.
      */
     public void login(@NonNull String username, @NonNull String password, boolean rememberMe, @NonNull OnCompleteListener<TokenResponse> listener) {
-        Call<TokenResponse> call = loginService.token(IAM_QA, "password", "openid+profile", username, password);
+        Call<TokenResponse> call = loginService.token(IAM_AUTH_HEADER, "password", "openid+profile", username, password);
         call.enqueue(new Callback<TokenResponse>() {
             @Override
             public void onResponse(@NonNull Call<TokenResponse> call, @NonNull Response<TokenResponse> response) {
@@ -64,7 +65,7 @@ public class AuthRepository extends BackendRepository {
     }
 
     public void refreshToken(@NonNull String refreshToken, @NonNull OnCompleteListener<TokenResponse> listener) {
-        loginService.refresh(IAM_QA, "refresh_token", refreshToken).enqueue(new Callback<TokenResponse>() {
+        loginService.refresh(IAM_AUTH_HEADER, "refresh_token", refreshToken).enqueue(new Callback<TokenResponse>() {
             @EverythingIsNonNull
             @Override
             public void onResponse(Call<TokenResponse> call, Response<TokenResponse> response) {
