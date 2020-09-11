@@ -21,8 +21,11 @@ import com.shakticoin.app.ShaktiApplication;
 import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.RemoteException;
 import com.shakticoin.app.api.Session;
+import com.shakticoin.app.api.UnauthorizedException;
 import com.shakticoin.app.api.kyc.KYCRepository;
 import com.shakticoin.app.api.license.LicenseRepository;
+import com.shakticoin.app.api.license.NodeOperatorModel;
+import com.shakticoin.app.api.license.SubscribedLicenseModel;
 import com.shakticoin.app.api.onboard.OnboardRepository;
 import com.shakticoin.app.api.wallet.SessionException;
 import com.shakticoin.app.api.wallet.WalletRepository;
@@ -36,6 +39,7 @@ import com.shakticoin.app.util.Debug;
 import com.shakticoin.app.widget.DrawerActivity;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class WalletActivity extends DrawerActivity {
     private ActivityWalletBinding binding;
@@ -89,9 +93,6 @@ public class WalletActivity extends DrawerActivity {
 
         // Decides if we should display call-to-action "Become a miner".
         // Basically, if the user has a license then do not display.
-        // TODO: don't forget remove this line if the repository code is re-enabled
-        binding.becomeMinerBox.setVisibility(View.VISIBLE);
-        /* TODO: temporarily disabled in QA
         Activity activity = this;
         licenseRepository.getNodeOperator(new OnCompleteListener<NodeOperatorModel>() {
             @Override
@@ -124,7 +125,6 @@ public class WalletActivity extends DrawerActivity {
                 }
             }
         });
-         */
 
         // check wallet lock status and display action buttons if unlocked
         new CheckWalletLocked(getSupportFragmentManager(), binding.walletActionsProgressBar, this).execute();
