@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,9 +16,14 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
 import com.shakticoin.app.R;
+import com.shakticoin.app.api.OnCompleteListener;
+import com.shakticoin.app.api.Session;
+import com.shakticoin.app.api.UnauthorizedException;
+import com.shakticoin.app.api.license.LicenseRepository;
 import com.shakticoin.app.api.license.LicenseType;
 import com.shakticoin.app.databinding.ActivityPaymentOptionsBinding;
 import com.shakticoin.app.util.CommonUtil;
+import com.shakticoin.app.util.Debug;
 import com.shakticoin.app.wallet.WalletActivity;
 import com.shakticoin.app.widget.DrawerActivity;
 
@@ -25,7 +31,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.shakticoin.app.api.license.LicenseTypeKt.compareLicenseType;
+
 public class PaymentOptionsActivity extends DrawerActivity {
+    public static int LIC_ACTION_NONE       = -1;
+    public static int LIC_ACTION_APPLY      = 0;
+    public static int LIC_ACTION_UPGRADE    = 1;
+    public static int LIC_ACTION_DOWNGRADE  = 2;
+    public static int LIC_ACTION_CANCEL     = 3;
+
     private ActivityPaymentOptionsBinding binding;
     private PaymentOptionsViewModel viewModel;
     private PageAdapter pages;
@@ -33,6 +47,11 @@ public class PaymentOptionsActivity extends DrawerActivity {
     private String licenseTypeId;
     private ArrayList<LicenseType> licenseTypesAll;
     private Map<String, ArrayList<LicenseType>> licenseTypesGrouped;
+
+    /** Plan type that user bought already. */
+    private String existingPlanType;
+
+    LicenseRepository licenseRepository = new LicenseRepository();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,9 +66,11 @@ public class PaymentOptionsActivity extends DrawerActivity {
         if (savedInstanceState == null) {
             Intent intent = getIntent();
             licenseTypeId = intent.getStringExtra(CommonUtil.prefixed("licenseTypeId"));
+            existingPlanType = intent.getStringExtra(CommonUtil.prefixed("selectedPlanType"));
             licenseTypesAll = intent.getParcelableArrayListExtra(CommonUtil.prefixed("licenses"));
         } else {
             licenseTypeId = savedInstanceState.getString("licenseTypeId");
+            existingPlanType = savedInstanceState.getString("selectedPlanType");
             licenseTypesAll = savedInstanceState.getParcelableArrayList("licenses");
         }
 
@@ -113,6 +134,7 @@ public class PaymentOptionsActivity extends DrawerActivity {
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putString("licenseTypeId", licenseTypeId);
         outState.putParcelableArrayList("licenses", licenseTypesAll);
+        outState.putString("selectedPlanType", existingPlanType);
         super.onSaveInstanceState(outState);
     }
 
@@ -123,6 +145,46 @@ public class PaymentOptionsActivity extends DrawerActivity {
 
     public void onMainAction(View v) {
         final Activity activity = this;
+        String planCode = (String) v.getTag();
+        LicenseType requestedLicenseType = null;
+        for (LicenseType licenseType : licenseTypesAll) {
+            if (licenseType.getPlanCode().equals(planCode)) {
+                requestedLicenseType = licenseType;
+                break;
+            }
+        }
+
+        if (requestedLicenseType == null) return;
+
+        // We should decide which method apply/upgrade/downgrade we must use for the operation.
+        // The hierarchy follows the list M101/T100/T200/T300/T400
+        if (existingPlanType != null) {
+            int comparisionResult = compareLicenseType(requestedLicenseType.getPlanType(), existingPlanType);
+            if (comparisionResult == 0) {
+                // TODO: user have this license already
+            } else if (comparisionResult > 0) {
+//                licenseRepository.upgradeSubscription(requestedLicenseType.getPlanCode(), );
+            } else {
+//                licenseRepository.downgradeSubscription();
+            }
+        } else {
+            licenseRepository.checkoutSubscription(requestedLicenseType.getPlanCode(), new OnCompleteListener<String>() {
+                @Override
+                public void onComplete(String value, Throwable error) {
+                    if (error != null) {
+                        if (error instanceof UnauthorizedException) {
+                            startActivity(Session.unauthorizedIntent(activity));
+                        } else {
+                            Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
+                        }
+                        return;
+                    }
+
+
+                }
+            });
+        }
+
     }
 
     /**
@@ -161,7 +223,7 @@ public class PaymentOptionsActivity extends DrawerActivity {
         public Fragment getItem(int position) {
             PaymentOptionsViewModel.PackageType[] miningPlan = PaymentOptionsViewModel.PackageType.values();
             String plan = miningPlan[position].name();
-            return PaymentOptionsPlanFragment.getInstance(licenseTypeId, plan, licenseTypesGrouped.get(plan));
+            return PaymentOptionsPlanFragment.getInstance(licenseTypeId, existingPlanType, plan, licenseTypesGrouped.get(plan));
         }
 
         @Override

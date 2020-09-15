@@ -1,7 +1,11 @@
 package com.shakticoin.app.api.license
 
-val MINING_PLANS: List<String> = listOf("M101W", "T100W", "T200W", "T300W", "T400W",
-        "M101M", "T100M", "T200M", "T300M", "T400M", "M101Y", "T100Y", "T200Y", "T300Y", "T400Y")
+val MINING_PLANS: List<String> = listOf("M101", "T100", "T200", "T300", "T400")
+
+/** Subscription periods - week, month, and year. */
+enum class MiningLicenseCycle {
+    W, M, Y
+}
 
 class NodeOperatorUpdateModel {
     var nodeID: String? = null
@@ -54,8 +58,6 @@ class PlanCodeRequest {
 class CheckoutPlanRequest {
     var planCode: String? = null
     var subscriptionId: String? = null
-    var action: String? = null
-    var paymentStatus : String? = null
 }
 
 class SubscribedLicenseModel {
@@ -66,6 +68,8 @@ class SubscribedLicenseModel {
     /** Value is on of PMNT_ constants */
     var paymentStatus: String? = null
     var dateOfPurchase: Long? = null
+
+    val planType : String? get() = planCode?.substring(0..3);
 
     companion object {
         const val ACTION_INITIATED = "INITIATED"

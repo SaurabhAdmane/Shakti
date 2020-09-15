@@ -8,6 +8,7 @@ import com.shakticoin.app.api.kyc.KYCRepository
 import com.shakticoin.app.api.kyc.KycUserView
 import com.shakticoin.app.util.Debug
 import okhttp3.OkHttpClient
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -174,6 +175,96 @@ class LicenseRepository : BackendRepository() {
                     }
 
                 })
+            }
+        })
+    }
+
+    var callUpgdSub : Call<ResponseBody?>? = null
+    fun upgradeSubscription(planCode: String, subscriptionId: String, listener: OnCompleteListener<Any>) {
+        upgradeSubscription(planCode, subscriptionId, listener, false)
+    }
+    private fun upgradeSubscription(planCode: String, subscriptionId: String, listener: OnCompleteListener<Any>, hasRecover401: Boolean) {
+        val parameters = CheckoutPlanRequest()
+        parameters.planCode = planCode
+        parameters.subscriptionId = subscriptionId
+        callUpgdSub = licenseService.checkoutUpgrade(Session.getAuthorizationHeader(), parameters);
+        callUpgdSub!!.enqueue(object : Callback<ResponseBody?> {
+            override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
+                Debug.logDebug(response.toString())
+                if (response.isSuccessful) {
+                    val resp = response.body()
+                    Debug.logDebug(resp?.string())
+
+                } else {
+                    when (response.code()) {
+                        401 -> {
+                            if (!hasRecover401) {
+                                authRepository.refreshToken(Session.getRefreshToken(), object : OnCompleteListener<TokenResponse?>() {
+                                    override fun onComplete(value: TokenResponse?, error: Throwable?) {
+                                        if (error != null) {
+                                            listener.onComplete(null, error)
+                                            return
+                                        }
+                                        upgradeSubscription(planCode, subscriptionId, listener, true)
+                                    }
+                                })
+                            } else {
+                                listener.onComplete(null, UnauthorizedException())
+                                return
+                            }
+                        }
+                        else -> returnError(listener, response)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
+                return returnError(listener, t)
+            }
+        })
+    }
+
+    var callSubDowngd : Call<ResponseBody?>? = null
+    fun downgradeSubscription(planCode: String, subscriptionId: String, listener: OnCompleteListener<Any>) {
+        downgradeSubscription(planCode, subscriptionId, listener, false)
+    }
+    private fun downgradeSubscription(planCode: String, subscriptionId: String, listener: OnCompleteListener<Any>, hasRecover401: Boolean) {
+        val parameters = CheckoutPlanRequest()
+        parameters.planCode = planCode
+        parameters.subscriptionId = subscriptionId
+        callSubDowngd = licenseService.checkoutDowngrade(Session.getAuthorizationHeader(), parameters)
+        callSubDowngd!!.enqueue(object : Callback<ResponseBody?> {
+            override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
+                Debug.logDebug(response.toString())
+                if (response.isSuccessful) {
+                    val resp = response.body()
+                    Debug.logDebug(resp?.string())
+
+                } else {
+                    when (response.code()) {
+                        401 -> {
+                            if (!hasRecover401) {
+                                authRepository.refreshToken(Session.getRefreshToken(), object : OnCompleteListener<TokenResponse?>() {
+                                    override fun onComplete(value: TokenResponse?, error: Throwable?) {
+                                        if (error != null) {
+                                            listener.onComplete(null, error)
+                                            return
+                                        }
+                                        downgradeSubscription(planCode, subscriptionId, listener, true)
+                                    }
+                                })
+                            } else {
+                                listener.onComplete(null, UnauthorizedException())
+                                return
+                            }
+                        }
+                        else -> returnError(listener, response)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
+                return returnError(listener, t)
             }
         })
     }

@@ -3,8 +3,10 @@ package com.shakticoin.app.util;
 import android.content.Context;
 
 import com.shakticoin.app.ShaktiApplication;
+import com.shakticoin.app.api.license.SubscribedLicenseModel;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CommonUtil {
@@ -41,4 +43,18 @@ public class CommonUtil {
         return (Map<K, V>) object;
     }
 
+    /**
+     * Return the first active subscription from the list.
+     */
+    public static SubscribedLicenseModel getActiveSubscription(List<SubscribedLicenseModel> subscriptions) {
+        if (subscriptions != null && !subscriptions.isEmpty()) {
+            for (SubscribedLicenseModel subscription : subscriptions) {
+                String action = subscription.getAction();
+                if (!(SubscribedLicenseModel.ACTION_EXPIRED.equals(action) || SubscribedLicenseModel.ACTION_CANCELLED.equals(action))) {
+                    return subscription;
+                }
+            }
+        }
+        return null;
+    }
 }

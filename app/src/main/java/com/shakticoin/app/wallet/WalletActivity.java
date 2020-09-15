@@ -111,18 +111,8 @@ public class WalletActivity extends DrawerActivity {
                     Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
                     return;
                 }
-                View drawerLicenseDisabled = activity.findViewById(R.id.drawerLicenceDisabled);
-                View drawerLicenseEnabled = activity.findViewById(R.id.drawerLicenceEnabled);
                 List<SubscribedLicenseModel> licences = value.getSubscribedLicenses();
-                if (licences != null && !licences.isEmpty()) {
-                    binding.becomeMinerBox.setVisibility(View.GONE);
-                    drawerLicenseEnabled.setVisibility(View.VISIBLE);
-                    drawerLicenseDisabled.setVisibility(View.GONE);
-                } else {
-                    binding.becomeMinerBox.setVisibility(View.VISIBLE);
-                    drawerLicenseEnabled.setVisibility(View.GONE);
-                    drawerLicenseDisabled.setVisibility(View.VISIBLE);
-                }
+                binding.becomeMinerBox.setVisibility(licences != null && !licences.isEmpty() ? View.GONE : View.VISIBLE);
             }
         });
 

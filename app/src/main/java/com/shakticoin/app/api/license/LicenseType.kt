@@ -90,4 +90,16 @@ class LicenseType() : Parcelable {
             return arrayOfNulls(size)
         }
     }
+
+}
+
+/**
+ * License types are arranged as M101, T100, T200, T300 and compared according to their
+ * position in this list.
+ */
+fun compareLicenseType(type1: String?, type2: String?) : Int {
+    if (type1 == null && type2 == null) return 0
+    if (type1 == null) return -1;
+    if (type2 == null) return 1;
+    return  type1.compareTo(type2);
 }

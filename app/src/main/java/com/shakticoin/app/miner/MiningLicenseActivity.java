@@ -17,8 +17,10 @@ import com.shakticoin.app.ShaktiApplication;
 import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.license.LicenseRepository;
 import com.shakticoin.app.api.license.LicenseType;
+import com.shakticoin.app.api.license.MiningLicenseCycle;
 import com.shakticoin.app.api.license.ModelsKt;
 import com.shakticoin.app.api.license.NodeOperatorModel;
+import com.shakticoin.app.api.license.SubscribedLicenseModel;
 import com.shakticoin.app.api.vault.VaultRepository;
 import com.shakticoin.app.databinding.ActivityMiningLicenseBinding;
 import com.shakticoin.app.payment.PaymentOptionsActivity;
@@ -29,7 +31,10 @@ import com.shakticoin.app.widget.DrawerActivity;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.List;
+
+import static com.shakticoin.app.api.license.LicenseTypeKt.compareLicenseType;
 
 public class MiningLicenseActivity extends DrawerActivity {
 
@@ -41,6 +46,9 @@ public class MiningLicenseActivity extends DrawerActivity {
     private int vaultId = -1;
 
     private ArrayList<LicenseType> licenseTypesAll;
+
+    private SubscribedLicenseModel currentSubscription;
+    private int possibleAction = PaymentOptionsActivity.LIC_ACTION_APPLY;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -85,8 +93,8 @@ public class MiningLicenseActivity extends DrawerActivity {
                 // we need only year mining licenses in this activity
                 List<LicenseType> yearMiningLics = new ArrayList<>();
                 for (LicenseType t : licenseTypes) {
-                    if (ModelsKt.getMINING_PLANS().contains(t.getPlanCode())
-                            && Integer.valueOf(1).equals(t.getCycle())) {
+                    if (ModelsKt.getMINING_PLANS().contains(t.getPlanType())
+                            && MiningLicenseCycle.Y.name().equals(t.getModeType())) {
                         yearMiningLics.add(t);
                     }
                 }
@@ -100,16 +108,23 @@ public class MiningLicenseActivity extends DrawerActivity {
                     }
                 });
 
-                // retrieve information about node operator and licenses he might bought
-                licenseRepository.getNodeOperator(new OnCompleteListener<NodeOperatorModel>() {
-                    @Override
-                    public void onComplete(NodeOperatorModel value, Throwable error) {
-                        if (error != null) {
-                            Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
-                            return;
-                        }
-                    }
-                });
+            }
+        });
+
+        // retrieve information about node operator and licenses he might bought
+        licenseRepository.getNodeOperator(new OnCompleteListener<NodeOperatorModel>() {
+            @Override
+            public void onComplete(NodeOperatorModel value, Throwable error) {
+                if (error != null) {
+                    Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                List<SubscribedLicenseModel> subscriptions = value.getSubscribedLicenses();
+                if (subscriptions != null) {
+                    currentSubscription = CommonUtil.getActiveSubscription(subscriptions);
+                    updateDetails(viewModel.getSelectedPackage());
+                }
             }
         });
     }
@@ -133,7 +148,6 @@ public class MiningLicenseActivity extends DrawerActivity {
             MiningLicenseModel.LicenseTypeIds packageTypeName = viewModel.selectedPlan.getValue();
             if (packageTypeName != null) {
                 binding.license.setText(licenseType.getLicName());
-                binding.onClaim.setText(getString(R.string.minerlic_action, packageTypeName));
             }
 
             String bonusDescription = licenseType.getBonus();
@@ -144,18 +158,40 @@ public class MiningLicenseActivity extends DrawerActivity {
             Double price = licenseType.getPrice();
             if (price != null) {
                 NumberFormat formatter = NumberFormat.getCurrencyInstance();
+                formatter.setCurrency(Currency.getInstance("USD"));
                 binding.paymentAmount.setText(formatter.format(price));
             }
 
-            binding.onClaim.setEnabled(true);
+            if (currentSubscription != null) {
+                int comparisionResult = compareLicenseType(licenseType.getPlanType(), currentSubscription.getPlanType());
+                if (comparisionResult == 0) {
+                    binding.doAction.setEnabled(false);
+                    binding.doAction.setText(getString(R.string.minerlic_action_purchased));
+                    possibleAction = PaymentOptionsActivity.LIC_ACTION_NONE;
+                } else if (comparisionResult > 0) {
+                    binding.doAction.setEnabled(true);
+                    binding.doAction.setText(getString(R.string.minerlic_action_upgrade, licenseType.getPlanType()));
+                    possibleAction = PaymentOptionsActivity.LIC_ACTION_UPGRADE;
+                } else {
+                    binding.doAction.setEnabled(true);
+                    binding.doAction.setText(getString(R.string.minerlic_action_downgrade, licenseType.getPlanType()));
+                    possibleAction = PaymentOptionsActivity.LIC_ACTION_DOWNGRADE;
+                }
+            } else {
+                binding.doAction.setEnabled(true);
+                binding.doAction.setText(getString(R.string.minerlic_action, licenseType.getPlanType()));
+                possibleAction = PaymentOptionsActivity.LIC_ACTION_APPLY;
+            }
         }
     }
 
     public void onApply(View view) {
         Intent intent = new Intent(this, PaymentOptionsActivity.class);
-//        intent.putExtra(CommonUtil.prefixed("vaultId", this), vaultId);
         LicenseType licenseType = viewModel.getSelectedPackage();
         intent.putExtra(CommonUtil.prefixed("licenseTypeId"), licenseType.getId());
+        if (currentSubscription != null) {
+            intent.putExtra(CommonUtil.prefixed("selectedPlanType"), currentSubscription.getPlanType());
+        }
         intent.putParcelableArrayListExtra(CommonUtil.prefixed("licenses"), licenseTypesAll);
         startActivity(intent);
     }

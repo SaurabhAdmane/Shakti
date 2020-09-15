@@ -32,6 +32,7 @@ public class PaymentOptionsPlanFragment extends Fragment {
     private ProgressBar progressBar;
     private String selectedLicenseTypeId;
     private String plan;
+    private String existingPlanType;
     private LicenseType selectedLicenseType;
 
     private Integer maxMinCircle = 0;
@@ -62,6 +63,7 @@ public class PaymentOptionsPlanFragment extends Fragment {
         Bundle args = getArguments();
         if (args != null) {
             selectedLicenseTypeId = args.getString("selectedLicenseTypeId");
+            existingPlanType = args.getString("existingPlanType");
             plan = args.getString("plan");
             pageViewModel.licenseTypes = args.getParcelableArrayList("licenseTypes");
             if (pageViewModel.licenseTypes != null) {
@@ -122,28 +124,42 @@ public class PaymentOptionsPlanFragment extends Fragment {
                     binding.annualDiscountText.setText(getString(R.string.pmnt_opts_saving, discount));
                 }
 
-                pageViewModel.selectedPeriod.observe(this, period -> {
+                pageViewModel.selectedPeriod.observe(getViewLifecycleOwner(), period -> {
+                    String modeType = "W";
                     int numberPeriods = maxMinCircle;
 
                     switch (period) {
                         case ANNUAL:
+                            modeType = "Y";
                             numberPeriods = 1;
                             break;
                         case MONTHLY:
+                            modeType = "M";
                             numberPeriods = 12;
+                            break;
                     }
 
                     for (LicenseType licenseType : pageViewModel.licenseTypes) {
-                        if (numberPeriods == licenseType.getCycle()) {
+                        if (modeType.equals(licenseType.getModeType())) {
                             selectedLicenseType = licenseType;
                             break;
                         }
                     }
 
                     binding.textAmountUSD.setText(getString(R.string.pmnt_opts_amount, selectedLicenseType.getPrice()));
+                    binding.doMainAction.setTag(selectedLicenseType.getPlanCode());
                     binding.textFullSaving.setText(
                             numberPeriods < maxMinCircle && discounts.get(period) != null ?
                                     getString(R.string.pmnt_opts_saving_long, discounts.get(period)) : "");
+
+                    // if user selected an existing license then we should disable action button
+                    if (selectedLicenseType.getPlanType() != null && selectedLicenseType.getPlanType().equals(existingPlanType)) {
+                        binding.doMainAction.setText(R.string.minerlic_action_purchased);
+                        binding.doMainAction.setEnabled(false);
+                    } else {
+                        binding.doMainAction.setText(R.string.pmnt_opts_main_action);
+                        binding.doMainAction.setEnabled(true);
+                    }
                 });
             }
         }
@@ -162,10 +178,20 @@ public class PaymentOptionsPlanFragment extends Fragment {
         super.onDetach();
     }
 
-    public static PaymentOptionsPlanFragment getInstance(String selectedLicenseTypeId, String plan, ArrayList<LicenseType> licenseTypes) {
+    /**
+     * Instantiate a payment options plan page.
+     *
+     * @param selectedLicenseTypeId License type ID.
+     * @param existingPlanType This is plan type the user bought already and it is active at the time being.
+     * @param plan The plan type that user has selected in the selector.
+     * @param licenseTypes
+     */
+    public static PaymentOptionsPlanFragment getInstance(
+            String selectedLicenseTypeId, String existingPlanType, String plan, ArrayList<LicenseType> licenseTypes) {
         PaymentOptionsPlanFragment fragment = new PaymentOptionsPlanFragment();
         Bundle args = new Bundle();
         args.putString("selectedLicenseTypeId", selectedLicenseTypeId);
+        args.putString("existingPlanType", existingPlanType);
         args.putParcelableArrayList("licenseTypes", licenseTypes);
         args.putString("plan", plan);
         fragment.setArguments(args);

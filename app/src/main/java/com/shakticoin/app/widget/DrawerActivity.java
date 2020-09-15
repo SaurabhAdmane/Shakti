@@ -45,10 +45,8 @@ import com.shakticoin.app.wallet.WalletActivity;
 
 import java.text.DateFormat;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @SuppressLint("Registered")
 public abstract class DrawerActivity extends AppCompatActivity {
@@ -319,25 +317,8 @@ public abstract class DrawerActivity extends AppCompatActivity {
                     return;
                 }
 
-                List<SubscribedLicenseModel> licenseModels = value.getSubscribedLicenses();
-                Set<String> activeLicenses = new HashSet<>();
-                if (licenseModels != null) {
-                    for (SubscribedLicenseModel licenseModel : licenseModels) {
-                        if (SubscribedLicenseModel.ACTION_JOINED.equals(licenseModel.getAction())) {
-                            activeLicenses.add(licenseModel.getPlanCode());
-                        }
-                    }
-                }
-
-                String onlyPlan = null;
-                if (activeLicenses.size() == 1) {
-                    onlyPlan = activeLicenses.iterator().next();
-                }
-
-                // if user has any number of M101Y licenses then he just bought basic license and
-                // need make an initial choice. We open UpgradeMinerActivity. Otherwise we
-                // redirect him to license selector. Though I am not sure this is correct behaviour.
-                if ("M101Y".equals(onlyPlan)) {
+                SubscribedLicenseModel subscription = CommonUtil.getActiveSubscription(value.getSubscribedLicenses());
+                if (subscription != null && "M101Y".equals(subscription.getPlanCode())) {
                     Intent intent = new Intent(activity, UpgradeMinerActivity.class);
                     startActivity(intent);
                 } else {
