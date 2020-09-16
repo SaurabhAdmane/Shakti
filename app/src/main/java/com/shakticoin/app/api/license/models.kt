@@ -1,5 +1,8 @@
 package com.shakticoin.app.api.license
 
+import android.os.Parcel
+import android.os.Parcelable
+
 val MINING_PLANS: List<String> = listOf("M101", "T100", "T200", "T300", "T400")
 
 /** Subscription periods - week, month, and year. */
@@ -60,7 +63,7 @@ class CheckoutPlanRequest {
     var subscriptionId: String? = null
 }
 
-class SubscribedLicenseModel {
+class SubscribedLicenseModel() : Parcelable {
     var planCode: String? = null
     var subscriptionId: String? = null
     /** Value is one of ACTION_ constants */
@@ -69,9 +72,29 @@ class SubscribedLicenseModel {
     var paymentStatus: String? = null
     var dateOfPurchase: Long? = null
 
+    constructor(parcel: Parcel) : this() {
+        planCode = parcel.readString()
+        subscriptionId = parcel.readString()
+        action = parcel.readString()
+        paymentStatus = parcel.readString()
+        dateOfPurchase = parcel.readValue(Long::class.java.classLoader) as? Long
+    }
+
     val planType : String? get() = planCode?.substring(0..3);
 
-    companion object {
+    override fun describeContents(): Int {
+        return 0;
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(planCode)
+        parcel.writeString(subscriptionId)
+        parcel.writeString(action)
+        parcel.writeString(paymentStatus)
+        parcel.writeValue(dateOfPurchase)
+    }
+
+    companion object CREATOR : Parcelable.Creator<SubscribedLicenseModel> {
         const val ACTION_INITIATED = "INITIATED"
         const val ACTION_JOINED = "JOINED"
         const val ACTION_UPGRADED = "UPGRADED"
@@ -83,5 +106,13 @@ class SubscribedLicenseModel {
         const val PMNT_INITIATED    = "INITIATED"
         const val PMNT_SUCCESS      = "SUCCESS"
         const val PMNT_FAILED       = "FAILED"
+
+        override fun createFromParcel(parcel: Parcel): SubscribedLicenseModel {
+            return SubscribedLicenseModel(parcel)
+        }
+
+        override fun newArray(size: Int): Array<SubscribedLicenseModel?> {
+            return arrayOfNulls(size)
+        }
     }
 }

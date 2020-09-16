@@ -21,6 +21,7 @@ import com.shakticoin.app.api.Session;
 import com.shakticoin.app.api.UnauthorizedException;
 import com.shakticoin.app.api.license.LicenseRepository;
 import com.shakticoin.app.api.license.LicenseType;
+import com.shakticoin.app.api.license.SubscribedLicenseModel;
 import com.shakticoin.app.databinding.ActivityPaymentOptionsBinding;
 import com.shakticoin.app.util.CommonUtil;
 import com.shakticoin.app.util.Debug;
@@ -47,6 +48,7 @@ public class PaymentOptionsActivity extends DrawerActivity {
     private String licenseTypeId;
     private ArrayList<LicenseType> licenseTypesAll;
     private Map<String, ArrayList<LicenseType>> licenseTypesGrouped;
+    private SubscribedLicenseModel currentSubscription;
 
     /** Plan type that user bought already. */
     private String existingPlanType;
@@ -68,10 +70,12 @@ public class PaymentOptionsActivity extends DrawerActivity {
             licenseTypeId = intent.getStringExtra(CommonUtil.prefixed("licenseTypeId"));
             existingPlanType = intent.getStringExtra(CommonUtil.prefixed("selectedPlanType"));
             licenseTypesAll = intent.getParcelableArrayListExtra(CommonUtil.prefixed("licenses"));
+            currentSubscription = intent.getParcelableExtra(CommonUtil.prefixed("subscription"));
         } else {
             licenseTypeId = savedInstanceState.getString("licenseTypeId");
             existingPlanType = savedInstanceState.getString("selectedPlanType");
             licenseTypesAll = savedInstanceState.getParcelableArrayList("licenses");
+            currentSubscription = savedInstanceState.getParcelable("subscription");
         }
 
         // group all license type by plan base code
@@ -135,6 +139,7 @@ public class PaymentOptionsActivity extends DrawerActivity {
         outState.putString("licenseTypeId", licenseTypeId);
         outState.putParcelableArrayList("licenses", licenseTypesAll);
         outState.putString("selectedPlanType", existingPlanType);
+        outState.putParcelable("subscription", currentSubscription);
         super.onSaveInstanceState(outState);
     }
 
@@ -160,17 +165,59 @@ public class PaymentOptionsActivity extends DrawerActivity {
         // The hierarchy follows the list M101/T100/T200/T300/T400
         if (existingPlanType != null) {
             int comparisionResult = compareLicenseType(requestedLicenseType.getPlanType(), existingPlanType);
-            if (comparisionResult == 0) {
-                // TODO: user have this license already
+            if (comparisionResult < 0) {
+                if (currentSubscription != null && currentSubscription.getSubscriptionId() != null) {
+                    binding.progressBar.setVisibility(View.VISIBLE);
+                    licenseRepository.downgradeSubscription(
+                            requestedLicenseType.getPlanCode(),
+                            currentSubscription.getSubscriptionId(), new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(Void value, Throwable error) {
+                                    binding.progressBar.setVisibility(View.INVISIBLE);
+                                    if (error != null) {
+                                        if (error instanceof UnauthorizedException) {
+                                            startActivity(Session.unauthorizedIntent(activity));
+                                        } else {
+                                            Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
+                                        }
+                                        return;
+                                    }
+
+                                    openWallet();
+                                }
+                            });
+                }
             } else if (comparisionResult > 0) {
-//                licenseRepository.upgradeSubscription(requestedLicenseType.getPlanCode(), );
+                if (currentSubscription != null && currentSubscription.getSubscriptionId() != null) {
+                    binding.progressBar.setVisibility(View.VISIBLE);
+                    licenseRepository.upgradeSubscription(
+                            requestedLicenseType.getPlanCode(),
+                            currentSubscription.getSubscriptionId(), new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(Void value, Throwable error) {
+                                    binding.progressBar.setVisibility(View.INVISIBLE);
+                                    if (error != null) {
+                                        if (error instanceof UnauthorizedException) {
+                                            startActivity(Session.unauthorizedIntent(activity));
+                                        } else {
+                                            Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
+                                        }
+                                        return;
+                                    }
+
+                                    openWallet();
+                                }
+                            });
+                }
             } else {
-//                licenseRepository.downgradeSubscription();
+                // TODO: user have this license already
             }
         } else {
+            binding.progressBar.setVisibility(View.VISIBLE);
             licenseRepository.checkoutSubscription(requestedLicenseType.getPlanCode(), new OnCompleteListener<String>() {
                 @Override
                 public void onComplete(String value, Throwable error) {
+                    binding.progressBar.setVisibility(View.INVISIBLE);
                     if (error != null) {
                         if (error instanceof UnauthorizedException) {
                             startActivity(Session.unauthorizedIntent(activity));
@@ -179,8 +226,6 @@ public class PaymentOptionsActivity extends DrawerActivity {
                         }
                         return;
                     }
-
-
                 }
             });
         }

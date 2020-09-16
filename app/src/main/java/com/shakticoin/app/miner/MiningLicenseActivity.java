@@ -190,6 +190,7 @@ public class MiningLicenseActivity extends DrawerActivity {
         LicenseType licenseType = viewModel.getSelectedPackage();
         intent.putExtra(CommonUtil.prefixed("licenseTypeId"), licenseType.getId());
         if (currentSubscription != null) {
+            intent.putExtra(CommonUtil.prefixed("subscription"), currentSubscription);
             intent.putExtra(CommonUtil.prefixed("selectedPlanType"), currentSubscription.getPlanType());
         }
         intent.putParcelableArrayListExtra(CommonUtil.prefixed("licenses"), licenseTypesAll);

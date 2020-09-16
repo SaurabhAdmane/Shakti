@@ -180,10 +180,10 @@ class LicenseRepository : BackendRepository() {
     }
 
     var callUpgdSub : Call<ResponseBody?>? = null
-    fun upgradeSubscription(planCode: String, subscriptionId: String, listener: OnCompleteListener<Any>) {
+    fun upgradeSubscription(planCode: String, subscriptionId: String, listener: OnCompleteListener<Void>) {
         upgradeSubscription(planCode, subscriptionId, listener, false)
     }
-    private fun upgradeSubscription(planCode: String, subscriptionId: String, listener: OnCompleteListener<Any>, hasRecover401: Boolean) {
+    private fun upgradeSubscription(planCode: String, subscriptionId: String, listener: OnCompleteListener<Void>, hasRecover401: Boolean) {
         val parameters = CheckoutPlanRequest()
         parameters.planCode = planCode
         parameters.subscriptionId = subscriptionId
@@ -213,6 +213,7 @@ class LicenseRepository : BackendRepository() {
                                 return
                             }
                         }
+                        404 -> listener.onComplete(null, RemoteException(getResponseErrorMessage("message", response.errorBody()), response.code()))
                         else -> returnError(listener, response)
                     }
                 }
@@ -225,10 +226,10 @@ class LicenseRepository : BackendRepository() {
     }
 
     var callSubDowngd : Call<ResponseBody?>? = null
-    fun downgradeSubscription(planCode: String, subscriptionId: String, listener: OnCompleteListener<Any>) {
+    fun downgradeSubscription(planCode: String, subscriptionId: String, listener: OnCompleteListener<Void>) {
         downgradeSubscription(planCode, subscriptionId, listener, false)
     }
-    private fun downgradeSubscription(planCode: String, subscriptionId: String, listener: OnCompleteListener<Any>, hasRecover401: Boolean) {
+    private fun downgradeSubscription(planCode: String, subscriptionId: String, listener: OnCompleteListener<Void>, hasRecover401: Boolean) {
         val parameters = CheckoutPlanRequest()
         parameters.planCode = planCode
         parameters.subscriptionId = subscriptionId
@@ -258,6 +259,7 @@ class LicenseRepository : BackendRepository() {
                                 return
                             }
                         }
+                        404 -> listener.onComplete(null, RemoteException(getResponseErrorMessage("message", response.errorBody()), response.code()))
                         else -> returnError(listener, response)
                     }
                 }
@@ -279,5 +281,7 @@ class LicenseRepository : BackendRepository() {
         super.onStop()
         if (callLics != null && !callLics!!.isCanceled) callLics?.cancel()
         if (callNodeOp != null && !callNodeOp!!.isCanceled) callNodeOp?.cancel()
+        if (callSubDowngd != null && !callSubDowngd!!.isCanceled) callSubDowngd?.cancel()
+        if (callUpgdSub != null && !callUpgdSub!!.isCanceled) callUpgdSub?.cancel()
     }
 }
