@@ -46,6 +46,7 @@ public class AuthRepository extends BackendRepository {
                 if (response.isSuccessful()) {
                     TokenResponse resp = response.body();
                     if (resp != null) {
+                        Session.setShaktiId(username);
                         Session.setAccessToken(resp.getAccess_token());
                         if (resp.getRefresh_token() != null) {
                             Session.setRefreshToken(resp.getRefresh_token(), rememberMe);
