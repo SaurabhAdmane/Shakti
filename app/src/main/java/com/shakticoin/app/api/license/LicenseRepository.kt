@@ -187,6 +187,7 @@ class LicenseRepository : BackendRepository() {
         val parameters = CheckoutPlanRequest()
         parameters.planCode = planCode
         parameters.subscriptionId = subscriptionId
+        parameters.userName = Session.getShaktiId();
         callUpgdSub = licenseService.checkoutUpgrade(Session.getAuthorizationHeader(), parameters);
         callUpgdSub!!.enqueue(object : Callback<ResponseBody?> {
             override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
