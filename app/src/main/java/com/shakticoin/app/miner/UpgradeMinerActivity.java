@@ -1,14 +1,15 @@
 package com.shakticoin.app.miner;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 
-import com.shakticoin.app.widget.DrawerActivity;
-
 import com.shakticoin.app.R;
 import com.shakticoin.app.databinding.ActivityUpgradeMinerBinding;
+import com.shakticoin.app.widget.DrawerActivity;
 
 public class UpgradeMinerActivity extends DrawerActivity {
     private ActivityUpgradeMinerBinding binding;
@@ -25,5 +26,9 @@ public class UpgradeMinerActivity extends DrawerActivity {
     @Override
     protected int getCurrentDrawerSelection() {
         return 2;
+    }
+
+    public void onUpgrade(View v) {
+        startActivity(new Intent(this, MiningLicenseActivity.class));
     }
 }
