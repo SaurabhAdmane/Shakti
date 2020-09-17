@@ -110,9 +110,11 @@ public class MiningLicenseModel extends ViewModel {
      * Returns package related data that we received from the server.
      */
     public LicenseType getSelectedPackage() {
-        LicenseTypeIds packageType = selectedPlan.getValue();
-        if (packageType != null && packageType.ordinal() < packages.size()) {
-            return packages.get(packageType.ordinal());
+        if (packages != null) {
+            LicenseTypeIds packageType = selectedPlan.getValue();
+            if (packageType != null && packageType.ordinal() < packages.size()) {
+                return packages.get(packageType.ordinal());
+            }
         }
         return null;
     }

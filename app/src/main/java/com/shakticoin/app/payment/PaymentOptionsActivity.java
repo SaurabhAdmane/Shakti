@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,16 +16,31 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
 import com.shakticoin.app.R;
+import com.shakticoin.app.api.OnCompleteListener;
+import com.shakticoin.app.api.Session;
+import com.shakticoin.app.api.UnauthorizedException;
+import com.shakticoin.app.api.license.LicenseRepository;
 import com.shakticoin.app.api.license.LicenseType;
+import com.shakticoin.app.api.license.SubscribedLicenseModel;
 import com.shakticoin.app.databinding.ActivityPaymentOptionsBinding;
 import com.shakticoin.app.util.CommonUtil;
+import com.shakticoin.app.util.Debug;
+import com.shakticoin.app.wallet.WalletActivity;
 import com.shakticoin.app.widget.DrawerActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.shakticoin.app.api.license.LicenseTypeKt.compareLicenseType;
+
 public class PaymentOptionsActivity extends DrawerActivity {
+    public static int LIC_ACTION_NONE       = -1;
+    public static int LIC_ACTION_APPLY      = 0;
+    public static int LIC_ACTION_UPGRADE    = 1;
+    public static int LIC_ACTION_DOWNGRADE  = 2;
+    public static int LIC_ACTION_CANCEL     = 3;
+
     private ActivityPaymentOptionsBinding binding;
     private PaymentOptionsViewModel viewModel;
     private PageAdapter pages;
@@ -32,6 +48,12 @@ public class PaymentOptionsActivity extends DrawerActivity {
     private String licenseTypeId;
     private ArrayList<LicenseType> licenseTypesAll;
     private Map<String, ArrayList<LicenseType>> licenseTypesGrouped;
+    private SubscribedLicenseModel currentSubscription;
+
+    /** Plan type that user bought already. */
+    private String existingPlanType;
+
+    LicenseRepository licenseRepository = new LicenseRepository();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,15 +65,17 @@ public class PaymentOptionsActivity extends DrawerActivity {
 
         super.onInitView(binding.getRoot(), getString(R.string.miner_intro_toolbar));
 
-        final Activity self = this;
-
         if (savedInstanceState == null) {
             Intent intent = getIntent();
             licenseTypeId = intent.getStringExtra(CommonUtil.prefixed("licenseTypeId"));
+            existingPlanType = intent.getStringExtra(CommonUtil.prefixed("selectedPlanType"));
             licenseTypesAll = intent.getParcelableArrayListExtra(CommonUtil.prefixed("licenses"));
+            currentSubscription = intent.getParcelableExtra(CommonUtil.prefixed("subscription"));
         } else {
             licenseTypeId = savedInstanceState.getString("licenseTypeId");
+            existingPlanType = savedInstanceState.getString("selectedPlanType");
             licenseTypesAll = savedInstanceState.getParcelableArrayList("licenses");
+            currentSubscription = savedInstanceState.getParcelable("subscription");
         }
 
         // group all license type by plan base code
@@ -114,6 +138,8 @@ public class PaymentOptionsActivity extends DrawerActivity {
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putString("licenseTypeId", licenseTypeId);
         outState.putParcelableArrayList("licenses", licenseTypesAll);
+        outState.putString("selectedPlanType", existingPlanType);
+        outState.putParcelable("subscription", currentSubscription);
         super.onSaveInstanceState(outState);
     }
 
@@ -124,83 +150,98 @@ public class PaymentOptionsActivity extends DrawerActivity {
 
     public void onMainAction(View v) {
         final Activity activity = this;
+        String planCode = (String) v.getTag();
+        LicenseType requestedLicenseType = null;
+        for (LicenseType licenseType : licenseTypesAll) {
+            if (licenseType.getPlanCode().equals(planCode)) {
+                requestedLicenseType = licenseType;
+                break;
+            }
+        }
 
-//        PackagePlanExtended plan = viewModel.selectedPlan.get();
-//        PackageExtended pkg = viewModel.selectedPackage.getValue();
-//        // pay the order
-//        Intent intent = new Intent(activity, StripeActivity.class);
-//        intent.putExtra(CommonUtil.prefixed(StripeActivity.KEY_ORDER_AMOUNT, activity), plan.getFiat_price());
-//        intent.putExtra(CommonUtil.prefixed(StripeActivity.KEY_ORDER_NAME, activity),
-//                String.format("%1$s - %2$s", "M101", "Tier description"));
-//        intent.putExtra(CommonUtil.prefixed("packageName", this), pkg.getName());
-//        intent.putExtra(CommonUtil.prefixed("period", this), plan.getPeriod());
-//        startActivityForResult(intent, STRIPE_PAYMENT);
+        if (requestedLicenseType == null) return;
+
+        // We should decide which method apply/upgrade/downgrade we must use for the operation.
+        // The hierarchy follows the list M101/T100/T200/T300/T400
+        if (existingPlanType != null) {
+            int comparisionResult = compareLicenseType(requestedLicenseType.getPlanType(), existingPlanType);
+            if (comparisionResult < 0) {
+                if (currentSubscription != null && currentSubscription.getSubscriptionId() != null) {
+                    binding.progressBar.setVisibility(View.VISIBLE);
+                    licenseRepository.downgradeSubscription(
+                            requestedLicenseType.getPlanCode(),
+                            currentSubscription.getSubscriptionId(), new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(Void value, Throwable error) {
+                                    binding.progressBar.setVisibility(View.INVISIBLE);
+                                    if (error != null) {
+                                        if (error instanceof UnauthorizedException) {
+                                            startActivity(Session.unauthorizedIntent(activity));
+                                        } else {
+                                            Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
+                                        }
+                                        return;
+                                    }
+
+                                    openWallet();
+                                }
+                            });
+                }
+            } else if (comparisionResult > 0) {
+                if (currentSubscription != null && currentSubscription.getSubscriptionId() != null) {
+                    binding.progressBar.setVisibility(View.VISIBLE);
+                    licenseRepository.upgradeSubscription(
+                            requestedLicenseType.getPlanCode(),
+                            currentSubscription.getSubscriptionId(), new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(Void value, Throwable error) {
+                                    binding.progressBar.setVisibility(View.INVISIBLE);
+                                    if (error != null) {
+                                        if (error instanceof UnauthorizedException) {
+                                            startActivity(Session.unauthorizedIntent(activity));
+                                        } else {
+                                            Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
+                                        }
+                                        return;
+                                    }
+
+                                    openWallet();
+                                }
+                            });
+                }
+            } else {
+                // TODO: user have this license already
+            }
+        } else {
+            binding.progressBar.setVisibility(View.VISIBLE);
+            licenseRepository.checkoutSubscription(requestedLicenseType.getPlanCode(), new OnCompleteListener<String>() {
+                @Override
+                public void onComplete(String value, Throwable error) {
+                    binding.progressBar.setVisibility(View.INVISIBLE);
+                    if (error != null) {
+                        if (error instanceof UnauthorizedException) {
+                            startActivity(Session.unauthorizedIntent(activity));
+                        } else {
+                            Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
+                        }
+                        return;
+                    }
+                }
+            });
+        }
+
     }
-
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        if (requestCode == STRIPE_PAYMENT) {
-//            switch (resultCode) {
-//                case RESULT_OK:
-//                    if (data != null) {
-//                        long orderId = data.getLongExtra(CommonUtil.prefixed(StripeActivity.KEY_ORDER_ID, this), -1);
-//                        completePayment(data.getStringExtra(CommonUtil.prefixed(StripeActivity.KEY_TOKEN, this)), orderId);
-//                    }
-//                    break;
-//                case RESULT_CANCELED:
-//                    Toast.makeText(this, R.string.err_payment_cancelled, Toast.LENGTH_SHORT).show();
-//                    openWallet();
-//                    break;
-//            }
-//        } else {
-//            super.onActivityResult(requestCode, resultCode, data);
-//        }
-//    }
-
-//    private void completePayment(@Nullable String token, long orderId) {
-//        if (token == null) return; // perhaps not possible
-//        if (orderId < 0) return;
-//
-//        final Activity activity = this;
-//
-////        binding.progressBar.setVisibility(View.VISIBLE);
-//        PaymentRepository repository = new PaymentRepository();
-//        repository.makeStripePayment(orderId, token, new OnCompleteListener<Void>() {
-//            @Override
-//            public void onComplete(Void value, Throwable error) {
-//                if (error != null) {
-//                    Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
-//
-//                // we can consider the registration completed at this point
-//                UserRepository userRepository = new UserRepository();
-////                userRepository.updateRegistrationStatus(Constants.RegistrationStatus.REGST_COMPL, new OnCompleteListener<Void>() {
-////                    @Override
-////                    public void onComplete(Void value, Throwable error) {
-//////                        binding.progressBar.setVisibility(View.INVISIBLE);
-////                        if (error != null) {
-////                            Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_SHORT).show();
-////                            return;
-////                        }
-////
-////                        openWallet();
-////                    }
-////                });
-//            }
-//        });
-//    }
 
     /**
      * Open wallet and reset back stack.
      * It does not make sense to navigate back though the registration screens after the payment is
      * completed successfully.
      */
-//    private void openWallet() {
-//        Intent intent = new Intent(this, WalletActivity.class);
-//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//        startActivity(intent);
-//    }
+    private void openWallet() {
+        Intent intent = new Intent(this, WalletActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
 
     public void onNext(View v) {
         int currentIndex = binding.mainFragment.getCurrentItem();
@@ -227,7 +268,7 @@ public class PaymentOptionsActivity extends DrawerActivity {
         public Fragment getItem(int position) {
             PaymentOptionsViewModel.PackageType[] miningPlan = PaymentOptionsViewModel.PackageType.values();
             String plan = miningPlan[position].name();
-            return PaymentOptionsPlanFragment.getInstance(licenseTypeId, plan, licenseTypesGrouped.get(plan));
+            return PaymentOptionsPlanFragment.getInstance(licenseTypeId, existingPlanType, plan, licenseTypesGrouped.get(plan));
         }
 
         @Override

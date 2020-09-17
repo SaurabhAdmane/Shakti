@@ -131,6 +131,9 @@
     <string name="minerlic_choose">Choose your license type:</string>
     <string name="minerlic_one_time_payment">For a one time payment of</string>
     <string name="minerlic_action">Apply to %1$s</string>
+    <string name="minerlic_action_purchased">Already Purchased</string>
+    <string name="minerlic_action_upgrade">Upgrade to %1$s</string>
+    <string name="minerlic_action_downgrade">Downgrade to %1$s</string>
     <string name="minerlic_package_features">%1$s Features</string>
     <string name="minerlic_features">Features</string>
     <string name="err_incorrect_card">Please enter a valid card data</string>

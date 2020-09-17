@@ -160,7 +160,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/on400" />
 
                     <Button
-                        android:id="@+id/onClaim"
+                        android:id="@+id/doAction"
                         style="@style/AppButton.Rounded"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"

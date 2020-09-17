@@ -22,9 +22,7 @@ public class KycVerificationRequiredFragment extends Fragment {
         binding = FragmentInlineWalletKycVerificationBinding.inflate(getLayoutInflater(), container, false);
         binding.setLifecycleOwner(this);
 
-        /** TODO: temporarily disabled for QA
         binding.doVerification.setOnClickListener(this::onKycVerification);
-        */
 
         return binding.getRoot();
     }

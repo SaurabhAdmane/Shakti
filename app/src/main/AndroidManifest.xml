@@ -72,6 +72,7 @@
         <activity
             android:name=".miner.MiningLicenseActivity"
             android:screenOrientation="portrait"
+            android:launchMode="singleTop"
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".payment.stripe.StripeActivity"
@@ -115,6 +116,7 @@
         <activity
             android:name=".miner.UpgradeMinerActivity"
             android:screenOrientation="portrait"
+            android:launchMode="singleTop"
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".vault.VaultAdvantageActivity"

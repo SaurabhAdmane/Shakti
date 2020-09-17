@@ -17,6 +17,8 @@ import android.os.Parcelable
  *   "lastModification":0,
  *   "creationDate":1591090734723,
  *   "planCode":"M101Y", // note last character: Y - year, M - month, W - week
+ *   "planType":"M101", "T100", "T200", "T300", "T400"
+ *   "modeType":"Y" or M or W - basically last letter of the planCode
  *   "licName":"M101 License",
  *   "licFeatures":[
  *     "Individual Mining License",
@@ -34,6 +36,8 @@ import android.os.Parcelable
 class LicenseType() : Parcelable {
     var id: String? = null
     var planCode: String? = null
+    var planType: String? = null
+    var modeType: String? = null
     var licName: String? = null
     var licFeatures: List<String>? = null
     var price: Double? = null
@@ -46,6 +50,8 @@ class LicenseType() : Parcelable {
     constructor(parcel: Parcel) : this() {
         id = parcel.readString()
         planCode = parcel.readString()
+        planType = parcel.readString()
+        modeType = parcel.readString()
         licName = parcel.readString()
         licFeatures = parcel.createStringArrayList()
         price = parcel.readValue(Double::class.java.classLoader) as? Double
@@ -59,6 +65,8 @@ class LicenseType() : Parcelable {
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(id)
         parcel.writeString(planCode)
+        parcel.writeString(planType)
+        parcel.writeString(modeType)
         parcel.writeString(licName)
         parcel.writeStringList(licFeatures)
         parcel.writeValue(price)
@@ -82,4 +90,16 @@ class LicenseType() : Parcelable {
             return arrayOfNulls(size)
         }
     }
+
+}
+
+/**
+ * License types are arranged as M101, T100, T200, T300 and compared according to their
+ * position in this list.
+ */
+fun compareLicenseType(type1: String?, type2: String?) : Int {
+    if (type1 == null && type2 == null) return 0
+    if (type1 == null) return -1;
+    if (type2 == null) return 1;
+    return  type1.compareTo(type2);
 }

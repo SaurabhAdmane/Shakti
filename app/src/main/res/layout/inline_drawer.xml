@@ -185,6 +185,7 @@
             android:onClick="onOpenReferrals" -->
 
             <TextView
+                android:id="@+id/drawerLicence"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/drawer_item_height"
                 android:paddingStart="64dp"

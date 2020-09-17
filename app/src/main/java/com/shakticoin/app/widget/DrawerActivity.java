@@ -2,6 +2,7 @@ package com.shakticoin.app.widget;
 
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
@@ -25,7 +26,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.shakticoin.app.R;
+import com.shakticoin.app.api.OnCompleteListener;
+import com.shakticoin.app.api.license.LicenseRepository;
+import com.shakticoin.app.api.license.NodeOperatorModel;
+import com.shakticoin.app.api.license.SubscribedLicenseModel;
 import com.shakticoin.app.feats.ParticipantsActivity;
+import com.shakticoin.app.miner.MiningLicenseActivity;
 import com.shakticoin.app.miner.UpgradeMinerActivity;
 import com.shakticoin.app.profile.CompanySummaryActivity;
 import com.shakticoin.app.profile.FamilyTreeActivity;
@@ -34,6 +40,7 @@ import com.shakticoin.app.registration.BonusBountyActivity;
 import com.shakticoin.app.settings.SettingsActivity;
 import com.shakticoin.app.tour.WelcomeTourActivity;
 import com.shakticoin.app.util.CommonUtil;
+import com.shakticoin.app.util.Debug;
 import com.shakticoin.app.wallet.WalletActivity;
 
 import java.text.DateFormat;
@@ -298,8 +305,29 @@ public abstract class DrawerActivity extends AppCompatActivity {
     }
 
     public void onSelectLicense(View v) {
-        Intent intent = new Intent(this, UpgradeMinerActivity.class);
-        startActivity(intent);
+        // Open UpgradeMinerActivity if node operator owns M101 only.
+        // Otherwise call license selector.
+        Activity activity = this;
+        LicenseRepository repository = new LicenseRepository();
+        repository.getNodeOperator(new OnCompleteListener<NodeOperatorModel>() {
+            @Override
+            public void onComplete(NodeOperatorModel value, Throwable error) {
+                if (error != null) {
+                    Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                SubscribedLicenseModel subscription = CommonUtil.getActiveSubscription(value.getSubscribedLicenses());
+                if (subscription != null && "M101Y".equals(subscription.getPlanCode())) {
+                    Intent intent = new Intent(activity, UpgradeMinerActivity.class);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(activity, MiningLicenseActivity.class);
+                    startActivity(intent);
+                }
+            }
+        });
+
         closeDrawers();
     }
 

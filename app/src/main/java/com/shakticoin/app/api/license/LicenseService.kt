@@ -33,9 +33,23 @@ interface LicenseService {
     fun cancelLicence(@Header("Authorization") authorization: String?,
                       @Body parameters: SubscribedLicenseModel) : Call<SubscribedLicenseModel?>
 
-
     @Headers("Content-Type: application/json", "Accept: application/json")
     @POST("node-operator/checkout/subscription")
     fun checkoutSubscription(@Header("Authorization") authorization: String?,
                  @Body parameters: CheckoutModel) : Call<CheckoutResponse?>
+
+    @Headers("Content-Type: application/json", "Accept: application/json")
+    @POST("node-operator/checkout/addition")
+    fun checkoutAddition(@Header("Authorization") authorization: String?,
+                         @Body parameters: CheckoutModel) : Call<CheckoutResponse?>
+
+    @Headers("Content-Type: application/json", "Accept: application/json")
+    @POST("node-operator/checkout/upgrade")
+    fun checkoutUpgrade(@Header("Authorization") authorization: String?,
+                        @Body parameters : CheckoutPlanRequest) : Call<ResponseBody?>
+
+    @Headers("Content-Type: application/json", "Accept: application/json")
+    @POST("node-operator/checkout/downgrade")
+    fun checkoutDowngrade(@Header("Authorization") authorization: String?,
+                          @Body parameters : CheckoutPlanRequest) : Call<ResponseBody?>
 }

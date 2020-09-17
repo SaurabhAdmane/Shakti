@@ -8,6 +8,7 @@ import com.shakticoin.app.api.kyc.KYCRepository
 import com.shakticoin.app.api.kyc.KycUserView
 import com.shakticoin.app.util.Debug
 import okhttp3.OkHttpClient
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -32,11 +33,13 @@ class LicenseRepository : BackendRepository() {
     private val authRepository = AuthRepository()
     private val kycRepository = KYCRepository()
 
+    private var callLics : Call<List<LicenseType>?>? = null
     fun getLicenses(listener: OnCompleteListener<List<LicenseType>?>?) {
         getLicenses(listener, false)
     }
     private fun getLicenses(listener: OnCompleteListener<List<LicenseType>?>?, hasRecover401: Boolean = false) {
-        licenseService.getLicenses(Session.getAuthorizationHeader()).enqueue(object : Callback<List<LicenseType>?> {
+        callLics = licenseService.getLicenses(Session.getAuthorizationHeader())
+        callLics!!.enqueue(object : Callback<List<LicenseType>?> {
             override fun onResponse(call: Call<List<LicenseType>?>, response: Response<List<LicenseType>?>) {
                 Debug.logDebug(response.toString())
                 if (response.isSuccessful) {
@@ -74,11 +77,13 @@ class LicenseRepository : BackendRepository() {
         })
     }
 
+    private var callNodeOp : Call<NodeOperatorModel?>? = null
     fun getNodeOperator(listener: OnCompleteListener<NodeOperatorModel?>) {
         getNodeOperator(listener, false)
     }
     private fun getNodeOperator(listener: OnCompleteListener<NodeOperatorModel?>, hasRecover401: Boolean) {
-        licenseService.getNodeOperator(Session.getAuthorizationHeader()).enqueue(object: Callback<NodeOperatorModel?> {
+        callNodeOp = licenseService.getNodeOperator(Session.getAuthorizationHeader())
+        callNodeOp!!.enqueue(object: Callback<NodeOperatorModel?> {
             override fun onResponse(call: Call<NodeOperatorModel?>, response: Response<NodeOperatorModel?>) {
                 Debug.logDebug(response.toString())
                 if (response.isSuccessful) {
@@ -120,6 +125,7 @@ class LicenseRepository : BackendRepository() {
         kycRepository.getUserDetails(object: OnCompleteListener<KycUserView>() {
             override fun onComplete(user: KycUserView?, error: Throwable?) {
                 if (error != null) {
+                    listener.onComplete(null, error)
                     return
                 }
 
@@ -173,9 +179,110 @@ class LicenseRepository : BackendRepository() {
         })
     }
 
+    var callUpgdSub : Call<ResponseBody?>? = null
+    fun upgradeSubscription(planCode: String, subscriptionId: String, listener: OnCompleteListener<Void>) {
+        upgradeSubscription(planCode, subscriptionId, listener, false)
+    }
+    private fun upgradeSubscription(planCode: String, subscriptionId: String, listener: OnCompleteListener<Void>, hasRecover401: Boolean) {
+        val parameters = CheckoutPlanRequest()
+        parameters.planCode = planCode
+        parameters.subscriptionId = subscriptionId
+        parameters.userName = Session.getShaktiId();
+        callUpgdSub = licenseService.checkoutUpgrade(Session.getAuthorizationHeader(), parameters);
+        callUpgdSub!!.enqueue(object : Callback<ResponseBody?> {
+            override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
+                Debug.logDebug(response.toString())
+                if (response.isSuccessful) {
+                    val resp = response.body()
+                    Debug.logDebug(resp?.string())
+
+                } else {
+                    when (response.code()) {
+                        401 -> {
+                            if (!hasRecover401) {
+                                authRepository.refreshToken(Session.getRefreshToken(), object : OnCompleteListener<TokenResponse?>() {
+                                    override fun onComplete(value: TokenResponse?, error: Throwable?) {
+                                        if (error != null) {
+                                            listener.onComplete(null, error)
+                                            return
+                                        }
+                                        upgradeSubscription(planCode, subscriptionId, listener, true)
+                                    }
+                                })
+                            } else {
+                                listener.onComplete(null, UnauthorizedException())
+                                return
+                            }
+                        }
+                        404 -> listener.onComplete(null, RemoteException(getResponseErrorMessage("message", response.errorBody()), response.code()))
+                        else -> returnError(listener, response)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
+                return returnError(listener, t)
+            }
+        })
+    }
+
+    var callSubDowngd : Call<ResponseBody?>? = null
+    fun downgradeSubscription(planCode: String, subscriptionId: String, listener: OnCompleteListener<Void>) {
+        downgradeSubscription(planCode, subscriptionId, listener, false)
+    }
+    private fun downgradeSubscription(planCode: String, subscriptionId: String, listener: OnCompleteListener<Void>, hasRecover401: Boolean) {
+        val parameters = CheckoutPlanRequest()
+        parameters.planCode = planCode
+        parameters.subscriptionId = subscriptionId
+        callSubDowngd = licenseService.checkoutDowngrade(Session.getAuthorizationHeader(), parameters)
+        callSubDowngd!!.enqueue(object : Callback<ResponseBody?> {
+            override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
+                Debug.logDebug(response.toString())
+                if (response.isSuccessful) {
+                    val resp = response.body()
+                    Debug.logDebug(resp?.string())
+
+                } else {
+                    when (response.code()) {
+                        401 -> {
+                            if (!hasRecover401) {
+                                authRepository.refreshToken(Session.getRefreshToken(), object : OnCompleteListener<TokenResponse?>() {
+                                    override fun onComplete(value: TokenResponse?, error: Throwable?) {
+                                        if (error != null) {
+                                            listener.onComplete(null, error)
+                                            return
+                                        }
+                                        downgradeSubscription(planCode, subscriptionId, listener, true)
+                                    }
+                                })
+                            } else {
+                                listener.onComplete(null, UnauthorizedException())
+                                return
+                            }
+                        }
+                        404 -> listener.onComplete(null, RemoteException(getResponseErrorMessage("message", response.errorBody()), response.code()))
+                        else -> returnError(listener, response)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
+                return returnError(listener, t)
+            }
+        })
+    }
+
     override fun setLifecycleOwner(lifecycleOwner: LifecycleOwner?) {
         super.setLifecycleOwner(lifecycleOwner)
         authRepository.setLifecycleOwner(lifecycleOwner)
         kycRepository.setLifecycleOwner(lifecycleOwner)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (callLics != null && !callLics!!.isCanceled) callLics?.cancel()
+        if (callNodeOp != null && !callNodeOp!!.isCanceled) callNodeOp?.cancel()
+        if (callSubDowngd != null && !callSubDowngd!!.isCanceled) callSubDowngd?.cancel()
+        if (callUpgdSub != null && !callUpgdSub!!.isCanceled) callUpgdSub?.cancel()
     }
 }

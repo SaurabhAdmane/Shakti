@@ -31,7 +31,6 @@ class PaymentFlowActivity : AppCompatActivity() {
                     NavUtils.navigateUpFromSameTask(activity)
                 }
             }
-
         }
         binding.webView.loadUrl(hostedPage)
     }
