@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Toast;
@@ -79,10 +78,6 @@ public class SignInActivity extends AppCompatActivity {
             binding.usernameLayout.setError(getString(R.string.err_loging_must_be_email));
         }
         String password = Objects.requireNonNull(binding.password.getText()).toString();
-        if (TextUtils.isEmpty(password) || password.length() < Validator.MIN_PASSWD_LEN) {
-            validationSuccessful = false;
-            binding.passwordLayout.setError(getString(R.string.err_password_invalid, Validator.MIN_PASSWD_LEN));
-        }
         if (!validationSuccessful) {
             return;
         }
@@ -108,14 +103,6 @@ public class SignInActivity extends AppCompatActivity {
                 startActivity(new Intent(self, WalletActivity.class));
             }
         });
-    }
-
-    /**
-     * We cannot continue before email is confirmed and just show information window to the user
-     */
-    private void showNotConfirmed() {
-        DialogConfirmEmail dialog = DialogConfirmEmail.getInstance(true);
-        dialog.show(getSupportFragmentManager(), DialogConfirmEmail.class.getSimpleName());
     }
 
     public void onRecoveryPassword(View view) {
