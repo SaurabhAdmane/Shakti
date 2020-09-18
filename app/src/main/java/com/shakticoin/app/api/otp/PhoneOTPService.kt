@@ -1,10 +1,7 @@
 package com.shakticoin.app.api.otp
 
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.Header
-import retrofit2.http.Headers
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface PhoneOTPService {
 
@@ -29,4 +26,8 @@ interface PhoneOTPService {
     @Headers("Content-Type: application/json", "Accept: application/json")
     @POST("inquiry/sms")
     fun inquiryPhoneNumber(@Body parameters: MobileRegistrationRequest) : Call<MainResponseBean?>
+
+    @Headers("Accept: application/json")
+    @GET("mobile/country-code")
+    fun countryCodes() : Call<Map<String, String>?>
 }

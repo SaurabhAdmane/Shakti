@@ -26,7 +26,7 @@ class PhoneOTPRepository : BackendRepository() {
             .build()
             .create(PhoneOTPService::class.java)
 
-    var callReqReg : Call<MainResponseBean?>? = null
+    private var callReqReg : Call<MainResponseBean?>? = null
     fun requestRegistration(phoneNumber: String, listener: OnCompleteListener<Void?>) {
         val parameters = MobileRegistrationRequest();
         parameters.mobileNo = phoneNumber
@@ -56,7 +56,7 @@ class PhoneOTPRepository : BackendRepository() {
         });
     }
 
-    var callConfReg : Call<MainResponseBean?>? = null
+    private var callConfReg : Call<MainResponseBean?>? = null
     fun confirmRegistration(mobileNo: String, code: String, listener: OnCompleteListener<Boolean?>) {
         val parameters = ConfirmRegistrationRequest()
         parameters.mobileNo = mobileNo
@@ -94,7 +94,7 @@ class PhoneOTPRepository : BackendRepository() {
         })
     }
 
-    var callInquiryNum : Call<MainResponseBean?>? = null
+    private var callInquiryNum : Call<MainResponseBean?>? = null
     fun checkPhoneNumberStatus(phoneNumber: String, listener: OnCompleteListener<Boolean>) {
         val parameters = MobileRegistrationRequest()
         parameters.mobileNo = phoneNumber;
@@ -119,10 +119,35 @@ class PhoneOTPRepository : BackendRepository() {
         })
     }
 
+    private var callCntryCodes : Call<Map<String, String>?>? = null
+    fun getCountryCodes(listener : OnCompleteListener<List<IntlPhoneCountryCode>>) {
+        callCntryCodes = service.countryCodes()
+        callCntryCodes!!.enqueue(object : Callback<Map<String, String>?> {
+            override fun onResponse(call: Call<Map<String, String>?>, response: Response<Map<String, String>?>) {
+                Debug.logDebug(response.toString())
+                if (response.isSuccessful) {
+                    val resp = response.body()
+                    if (resp != null) {
+                        val list = ArrayList<IntlPhoneCountryCode>()
+                        resp.forEach{ (country, code) -> list.add(IntlPhoneCountryCode(code, country)) }
+                        list.sortBy { it.countryName }
+                    }
+                } else {
+                    returnError(listener, response)
+                }
+            }
+
+            override fun onFailure(call: Call<Map<String, String>?>, t: Throwable) {
+                returnError(listener, t);
+            }
+        })
+    }
+
     override fun onStop() {
         super.onStop()
         if (callReqReg != null && !callReqReg!!.isCanceled) callReqReg?.cancel()
         if (callConfReg != null && !callConfReg!!.isCanceled) callConfReg?.cancel()
         if (callInquiryNum != null && !callInquiryNum!!.isCanceled) callInquiryNum?.cancel()
+        if (callCntryCodes != null && !callCntryCodes!!.isCanceled) callCntryCodes?.cancel()
     }
 }
