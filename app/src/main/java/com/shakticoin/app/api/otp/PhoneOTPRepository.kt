@@ -1,6 +1,7 @@
 package com.shakticoin.app.api.otp
 
 import android.widget.Toast
+import androidx.lifecycle.MutableLiveData
 import com.shakticoin.app.R
 import com.shakticoin.app.ShaktiApplication
 import com.shakticoin.app.api.*
@@ -31,7 +32,7 @@ class PhoneOTPRepository : BackendRepository() {
         val parameters = MobileRegistrationRequest();
         parameters.mobileNo = phoneNumber
         callReqReg = service.registrationRequest(parameters)
-        callReqReg!!.enqueue(object: Callback<MainResponseBean?> {
+        callReqReg!!.enqueue(object : Callback<MainResponseBean?> {
             override fun onFailure(call: Call<MainResponseBean?>, t: Throwable) {
                 Debug.logDebug(t.message)
                 return returnError(listener, t)
@@ -45,7 +46,7 @@ class PhoneOTPRepository : BackendRepository() {
                         listener.onComplete(null, null)
                     } else listener.onComplete(null, null)
                 } else {
-                    when(response.code()) {
+                    when (response.code()) {
                         503 -> listener.onComplete(null, RemoteException(
                                 getResponseErrorMessage("responseMsg", response.errorBody()), response.code()))
                         else -> returnError(listener, response)
@@ -62,7 +63,7 @@ class PhoneOTPRepository : BackendRepository() {
         parameters.mobileNo = mobileNo
         parameters.otp = code
         callConfReg = service.confirmRegistration(parameters)
-        callConfReg!!.enqueue(object: Callback<MainResponseBean?> {
+        callConfReg!!.enqueue(object : Callback<MainResponseBean?> {
             override fun onFailure(call: Call<MainResponseBean?>, t: Throwable) {
                 Debug.logDebug(t.message)
                 return returnError(listener, t)
@@ -86,7 +87,8 @@ class PhoneOTPRepository : BackendRepository() {
                             Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
                             listener.onComplete(true, null)
                         } // verified already
-                        else -> listener.onComplete(null, RemoteMessageException(msg?:response.message(), response.code()))
+                        else -> listener.onComplete(null, RemoteMessageException(msg
+                                ?: response.message(), response.code()))
                     }
                 }
             }
@@ -99,13 +101,13 @@ class PhoneOTPRepository : BackendRepository() {
         val parameters = MobileRegistrationRequest()
         parameters.mobileNo = phoneNumber;
         callInquiryNum = service.inquiryPhoneNumber(parameters)
-        callInquiryNum?.enqueue(object: Callback<MainResponseBean?> {
+        callInquiryNum?.enqueue(object : Callback<MainResponseBean?> {
             override fun onResponse(call: Call<MainResponseBean?>, response: Response<MainResponseBean?>) {
                 Debug.logDebug(response.toString())
                 if (response.isSuccessful) {
                     listener.onComplete(true, null)
                 } else {
-                    when(response.code()) {
+                    when (response.code()) {
                         404 -> listener.onComplete(false, null) // not found
                         else -> returnError(listener, response)
                     }
@@ -120,7 +122,7 @@ class PhoneOTPRepository : BackendRepository() {
     }
 
     private var callCntryCodes : Call<Map<String, String>?>? = null
-    fun getCountryCodes(listener : OnCompleteListener<List<IntlPhoneCountryCode>>) {
+    fun getCountryCodes(listener: OnCompleteListener<List<IntlPhoneCountryCode>>) {
         callCntryCodes = service.countryCodes()
         callCntryCodes!!.enqueue(object : Callback<Map<String, String>?> {
             override fun onResponse(call: Call<Map<String, String>?>, response: Response<Map<String, String>?>) {
@@ -129,8 +131,9 @@ class PhoneOTPRepository : BackendRepository() {
                     val resp = response.body()
                     if (resp != null) {
                         val list = ArrayList<IntlPhoneCountryCode>()
-                        resp.forEach{ (country, code) -> list.add(IntlPhoneCountryCode(code, country)) }
+                        resp.forEach { (country, code) -> list.add(IntlPhoneCountryCode(code, country)) }
                         list.sortBy { it.countryName }
+                        listener.onComplete(list, null);
                     }
                 } else {
                     returnError(listener, response)
@@ -141,6 +144,20 @@ class PhoneOTPRepository : BackendRepository() {
                 returnError(listener, t);
             }
         })
+    }
+
+    fun getCountryCodeList() : MutableLiveData<List<IntlPhoneCountryCode>> {
+        val liveData = MutableLiveData<List<IntlPhoneCountryCode>>()
+        //liveData.value = listOf(IntlPhoneCountryCode("", ""))
+
+        getCountryCodes(object : OnCompleteListener<List<IntlPhoneCountryCode>>() {
+            override fun onComplete(value: List<IntlPhoneCountryCode>?, error: Throwable?) {
+                if (error != null) return;
+                liveData.value = value
+            }
+
+        })
+        return liveData;
     }
 
     override fun onStop() {

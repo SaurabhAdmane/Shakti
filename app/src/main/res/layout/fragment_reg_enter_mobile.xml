@@ -55,14 +55,14 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:popupBackground="@android:color/transparent"
-                app:hint="@string/hint_country"
+                android:entries="@{viewModel.countryCodes}"
+                android:onItemSelected="@{(parent, view, position, id) -> viewModel.onCountryCodeSelected(view, position)}"
+                app:newValue="@{viewModel.selectedCountryCode}"
+                app:hint="@string/hint_country_code"
                 app:textColorHint="@color/colorHint"
                 app:spinnerBorderColor="@color/colorBrand"/>
         </com.shakticoin.app.widget.SpinnerLayout>
-<!--                android:entries="@{viewModel.countryList}"
-                android:onItemSelected="@{(parent, view, position, id) -> viewModel.onCountrySelected(view, position)}"
-                app:newValue="@{viewModel.countryCode}"
--->
+
         <com.shakticoin.app.widget.TextInputLayout
             android:id="@+id/phoneNumberLayout"
             style="@style/AppTextLayout"

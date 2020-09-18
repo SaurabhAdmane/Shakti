@@ -1,7 +1,11 @@
 package com.shakticoin.app.registration
 
+import android.view.View
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.shakticoin.app.api.otp.IntlPhoneCountryCode
+import com.shakticoin.app.widget.InlineLabelSpinner
 
 class RegViewModel : ViewModel() {
 
@@ -14,6 +18,8 @@ class RegViewModel : ViewModel() {
     val emailAddress: MutableLiveData<String> = MutableLiveData()
     val emailAddressError: MutableLiveData<String> = MutableLiveData()
 
+    var countryCodes : LiveData<List<IntlPhoneCountryCode>?>? = null
+    var selectedCountryCode : MutableLiveData<IntlPhoneCountryCode> = MutableLiveData()
     val phoneNumber: MutableLiveData<String> = MutableLiveData()
     val phoneNumberError: MutableLiveData<String> = MutableLiveData()
 
@@ -27,4 +33,11 @@ class RegViewModel : ViewModel() {
     val hasLowercase: MutableLiveData<Boolean> = MutableLiveData(false)
     val hasDigit: MutableLiveData<Boolean> = MutableLiveData(false)
     val hasSymbol: MutableLiveData<Boolean> = MutableLiveData(false)
+
+    fun onCountryCodeSelected(view: View, position: Int) {
+        val spinner = view as InlineLabelSpinner
+        if (spinner.isChoiceMade) {
+            selectedCountryCode.setValue(spinner.adapter.getItem(position) as IntlPhoneCountryCode)
+        }
+    }
 }

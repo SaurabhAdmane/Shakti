@@ -40,6 +40,7 @@
     <string name="tour3_text">Friends refer friends. Everyone earns money.\nLet\'s share the wealth all over the world.</string>
     <string name="hint_zero" translatable="false">0.00</string>
     <string name="hint_country">Country of Residence</string>
+    <string name="hint_country_code">Country Code</string>
     <string name="hint_citizenship">Country of Citizenship</string>
     <string name="hint_state">State/Province</string>
     <string name="hint_postal_code">Zip/Postal code</string>
