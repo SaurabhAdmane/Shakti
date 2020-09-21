@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.shakticoin.app.R;
 import com.shakticoin.app.ShaktiApplication;
 import com.shakticoin.app.api.OnCompleteListener;
+import com.shakticoin.app.api.RemoteException;
 import com.shakticoin.app.api.license.LicenseRepository;
 import com.shakticoin.app.api.license.LicenseType;
 import com.shakticoin.app.api.license.MiningLicenseCycle;
@@ -116,6 +117,10 @@ public class MiningLicenseActivity extends DrawerActivity {
             @Override
             public void onComplete(NodeOperatorModel value, Throwable error) {
                 if (error != null) {
+                    if (error instanceof RemoteException && ((RemoteException) error).getResponseCode() == 404) {
+                        updateDetails(viewModel.getSelectedPackage());
+                        return;
+                    }
                     Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
                     return;
                 }

@@ -607,6 +607,7 @@
     <string name="pmnt_stripe_order_name"><b>%1$s</b> License</string>
     <string name="pmnt_stripe_hint_card_number">Card Number</string>
     <string name="pmnt_stripe_hint_exp">MM/YY</string>
+    <string name="pmnt_success">Payment was successful.</string>
     <string name="dlg_sxe_pay_title"><![CDATA[Pay with<br/><font color="#B09C75"><b>SXE</b></font>]]></string>
     <string name="dlg_sxe_pay_sendto">Send to</string>
     <string name="dlg_sxe_pay_amount">SXE amount</string>

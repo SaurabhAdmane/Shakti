@@ -163,16 +163,17 @@ public class PaymentOptionsActivity extends DrawerActivity {
 
         // We should decide which method apply/upgrade/downgrade we must use for the operation.
         // The hierarchy follows the list M101/T100/T200/T300/T400
+        final String requestedPlanCode = requestedLicenseType.getPlanCode();
         if (existingPlanType != null) {
             int comparisionResult = compareLicenseType(requestedLicenseType.getPlanType(), existingPlanType);
             if (comparisionResult < 0) {
                 if (currentSubscription != null && currentSubscription.getSubscriptionId() != null) {
                     binding.progressBar.setVisibility(View.VISIBLE);
                     licenseRepository.downgradeSubscription(
-                            requestedLicenseType.getPlanCode(),
-                            currentSubscription.getSubscriptionId(), new OnCompleteListener<Void>() {
+                            requestedPlanCode,
+                            currentSubscription.getSubscriptionId(), new OnCompleteListener<String>() {
                                 @Override
-                                public void onComplete(Void value, Throwable error) {
+                                public void onComplete(String targetUrl, Throwable error) {
                                     binding.progressBar.setVisibility(View.INVISIBLE);
                                     if (error != null) {
                                         if (error instanceof UnauthorizedException) {
@@ -183,7 +184,10 @@ public class PaymentOptionsActivity extends DrawerActivity {
                                         return;
                                     }
 
-                                    openWallet();
+                                    Intent intent = new Intent(activity, PaymentFlowActivity.class);
+                                    intent.putExtra(CommonUtil.prefixed("planCode"), requestedPlanCode);
+                                    intent.putExtra(CommonUtil.prefixed("targetUrl"), targetUrl);
+                                    startActivity(intent);
                                 }
                             });
                 }
@@ -191,10 +195,10 @@ public class PaymentOptionsActivity extends DrawerActivity {
                 if (currentSubscription != null && currentSubscription.getSubscriptionId() != null) {
                     binding.progressBar.setVisibility(View.VISIBLE);
                     licenseRepository.upgradeSubscription(
-                            requestedLicenseType.getPlanCode(),
-                            currentSubscription.getSubscriptionId(), new OnCompleteListener<Void>() {
+                            requestedPlanCode,
+                            currentSubscription.getSubscriptionId(), new OnCompleteListener<String>() {
                                 @Override
-                                public void onComplete(Void value, Throwable error) {
+                                public void onComplete(String targetUrl, Throwable error) {
                                     binding.progressBar.setVisibility(View.INVISIBLE);
                                     if (error != null) {
                                         if (error instanceof UnauthorizedException) {
@@ -205,7 +209,10 @@ public class PaymentOptionsActivity extends DrawerActivity {
                                         return;
                                     }
 
-                                    openWallet();
+                                    Intent intent = new Intent(activity, PaymentFlowActivity.class);
+                                    intent.putExtra(CommonUtil.prefixed("planCode"), requestedPlanCode);
+                                    intent.putExtra(CommonUtil.prefixed("targetUrl"), targetUrl);
+                                    startActivity(intent);
                                 }
                             });
                 }
@@ -214,9 +221,9 @@ public class PaymentOptionsActivity extends DrawerActivity {
             }
         } else {
             binding.progressBar.setVisibility(View.VISIBLE);
-            licenseRepository.checkoutSubscription(requestedLicenseType.getPlanCode(), new OnCompleteListener<String>() {
+            licenseRepository.checkoutSubscription(requestedPlanCode, new OnCompleteListener<String>() {
                 @Override
-                public void onComplete(String value, Throwable error) {
+                public void onComplete(String targetUrl, Throwable error) {
                     binding.progressBar.setVisibility(View.INVISIBLE);
                     if (error != null) {
                         if (error instanceof UnauthorizedException) {
@@ -226,6 +233,11 @@ public class PaymentOptionsActivity extends DrawerActivity {
                         }
                         return;
                     }
+
+                    Intent intent = new Intent(activity, PaymentFlowActivity.class);
+                    intent.putExtra(CommonUtil.prefixed("planCode"), requestedPlanCode);
+                    intent.putExtra(CommonUtil.prefixed("targetUrl"), targetUrl);
+                    startActivity(intent);
                 }
             });
         }

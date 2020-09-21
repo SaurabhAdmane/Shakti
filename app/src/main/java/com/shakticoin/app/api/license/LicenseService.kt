@@ -46,10 +46,10 @@ interface LicenseService {
     @Headers("Content-Type: application/json", "Accept: application/json")
     @POST("node-operator/checkout/upgrade")
     fun checkoutUpgrade(@Header("Authorization") authorization: String?,
-                        @Body parameters : CheckoutPlanRequest) : Call<ResponseBody?>
+                        @Body parameters : CheckoutPlanRequest) : Call<CheckoutResponse?>
 
     @Headers("Content-Type: application/json", "Accept: application/json")
     @POST("node-operator/checkout/downgrade")
     fun checkoutDowngrade(@Header("Authorization") authorization: String?,
-                          @Body parameters : CheckoutPlanRequest) : Call<ResponseBody?>
+                          @Body parameters : CheckoutPlanRequest) : Call<CheckoutResponse?>
 }

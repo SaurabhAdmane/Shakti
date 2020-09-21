@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.shakticoin.app.R;
 import com.shakticoin.app.api.OnCompleteListener;
+import com.shakticoin.app.api.RemoteException;
 import com.shakticoin.app.api.license.LicenseRepository;
 import com.shakticoin.app.api.license.NodeOperatorModel;
 import com.shakticoin.app.api.license.SubscribedLicenseModel;
@@ -313,8 +314,15 @@ public abstract class DrawerActivity extends AppCompatActivity {
             @Override
             public void onComplete(NodeOperatorModel value, Throwable error) {
                 if (error != null) {
-                    Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
-                    return;
+                    if (error instanceof RemoteException && ((RemoteException) error).getResponseCode() == 404) {
+                        // no subscriptions and node operator does not exist yet
+                        Intent intent = new Intent(activity, MiningLicenseActivity.class);
+                        startActivity(intent);
+                        return;
+                    } else {
+                        Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
+                        return;
+                    }
                 }
 
                 SubscribedLicenseModel subscription = CommonUtil.getActiveSubscription(value.getSubscribedLicenses());

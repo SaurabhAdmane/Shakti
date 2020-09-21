@@ -4,11 +4,11 @@ import androidx.lifecycle.LifecycleOwner
 import com.shakticoin.app.api.*
 import com.shakticoin.app.api.auth.AuthRepository
 import com.shakticoin.app.api.auth.TokenResponse
+import com.shakticoin.app.api.country.CountryRepository
 import com.shakticoin.app.api.kyc.KYCRepository
 import com.shakticoin.app.api.kyc.KycUserView
 import com.shakticoin.app.util.Debug
 import okhttp3.OkHttpClient
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -32,6 +32,7 @@ class LicenseRepository : BackendRepository() {
 
     private val authRepository = AuthRepository()
     private val kycRepository = KYCRepository()
+    private val countryRepository = CountryRepository()
 
     private var callLics : Call<List<LicenseType>?>? = null
     fun getLicenses(listener: OnCompleteListener<List<LicenseType>?>?) {
@@ -129,6 +130,9 @@ class LicenseRepository : BackendRepository() {
                     return
                 }
 
+                val countryCode = user?.address?.countryCode
+
+
                 val parameters = CheckoutModel()
                 parameters.planCode = planCode
                 val address = AddressModel()
@@ -179,22 +183,23 @@ class LicenseRepository : BackendRepository() {
         })
     }
 
-    var callUpgdSub : Call<ResponseBody?>? = null
-    fun upgradeSubscription(planCode: String, subscriptionId: String, listener: OnCompleteListener<Void>) {
+    var callUpgdSub : Call<CheckoutResponse?>? = null
+    fun upgradeSubscription(planCode: String, subscriptionId: String, listener: OnCompleteListener<String>) {
         upgradeSubscription(planCode, subscriptionId, listener, false)
     }
-    private fun upgradeSubscription(planCode: String, subscriptionId: String, listener: OnCompleteListener<Void>, hasRecover401: Boolean) {
+    private fun upgradeSubscription(planCode: String, subscriptionId: String, listener: OnCompleteListener<String>, hasRecover401: Boolean) {
         val parameters = CheckoutPlanRequest()
         parameters.planCode = planCode
         parameters.subscriptionId = subscriptionId
         parameters.userName = Session.getShaktiId();
         callUpgdSub = licenseService.checkoutUpgrade(Session.getAuthorizationHeader(), parameters);
-        callUpgdSub!!.enqueue(object : Callback<ResponseBody?> {
-            override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
+        callUpgdSub!!.enqueue(object : Callback<CheckoutResponse?> {
+            override fun onResponse(call: Call<CheckoutResponse?>, response: Response<CheckoutResponse?>) {
                 Debug.logDebug(response.toString())
                 if (response.isSuccessful) {
                     val resp = response.body()
-                    Debug.logDebug(resp?.string())
+                    if (resp != null) Debug.logDebug(resp.message)
+                    listener.onComplete(resp?.hostedpage, null)
 
                 } else {
                     when (response.code()) {
@@ -220,27 +225,28 @@ class LicenseRepository : BackendRepository() {
                 }
             }
 
-            override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
+            override fun onFailure(call: Call<CheckoutResponse?>, t: Throwable) {
                 return returnError(listener, t)
             }
         })
     }
 
-    var callSubDowngd : Call<ResponseBody?>? = null
-    fun downgradeSubscription(planCode: String, subscriptionId: String, listener: OnCompleteListener<Void>) {
+    var callSubDowngd : Call<CheckoutResponse?>? = null
+    fun downgradeSubscription(planCode: String, subscriptionId: String, listener: OnCompleteListener<String>) {
         downgradeSubscription(planCode, subscriptionId, listener, false)
     }
-    private fun downgradeSubscription(planCode: String, subscriptionId: String, listener: OnCompleteListener<Void>, hasRecover401: Boolean) {
+    private fun downgradeSubscription(planCode: String, subscriptionId: String, listener: OnCompleteListener<String>, hasRecover401: Boolean) {
         val parameters = CheckoutPlanRequest()
         parameters.planCode = planCode
         parameters.subscriptionId = subscriptionId
         callSubDowngd = licenseService.checkoutDowngrade(Session.getAuthorizationHeader(), parameters)
-        callSubDowngd!!.enqueue(object : Callback<ResponseBody?> {
-            override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
+        callSubDowngd!!.enqueue(object : Callback<CheckoutResponse?> {
+            override fun onResponse(call: Call<CheckoutResponse?>, response: Response<CheckoutResponse?>) {
                 Debug.logDebug(response.toString())
                 if (response.isSuccessful) {
                     val resp = response.body()
-                    Debug.logDebug(resp?.string())
+                    if (resp != null) Debug.logDebug(resp.message)
+                    listener.onComplete(resp?.hostedpage, null)
 
                 } else {
                     when (response.code()) {
@@ -266,7 +272,7 @@ class LicenseRepository : BackendRepository() {
                 }
             }
 
-            override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
+            override fun onFailure(call: Call<CheckoutResponse?>, t: Throwable) {
                 return returnError(listener, t)
             }
         })
@@ -276,6 +282,7 @@ class LicenseRepository : BackendRepository() {
         super.setLifecycleOwner(lifecycleOwner)
         authRepository.setLifecycleOwner(lifecycleOwner)
         kycRepository.setLifecycleOwner(lifecycleOwner)
+        countryRepository.setLifecycleOwner(lifecycleOwner)
     }
 
     override fun onStop() {
