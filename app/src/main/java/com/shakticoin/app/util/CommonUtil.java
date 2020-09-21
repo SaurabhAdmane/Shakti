@@ -1,6 +1,11 @@
 package com.shakticoin.app.util;
 
 import android.content.Context;
+import android.telephony.TelephonyManager;
+import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.shakticoin.app.ShaktiApplication;
 import com.shakticoin.app.api.license.SubscribedLicenseModel;
@@ -56,5 +61,27 @@ public class CommonUtil {
             }
         }
         return null;
+    }
+
+    /**
+     * Find and return device ISO country code.
+     */
+    @Nullable
+    public static String getCountryCode2(@NonNull Context context) {
+        String countryCode = null;
+        final TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        if (telephonyManager != null) {
+            countryCode = telephonyManager.getSimCountryIso();
+            if ((countryCode == null || countryCode.length() != 2) && telephonyManager.getPhoneType() != TelephonyManager.PHONE_TYPE_CDMA) {
+                countryCode = telephonyManager.getNetworkCountryIso();
+            }
+        }
+
+        if (countryCode == null || countryCode.length() != 2) {
+            // use primary locale as a last resort source for country information
+            countryCode = context.getResources().getConfiguration().locale.getCountry();
+        }
+
+        return !TextUtils.isEmpty(countryCode) ? countryCode.toUpperCase() : null;
     }
 }

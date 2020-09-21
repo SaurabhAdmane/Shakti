@@ -10,7 +10,7 @@ interface OnboardService {
 
     @Headers("Content-Type: application/json", "Accept: application/json")
     @POST("onboardShakti/users")
-    fun addUser(@Body parameters: OnboardShaktiUserModel) : Call<ResponseBean?>
+    fun addUser(@Body parameters: OnboardShaktiModel) : Call<ResponseBean?>
 
     @Headers("Content-Type: application/json", "Accept: application/json")
     @POST("onboardShakti/users/password/change")

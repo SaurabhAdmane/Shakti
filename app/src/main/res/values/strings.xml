@@ -729,6 +729,7 @@
     <string name="reg__mobile_security_code">SMS security code</string>
     <string name="reg__mobile_resend"><u>Resend SMS code</u></string>
     <string name="reg__mobile_validation_err">The value must be a valid phone number</string>
+    <string name="reg__mobile_no_code">Please select a country code</string>
     <string name="reg__pwd_set_password">Set Password</string>
     <string name="reg__pwd_account_created">A ShaktiID has been created with a link to your email and your mobile number</string>
     <string name="reg__pwd_strength">PASSWORD STRENGTH</string>

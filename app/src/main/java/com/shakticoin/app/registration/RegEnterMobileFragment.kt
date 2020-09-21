@@ -6,9 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.shakticoin.app.api.otp.IntlPhoneCountryCode
 import com.shakticoin.app.api.otp.PhoneOTPRepository
 import com.shakticoin.app.databinding.FragmentRegEnterMobileBinding
+import com.shakticoin.app.util.CommonUtil
 import com.shakticoin.app.util.Validator
 
 class RegEnterMobileFragment : Fragment() {
@@ -34,6 +37,24 @@ class RegEnterMobileFragment : Fragment() {
         }
 
         viewModel?.countryCodes = phoneOtpRepository.getCountryCodeList();
+        viewModel?.countryCodes?.observe(viewLifecycleOwner, object: Observer<List<IntlPhoneCountryCode>> {
+            override fun onChanged(codes: List<IntlPhoneCountryCode>?) {
+                if (codes != null) {
+                    val deviceIsoCode = CommonUtil.getCountryCode2(requireContext());
+                    if (deviceIsoCode != null) {
+                        val codesList : List<IntlPhoneCountryCode>? = viewModel?.countryCodes?.value
+                        if (codesList != null) {
+                            for (item in codesList) {
+                                if (deviceIsoCode.equals(item.isoCode, true)) {
+                                    viewModel?.selectedCountryCode?.value = item
+                                    break
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        })
 
         return binding?.root
     }

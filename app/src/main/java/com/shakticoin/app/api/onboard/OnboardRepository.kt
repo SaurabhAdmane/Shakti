@@ -27,26 +27,30 @@ class OnboardRepository : BackendRepository() {
             .create(OnboardService::class.java)
     private val authRepository: AuthRepository = AuthRepository()
 
-    fun addUser(emailAddress: String, phoneNumber: String, password: String, listener: OnCompleteListener<String?>) {
-        addUser(emailAddress, phoneNumber, password, listener, false)
+    private var callAddUsr : Call<ResponseBean?>? = null
+    fun addUser(emailAddress: String, countryCode: String, phoneNumber: String, password: String, listener: OnCompleteListener<String?>) {
+        addUser(emailAddress, countryCode, phoneNumber, password, listener, false)
     }
-    fun addUser(emailAddress: String, phoneNumber: String, password: String, listener: OnCompleteListener<String?>, hasRecover401: Boolean) {
-        val parameters: OnboardShaktiUserModel = OnboardShaktiUserModel()
+    private fun addUser(emailAddress: String, countryCode: String, phoneNumber: String,
+                        password: String, listener: OnCompleteListener<String?>, hasRecover401: Boolean) {
+        val parameters = OnboardShaktiModel()
         parameters.email = emailAddress
+        parameters.countryCode = countryCode
         parameters.mobileNo = phoneNumber
         parameters.password = password
-        onboardService.addUser(parameters).enqueue(object: Callback<ResponseBean?> {
+        callAddUsr = onboardService.addUser(parameters)
+        callAddUsr!!.enqueue(object: Callback<ResponseBean?> {
             override fun onFailure(call: Call<ResponseBean?>, t: Throwable) {
-                return returnError(listener, t);
+                return returnError(listener, t)
             }
 
             override fun onResponse(call: Call<ResponseBean?>, response: Response<ResponseBean?>) {
                 Debug.logDebug(response.toString())
                 if (response.isSuccessful) {
-                    val resp = response.body();
+                    val resp = response.body()
                     if (resp != null) {
                         listener.onComplete(resp.details?.get("shaktiID") as String, null)
-                    } else listener.onComplete(null, null);
+                    } else listener.onComplete(null, null)
                 } else {
                     when(response.code()) {
                         401 -> {
@@ -57,7 +61,7 @@ class OnboardRepository : BackendRepository() {
                                             listener.onComplete(null, error)
                                             return
                                         }
-                                        addUser(emailAddress, phoneNumber, password, listener, true);
+                                        addUser(emailAddress, countryCode, phoneNumber, password, listener, true)
                                     }
                                 })
                             } else {
@@ -74,13 +78,15 @@ class OnboardRepository : BackendRepository() {
         })
     }
 
+    private var callWlt : Call<ResponseBean?>? = null
     fun createWallet(passphrase: String, listener: OnCompleteListener<String>) {createWallet(passphrase, listener, false)}
-    fun createWallet(passphrase: String, listener: OnCompleteListener<String>, hasRecover401: Boolean) {
+    private fun createWallet(passphrase: String, listener: OnCompleteListener<String>, hasRecover401: Boolean) {
         val parameters = WalletRequest()
         parameters.passphrase = passphrase
-        onboardService.createWallet(Session.getAuthorizationHeader(), parameters).enqueue(object: Callback<ResponseBean?> {
+        callWlt = onboardService.createWallet(Session.getAuthorizationHeader(), parameters)
+        callWlt!!.enqueue(object: Callback<ResponseBean?> {
             override fun onFailure(call: Call<ResponseBean?>, t: Throwable) {
-                return returnError(listener, t);
+                return returnError(listener, t)
             }
 
             override fun onResponse(call: Call<ResponseBean?>, response: Response<ResponseBean?>) {
@@ -96,7 +102,7 @@ class OnboardRepository : BackendRepository() {
                         // either did not store wallet bytes locally or lost it.
                         if (TextUtils.isEmpty(walletBytes)) {
                             listener.onComplete(null, RemoteException(details["message"] as String, response.code()))
-                            return;
+                            return
                         }
                         listener.onComplete(walletBytes, null)
                     } else listener.onComplete(null, null)
@@ -110,7 +116,7 @@ class OnboardRepository : BackendRepository() {
                                             listener.onComplete(null, error)
                                             return
                                         }
-                                        createWallet(passphrase, listener, true);
+                                        createWallet(passphrase, listener, true)
                                     }
                                 })
                             } else {
@@ -129,5 +135,10 @@ class OnboardRepository : BackendRepository() {
     override fun setLifecycleOwner(lifecycleOwner: LifecycleOwner?) {
         super.setLifecycleOwner(lifecycleOwner)
         authRepository.setLifecycleOwner(lifecycleOwner)
+    }
+
+    override fun onStop() {
+        if (callAddUsr != null && !callAddUsr!!.isCanceled) callAddUsr?.cancel()
+        if (callWlt != null && !callWlt!!.isCanceled) callWlt?.cancel()
     }
 }

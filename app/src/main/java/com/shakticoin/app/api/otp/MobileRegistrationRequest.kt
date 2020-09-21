@@ -1,5 +1,3 @@
 package com.shakticoin.app.api.otp
 
-class MobileRegistrationRequest {
-    var mobileNo: String? = null
-}
+data class MobileRegistrationRequest (var countryCode: String, var mobileNo: String)

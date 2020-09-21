@@ -1,16 +1,13 @@
 package com.shakticoin.app.api.onboard
 
-class OnboardShaktiUserModel {
+class OnboardShaktiModel {
     var countryCode: String? = null
+    var mobileNo: String? = null
     var deviceId: String? = null
     var email: String? = null
-    var emailVerified: Boolean? = null
     var geojson: GeoJSONModel? = null
     var ipaddress: String? = null
-    var mobileNo: String? = null
-    var mobileVerified: Boolean? = null
     var password: String? = null
-    var shaktiID: String? = null
 }
 
 class UpdatePasswordModel {

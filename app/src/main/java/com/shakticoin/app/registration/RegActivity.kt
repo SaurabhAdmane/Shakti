@@ -133,17 +133,17 @@ class RegActivity : AppCompatActivity() {
     fun onVerifyPhone(v: View?) {
         imm?.hideSoftInputFromWindow(binding.root.windowToken, 0)
         val self: AppCompatActivity = this
-        // TODO: we need to add list of phone codes at some moment
         val phoneNumber = viewModel?.phoneNumber?.value
-        if (Validator.isPhoneNumber(phoneNumber)) {
-            phoneNumber?.let {
+        val countryCode = viewModel?.selectedCountryCode?.value?.countryCode
+        if (phoneNumber != null && Validator.isPhoneNumber(phoneNumber)) {
+            if (countryCode != null) {
                 viewModel?.progressOn?.value = true
-                otpPhoneRepository.checkPhoneNumberStatus(it, object : OnCompleteListener<Boolean>() {
+                otpPhoneRepository.checkPhoneNumberStatus(countryCode, phoneNumber, object : OnCompleteListener<Boolean>() {
                     override fun onComplete(isVerified: Boolean?, error: Throwable?) {
                         if (error != null) {
                             viewModel?.progressOn?.value = false
                             Toast.makeText(self, Debug.getFailureMsg(self, error), Toast.LENGTH_LONG).show()
-                            return;
+                            return
                         }
 
                         if (isVerified != null && isVerified) {
@@ -154,7 +154,7 @@ class RegActivity : AppCompatActivity() {
                                     .addToBackStack(null)
                                     .commit()
                         } else {
-                            otpPhoneRepository.requestRegistration(it, object: OnCompleteListener<Void?>() {
+                            otpPhoneRepository.requestRegistration(countryCode, phoneNumber, object : OnCompleteListener<Void?>() {
                                 override fun onComplete(value: Void?, error: Throwable?) {
                                     viewModel?.progressOn?.value = false
                                     if (error != null) {
@@ -171,18 +171,21 @@ class RegActivity : AppCompatActivity() {
                         }
                     }
                 })
+            } else {
+                Toast.makeText(this, R.string.reg__mobile_no_code, Toast.LENGTH_SHORT).show()
             }
         } else {
-            viewModel?.phoneNumberError?.value = getString(R.string.reg__mobile_validation_err)
+            Toast.makeText(this, R.string.reg__mobile_validation_err, Toast.LENGTH_SHORT).show()
         }
     }
 
     fun onReSendSMS(v: View?) {
         val self: AppCompatActivity = this
         val phoneNumber = viewModel?.phoneNumber?.value
-        phoneNumber?.let {
+        val countryCode = viewModel?.selectedCountryCode?.value?.countryCode
+        if (countryCode != null && phoneNumber != null) {
             viewModel?.progressOn?.value = true
-            otpPhoneRepository.requestRegistration(it, object: OnCompleteListener<Void?>() {
+            otpPhoneRepository.requestRegistration(countryCode, phoneNumber, object : OnCompleteListener<Void?>() {
                 override fun onComplete(value: Void?, error: Throwable?) {
                     viewModel?.progressOn?.value = false
                     if (error != null) {
@@ -231,8 +234,8 @@ class RegActivity : AppCompatActivity() {
 
         val self: AppCompatActivity = this
         viewModel?.progressOn?.value = true
-        onboardRepository.addUser(viewModel?.emailAddress?.value!!, viewModel?.phoneNumber?.value!!,
-                viewModel?.password1?.value!!, object: OnCompleteListener<String?>() {
+        onboardRepository.addUser(viewModel?.emailAddress?.value!!, viewModel?.selectedCountryCode?.value?.countryCode!!,
+                viewModel?.phoneNumber?.value!!, viewModel?.password1?.value!!, object: OnCompleteListener<String?>() {
             override fun onComplete(value: String?, error: Throwable?) {
                 viewModel?.progressOn?.value = false
                 if (error != null) {

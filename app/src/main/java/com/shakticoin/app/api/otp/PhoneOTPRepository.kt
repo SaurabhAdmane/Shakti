@@ -15,7 +15,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 class PhoneOTPRepository : BackendRepository() {
-    var client = OkHttpClient.Builder()
+    private var client = OkHttpClient.Builder()
             .readTimeout(120, TimeUnit.SECONDS)
             .connectTimeout(120, TimeUnit.SECONDS)
             .build()
@@ -28,9 +28,8 @@ class PhoneOTPRepository : BackendRepository() {
             .create(PhoneOTPService::class.java)
 
     private var callReqReg : Call<MainResponseBean?>? = null
-    fun requestRegistration(phoneNumber: String, listener: OnCompleteListener<Void?>) {
-        val parameters = MobileRegistrationRequest();
-        parameters.mobileNo = phoneNumber
+    fun requestRegistration(countryCode: String, phoneNumber: String, listener: OnCompleteListener<Void?>) {
+        val parameters = MobileRegistrationRequest(countryCode, phoneNumber)
         callReqReg = service.registrationRequest(parameters)
         callReqReg!!.enqueue(object : Callback<MainResponseBean?> {
             override fun onFailure(call: Call<MainResponseBean?>, t: Throwable) {
@@ -54,7 +53,7 @@ class PhoneOTPRepository : BackendRepository() {
                 }
             }
 
-        });
+        })
     }
 
     private var callConfReg : Call<MainResponseBean?>? = null
@@ -87,8 +86,7 @@ class PhoneOTPRepository : BackendRepository() {
                             Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
                             listener.onComplete(true, null)
                         } // verified already
-                        else -> listener.onComplete(null, RemoteMessageException(msg
-                                ?: response.message(), response.code()))
+                        else -> listener.onComplete(null, RemoteMessageException(msg, response.code()))
                     }
                 }
             }
@@ -97,9 +95,8 @@ class PhoneOTPRepository : BackendRepository() {
     }
 
     private var callInquiryNum : Call<MainResponseBean?>? = null
-    fun checkPhoneNumberStatus(phoneNumber: String, listener: OnCompleteListener<Boolean>) {
-        val parameters = MobileRegistrationRequest()
-        parameters.mobileNo = phoneNumber;
+    fun checkPhoneNumberStatus(countryCode: String, phoneNumber: String, listener: OnCompleteListener<Boolean>) {
+        val parameters = MobileRegistrationRequest(countryCode, phoneNumber)
         callInquiryNum = service.inquiryPhoneNumber(parameters)
         callInquiryNum?.enqueue(object : Callback<MainResponseBean?> {
             override fun onResponse(call: Call<MainResponseBean?>, response: Response<MainResponseBean?>) {
@@ -130,7 +127,7 @@ class PhoneOTPRepository : BackendRepository() {
                 if (response.isSuccessful) {
                     val list = response.body()
                     if (list != null) {
-                        listener.onComplete(list.sortedBy { it.country }, null);
+                        listener.onComplete(list.sortedBy { it.country }, null)
                     }
                 } else {
                     returnError(listener, response)
@@ -138,23 +135,22 @@ class PhoneOTPRepository : BackendRepository() {
             }
 
             override fun onFailure(call: Call<List<IntlPhoneCountryCode>?>, t: Throwable) {
-                returnError(listener, t);
+                returnError(listener, t)
             }
         })
     }
 
     fun getCountryCodeList() : MutableLiveData<List<IntlPhoneCountryCode>> {
         val liveData = MutableLiveData<List<IntlPhoneCountryCode>>()
-        //liveData.value = listOf(IntlPhoneCountryCode("", ""))
 
         getCountryCodes(object : OnCompleteListener<List<IntlPhoneCountryCode>>() {
             override fun onComplete(value: List<IntlPhoneCountryCode>?, error: Throwable?) {
-                if (error != null) return;
+                if (error != null) return
                 liveData.value = value
             }
 
         })
-        return liveData;
+        return liveData
     }
 
     override fun onStop() {
