@@ -121,26 +121,23 @@ class PhoneOTPRepository : BackendRepository() {
         })
     }
 
-    private var callCntryCodes : Call<Map<String, String>?>? = null
+    private var callCntryCodes : Call<List<IntlPhoneCountryCode>?>? = null
     fun getCountryCodes(listener: OnCompleteListener<List<IntlPhoneCountryCode>>) {
         callCntryCodes = service.countryCodes()
-        callCntryCodes!!.enqueue(object : Callback<Map<String, String>?> {
-            override fun onResponse(call: Call<Map<String, String>?>, response: Response<Map<String, String>?>) {
+        callCntryCodes!!.enqueue(object : Callback<List<IntlPhoneCountryCode>?> {
+            override fun onResponse(call: Call<List<IntlPhoneCountryCode>?>, response: Response<List<IntlPhoneCountryCode>?>) {
                 Debug.logDebug(response.toString())
                 if (response.isSuccessful) {
-                    val resp = response.body()
-                    if (resp != null) {
-                        val list = ArrayList<IntlPhoneCountryCode>()
-                        resp.forEach { (country, code) -> list.add(IntlPhoneCountryCode(code, country)) }
-                        list.sortBy { it.countryName }
-                        listener.onComplete(list, null);
+                    val list = response.body()
+                    if (list != null) {
+                        listener.onComplete(list.sortedBy { it.country }, null);
                     }
                 } else {
                     returnError(listener, response)
                 }
             }
 
-            override fun onFailure(call: Call<Map<String, String>?>, t: Throwable) {
+            override fun onFailure(call: Call<List<IntlPhoneCountryCode>?>, t: Throwable) {
                 returnError(listener, t);
             }
         })

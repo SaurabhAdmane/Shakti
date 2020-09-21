@@ -28,6 +28,6 @@ interface PhoneOTPService {
     fun inquiryPhoneNumber(@Body parameters: MobileRegistrationRequest) : Call<MainResponseBean?>
 
     @Headers("Accept: application/json")
-    @GET("mobile/country-code")
-    fun countryCodes() : Call<Map<String, String>?>
+    @GET("mobile/country-codes")
+    fun countryCodes() : Call<List<IntlPhoneCountryCode>?>
 }
