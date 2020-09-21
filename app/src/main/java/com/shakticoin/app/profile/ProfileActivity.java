@@ -326,7 +326,9 @@ public class ProfileActivity extends DrawerActivity {
                             Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
                             return;
                         }
-                        selectPage(PAGE_ADDITIONAL_FIRST);
+                        //TODO: temporarily
+                        //selectPage(PAGE_ADDITIONAL_FIRST);
+                        finish();
                     }
                 });
             } else {
@@ -339,7 +341,9 @@ public class ProfileActivity extends DrawerActivity {
                             Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
                             return;
                         }
-                        selectPage(PAGE_ADDITIONAL_FIRST);
+                        //TODO: temporarily
+                        //selectPage(PAGE_ADDITIONAL_FIRST);
+                        finish();
                     }
                 });
             }
