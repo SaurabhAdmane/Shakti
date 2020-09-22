@@ -94,11 +94,13 @@ class EmailOTPRepository : BackendRepository() {
         parameters.email = email
         try {
             val response: Response<MainResponseBean?> = service.getEmailStatus(parameters).execute();
+            Debug.logDebug(response.toString())
             if (response.isSuccessful) {
                 return true
             } else {
                 when (response.code()) {
                     404 -> return false // not found
+                    410 -> return false // expired
                     else -> return null
                 }
             }
@@ -126,6 +128,7 @@ class EmailOTPRepository : BackendRepository() {
                 } else {
                     when(response.code()) {
                         404 -> listener.onComplete(false, null) // not found
+                        410 -> listener.onComplete(false, null) // expired
                         else -> returnError(listener, response)
                     }
                 }
