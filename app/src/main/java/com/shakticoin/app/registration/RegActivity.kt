@@ -223,15 +223,16 @@ class RegActivity : AppCompatActivity() {
     }
 
     fun onCreateAccount(v: View) {
+        if (viewModel?.password1?.value != viewModel?.password2?.value) {
+            Toast.makeText(this, R.string.err_incorrect_password, Toast.LENGTH_LONG).show()
+            return
+        }
+
         if (!viewModel?.hasUppercase?.value!! || !viewModel?.hasLowercase?.value!! ||
                 !viewModel?.hasDigit?.value!! || !viewModel?.hasSymbol?.value!! ||
                 !Validator.isPasswordStrong(viewModel?.password1?.value) ||
                 TextUtils.isEmpty(viewModel?.password1?.value)) {
             Toast.makeText(this, R.string.err_password_not_strong, Toast.LENGTH_LONG).show()
-            return
-        }
-        if (viewModel?.password1?.value != viewModel?.password2?.value) {
-            Toast.makeText(this, R.string.err_incorrect_password, Toast.LENGTH_LONG).show()
             return
         }
 
