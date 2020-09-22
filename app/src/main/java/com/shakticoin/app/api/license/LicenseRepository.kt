@@ -5,6 +5,7 @@ import com.shakticoin.app.api.*
 import com.shakticoin.app.api.auth.AuthRepository
 import com.shakticoin.app.api.auth.TokenResponse
 import com.shakticoin.app.api.country.CountryRepository
+import com.shakticoin.app.api.country.Subdivision
 import com.shakticoin.app.api.kyc.KYCRepository
 import com.shakticoin.app.api.kyc.KycUserView
 import com.shakticoin.app.util.Debug
@@ -113,7 +114,7 @@ class LicenseRepository : BackendRepository() {
             }
 
             override fun onFailure(call: Call<NodeOperatorModel?>, t: Throwable) {
-                return returnError(listener, t);
+                return returnError(listener, t)
             }
 
         })
@@ -131,59 +132,79 @@ class LicenseRepository : BackendRepository() {
                 }
 
                 val countryCode = user?.address?.countryCode
+                val stateProvinceCode = user?.address?.stateProvinceCode
 
+                countryRepository.getSubdivisionsByCountry(countryCode!!, object : OnCompleteListener<List<Subdivision>>() {
+                    override fun onComplete(stateProvinceList: List<Subdivision>?, error: Throwable?) {
+                        if (error != null) {
+                            listener.onComplete(null, error)
+                            return
+                        }
 
-                val parameters = CheckoutModel()
-                parameters.planCode = planCode
-                val address = AddressModel()
-                address.countryCode = user?.address?.countryCode
-                address.country = user?.address?.country
-                address.province = user?.address?.stateProvinceCode
-                address.city = user?.address?.city
-                address.street = user?.address?.address1
-                if (user?.address?.address2 != null) address.street += (" " + user.address?.address2)
-                address.zipCode = user?.address?.zipCode
-                parameters.address = address
-                licenseService.checkoutSubscription(Session.getAuthorizationHeader(), parameters).enqueue(object: Callback<CheckoutResponse?> {
-                    override fun onResponse(call: Call<CheckoutResponse?>, response: Response<CheckoutResponse?>) {
-                        Debug.logDebug(response.toString())
-                        if (response.isSuccessful) {
-                            val resp = response.body()
-                            if (resp != null) Debug.logDebug(resp.message)
-                            listener.onComplete(resp?.hostedpage, null)
-                        } else {
-                            when(response.code()) {
-                                401 -> {
-                                    if (!hasRecover401) {
-                                        authRepository.refreshToken(Session.getRefreshToken(), object : OnCompleteListener<TokenResponse?>() {
-                                            override fun onComplete(value: TokenResponse?, error: Throwable?) {
-                                                if (error != null) {
-                                                    listener.onComplete(null, error)
-                                                    return
-                                                }
-                                                checkoutSubscription(planCode, listener, true)
-                                            }
-                                        })
-                                    } else {
-                                        listener.onComplete(null, UnauthorizedException())
-                                        return
-                                    }
+                        var stateProvinceName : String? = null
+                        if (stateProvinceCode != null && stateProvinceList != null && stateProvinceList.isNotEmpty()) {
+                            for (stateProvince in stateProvinceList) {
+                                if (stateProvinceCode == stateProvince.subdivision) {
+                                    stateProvinceName = stateProvince.name
+                                    break
                                 }
-                                else -> return returnError(listener, response)
                             }
                         }
-                    }
 
-                    override fun onFailure(call: Call<CheckoutResponse?>, t: Throwable) {
-                        return returnError(listener, t)
-                    }
+                        val parameters = CheckoutModel()
+                        parameters.planCode = planCode
+                        val address = AddressModel()
+                        address.countryCode = countryCode
+                        // Assign the country name to the country code as a workaround for inventory check.
+                        address.country = countryCode
+                        address.province = stateProvinceName?:stateProvinceCode
+                        address.city = user.address?.city
+                        address.street = user.address?.address1
+                        if (user.address?.address2 != null) address.street += (" " + user.address?.address2)
+                        address.zipCode = user.address?.zipCode
+                        parameters.address = address
+                        licenseService.checkoutSubscription(Session.getAuthorizationHeader(), parameters).enqueue(object: Callback<CheckoutResponse?> {
+                            override fun onResponse(call: Call<CheckoutResponse?>, response: Response<CheckoutResponse?>) {
+                                Debug.logDebug(response.toString())
+                                if (response.isSuccessful) {
+                                    val resp = response.body()
+                                    if (resp != null) Debug.logDebug(resp.message)
+                                    listener.onComplete(resp?.hostedpage, null)
+                                } else {
+                                    when(response.code()) {
+                                        401 -> {
+                                            if (!hasRecover401) {
+                                                authRepository.refreshToken(Session.getRefreshToken(), object : OnCompleteListener<TokenResponse?>() {
+                                                    override fun onComplete(value: TokenResponse?, error: Throwable?) {
+                                                        if (error != null) {
+                                                            listener.onComplete(null, error)
+                                                            return
+                                                        }
+                                                        checkoutSubscription(planCode, listener, true)
+                                                    }
+                                                })
+                                            } else {
+                                                listener.onComplete(null, UnauthorizedException())
+                                                return
+                                            }
+                                        }
+                                        else -> return returnError(listener, response)
+                                    }
+                                }
+                            }
 
+                            override fun onFailure(call: Call<CheckoutResponse?>, t: Throwable) {
+                                return returnError(listener, t)
+                            }
+                        })
+                    }
                 })
+
             }
         })
     }
 
-    var callUpgdSub : Call<CheckoutResponse?>? = null
+    private var callUpgdSub : Call<CheckoutResponse?>? = null
     fun upgradeSubscription(planCode: String, subscriptionId: String, listener: OnCompleteListener<String>) {
         upgradeSubscription(planCode, subscriptionId, listener, false)
     }
@@ -191,8 +212,8 @@ class LicenseRepository : BackendRepository() {
         val parameters = CheckoutPlanRequest()
         parameters.planCode = planCode
         parameters.subscriptionId = subscriptionId
-        parameters.userName = Session.getShaktiId();
-        callUpgdSub = licenseService.checkoutUpgrade(Session.getAuthorizationHeader(), parameters);
+        parameters.userName = Session.getShaktiId()
+        callUpgdSub = licenseService.checkoutUpgrade(Session.getAuthorizationHeader(), parameters)
         callUpgdSub!!.enqueue(object : Callback<CheckoutResponse?> {
             override fun onResponse(call: Call<CheckoutResponse?>, response: Response<CheckoutResponse?>) {
                 Debug.logDebug(response.toString())
@@ -231,7 +252,7 @@ class LicenseRepository : BackendRepository() {
         })
     }
 
-    var callSubDowngd : Call<CheckoutResponse?>? = null
+    private var callSubDowngd : Call<CheckoutResponse?>? = null
     fun downgradeSubscription(planCode: String, subscriptionId: String, listener: OnCompleteListener<String>) {
         downgradeSubscription(planCode, subscriptionId, listener, false)
     }
