@@ -5,7 +5,7 @@ package com.shakticoin.app.api
  */
 object BaseUrl {
     /** Possible values "-stg", "-qa", and empty string  */
-    private const val ENV_CODE = "-stg"
+    private const val ENV_CODE = "-qa"
 
     const val BASE_URL = "https://dev-api.shakticoin.com/"
     const val IAM_BASE_URL = "https://iam${ENV_CODE}.shakticoin.com/oxauth/restv1/"
