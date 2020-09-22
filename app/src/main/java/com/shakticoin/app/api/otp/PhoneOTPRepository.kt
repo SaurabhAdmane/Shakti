@@ -57,10 +57,8 @@ class PhoneOTPRepository : BackendRepository() {
     }
 
     private var callConfReg : Call<MainResponseBean?>? = null
-    fun confirmRegistration(mobileNo: String, code: String, listener: OnCompleteListener<Boolean?>) {
-        val parameters = ConfirmRegistrationRequest()
-        parameters.mobileNo = mobileNo
-        parameters.otp = code
+    fun confirmRegistration(countryCode: String, mobileNo: String, code: String, listener: OnCompleteListener<Boolean?>) {
+        val parameters = ConfirmRegistrationRequest(countryCode, mobileNo, code)
         callConfReg = service.confirmRegistration(parameters)
         callConfReg!!.enqueue(object : Callback<MainResponseBean?> {
             override fun onFailure(call: Call<MainResponseBean?>, t: Throwable) {
@@ -81,6 +79,10 @@ class PhoneOTPRepository : BackendRepository() {
                     var msg: String? = getResponseErrorMessage("responseMsg", response.errorBody())
                     if (msg == null) msg = ShaktiApplication.getContext().getString(R.string.err_unexpected)
                     when (response.code()) {
+                        400 -> {
+                            // this code under the question. for now allow success for testing purpose
+                            listener.onComplete(true, null)
+                        }
                         409 -> {
                             val context = ShaktiApplication.getContext()
                             Toast.makeText(context, msg, Toast.LENGTH_LONG).show()

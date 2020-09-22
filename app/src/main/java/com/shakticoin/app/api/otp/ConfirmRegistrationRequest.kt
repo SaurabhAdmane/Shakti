@@ -1,6 +1,3 @@
 package com.shakticoin.app.api.otp
 
-class ConfirmRegistrationRequest {
-    var mobileNo: String? = null
-    var otp: String? = null
-}
+data class ConfirmRegistrationRequest(val countryCode: String, val mobileNo: String, val otp: String)

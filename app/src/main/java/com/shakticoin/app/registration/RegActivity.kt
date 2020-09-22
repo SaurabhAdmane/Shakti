@@ -200,7 +200,10 @@ class RegActivity : AppCompatActivity() {
     fun onSetPassword(v: View?) {
         val activity = this
         viewModel?.progressOn?.value = true
-        otpPhoneRepository.confirmRegistration(viewModel?.phoneNumber?.value!!, viewModel?.smsSecurityCode?.value!!,
+        otpPhoneRepository.confirmRegistration(
+                viewModel?.selectedCountryCode?.value?.countryCode!!,
+                viewModel?.phoneNumber?.value!!,
+                viewModel?.smsSecurityCode?.value!!,
                 object: OnCompleteListener<Boolean?>() {
                     override fun onComplete(value: Boolean?, error: Throwable?) {
                         viewModel?.progressOn?.value = false
