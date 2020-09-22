@@ -69,7 +69,8 @@ class OnboardRepository : BackendRepository() {
                                 return
                             }
                         }
-                        409 -> listener.onComplete(null, RemoteException(getResponseErrorMessage("details", response.errorBody())))
+                        409 -> listener.onComplete(null, RemoteException(getResponseErrorMessage("details", response.errorBody()), response.code()))
+                        410 -> listener.onComplete(null, RemoteException(getResponseErrorMessage("details", response.errorBody()), response.code()))
                         else -> return returnError(listener, response)
                     }
                 }
