@@ -10,6 +10,7 @@ import com.shakticoin.app.api.kyc.KYCRepository
 import com.shakticoin.app.api.kyc.KycUserView
 import com.shakticoin.app.util.Debug
 import okhttp3.OkHttpClient
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -20,8 +21,8 @@ import java.util.concurrent.TimeUnit
 class LicenseRepository : BackendRepository() {
 
     private val http = OkHttpClient.Builder()
-            .readTimeout(60, TimeUnit.SECONDS)
-            .connectTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(120, TimeUnit.SECONDS)
+            .connectTimeout(120, TimeUnit.SECONDS)
             .build()
 
     private val licenseService: LicenseService = Retrofit.Builder()
@@ -76,6 +77,49 @@ class LicenseRepository : BackendRepository() {
                 Debug.logException(t)
                 listener!!.onComplete(null, t)
             }
+        })
+    }
+
+    private var callGetInv : Call<ResponseBody?>? = null
+    fun getInventory(country: String, stateProvince: String?, city: String?, listener: OnCompleteListener<List<Map<String, Any>>>) {
+        getInventory(country, stateProvince, city, listener, false)
+    }
+    private fun getInventory(country: String, stateProvince: String?, city: String?, listener: OnCompleteListener<List<Map<String, Any>>>, hasRecover401: Boolean) {
+        callGetInv = licenseService.getLicenseAvailable(Session.getAuthorizationHeader(), country, stateProvince, city)
+        callGetInv!!.enqueue(object : Callback<ResponseBody?> {
+            override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
+                Debug.logDebug(response.toString())
+                if (response.isSuccessful) {
+                    val body = response.body()?.string()
+                    Debug.logDebug(body);
+
+                } else {
+                    when (response.code()) {
+                        401 -> {
+                            if (!hasRecover401) {
+                                authRepository.refreshToken(Session.getRefreshToken(), object : OnCompleteListener<TokenResponse?>() {
+                                    override fun onComplete(value: TokenResponse?, error: Throwable?) {
+                                        if (error != null) {
+                                            listener.onComplete(null, error)
+                                            return
+                                        }
+                                        getInventory(country, stateProvince, city, listener, true)
+                                    }
+                                })
+                            } else {
+                                listener.onComplete(null, UnauthorizedException())
+                                return
+                            }
+                        }
+                        else -> returnError(listener, response)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
+                returnError(listener, t)
+            }
+
         })
     }
 
@@ -213,6 +257,7 @@ class LicenseRepository : BackendRepository() {
         parameters.planCode = planCode
         parameters.subscriptionId = subscriptionId
         parameters.userName = Session.getShaktiId()
+        parameters.userName = "zufis@getnada.com"
         callUpgdSub = licenseService.checkoutUpgrade(Session.getAuthorizationHeader(), parameters)
         callUpgdSub!!.enqueue(object : Callback<CheckoutResponse?> {
             override fun onResponse(call: Call<CheckoutResponse?>, response: Response<CheckoutResponse?>) {

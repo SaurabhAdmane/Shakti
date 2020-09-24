@@ -15,7 +15,7 @@ interface LicenseService {
     fun getMiningLicenses(@Header("Authorization") authorization: String?): Call<ResponseBody?>
 
     /** Search for license inventories based on region  */
-    @GET("licences/inventory/{country}")
+    @GET("licenses/inventory/{country}")
     fun getLicenseAvailable(
             @Header("Authorization") authorization: String?,
             @Path("country") country: String?,
