@@ -80,7 +80,7 @@ class PhoneOTPRepository : BackendRepository() {
                     if (msg == null) msg = ShaktiApplication.getContext().getString(R.string.err_unexpected)
                     when (response.code()) {
                         400 -> {
-                            // this code under the question. for now allow success for testing purpose
+                            // TODO: this code under the question. for now allow success for testing purpose
                             listener.onComplete(true, null)
                         }
                         409 -> {
@@ -108,6 +108,8 @@ class PhoneOTPRepository : BackendRepository() {
                 } else {
                     when (response.code()) {
                         404 -> listener.onComplete(false, null) // not found
+                        410 -> listener.onComplete(false, null) // OTP expired
+                        //410 -> listener.onComplete(null, RemoteException(getResponseErrorMessage("responseMsg", response.errorBody()), response.code()))
                         else -> returnError(listener, response)
                     }
                 }

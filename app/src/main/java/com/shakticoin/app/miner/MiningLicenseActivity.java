@@ -48,8 +48,13 @@ public class MiningLicenseActivity extends DrawerActivity {
 
     private ArrayList<LicenseType> licenseTypesAll;
 
-    private SubscribedLicenseModel currentSubscription;
-    private int possibleAction = PaymentOptionsActivity.LIC_ACTION_APPLY;
+    /**
+     * This variable is an array of one element. Actually, the currentSubscription is a 3 state element.
+     * 1. If null then we do not have information about subscriptions
+     * 2. If empty array then we have no subscription and this is confirmed by getting data about node operator
+     * 3. The first element of array contain reference to a subscription
+     */
+    private SubscribedLicenseModel[] currentSubscription;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -125,9 +130,11 @@ public class MiningLicenseActivity extends DrawerActivity {
                     return;
                 }
 
+                //
+                currentSubscription = new SubscribedLicenseModel[1];
                 List<SubscribedLicenseModel> subscriptions = value.getSubscribedLicenses();
                 if (subscriptions != null) {
-                    currentSubscription = CommonUtil.getActiveSubscription(subscriptions);
+                    currentSubscription[0] = CommonUtil.getActiveSubscription(subscriptions);
                     updateDetails(viewModel.getSelectedPackage());
                 }
             }
@@ -168,24 +175,25 @@ public class MiningLicenseActivity extends DrawerActivity {
             }
 
             if (currentSubscription != null) {
-                int comparisionResult = compareLicenseType(licenseType.getPlanType(), currentSubscription.getPlanType());
-                if (comparisionResult == 0) {
-                    binding.doAction.setEnabled(false);
-                    binding.doAction.setText(getString(R.string.minerlic_action_purchased));
-                    possibleAction = PaymentOptionsActivity.LIC_ACTION_NONE;
-                } else if (comparisionResult > 0) {
-                    binding.doAction.setEnabled(true);
-                    binding.doAction.setText(getString(R.string.minerlic_action_upgrade, licenseType.getPlanType()));
-                    possibleAction = PaymentOptionsActivity.LIC_ACTION_UPGRADE;
+                if (currentSubscription[0] != null) {
+                    int comparisionResult = compareLicenseType(licenseType.getPlanType(), currentSubscription[0].getPlanType());
+                    if (comparisionResult == 0) {
+                        binding.doAction.setEnabled(false);
+                        binding.doAction.setText(getString(R.string.minerlic_action_purchased));
+                    } else if (comparisionResult > 0) {
+                        binding.doAction.setEnabled(true);
+                        binding.doAction.setText(getString(R.string.minerlic_action_upgrade, licenseType.getPlanType()));
+                    } else {
+                        binding.doAction.setEnabled(true);
+                        binding.doAction.setText(getString(R.string.minerlic_action_downgrade, licenseType.getPlanType()));
+                    }
                 } else {
                     binding.doAction.setEnabled(true);
-                    binding.doAction.setText(getString(R.string.minerlic_action_downgrade, licenseType.getPlanType()));
-                    possibleAction = PaymentOptionsActivity.LIC_ACTION_DOWNGRADE;
+                    binding.doAction.setText(getString(R.string.minerlic_action, licenseType.getPlanType()));
                 }
             } else {
-                binding.doAction.setEnabled(true);
-                binding.doAction.setText(getString(R.string.minerlic_action, licenseType.getPlanType()));
-                possibleAction = PaymentOptionsActivity.LIC_ACTION_APPLY;
+                binding.doAction.setEnabled(false);
+                binding.doAction.setText("");
             }
         }
     }
@@ -194,9 +202,9 @@ public class MiningLicenseActivity extends DrawerActivity {
         Intent intent = new Intent(this, PaymentOptionsActivity.class);
         LicenseType licenseType = viewModel.getSelectedPackage();
         intent.putExtra(CommonUtil.prefixed("licenseTypeId"), licenseType.getId());
-        if (currentSubscription != null) {
-            intent.putExtra(CommonUtil.prefixed("subscription"), currentSubscription);
-            intent.putExtra(CommonUtil.prefixed("selectedPlanType"), currentSubscription.getPlanType());
+        if (currentSubscription != null && currentSubscription[0] != null) {
+            intent.putExtra(CommonUtil.prefixed("subscription"), currentSubscription[0]);
+            intent.putExtra(CommonUtil.prefixed("selectedPlanType"), currentSubscription[0].getPlanType());
         }
         intent.putParcelableArrayListExtra(CommonUtil.prefixed("licenses"), licenseTypesAll);
         startActivity(intent);
