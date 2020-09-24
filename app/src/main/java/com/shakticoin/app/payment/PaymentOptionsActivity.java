@@ -35,12 +35,6 @@ import java.util.Map;
 import static com.shakticoin.app.api.license.LicenseTypeKt.compareLicenseType;
 
 public class PaymentOptionsActivity extends DrawerActivity {
-    public static int LIC_ACTION_NONE       = -1;
-    public static int LIC_ACTION_APPLY      = 0;
-    public static int LIC_ACTION_UPGRADE    = 1;
-    public static int LIC_ACTION_DOWNGRADE  = 2;
-    public static int LIC_ACTION_CANCEL     = 3;
-
     private ActivityPaymentOptionsBinding binding;
     private PaymentOptionsViewModel viewModel;
     private PageAdapter pages;
