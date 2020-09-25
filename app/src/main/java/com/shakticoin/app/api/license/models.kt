@@ -61,8 +61,6 @@ class PlanCodeRequest {
 class CheckoutPlanRequest {
     var planCode: String? = null
     var subscriptionId: String? = null
-    var userName: String? = null
-    var guest: Boolean = false
 }
 
 class SubscribedLicenseModel() : Parcelable {
