@@ -52,4 +52,9 @@ interface LicenseService {
     @POST("node-operator/checkout/downgrade")
     fun checkoutDowngrade(@Header("Authorization") authorization: String?,
                           @Body parameters : CheckoutPlanRequest) : Call<CheckoutResponse?>
+
+    @Headers("Accept: application/json")
+    @GET("location")
+    fun searchGeo(@Header("Authorization") authorization: String?,
+                  @Query("country") country: String?, @Query("province") province: String?) : Call<ResponseBody?>
 }

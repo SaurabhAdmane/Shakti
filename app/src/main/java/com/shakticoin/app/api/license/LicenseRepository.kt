@@ -1,6 +1,8 @@
 package com.shakticoin.app.api.license
 
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.shakticoin.app.api.*
 import com.shakticoin.app.api.auth.AuthRepository
 import com.shakticoin.app.api.auth.TokenResponse
@@ -256,8 +258,6 @@ class LicenseRepository : BackendRepository() {
         val parameters = CheckoutPlanRequest()
         parameters.planCode = planCode
         parameters.subscriptionId = subscriptionId
-        parameters.userName = Session.getShaktiId()
-        parameters.userName = "zufis@getnada.com"
         callUpgdSub = licenseService.checkoutUpgrade(Session.getAuthorizationHeader(), parameters)
         callUpgdSub!!.enqueue(object : Callback<CheckoutResponse?> {
             override fun onResponse(call: Call<CheckoutResponse?>, response: Response<CheckoutResponse?>) {
@@ -342,6 +342,50 @@ class LicenseRepository : BackendRepository() {
                 return returnError(listener, t)
             }
         })
+    }
+
+    fun searchGeo(country: String?, province: String?) : LiveData<List<Map<String, Object>>> {
+        return searchGeo(country, province, false)
+    }
+    private fun searchGeo(country: String?, province: String?, hasRecover401: Boolean) : LiveData<List<Map<String, Object>>> {
+        val geoList = MutableLiveData<List<Map<String, Object>>>()
+
+        licenseService.searchGeo(Session.getAuthorizationHeader(), country, province).enqueue(object : Callback<ResponseBody?>{
+            override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
+                Debug.logDebug(response.toString())
+                if (response.isSuccessful) {
+                    val body = response.body()?.string()
+                    Debug.logDebug(body)
+                } else {
+                    when (response.code()) {
+                        401 -> {
+                            if (!hasRecover401) {
+                                authRepository.refreshToken(Session.getRefreshToken(), object : OnCompleteListener<TokenResponse?>() {
+                                    override fun onComplete(value: TokenResponse?, error: Throwable?) {
+                                        if (error != null) {
+                                            return
+                                        }
+                                        searchGeo(country, province, true)
+                                    }
+                                })
+                            } else {
+                                Debug.logException(UnauthorizedException())
+                                return
+                            }
+                        }
+                        else -> {
+                            Debug.logErrorResponse(response)
+                        }
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
+                Debug.logException(t);
+            }
+        })
+
+        return geoList
     }
 
     override fun setLifecycleOwner(lifecycleOwner: LifecycleOwner?) {
