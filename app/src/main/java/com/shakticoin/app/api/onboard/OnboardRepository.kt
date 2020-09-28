@@ -28,11 +28,11 @@ class OnboardRepository : BackendRepository() {
     private val authRepository: AuthRepository = AuthRepository()
 
     private var callAddUsr : Call<ResponseBean?>? = null
-    fun addUser(emailAddress: String, countryCode: String, phoneNumber: String, password: String, listener: OnCompleteListener<String?>) {
+    fun addUser(emailAddress: String, countryCode: String, phoneNumber: String, password: String, listener: OnCompleteListener<Void>) {
         addUser(emailAddress, countryCode, phoneNumber, password, listener, false)
     }
     private fun addUser(emailAddress: String, countryCode: String, phoneNumber: String,
-                        password: String, listener: OnCompleteListener<String?>, hasRecover401: Boolean) {
+                        password: String, listener: OnCompleteListener<Void>, hasRecover401: Boolean) {
         val parameters = OnboardShaktiModel()
         parameters.email = emailAddress
         parameters.countryCode = countryCode
@@ -49,7 +49,7 @@ class OnboardRepository : BackendRepository() {
                 if (response.isSuccessful) {
                     val resp = response.body()
                     if (resp != null) {
-                        listener.onComplete(resp.details?.get("shaktiID") as String, null)
+                        listener.onComplete(null, null)
                     } else listener.onComplete(null, null)
                 } else {
                     when(response.code()) {

@@ -239,8 +239,8 @@ class RegActivity : AppCompatActivity() {
         val self: AppCompatActivity = this
         viewModel?.progressOn?.value = true
         onboardRepository.addUser(viewModel?.emailAddress?.value!!, viewModel?.selectedCountryCode?.value?.countryCode!!,
-                viewModel?.phoneNumber?.value!!, viewModel?.password1?.value!!, object: OnCompleteListener<String?>() {
-            override fun onComplete(value: String?, error: Throwable?) {
+                viewModel?.phoneNumber?.value!!, viewModel?.password1?.value!!, object: OnCompleteListener<Void>() {
+            override fun onComplete(value: Void?, error: Throwable?) {
                 viewModel?.progressOn?.value = false
                 if (error != null) {
                     Toast.makeText(self, Debug.getFailureMsg(self, error), Toast.LENGTH_LONG).show()
