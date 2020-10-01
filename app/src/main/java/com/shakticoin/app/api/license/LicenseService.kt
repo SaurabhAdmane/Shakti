@@ -56,5 +56,5 @@ interface LicenseService {
     @Headers("Accept: application/json")
     @GET("location")
     fun searchGeo(@Header("Authorization") authorization: String?,
-                  @Query("country") country: String?, @Query("province") province: String?) : Call<ResponseBody?>
+                  @Query("countryCode") countryCode: String?, @Query("provinceCode") province: String?) : Call<ResponseBody?>
 }
