@@ -12,9 +12,9 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.shakticoin.app.api.OnCompleteListener;
-import com.shakticoin.app.api.country.Country;
-import com.shakticoin.app.api.country.CountryRepository;
-import com.shakticoin.app.api.country.Subdivision;
+import com.shakticoin.app.api.license.Country;
+import com.shakticoin.app.api.license.LicenseRepository;
+import com.shakticoin.app.api.license.Subdivision;
 import com.shakticoin.app.databinding.FragmentCompanyInfoPage2Binding;
 
 import java.util.List;
@@ -22,15 +22,15 @@ import java.util.List;
 public class CompanyInfoFragment2 extends Fragment {
     private FragmentCompanyInfoPage2Binding binding;
     private CompanyProfileViewModel viewModel;
-    private CountryRepository countryRepository;
+    private LicenseRepository licenseRepository;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(this).get(CompanyProfileViewModel.class);
 
-        countryRepository = new CountryRepository();
-        countryRepository.setLifecycleOwner(this);
+        licenseRepository = new LicenseRepository();
+        licenseRepository.setLifecycleOwner(this);
     }
 
     @Nullable
@@ -44,7 +44,7 @@ public class CompanyInfoFragment2 extends Fragment {
         viewModel.selectedCountry.observe(getViewLifecycleOwner(), new Observer<Country>() {
             @Override
             public void onChanged(Country country) {
-                countryRepository.getSubdivisionsByCountry(country.getCode(), new OnCompleteListener<List<Subdivision>>() {
+                licenseRepository.getSubdivisionsByCountry(country.getCountryCode(), new OnCompleteListener<List<Subdivision>>() {
                     @Override
                     public void onComplete(List<Subdivision> value, Throwable error) {
                         if (error != null) {

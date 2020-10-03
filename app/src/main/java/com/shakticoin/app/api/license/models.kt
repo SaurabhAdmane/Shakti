@@ -117,4 +117,22 @@ class SubscribedLicenseModel() : Parcelable {
     }
 }
 
-data class GeoResponse (val list: List<Map<String, Any>>)
+data class GeoResponse (val list: List<Map<String, String>>)
+
+data class Country (val countryCode: String, val country: String) {
+    override fun toString(): String {
+        return country;
+    }
+}
+
+data class Subdivision (val provinceCode: String?, val province: String) {
+    override fun toString(): String {
+        return province
+    }
+}
+
+data class City(val city: String) {
+    override fun toString(): String {
+        return city
+    }
+}

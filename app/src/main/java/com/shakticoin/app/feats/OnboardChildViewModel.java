@@ -7,9 +7,9 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.shakticoin.app.api.country.Country;
-import com.shakticoin.app.api.country.CountryRepository;
-import com.shakticoin.app.api.country.Subdivision;
+import com.shakticoin.app.api.license.Country;
+import com.shakticoin.app.api.license.LicenseRepository;
+import com.shakticoin.app.api.license.Subdivision;
 import com.shakticoin.app.api.misc.Language;
 import com.shakticoin.app.widget.InlineLabelSpinner;
 
@@ -33,7 +33,7 @@ public class OnboardChildViewModel extends ViewModel {
     public MutableLiveData<String> address1 = new MutableLiveData<>();
 
     public LiveData<List<Country>> countryList;
-    public MutableLiveData<List<Subdivision>> stateProvinceList = new MutableLiveData<>(Collections.emptyList());;
+    public MutableLiveData<List<Subdivision>> stateProvinceList = new MutableLiveData<>(Collections.emptyList());
     public MutableLiveData<Country> selectedCountry = new MutableLiveData<>();
     public MutableLiveData<Subdivision> selectedState = new MutableLiveData<>();
     public MutableLiveData<String> city = new MutableLiveData<>();
@@ -89,7 +89,7 @@ public class OnboardChildViewModel extends ViewModel {
             }
         }
 
-        CountryRepository repository = new CountryRepository();
+        LicenseRepository repository = new LicenseRepository();
         countryList = repository.getCountries();
     }
 

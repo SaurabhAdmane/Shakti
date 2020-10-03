@@ -7,8 +7,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.shakticoin.app.api.country.Country;
-import com.shakticoin.app.api.country.CountryRepository;
+import com.shakticoin.app.api.license.Country;
+import com.shakticoin.app.api.license.LicenseRepository;
 import com.shakticoin.app.widget.InlineLabelSpinner;
 
 import java.util.List;
@@ -20,10 +20,10 @@ public class OnboardVerifierViewModel extends ViewModel {
 
     public MutableLiveData<Country> selectedCountry = new MutableLiveData<>();
 
-    private CountryRepository countryRepository = new CountryRepository();
+    private LicenseRepository licenseRepository = new LicenseRepository();
 
     public OnboardVerifierViewModel() {
-        countryList = countryRepository.getCountries();
+        countryList = licenseRepository.getCountries();
     }
 
     public void onCountrySelected(View view, int position) {

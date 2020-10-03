@@ -8,9 +8,9 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.shakticoin.app.api.OnCompleteListener;
-import com.shakticoin.app.api.country.Country;
-import com.shakticoin.app.api.country.CountryRepository;
-import com.shakticoin.app.api.country.Subdivision;
+import com.shakticoin.app.api.license.Country;
+import com.shakticoin.app.api.license.LicenseRepository;
+import com.shakticoin.app.api.license.Subdivision;
 import com.shakticoin.app.widget.InlineLabelSpinner;
 
 import java.util.List;
@@ -36,13 +36,13 @@ public class OnboardProviderViewModel extends ViewModel {
     public MutableLiveData<String> address2 = new MutableLiveData<>();
     public MutableLiveData<String> postalCode = new MutableLiveData<>();
 
-    private CountryRepository countryRepository = new CountryRepository();
+    private LicenseRepository licenseRepository = new LicenseRepository();
 
     public OnboardProviderViewModel() {
         // TODO: demo data - to remove
         // End of demo data
 
-        countryList = countryRepository.getCountries();
+        countryList = licenseRepository.getCountries();
     }
 
     public void onTaxCountrySelected(View view, int position) {
@@ -57,7 +57,7 @@ public class OnboardProviderViewModel extends ViewModel {
         if (spinner.isChoiceMade()) {
             Country country = (Country) spinner.getAdapter().getItem(position);
             selectedCountry.setValue(country);
-            countryRepository.getSubdivisionsByCountry(country.getCode(), new OnCompleteListener<List<Subdivision>>() {
+            licenseRepository.getSubdivisionsByCountry(country.getCountryCode(), new OnCompleteListener<List<Subdivision>>() {
                 @Override
                 public void onComplete(List<Subdivision> value, Throwable error) {
                     if (error != null) {

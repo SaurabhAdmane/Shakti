@@ -2,14 +2,13 @@ package com.shakticoin.app.profile;
 
 import android.view.View;
 
-import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.shakticoin.app.api.country.Country;
-import com.shakticoin.app.api.country.CountryRepository;
-import com.shakticoin.app.api.country.Subdivision;
+import com.shakticoin.app.api.license.Country;
+import com.shakticoin.app.api.license.LicenseRepository;
+import com.shakticoin.app.api.license.Subdivision;
 import com.shakticoin.app.widget.InlineLabelSpinner;
 
 import java.util.List;
@@ -32,7 +31,7 @@ public class CompanyProfileViewModel extends ViewModel {
     public MutableLiveData<Subdivision> selectedStateProvince = new MutableLiveData<>();
 
     public CompanyProfileViewModel() {
-        CountryRepository countryRepository = new CountryRepository();
+        LicenseRepository countryRepository = new LicenseRepository();
         countryList = countryRepository.getCountries();
     }
 

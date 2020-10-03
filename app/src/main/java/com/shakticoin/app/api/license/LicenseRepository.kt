@@ -6,8 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import com.shakticoin.app.api.*
 import com.shakticoin.app.api.auth.AuthRepository
 import com.shakticoin.app.api.auth.TokenResponse
-import com.shakticoin.app.api.country.CountryRepository
-import com.shakticoin.app.api.country.Subdivision
 import com.shakticoin.app.api.kyc.KYCRepository
 import com.shakticoin.app.api.kyc.KycUserView
 import com.shakticoin.app.util.Debug
@@ -36,7 +34,6 @@ class LicenseRepository : BackendRepository() {
 
     private val authRepository = AuthRepository()
     private val kycRepository = KYCRepository()
-    private val countryRepository = CountryRepository()
 
     private var callLics : Call<List<LicenseType>?>? = null
     fun getLicenses(listener: OnCompleteListener<List<LicenseType>?>?) {
@@ -93,7 +90,7 @@ class LicenseRepository : BackendRepository() {
                 Debug.logDebug(response.toString())
                 if (response.isSuccessful) {
                     val body = response.body()?.string()
-                    Debug.logDebug(body);
+                    Debug.logDebug(body)
 
                 } else {
                     when (response.code()) {
@@ -180,7 +177,7 @@ class LicenseRepository : BackendRepository() {
                 val countryCode = user?.address?.countryCode
                 val stateProvinceCode = user?.address?.stateProvinceCode
 
-                countryRepository.getSubdivisionsByCountry(countryCode!!, object : OnCompleteListener<List<Subdivision>>() {
+                getSubdivisionsByCountry(countryCode!!, object : OnCompleteListener<List<Subdivision>>() {
                     override fun onComplete(stateProvinceList: List<Subdivision>?, error: Throwable?) {
                         if (error != null) {
                             listener.onComplete(null, error)
@@ -190,8 +187,8 @@ class LicenseRepository : BackendRepository() {
                         var stateProvinceName : String? = null
                         if (stateProvinceCode != null && stateProvinceList != null && stateProvinceList.isNotEmpty()) {
                             for (stateProvince in stateProvinceList) {
-                                if (stateProvinceCode == stateProvince.subdivision) {
-                                    stateProvinceName = stateProvince.name
+                                if (stateProvinceCode == stateProvince.provinceCode) {
+                                    stateProvinceName = stateProvince.province
                                     break
                                 }
                             }
@@ -355,7 +352,7 @@ class LicenseRepository : BackendRepository() {
                 Debug.logDebug(response.toString())
                 if (response.isSuccessful) {
                     val body = response.body()
-                    geoList.value = body?.list;
+                    geoList.value = body?.list
                 } else {
                     when (response.code()) {
                         401 -> {
@@ -381,18 +378,140 @@ class LicenseRepository : BackendRepository() {
             }
 
             override fun onFailure(call: Call<GeoResponse?>, t: Throwable) {
-                Debug.logException(t);
+                Debug.logException(t)
             }
         })
 
         return geoList
     }
 
+    fun getCountries() : LiveData<List<Country>> {
+        val countryList = MutableLiveData<List<Country>>()
+
+        licenseService.searchGeo(Session.getAuthorizationHeader(), null, null, null)
+                .enqueue(object: Callback<GeoResponse?> {
+                    override fun onResponse(call: Call<GeoResponse?>, response: Response<GeoResponse?>) {
+                        Debug.logDebug(response.toString())
+                        if (response.isSuccessful) {
+                            val countries = response.body()?.list
+                            if (countries != null) {
+                                val result = arrayListOf<Country>()
+                                for (country in countries) {
+                                    result.add(Country(country.get("countryCode")!!, country.get("country")!!))
+                                }
+                                countryList.value = result
+                            }
+                        }
+                    }
+
+                    override fun onFailure(call: Call<GeoResponse?>, t: Throwable) {
+                        Debug.logException(t)
+                    }
+                })
+        return countryList;
+    }
+
+    private var callCntry : Call<GeoResponse?>? = null
+    fun getCountry(countryCode: String?, listener: OnCompleteListener<Country>) {
+        getCountry(countryCode, listener, false)
+    }
+    fun getCountry(countryCode: String?, listener: OnCompleteListener<Country>, hasRecover401: Boolean) {
+        callCntry = licenseService.searchGeo(Session.getAuthorizationHeader(), null, null, null)
+        callCntry?.enqueue(object : Callback<GeoResponse?>{
+            override fun onResponse(call: Call<GeoResponse?>, response: Response<GeoResponse?>) {
+                Debug.logDebug(response.toString())
+                if (response.isSuccessful) {
+                    val countryList = response.body()?.list
+                    if (countryList != null) {
+                        for (country in countryList) {
+                            if (countryCode == country["countryCode"]) {
+                                listener.onComplete(Country(country["countryCode"]!!, country["country"]!!), null)
+                                return;
+                            }
+                        }
+                        listener.onComplete(null, null)
+                    }
+                } else {
+                    when(response.code()) {
+                        401 -> {
+                            if (!hasRecover401) {
+                                authRepository.refreshToken(Session.getRefreshToken(), object : OnCompleteListener<TokenResponse?>() {
+                                    override fun onComplete(value: TokenResponse?, error: Throwable?) {
+                                        if (error != null) {
+                                            return
+                                        }
+                                        getCountry(countryCode, listener, true)
+                                    }
+                                })
+                            } else {
+                                Debug.logException(UnauthorizedException())
+                                return
+                            }
+                        }
+                        else -> returnError(listener, response)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<GeoResponse?>, t: Throwable) {
+                returnError(listener, t)
+            }
+
+        })
+    }
+
+    private var callGetSubCntry: Call<GeoResponse?>? = null
+    fun getSubdivisionsByCountry(countryCode: String, listener: OnCompleteListener<List<Subdivision>>) {
+        getSubdivisionsByCountry(countryCode, listener, false)
+    }
+    private fun getSubdivisionsByCountry(countryCode: String, listener: OnCompleteListener<List<Subdivision>>, hasRecover401: Boolean) {
+        callGetSubCntry = licenseService.searchGeo(Session.getAuthorizationHeader(), countryCode, null, null)
+        callGetSubCntry?.enqueue(object : Callback<GeoResponse?> {
+            override fun onResponse(call: Call<GeoResponse?>, response: Response<GeoResponse?>) {
+                Debug.logDebug(response.toString())
+                if (response.isSuccessful) {
+                    val geoResponse = response.body()?.list
+                    if (geoResponse != null) {
+                        val provinceList: ArrayList<Subdivision> = arrayListOf()
+                        for (geo in geoResponse) {
+                            provinceList.add(Subdivision(
+                                    geo["provinceCode"],
+                                    geo["province"] as String))
+                        }
+                        listener.onComplete(provinceList, null)
+                    }
+                } else {
+                    when(response.code()) {
+                        401 -> {
+                            if (!hasRecover401) {
+                                authRepository.refreshToken(Session.getRefreshToken(), object : OnCompleteListener<TokenResponse?>() {
+                                    override fun onComplete(value: TokenResponse?, error: Throwable?) {
+                                        if (error != null) {
+                                            return
+                                        }
+                                        getSubdivisionsByCountry(countryCode, listener, true)
+                                    }
+                                })
+                            } else {
+                                Debug.logException(UnauthorizedException())
+                                return
+                            }
+                        }
+                        else -> returnError(listener, response)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<GeoResponse?>, t: Throwable) {
+                returnError(listener, t)
+            }
+        })
+    }
+
     override fun setLifecycleOwner(lifecycleOwner: LifecycleOwner?) {
         super.setLifecycleOwner(lifecycleOwner)
         authRepository.setLifecycleOwner(lifecycleOwner)
         kycRepository.setLifecycleOwner(lifecycleOwner)
-        countryRepository.setLifecycleOwner(lifecycleOwner)
     }
 
     override fun onStop() {
@@ -401,5 +520,7 @@ class LicenseRepository : BackendRepository() {
         if (callNodeOp != null && !callNodeOp!!.isCanceled) callNodeOp?.cancel()
         if (callSubDowngd != null && !callSubDowngd!!.isCanceled) callSubDowngd?.cancel()
         if (callUpgdSub != null && !callUpgdSub!!.isCanceled) callUpgdSub?.cancel()
+        if (callGetSubCntry != null && !callGetSubCntry!!.isCanceled) callGetSubCntry?.cancel()
+        if (callCntry != null && !callCntry!!.isCanceled) callCntry?.cancel()
     }
 }

@@ -7,9 +7,9 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.shakticoin.app.api.country.Country;
-import com.shakticoin.app.api.country.CountryRepository;
-import com.shakticoin.app.api.country.Subdivision;
+import com.shakticoin.app.api.license.Country;
+import com.shakticoin.app.api.license.LicenseRepository;
+import com.shakticoin.app.api.license.Subdivision;
 import com.shakticoin.app.widget.InlineLabelSpinner;
 
 import java.util.Collections;
@@ -57,7 +57,7 @@ public class PersonalInfoViewModel extends ViewModel {
     public ObservableBoolean nextToSecondPersonalPage = new ObservableBoolean(false);
 
     public PersonalInfoViewModel() {
-        CountryRepository repository = new CountryRepository();
+        LicenseRepository repository = new LicenseRepository();
         countryList = repository.getCountries();
     }
 

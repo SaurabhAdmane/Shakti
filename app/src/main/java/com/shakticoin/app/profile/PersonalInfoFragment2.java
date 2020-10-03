@@ -13,8 +13,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.shakticoin.app.api.OnCompleteListener;
-import com.shakticoin.app.api.country.CountryRepository;
-import com.shakticoin.app.api.country.Subdivision;
+import com.shakticoin.app.api.license.LicenseRepository;
+import com.shakticoin.app.api.license.Subdivision;
 import com.shakticoin.app.databinding.FragmentProfilePersonalPage2Binding;
 import com.shakticoin.app.util.PostalCodeValidator;
 
@@ -27,7 +27,7 @@ public class PersonalInfoFragment2 extends Fragment {
     private FragmentProfilePersonalPage2Binding binding;
     private PersonalInfoViewModel viewModel;
 
-    private CountryRepository countryRepo;
+    private LicenseRepository countryRepo;
 
     @Nullable
     @Override
@@ -38,7 +38,7 @@ public class PersonalInfoFragment2 extends Fragment {
         binding.setViewModel(viewModel);
         View v = binding.getRoot();
 
-        countryRepo = new CountryRepository();
+        countryRepo = new LicenseRepository();
         countryRepo.setLifecycleOwner(getViewLifecycleOwner());
 
         binding.postalCodeLayout.setValidator(new PostalCodeValidator(null));
@@ -49,8 +49,8 @@ public class PersonalInfoFragment2 extends Fragment {
         // update list of states when selected country is changed.
         viewModel.selectedCountry.observe(getViewLifecycleOwner(), country -> {
             if (country != null) {
-                binding.postalCodeLayout.setValidator(new PostalCodeValidator(country.getCode()));
-                countryRepo.getSubdivisionsByCountry(country.getCode(), new OnCompleteListener<List<Subdivision>>() {
+                binding.postalCodeLayout.setValidator(new PostalCodeValidator(country.getCountryCode()));
+                countryRepo.getSubdivisionsByCountry(country.getCountryCode(), new OnCompleteListener<List<Subdivision>>() {
                     @Override
                     public void onComplete(List<Subdivision> value, Throwable error) {
                         if (error != null) {

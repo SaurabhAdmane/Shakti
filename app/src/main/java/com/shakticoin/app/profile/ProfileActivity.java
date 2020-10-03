@@ -32,15 +32,15 @@ import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.RemoteException;
 import com.shakticoin.app.api.Session;
 import com.shakticoin.app.api.UnauthorizedException;
-import com.shakticoin.app.api.country.Country;
-import com.shakticoin.app.api.country.CountryRepository;
-import com.shakticoin.app.api.country.Subdivision;
 import com.shakticoin.app.api.kyc.AddressModel;
 import com.shakticoin.app.api.kyc.KYCRepository;
 import com.shakticoin.app.api.kyc.KycCategory;
 import com.shakticoin.app.api.kyc.KycUserModel;
 import com.shakticoin.app.api.kyc.KycUserView;
 import com.shakticoin.app.api.kyc.RelationModel;
+import com.shakticoin.app.api.license.Country;
+import com.shakticoin.app.api.license.LicenseRepository;
+import com.shakticoin.app.api.license.Subdivision;
 import com.shakticoin.app.databinding.ActivityProfileBinding;
 import com.shakticoin.app.payment.PaymentFlowActivity;
 import com.shakticoin.app.util.CommonUtil;
@@ -72,7 +72,7 @@ public class ProfileActivity extends DrawerActivity {
     private PersonalViewModel viewModel;
     private PersonalInfoViewModel personalInfoViewModel;
 
-    private CountryRepository countryRepo;
+    private LicenseRepository licenseRepo;
 
     private TextView toolbarTitle;
 
@@ -128,8 +128,8 @@ public class ProfileActivity extends DrawerActivity {
         };
         binding.pageIndicator.setSizeAndLabels(pageIndicatorItems);
 
-        countryRepo = new CountryRepository();
-        countryRepo.setLifecycleOwner(this);
+        licenseRepo = new LicenseRepository();
+        licenseRepo.setLifecycleOwner(this);
         kycRepository = new KYCRepository();
         kycRepository.setLifecycleOwner(this);
 
@@ -187,7 +187,7 @@ public class ProfileActivity extends DrawerActivity {
                     personalInfoViewModel.address2.setValue((String) postalAddress.getAddress2());
                     String countryCode = (String) postalAddress.getCountryCode();
                     if (countryCode != null) {
-                        countryRepo.getCountry(countryCode, new OnCompleteListener<Country>() {
+                        licenseRepo.getCountry(countryCode, new OnCompleteListener<Country>() {
                             @Override
                             public void onComplete(Country value, Throwable error) {
                                 if (error != null) {
@@ -199,7 +199,7 @@ public class ProfileActivity extends DrawerActivity {
 
                         String stateProvinceCode = (String) postalAddress.getStateProvinceCode();
                         if (stateProvinceCode != null) {
-                            countryRepo.getSubdivisionsByCountry(countryCode, new OnCompleteListener<List<Subdivision>>() {
+                            licenseRepo.getSubdivisionsByCountry(countryCode, new OnCompleteListener<List<Subdivision>>() {
                                 @Override
                                 public void onComplete(List<Subdivision> subdivisions, Throwable error) {
                                     if (error != null) {
@@ -209,7 +209,7 @@ public class ProfileActivity extends DrawerActivity {
                                     personalInfoViewModel.stateProvinceList.setValue(subdivisions);
 
                                     for (Subdivision subdivision : subdivisions) {
-                                        if (stateProvinceCode.equals(subdivision.getSubdivision())) {
+                                        if (stateProvinceCode.equals(subdivision.getProvinceCode())) {
                                             personalInfoViewModel.selectedState.setValue(subdivision);
                                             break;
                                         }
@@ -306,7 +306,7 @@ public class ProfileActivity extends DrawerActivity {
         }
         Country selectedCountry = personalInfoViewModel.selectedCountry.getValue();
         if (!Validator.isPostalCodeValid(
-                selectedCountry != null ? selectedCountry.getCode() : null, personalInfoViewModel.postalCode.getValue())) {
+                selectedCountry != null ? selectedCountry.getCountryCode() : null, personalInfoViewModel.postalCode.getValue())) {
             validationSuccessful = false;
             personalInfoViewModel.postalCodeErrMsg.setValue(getString(R.string.err_postalCode_requird));
         }
@@ -620,8 +620,8 @@ public class ProfileActivity extends DrawerActivity {
         Country country = personalInfoViewModel.selectedCountry.getValue();
         Subdivision stateProvince = personalInfoViewModel.selectedState.getValue();
 
-        AddressModel address = new AddressModel(country.getName(), country.getCode(),
-                stateProvince != null ? stateProvince.getSubdivision() : null,
+        AddressModel address = new AddressModel(country.getCountry(), country.getCountryCode(),
+                stateProvince != null ? stateProvince.getProvinceCode() : null,
                 personalInfoViewModel.city.getValue(), personalInfoViewModel.address1.getValue(),
                 personalInfoViewModel.address2.getValue(), personalInfoViewModel.postalCode.getValue());
         model.setAddress(address);

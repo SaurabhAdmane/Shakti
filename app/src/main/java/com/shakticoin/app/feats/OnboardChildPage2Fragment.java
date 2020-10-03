@@ -13,9 +13,9 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.shakticoin.app.api.OnCompleteListener;
-import com.shakticoin.app.api.country.Country;
-import com.shakticoin.app.api.country.CountryRepository;
-import com.shakticoin.app.api.country.Subdivision;
+import com.shakticoin.app.api.license.Country;
+import com.shakticoin.app.api.license.LicenseRepository;
+import com.shakticoin.app.api.license.Subdivision;
 import com.shakticoin.app.databinding.FragmentFeatsChildPage2Binding;
 import com.shakticoin.app.util.PostalCodeValidator;
 
@@ -25,15 +25,15 @@ import java.util.List;
 public class OnboardChildPage2Fragment extends Fragment {
     private FragmentFeatsChildPage2Binding binding;
     private OnboardChildViewModel viewModel;
-    private CountryRepository countryRepo;
+    private LicenseRepository licenseRepo;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(requireActivity()).get(OnboardChildViewModel.class);
 
-        countryRepo = new CountryRepository();
-        countryRepo.setLifecycleOwner(this);
+        licenseRepo = new LicenseRepository();
+        licenseRepo.setLifecycleOwner(this);
     }
 
     @Nullable
@@ -48,8 +48,8 @@ public class OnboardChildPage2Fragment extends Fragment {
             @Override
             public void onChanged(Country country) {
                 if (country != null) {
-                    binding.postalCodeLayout.setValidator(new PostalCodeValidator(country.getCode()));
-                    countryRepo.getSubdivisionsByCountry(country.getCode(), new OnCompleteListener<List<Subdivision>>() {
+                    binding.postalCodeLayout.setValidator(new PostalCodeValidator(country.getCountryCode()));
+                    licenseRepo.getSubdivisionsByCountry(country.getCountryCode(), new OnCompleteListener<List<Subdivision>>() {
                         @Override
                         public void onComplete(List<Subdivision> value, Throwable error) {
                             if (error != null) {
