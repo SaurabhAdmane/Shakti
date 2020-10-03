@@ -461,13 +461,15 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="24dp"
                         android:background="@android:color/transparent"
-                        android:onClick="onOpenContactUs"
-                        android:tint="@android:color/white"
+                        android:tint="@color/whiteDisabled"
                         app:layout_constraintBottom_toBottomOf="@+id/textView92"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/textView92"
                         app:srcCompat="@drawable/ic_round_keyboard_arrow_right_24px"
                         tools:ignore="ContentDescription" />
+                    <!-- Restore when enabled
+                    android:onClick="onOpenContactUs"
+                    android:tint="@android:color/white" -->
 
                     <TextView
                         android:id="@+id/textView93"
