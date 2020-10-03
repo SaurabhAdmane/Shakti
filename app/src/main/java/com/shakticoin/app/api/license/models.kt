@@ -116,3 +116,5 @@ class SubscribedLicenseModel() : Parcelable {
         }
     }
 }
+
+data class GeoResponse (val list: List<Map<String, Any>>)

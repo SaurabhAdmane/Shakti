@@ -344,18 +344,18 @@ class LicenseRepository : BackendRepository() {
         })
     }
 
-    fun searchGeo(country: String?, province: String?) : LiveData<List<Map<String, Object>>> {
-        return searchGeo(country, province, false)
+    fun searchGeo(countryCode: String?, provinceCode: String?, province: String?) : LiveData<List<Map<String, Any>>> {
+        return searchGeo(countryCode, provinceCode, province, false)
     }
-    private fun searchGeo(country: String?, province: String?, hasRecover401: Boolean) : LiveData<List<Map<String, Object>>> {
-        val geoList = MutableLiveData<List<Map<String, Object>>>()
+    private fun searchGeo(countryCode: String?, provinceCode: String?, province: String?, hasRecover401: Boolean) : LiveData<List<Map<String, Any>>> {
+        val geoList = MutableLiveData<List<Map<String, Any>>>()
 
-        licenseService.searchGeo(Session.getAuthorizationHeader(), country, province).enqueue(object : Callback<ResponseBody?>{
-            override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
+        licenseService.searchGeo(Session.getAuthorizationHeader(), countryCode, provinceCode, province).enqueue(object : Callback<GeoResponse?>{
+            override fun onResponse(call: Call<GeoResponse?>, response: Response<GeoResponse?>) {
                 Debug.logDebug(response.toString())
                 if (response.isSuccessful) {
-                    val body = response.body()?.string()
-                    Debug.logDebug(body)
+                    val body = response.body()
+                    geoList.value = body?.list;
                 } else {
                     when (response.code()) {
                         401 -> {
@@ -365,7 +365,7 @@ class LicenseRepository : BackendRepository() {
                                         if (error != null) {
                                             return
                                         }
-                                        searchGeo(country, province, true)
+                                        searchGeo(countryCode, provinceCode, province, true)
                                     }
                                 })
                             } else {
@@ -380,7 +380,7 @@ class LicenseRepository : BackendRepository() {
                 }
             }
 
-            override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
+            override fun onFailure(call: Call<GeoResponse?>, t: Throwable) {
                 Debug.logException(t);
             }
         })
