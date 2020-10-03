@@ -175,6 +175,7 @@ class LicenseRepository : BackendRepository() {
                 }
 
                 val countryCode = user?.address?.countryCode
+                val country = user?.address?.country
                 val stateProvinceCode = user?.address?.stateProvinceCode
 
                 getSubdivisionsByCountry(countryCode!!, object : OnCompleteListener<List<Subdivision>>() {
@@ -198,8 +199,7 @@ class LicenseRepository : BackendRepository() {
                         parameters.planCode = planCode
                         val address = AddressModel()
                         address.countryCode = countryCode
-                        // Assign the country name to the country code as a workaround for inventory check.
-                        address.country = countryCode
+                        address.country = country
                         address.province = stateProvinceName?:stateProvinceCode
                         address.city = user.address?.city
                         address.street = user.address?.address1
@@ -231,6 +231,7 @@ class LicenseRepository : BackendRepository() {
                                                 return
                                             }
                                         }
+                                        404 -> listener.onComplete(null, RemoteException(getResponseErrorMessage("message", response.errorBody()), response.code()))
                                         else -> return returnError(listener, response)
                                     }
                                 }
