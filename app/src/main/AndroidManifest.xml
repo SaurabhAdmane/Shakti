@@ -31,10 +31,6 @@
             android:resource="@array/preloaded_fonts" />
 
         <activity
-            android:name=".registration.SignUpActivity"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
-        <activity
             android:name=".registration.SignInActivity"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
