@@ -123,6 +123,9 @@ public class MiningLicenseActivity extends DrawerActivity {
             public void onComplete(NodeOperatorModel value, Throwable error) {
                 if (error != null) {
                     if (error instanceof RemoteException && ((RemoteException) error).getResponseCode() == 404) {
+                        // An empty element of array says that while user did not purchased a license
+                        // we checked this information.
+                        currentSubscription = new SubscribedLicenseModel[1];
                         updateDetails(viewModel.getSelectedPackage());
                         return;
                     }
@@ -130,7 +133,7 @@ public class MiningLicenseActivity extends DrawerActivity {
                     return;
                 }
 
-                //
+                // Only 1 subscription is supported currently.
                 currentSubscription = new SubscribedLicenseModel[1];
                 List<SubscribedLicenseModel> subscriptions = value.getSubscribedLicenses();
                 if (subscriptions != null) {
