@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 
 import com.shakticoin.app.api.BackendRepository;
-import com.shakticoin.app.api.BaseUrl;
 import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.Session;
 import com.shakticoin.app.api.UnauthorizedException;
@@ -17,8 +16,6 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.internal.EverythingIsNonNull;
 
 public class VaultRepository extends BackendRepository {
@@ -26,11 +23,12 @@ public class VaultRepository extends BackendRepository {
     private AuthRepository authRepository;
 
     public VaultRepository() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BaseUrl.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        service = retrofit.create(VaultService.class);
+        //TODO: this used decomissioned service and must be reworked
+//        Retrofit retrofit = new Retrofit.Builder()
+//                .baseUrl(BaseUrl.BASE_URL)
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .build();
+//        service = retrofit.create(VaultService.class);
         authRepository = new AuthRepository();
     }
 

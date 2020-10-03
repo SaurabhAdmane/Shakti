@@ -9,8 +9,8 @@ import com.shakticoin.app.widget.InlineLabelSpinner;
 
 
 public class ContactUsViewModel extends ViewModel {
-//    public MutableLiveData<List<RequestReason>> reasonList = new MutableLiveData<>();
-//    public MutableLiveData<RequestReason> selectedReason = new MutableLiveData<>();
+    public MutableLiveData reasonList = new MutableLiveData<>();
+    public MutableLiveData selectedReason = new MutableLiveData<>();
     public MutableLiveData<String> name = new MutableLiveData<>();
     public MutableLiveData<String> emailAddress =  new MutableLiveData<>();
     public MutableLiveData<String> phoneNumber = new MutableLiveData<>();

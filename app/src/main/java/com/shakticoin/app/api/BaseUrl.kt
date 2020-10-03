@@ -7,7 +7,6 @@ object BaseUrl {
     /** Possible values "-stg", "-qa", and empty string  */
     private const val ENV_CODE = "-stg"
 
-    const val BASE_URL = "https://dev-api.shakticoin.com/"
     const val IAM_BASE_URL = "https://iam${ENV_CODE}.shakticoin.com/oxauth/restv1/"
     const val WALLETSERVICE_BASE_URL = "https://walletservice${ENV_CODE}.shakticoin.com/walletservice/api/v1/"
     const val LICENSESERVICE_BASE_URL = "https://licenseservice${ENV_CODE}.shakticoin.com/license-service/api/v1/"

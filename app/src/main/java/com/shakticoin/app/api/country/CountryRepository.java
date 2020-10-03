@@ -8,7 +8,6 @@ import androidx.lifecycle.MutableLiveData;
 import com.shakticoin.app.R;
 import com.shakticoin.app.ShaktiApplication;
 import com.shakticoin.app.api.BackendRepository;
-import com.shakticoin.app.api.BaseUrl;
 import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.RemoteException;
 import com.shakticoin.app.api.Session;
@@ -23,8 +22,6 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.internal.EverythingIsNonNull;
 
 public class CountryRepository extends BackendRepository {
@@ -32,12 +29,12 @@ public class CountryRepository extends BackendRepository {
     private AuthRepository authRepository;
 
     public CountryRepository() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BaseUrl.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        countryService = retrofit.create(CountryService.class);
+//        Retrofit retrofit = new Retrofit.Builder()
+//                .baseUrl(BaseUrl.BASE_URL)
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .build();
+//
+//        countryService = retrofit.create(CountryService.class);
         authRepository = new AuthRepository();
     }
 

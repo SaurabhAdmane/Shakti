@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 
 import com.shakticoin.app.api.BackendRepository;
-import com.shakticoin.app.api.BaseUrl;
 import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.RemoteMessageException;
 import com.shakticoin.app.api.Session;
@@ -29,8 +28,6 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.internal.EverythingIsNonNull;
 
 import static com.shakticoin.app.api.referral.model.EffortRate.LEAD_SOURCE_EMAIL;
@@ -51,12 +48,13 @@ public class ReferralRepository extends BackendRepository {
     private AuthRepository authRepository;
 
     public ReferralRepository() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BaseUrl.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        service = retrofit.create(ReferralService.class);
+        // TODO: this used the decommissioned service and must be reworked
+//        Retrofit retrofit = new Retrofit.Builder()
+//                .baseUrl(BaseUrl.BASE_URL)
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .build();
+//
+//        service = retrofit.create(ReferralService.class);
         authRepository = new AuthRepository();
 
     }
