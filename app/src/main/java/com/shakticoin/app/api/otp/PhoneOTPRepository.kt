@@ -45,11 +45,18 @@ class PhoneOTPRepository : BackendRepository() {
                         listener.onComplete(null, null)
                     } else listener.onComplete(null, null)
                 } else {
+                    val context = ShaktiApplication.getContext()
+                    var errMsg = getResponseErrorMessage("responseMsg", response.errorBody())
                     when (response.code()) {
-                        503 -> listener.onComplete(null, RemoteException(
-                                getResponseErrorMessage("responseMsg", response.errorBody()), response.code()))
-                        else -> returnError(listener, response)
+                        409 -> listener.onComplete(null, null) // consider success and allow to proceed
+                        400 -> errMsg = context.getString(R.string.reg__mobile_err_recheck)
+                        406 -> errMsg = context.getString(R.string.reg__mobile_err_blacklisted)
+                        429 -> errMsg = context.getString(R.string.reg__mobile_err_too_many_attempts)
+                        500 -> errMsg = context.getString(R.string.reg__mobile_err_unexpected)
+                        503 -> errMsg = context.getString(R.string.reg__mobile_err_cannot_send)
+                        else -> return returnError(listener, response)
                     }
+                    listener.onComplete(null, RemoteException(errMsg, response.code()))
                 }
             }
 
@@ -76,20 +83,20 @@ class PhoneOTPRepository : BackendRepository() {
                     }
                     listener.onComplete(true, null)
                 } else {
+                    val context = ShaktiApplication.getContext()
                     var msg: String? = getResponseErrorMessage("responseMsg", response.errorBody())
                     if (msg == null) msg = ShaktiApplication.getContext().getString(R.string.err_unexpected)
                     when (response.code()) {
-                        400 -> {
-                            // TODO: this code under the question. for now allow success for testing purpose
-                            listener.onComplete(true, null)
-                        }
-                        409 -> {
-                            val context = ShaktiApplication.getContext()
+                        422 -> {
                             Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
                             listener.onComplete(true, null)
                         } // verified already
-                        else -> listener.onComplete(null, RemoteMessageException(msg, response.code()))
+                        406 -> msg = context.getString(R.string.reg__mobile_err_code_invalid)
+                        410 -> msg = context.getString(R.string.reg__mobile_err_code_expired)
+                        429 -> msg = context.getString(R.string.reg__mobile_err_too_many_attempts)
+                        500 -> msg = context.getString(R.string.reg__mobile_err_unexpected)
                     }
+                    listener.onComplete(null, RemoteMessageException(msg, response.code()))
                 }
             }
 

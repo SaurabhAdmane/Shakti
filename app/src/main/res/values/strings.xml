@@ -616,7 +616,10 @@
     <string name="dlg_sxe_err_transfer">Unexpected error happen during the transfer</string>
     <string name="activation_activating">Activating your account</string>
     <string name="activation_failed">An error happen</string>
-    <string name="activation_active">You account is active and you can log in</string>
+    <string name="activation_active">
+        You have successfully registered. A ShaktiID has been created with a link to your email
+        and your mobile number.
+    </string>
     <string name="family_title">@string/drawer_family_tree</string>
     <string name="family_members">Family Members</string>
     <string name="family_action">Add a Family Member</string>
@@ -718,12 +721,21 @@
     <string name="reg__step4">Verify Mobile</string>
     <string name="reg__step5">Set Password</string>
     <string name="reg__email_hint_address">Enter your Email Address</string>
-    <string name="reg__email_validation_err">The value must be a valid email address</string>
+    <string name="reg__email_validation_err">Uh-oh, invalid email. Please enter your email in format yourname@domain.com</string>
+    <string name="reg__email_empty_err">Uh-oh, email required</string>
     <string name="reg__email_confirmation">Thank You!\nConfirm your email address</string>
     <string name="reg__email_sent">We just sent a link to your email address.\nClick the link to confirm your email.</string>
     <string name="reg__email_resend_link"><u>Resend email confirmation link</u></string>
     <string name="reg__email_letme_go_back"><u>Let me go back and correct something</u></string>
     <string name="reg__email_err_already_registered">This email is in use already, please try another.</string>
+    <string name="reg__email_err_unexpected">Something went wrong. Please try again.</string>
+    <string name="reg__email_err_try_later">Something went wrong. Please try after some time.</string>
+    <string name="reg__email_err_blacklisted">
+        Sorry! You may be using a temporary email. SHAKTI does not support disposable email. Or you
+        may be using email from a blacklisted domain. Use different email.
+    </string>
+    <string name="reg__email_err_too_many_attempts">Sorry! Too many attempts. You are blocked for 60 minutes.</string>
+    <string name="reg__email_err_verified">Email is already verified</string>
     <string name="reg__mobile_confirmation">Email confirmed. Enter your mobile number to continue.</string>
     <string name="reg__mobile_sent_sms">We will send you an SMS with a verification code.</string>
     <string name="reg__mobile_enter_code">Enter verification code</string>
@@ -731,6 +743,14 @@
     <string name="reg__mobile_resend"><u>Resend SMS code</u></string>
     <string name="reg__mobile_validation_err">The value must be a valid phone number</string>
     <string name="reg__mobile_no_code">Please select a country code</string>
+    <string name="reg__mobile_no_security_code">Uh-oh, verification code required</string>
+    <string name="reg__mobile_err_recheck">Please recheck your mobile and country code</string>
+    <string name="reg__mobile_err_blacklisted">Sorry! Disposable mobile is not allowed. Proceed with a real mobile number.</string>
+    <string name="reg__mobile_err_too_many_attempts">Sorry! Too many attempts. You are blocked for 60 minutes.</string>
+    <string name="reg__mobile_err_unexpected">Oops! Something went wrong.</string>
+    <string name="reg__mobile_err_cannot_send">Sorry! Unable to send OTP.</string>
+    <string name="reg__mobile_err_code_invalid">Sorry! Verification code is invalid. Please provide the correct OTP.</string>
+    <string name="reg__mobile_err_code_expired">Sorry! Verification code is expired. Click the below link to re-send the OTP.</string>
     <string name="reg__pwd_set_password">Set Password</string>
     <string name="reg__pwd_account_created">A ShaktiID has been created with a link to your email and your mobile number</string>
     <string name="reg__pwd_strength">PASSWORD STRENGTH</string>
@@ -738,5 +758,7 @@
     <string name="reg__pwd_strength_lower">Lowercase characters</string>
     <string name="reg__pwd_strength_numbers">Numbers</string>
     <string name="reg__pwd_strength_symbols">Symbols</string>
+    <string name="reg__pwd_err_unexpected">Something went wrong. Please start again.</string>
+    <string name="reg__pwd_err_not_verified">Email/Mobile not verified</string>
 
 </resources>

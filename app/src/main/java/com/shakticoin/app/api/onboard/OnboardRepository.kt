@@ -2,6 +2,8 @@ package com.shakticoin.app.api.onboard
 
 import android.text.TextUtils
 import androidx.lifecycle.LifecycleOwner
+import com.shakticoin.app.R
+import com.shakticoin.app.ShaktiApplication
 import com.shakticoin.app.api.*
 import com.shakticoin.app.api.auth.AuthRepository
 import com.shakticoin.app.api.auth.TokenResponse
@@ -52,25 +54,12 @@ class OnboardRepository : BackendRepository() {
                         listener.onComplete(null, null)
                     } else listener.onComplete(null, null)
                 } else {
+                    val context = ShaktiApplication.getContext()
                     when(response.code()) {
-                        401 -> {
-                            if (!hasRecover401) {
-                                authRepository.refreshToken(Session.getRefreshToken(), object: OnCompleteListener<TokenResponse>() {
-                                    override fun onComplete(value: TokenResponse?, error: Throwable?) {
-                                        if (error != null) {
-                                            listener.onComplete(null, error)
-                                            return
-                                        }
-                                        addUser(emailAddress, countryCode, phoneNumber, password, listener, true)
-                                    }
-                                })
-                            } else {
-                                listener.onComplete(null, UnauthorizedException())
-                                return
-                            }
-                        }
                         409 -> listener.onComplete(null, RemoteException(getResponseErrorMessage("details", response.errorBody()), response.code()))
                         410 -> listener.onComplete(null, RemoteException(getResponseErrorMessage("details", response.errorBody()), response.code()))
+                        404 -> listener.onComplete(null, RemoteException(context.getString(R.string.reg__pwd_err_not_verified), response.code()))
+                        400, 500 -> listener.onComplete(null, RemoteException(context.getString(R.string.reg__pwd_err_unexpected), response.code()))
                         else -> return returnError(listener, response)
                     }
                 }

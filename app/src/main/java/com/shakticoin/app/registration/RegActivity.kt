@@ -14,6 +14,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.shakticoin.app.R
 import com.shakticoin.app.api.OnCompleteListener
+import com.shakticoin.app.api.RemoteException
 import com.shakticoin.app.api.Session
 import com.shakticoin.app.api.onboard.OnboardRepository
 import com.shakticoin.app.api.otp.EmailOTPRepository
@@ -61,47 +62,47 @@ class RegActivity : AppCompatActivity() {
     fun onVerifyEmail(v: View?) {
         imm?.hideSoftInputFromWindow(binding.root.windowToken, 0)
         val self: AppCompatActivity = this
+
+        // validate email address
         val emailAddress = viewModel?.emailAddress?.value
-        if (emailAddress != null && Validator.isEmail(emailAddress)) {
-            viewModel?.progressOn?.value = true
-            otpEmailRepository.checkEmailStatus(emailAddress, object: OnCompleteListener<Boolean?>() {
-                override fun onComplete(isVerified: Boolean?, error: Throwable?) {
-                    if (error != null) {
-                        viewModel?.progressOn?.value = false
-                        Toast.makeText(self, Debug.getFailureMsg(self, error), Toast.LENGTH_LONG).show()
-                        return
-                    }
+        if (emailAddress == null || emailAddress.isEmpty()) {
+            viewModel?.emailAddressError?.value = getString(R.string.reg__email_empty_err)
+            return
+        }
+        if (!Validator.isEmail(emailAddress)) {
+            viewModel?.emailAddressError?.value = getString(R.string.reg__email_validation_err)
+            return
+        }
 
-                    if (isVerified != null) {
-                        if (isVerified) {
-                            // the email address has been verified already and we can proceed with
-                            // phone verification
-                            viewModel?.progressOn?.value = false
-                            onEnterPhone(null)
-
-                        } else {
-                            // verification for email address is required
-                            otpEmailRepository.requestRegistration(emailAddress, object : OnCompleteListener<Void?>() {
-                                override fun onComplete(value: Void?, error: Throwable?) {
-                                    viewModel?.progressOn?.value = false
-                                    if (error != null) {
-                                        Toast.makeText(self, Debug.getFailureMsg(self, error), Toast.LENGTH_LONG).show()
-                                        return
-                                    }
-                                    self.supportFragmentManager
-                                            .beginTransaction()
-                                            .replace(binding.fragments.id, RegVerifyEmailFragment())
-                                            .addToBackStack(null)
-                                            .commit()
-                                }
-                            })
+        viewModel?.progressOn?.value = true
+        otpEmailRepository.requestRegistration(emailAddress, object : OnCompleteListener<Void?>() {
+            override fun onComplete(value: Void?, error: Throwable?) {
+                viewModel?.progressOn?.value = false
+                if (error != null) {
+                    if (error is RemoteException) {
+                        when(error.responseCode) {
+                            409 -> {
+                                Toast.makeText(self, error.message, Toast.LENGTH_LONG).show()
+                                startActivity(Session.unauthorizedIntent(self))
+                                return
+                            }
+                            422 -> {
+                                Toast.makeText(self, error.message, Toast.LENGTH_LONG).show()
+                                onEnterPhone(null)
+                                return
+                            }
                         }
                     }
+                    Toast.makeText(self, Debug.getFailureMsg(self, error), Toast.LENGTH_LONG).show()
+                    return
                 }
-            })
-        } else {
-            viewModel?.emailAddressError?.value = getString(R.string.reg__email_validation_err)
-        }
+                self.supportFragmentManager
+                        .beginTransaction()
+                        .replace(binding.fragments.id, RegVerifyEmailFragment())
+                        .addToBackStack(null)
+                        .commit()
+            }
+        })
     }
 
     /** Sends another request to email otp service w/o changing the current page */
@@ -133,50 +134,53 @@ class RegActivity : AppCompatActivity() {
     fun onVerifyPhone(v: View?) {
         imm?.hideSoftInputFromWindow(binding.root.windowToken, 0)
         val self: AppCompatActivity = this
-        val phoneNumber = viewModel?.phoneNumber?.value
-        val countryCode = viewModel?.selectedCountryCode?.value?.countryCode
-        if (phoneNumber != null && Validator.isPhoneNumber(phoneNumber)) {
-            if (countryCode != null) {
-                viewModel?.progressOn?.value = true
-                otpPhoneRepository.checkPhoneNumberStatus(countryCode, phoneNumber, object : OnCompleteListener<Boolean>() {
-                    override fun onComplete(isVerified: Boolean?, error: Throwable?) {
-                        if (error != null) {
-                            viewModel?.progressOn?.value = false
-                            Toast.makeText(self, Debug.getFailureMsg(self, error), Toast.LENGTH_LONG).show()
-                            return
-                        }
 
-                        if (isVerified != null && isVerified) {
+        val countryCode = viewModel?.selectedCountryCode?.value?.countryCode
+        if (TextUtils.isEmpty(countryCode)) {
+            Toast.makeText(this, R.string.reg__mobile_no_code, Toast.LENGTH_SHORT).show()
+            return;
+        }
+        val phoneNumber = viewModel?.phoneNumber?.value
+        if (TextUtils.isEmpty(phoneNumber) || !Validator.isPhoneNumber(phoneNumber)) {
+            Toast.makeText(this, R.string.reg__mobile_validation_err, Toast.LENGTH_SHORT).show()
+            return;
+        }
+
+        viewModel?.progressOn?.value = true
+        otpPhoneRepository.checkPhoneNumberStatus(countryCode!!, phoneNumber!!, object : OnCompleteListener<Boolean>() {
+            override fun onComplete(isVerified: Boolean?, error: Throwable?) {
+                if (error != null) {
+                    viewModel?.progressOn?.value = false
+                    Toast.makeText(self, Debug.getFailureMsg(self, error), Toast.LENGTH_LONG).show()
+                    return
+                }
+
+                if (isVerified != null && isVerified) {
+                    viewModel?.progressOn?.value = false
+                    supportFragmentManager
+                            .beginTransaction()
+                            .replace(binding.fragments.id, RegPasswordFragment())
+                            .addToBackStack(null)
+                            .commit()
+                } else {
+                    otpPhoneRepository.requestRegistration(countryCode, phoneNumber, object : OnCompleteListener<Void?>() {
+                        override fun onComplete(value: Void?, error: Throwable?) {
                             viewModel?.progressOn?.value = false
+                            if (error != null) {
+                                Toast.makeText(self, Debug.getFailureMsg(self, error), Toast.LENGTH_LONG).show()
+                                return
+                            }
+                            // error with code 409 allowed to reach this point
                             supportFragmentManager
                                     .beginTransaction()
-                                    .replace(binding.fragments.id, RegPasswordFragment())
+                                    .replace(binding.fragments.id, RegVerifyMobileFragment())
                                     .addToBackStack(null)
                                     .commit()
-                        } else {
-                            otpPhoneRepository.requestRegistration(countryCode, phoneNumber, object : OnCompleteListener<Void?>() {
-                                override fun onComplete(value: Void?, error: Throwable?) {
-                                    viewModel?.progressOn?.value = false
-                                    if (error != null) {
-                                        Toast.makeText(self, Debug.getFailureMsg(self, error), Toast.LENGTH_LONG).show()
-                                        return
-                                    }
-                                    supportFragmentManager
-                                            .beginTransaction()
-                                            .replace(binding.fragments.id, RegVerifyMobileFragment())
-                                            .addToBackStack(null)
-                                            .commit()
-                                }
-                            })
                         }
-                    }
-                })
-            } else {
-                Toast.makeText(this, R.string.reg__mobile_no_code, Toast.LENGTH_SHORT).show()
+                    })
+                }
             }
-        } else {
-            Toast.makeText(this, R.string.reg__mobile_validation_err, Toast.LENGTH_SHORT).show()
-        }
+        })
     }
 
     fun onReSendSMS(v: View?) {
@@ -199,11 +203,18 @@ class RegActivity : AppCompatActivity() {
 
     fun onSetPassword(v: View?) {
         val activity = this
+
+        val securityCode = viewModel?.smsSecurityCode?.value
+        if (TextUtils.isEmpty(securityCode)) {
+            viewModel?.smsSecurityCodeError?.value = getString(R.string.reg__mobile_no_security_code)
+            return
+        }
+
         viewModel?.progressOn?.value = true
         otpPhoneRepository.confirmRegistration(
                 viewModel?.selectedCountryCode?.value?.countryCode!!,
                 viewModel?.phoneNumber?.value!!,
-                viewModel?.smsSecurityCode?.value!!,
+                securityCode!!,
                 object: OnCompleteListener<Boolean?>() {
                     override fun onComplete(value: Boolean?, error: Throwable?) {
                         viewModel?.progressOn?.value = false
@@ -242,11 +253,19 @@ class RegActivity : AppCompatActivity() {
                 viewModel?.phoneNumber?.value!!, viewModel?.password1?.value!!, object: OnCompleteListener<Void>() {
             override fun onComplete(value: Void?, error: Throwable?) {
                 viewModel?.progressOn?.value = false
-                if (error != null) {
+                if (error != null && !(error is RemoteException && 409 == error.responseCode)) {
                     Toast.makeText(self, Debug.getFailureMsg(self, error), Toast.LENGTH_LONG).show()
+                    supportFragmentManager
+                            .beginTransaction()
+                            .add(binding.fragments.id, RegEnterEmailFragment())
+                            .commit()
                     return
                 }
-                Toast.makeText(self, R.string.activation_active, Toast.LENGTH_LONG).show()
+                if (error != null && error is RemoteException && 409 == error.responseCode) {
+                    Toast.makeText(self, error.message, Toast.LENGTH_LONG).show()
+                } else {
+                    Toast.makeText(self, R.string.activation_active, Toast.LENGTH_LONG).show()
+                }
                 startActivity(Session.unauthorizedIntent(self))
             }
         })
@@ -254,6 +273,7 @@ class RegActivity : AppCompatActivity() {
 
     /** Returns to the previous page */
     fun onGoBack(v: View) {
+        viewModel?.progressOn?.value = false
         supportFragmentManager.popBackStackImmediate()
         if ("BackFromEnterMobile" == v.tag) {
             // need to go back for an extra step

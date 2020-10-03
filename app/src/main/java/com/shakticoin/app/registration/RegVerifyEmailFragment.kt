@@ -5,8 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import com.shakticoin.app.R
 import com.shakticoin.app.api.RemoteException
 import com.shakticoin.app.api.otp.EmailOTPRepository
 import com.shakticoin.app.databinding.FragmentRegVerifyEmailBinding
@@ -85,8 +87,12 @@ class RegVerifyEmailFragment : Fragment() {
 
         override fun onPostExecute(result: Boolean?) {
             viewModel?.progressOn?.value = false
-            if (result != null && result) {
-                (activity as RegActivity).onEnterPhone(null)
+            if (result != null) {
+                if (result) {
+                    (activity as RegActivity).onEnterPhone(null)
+                } // result never false
+            } else {
+                Toast.makeText(context, R.string.reg__email_err_unexpected, Toast.LENGTH_LONG).show()
             }
         }
 

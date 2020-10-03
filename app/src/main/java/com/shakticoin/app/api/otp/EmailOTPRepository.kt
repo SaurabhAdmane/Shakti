@@ -46,12 +46,17 @@ class EmailOTPRepository : BackendRepository() {
                         listener.onComplete(null, null)
                     } else listener.onComplete(null, null);
                 } else {
+                    val context = ShaktiApplication.getContext()
+                    var errMsg = getResponseErrorMessage("responseMsg", response.errorBody())
                     when(response.code()) {
-                        409 -> listener.onComplete(null, RemoteException(
-                                ShaktiApplication.getContext().getString(R.string.reg__email_err_already_registered), 409))
-                        else -> listener.onComplete(null, RemoteException(
-                                getResponseErrorMessage("responseMsg", response.errorBody()), response.code()))
+                        400, 500 -> errMsg = context.getString(R.string.reg__email_err_unexpected)
+                        404 -> errMsg = context.getString(R.string.reg__email_err_try_later)
+                        406 -> errMsg = context.getString(R.string.reg__email_err_blacklisted)
+                        409 -> errMsg = getResponseErrorMessage("responseMsg", response.errorBody())
+                        422 -> errMsg = context.getString(R.string.reg__email_err_verified)
+                        429 -> errMsg = context.getString(R.string.reg__email_err_too_many_attempts)
                     }
+                    listener.onComplete(null, RemoteException(errMsg, response.code()))
                 }
             }
 
@@ -101,6 +106,7 @@ class EmailOTPRepository : BackendRepository() {
                 when (response.code()) {
                     404 -> return false // not found
                     410 -> return false // expired
+                    422 -> return true // already verified
                     else -> return null
                 }
             }

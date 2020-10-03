@@ -24,6 +24,7 @@ class RegViewModel : ViewModel() {
     val phoneNumberError: MutableLiveData<String> = MutableLiveData()
 
     val smsSecurityCode: MutableLiveData<String> = MutableLiveData()
+    val smsSecurityCodeError: MutableLiveData<String> = MutableLiveData()
 
     val password1: MutableLiveData<String> = MutableLiveData()
     val password2: MutableLiveData<String> = MutableLiveData()
