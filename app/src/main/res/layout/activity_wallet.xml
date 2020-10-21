@@ -58,7 +58,7 @@
                         android:layout_marginStart="24dp"
                         android:layout_marginTop="27dp"
                         android:layout_marginEnd="24dp"
-                        android:text="@{viewModel.getFormattedBalance(viewModel.balance)}"
+                        android:text=""
                         android:textAppearance="@style/AppText.Body"
                         android:textFontWeight="500"
                         android:textSize="36sp"
@@ -121,11 +121,11 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/doBalanceHistory">
 
-                        <ProgressBar
-                            android:id="@+id/walletActionsProgressBar"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"/>
+<!--                        <ProgressBar-->
+<!--                            android:id="@+id/walletActionsProgressBar"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_centerInParent="true"/>-->
 
                     </RelativeLayout>
 

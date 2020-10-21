@@ -18,6 +18,13 @@ class UpdatePasswordModel {
 class WalletRequest {
     var authorizationBytes: String = ""
     var passphrase: String? = null
+    var walletBytes: String? = null
+    var cacheBytes: String? = null
+    
+    var addressNumber: Int? = null
+    var sessionToken: String? = null
+
+
 }
 
 class GeoJSONModel {
@@ -31,4 +38,6 @@ class ResponseBean {
     var path : String? = null
     var status : Int? = null
     var timestamp : String? = null
+    var sessionToken : String? = null
+    var walletBalance : String? = null
 }

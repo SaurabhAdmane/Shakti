@@ -21,4 +21,11 @@ interface OnboardService {
     @POST("onboardShakti/wallet")
     fun createWallet(@Header("Authorization") authorization: String?,
                      @Body parameters: WalletRequest) : Call<ResponseBean?>
+
+
+
+
+
+
+
 }

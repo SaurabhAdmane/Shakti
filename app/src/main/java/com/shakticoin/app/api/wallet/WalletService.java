@@ -1,5 +1,9 @@
 package com.shakticoin.app.api.wallet;
 
+import com.shakticoin.app.api.onboard.ResponseBean;
+import com.shakticoin.app.api.onboard.WalletRequest;
+
+import java.util.HashMap;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -7,6 +11,7 @@ import retrofit2.http.Body;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.QueryMap;
 
 public interface WalletService {
 
@@ -34,6 +39,16 @@ public interface WalletService {
     @POST("coins/")
     Call<TransferModelResponse> transferSxeCoins(@Header("Authorization") String authorization,
                                                @Body CoinModel parameters);
+
+
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("users/session/")
+    Call<ResponseBean> createSession(@Header("Authorization") String authorization,
+                                     @Body CoinModel parameters);
+
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("users/wallet/mybalance")
+    Call<ResponseBean> getMyBalance(@Header("Authorization") String authorization, @Body CoinModel parameters);
 
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("wallet/transaction/history/bytime/")

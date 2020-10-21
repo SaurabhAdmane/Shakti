@@ -22,6 +22,8 @@ import com.shakticoin.app.api.Session;
 import com.shakticoin.app.api.UnauthorizedException;
 import com.shakticoin.app.api.auth.AuthRepository;
 import com.shakticoin.app.api.auth.TokenResponse;
+import com.shakticoin.app.api.onboard.ResponseBean;
+import com.shakticoin.app.api.onboard.WalletRequest;
 import com.shakticoin.app.util.Debug;
 import com.shakticoin.app.util.PreferenceHelper;
 
@@ -32,6 +34,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -455,6 +458,138 @@ public class WalletRepository extends BackendRepository {
         });
     }
 
+//    Create Session API:
+//
+//    https://walletservice-stg.shakticoin.com/walletservice/api/v1/users/session/
+//
+//            ["walletBytes": "fhctFR+Dj4G72BgCqR6VgXemQUP9V2W2jC65SEecJNNVnciL6F/Bz3fxs7DWAzwtnsNXGQECMLqUQbvBk0KDfDt0vbEY5SFdoRYQ39FhJEznr9H+DC0eN8WT/qcnW+NNwycLsvNJW/m0PgeSuwT3aLjwKhld0GFoLo/BTxiuNezokMU4GZIuDf3/jcfWSrdti6nKYjv0BZe9srs5vAMY3Q", "cacheBytes": "", "passphrase": "123"]
+//
+//    Response:
+//            ["message": Session created, "sessionToken": 3603205737]
+
+//    Get my Balance API:
+//    https://walletservice-stg.shakticoin.com/walletservice/api/v1/users/wallet/mybalance
+//
+//            ["addressNumber": 0, "cacheBytes": "", "sessionToken": 3603205737]
+//
+//    Response:
+//            ["walletBalance": 0, "message": Your balance is 0]
+
+
+    public void createSession(@NonNull String passphrase, @NonNull String cacheBytes, @Nullable String walletBytes, @NonNull OnCompleteListener<String> listener) {
+        createSession(passphrase, cacheBytes, walletBytes, listener, false);
+    }
+    public void createSession(@NonNull String passphrase, @NonNull String cacheBytes, @Nullable String walletBytes, @NonNull OnCompleteListener<String> listener, boolean hasRecover401) {
+
+        CoinModel parameters = new CoinModel();
+        parameters.passphrase = passphrase;
+        parameters.cacheBytes = "";
+        parameters.walletBytes = walletBytes;
+        service.createSession(Session.getAuthorizationHeader(), parameters).enqueue(new Callback<ResponseBean>() {
+            @EverythingIsNonNull
+            @Override
+            public void onResponse(Call<ResponseBean> call, Response<ResponseBean> response) {
+                Debug.logDebug(response.toString());
+                Session.setWalletSessionToken(null);
+                if (response.isSuccessful()) {
+                    ResponseBean results = response.body();
+                    if (results != null) {
+                        String message = results.getMessage();
+                        if (message != null) Debug.logDebug(message);
+                        listener.onComplete(results.getSessionToken(), null);
+                    } else listener.onComplete(null, new IllegalStateException());
+                } else {
+                    if (response.code() == 401) {
+                        if (!hasRecover401) {
+                            authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
+                                @Override
+                                public void onComplete(TokenResponse value, Throwable error) {
+                                    if (error != null) {
+                                        listener.onComplete(null, new UnauthorizedException());
+                                        return;
+                                    }
+                                }
+                            });
+                        } else {
+                            listener.onComplete(null, new UnauthorizedException());
+                        }
+                    } else {
+                        Debug.logErrorResponse(response);
+                        listener.onComplete(null,
+                                new RemoteException(
+                                        ShaktiApplication.getContext().getString(R.string.dlg_sxe_err_transfer),
+                                        response.code()));
+                    }
+                }
+            }
+
+            @EverythingIsNonNull
+            @Override
+            public void onFailure(Call<ResponseBean> call, Throwable t) {
+                Session.setWalletSessionToken(null);
+                returnError(listener, t);
+            }
+        });
+    }
+
+    public void getMyBalance(@NonNull Integer address, @NonNull String cacheBytes, @Nullable Long sessionToken, @NonNull OnCompleteListener<String> listener) {
+        getMyBalance(address, cacheBytes, sessionToken, listener, false);
+    }
+    public void getMyBalance(@NonNull Integer address, @NonNull String cacheBytes, @Nullable Long sessionToken, @NonNull OnCompleteListener<String> listener, boolean hasRecover401) {
+
+        CoinModel parameters = new CoinModel();
+        parameters.addressNumber = address;
+        parameters.cacheBytes = cacheBytes;
+        parameters.sessionToken = sessionToken;
+        service.getMyBalance(Session.getAuthorizationHeader(), parameters).enqueue(new Callback<ResponseBean>() {
+            @EverythingIsNonNull
+            @Override
+            public void onResponse(Call<ResponseBean> call, Response<ResponseBean> response) {
+                Debug.logDebug(response.toString());
+                Session.setWalletSessionToken(null);
+                if (response.isSuccessful()) {
+                    ResponseBean results = response.body();
+                    if (results != null) {
+                        String message = results.getMessage();
+                        if (message != null) Debug.logDebug(message);
+                        listener.onComplete(results.getWalletBalance(), null);
+                    } else listener.onComplete(null, new IllegalStateException());
+                } else {
+                    if (response.code() == 401) {
+                        if (!hasRecover401) {
+                            authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
+                                @Override
+                                public void onComplete(TokenResponse value, Throwable error) {
+                                    if (error != null) {
+                                        listener.onComplete(null, new UnauthorizedException());
+                                        return;
+                                    }
+                                }
+                            });
+                        } else {
+                            listener.onComplete(null, new UnauthorizedException());
+                        }
+                    } else {
+                        Debug.logErrorResponse(response);
+                        listener.onComplete(null,
+                                new RemoteException(
+                                        ShaktiApplication.getContext().getString(R.string.dlg_sxe_err_transfer),
+                                        response.code()));
+                    }
+                }
+            }
+
+            @EverythingIsNonNull
+            @Override
+            public void onFailure(Call<ResponseBean> call, Throwable t) {
+                Session.setWalletSessionToken(null);
+                returnError(listener, t);
+            }
+        });
+    }
+
+
+
     /**
      * Returns list of transactions on an account
      * // TODO: we should request transactions for a particular wallet but for now it's not clear
@@ -484,4 +619,7 @@ public class WalletRepository extends BackendRepository {
         super.setLifecycleOwner(lifecycleOwner);
         authRepository.setLifecycleOwner(lifecycleOwner);
     }
+
+
+
 }

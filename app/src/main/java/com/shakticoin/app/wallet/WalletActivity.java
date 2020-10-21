@@ -22,12 +22,16 @@ import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.RemoteException;
 import com.shakticoin.app.api.Session;
 import com.shakticoin.app.api.UnauthorizedException;
+import com.shakticoin.app.api.bizvault.BizvaultRepository;
 import com.shakticoin.app.api.kyc.KYCRepository;
 import com.shakticoin.app.api.license.LicenseRepository;
 import com.shakticoin.app.api.license.NodeOperatorModel;
 import com.shakticoin.app.api.license.SubscribedLicenseModel;
 import com.shakticoin.app.api.onboard.OnboardRepository;
+import com.shakticoin.app.api.onboard.ResponseBean;
+import com.shakticoin.app.api.referrals.BountyRepository;
 import com.shakticoin.app.api.wallet.SessionException;
+import com.shakticoin.app.api.wallet.TransferModelResponse;
 import com.shakticoin.app.api.wallet.WalletRepository;
 import com.shakticoin.app.databinding.ActivityWalletBinding;
 import com.shakticoin.app.miner.BecomeMinerActivity;
@@ -41,6 +45,8 @@ import com.shakticoin.app.widget.DrawerActivity;
 import java.math.BigDecimal;
 import java.util.List;
 
+import static com.shakticoin.app.ShaktiApplication.getContext;
+
 public class WalletActivity extends DrawerActivity {
     private ActivityWalletBinding binding;
     private WalletModel viewModel;
@@ -49,6 +55,8 @@ public class WalletActivity extends DrawerActivity {
     private KYCRepository kycRepository;
     private OnboardRepository onboardRepository;
     private LicenseRepository licenseRepository;
+    private BizvaultRepository bizvaultRepository;
+    private BountyRepository bountyRepository;
 
     @Override
     public void onBackPressed() {
@@ -80,6 +88,92 @@ public class WalletActivity extends DrawerActivity {
         walletRepository.setLifecycleOwner(this);
         onboardRepository = new OnboardRepository();
         onboardRepository.setLifecycleOwner(this);
+        bizvaultRepository = new BizvaultRepository();
+        bizvaultRepository.setLifecycleOwner(this);
+        bountyRepository = new BountyRepository();
+        bountyRepository.setLifecycleOwner(this);
+
+        getSessionApi();
+        getBizVaultStatus();
+        getBountyStatus();
+    }
+
+    private void getBountyStatus() {
+        bountyRepository.bountyStatus(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(String walletBytes, Throwable error) {
+                if (error != null) {
+                    Toast.makeText(WalletActivity.this, Debug.getFailureMsg(WalletActivity.this, error), Toast.LENGTH_LONG).show();
+                    if (error instanceof RemoteException && ((RemoteException) error).getResponseCode() == 201) {
+                        Session.setWalletPassphrase(null);
+                    }
+                    return;
+                }
+            }
+        });
+    }
+
+    private void getBizVaultStatus() {
+
+        bizvaultRepository.bizvaultStatus(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(String walletBytes, Throwable error) {
+                        if (error != null) {
+                            Toast.makeText(WalletActivity.this, Debug.getFailureMsg(WalletActivity.this, error), Toast.LENGTH_LONG).show();
+                            if (error instanceof RemoteException && ((RemoteException) error).getResponseCode() == 201) {
+                                Session.setWalletPassphrase(null);
+                            }
+                            return;
+                        }
+                    }
+                });
+    }
+
+    /**
+     * Get the session token
+     */
+    private void getSessionApi() {
+
+        viewModel.isProgressBarActive.set(true);
+
+        walletRepository.createSession(
+                "123","",
+                "fhctFR+Dj4G72BgCqR6VgXemQUP9V2W2jC65SEecJNNVnciL6F/Bz3fxs7DWAzwtnsNXGQECMLqUQbvBk0KDfDt0vbEY5SFdoRYQ39FhJEznr9H+DC0eN8WT/qcnW+NNwycLsvNJW/m0PgeSuwT3aLjwKhld0GFoLo/BTxiuNezokMU4GZIuDf3/jcfWSrdti6nKYjv0BZe9srs5vAMY3Q"
+
+        , new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(String walletBytes, Throwable error) {
+                if (error != null) {
+                    Toast.makeText(WalletActivity.this, Debug.getFailureMsg(WalletActivity.this, error), Toast.LENGTH_LONG).show();
+                    if (error instanceof RemoteException && ((RemoteException) error).getResponseCode() == 201) {
+                        Session.setWalletPassphrase(null);
+                    }
+                    return;
+                }
+                getBalanceApi(walletBytes);
+
+            }
+        });
+    }
+
+    private void getBalanceApi(String walletBytes){
+        viewModel.isProgressBarActive.set(true);
+        walletRepository.getMyBalance(
+                0, "", Long.parseLong(walletBytes)
+                , new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(String balance, Throwable error) {
+                        viewModel.isProgressBarActive.set(false);
+                        if (error != null) {
+                            Toast.makeText(WalletActivity.this, Debug.getFailureMsg(WalletActivity.this, error), Toast.LENGTH_LONG).show();
+                            if (error instanceof RemoteException && ((RemoteException) error).getResponseCode() == 201) {
+                                Session.setWalletPassphrase(null);
+                            }
+                            return;
+                        }
+                        binding. balance.setText("SXE "+balance);
+                    }
+                });
     }
 
     @Override
@@ -117,7 +211,7 @@ public class WalletActivity extends DrawerActivity {
         });
 
         // check wallet lock status and display action buttons if unlocked
-        new CheckWalletLocked(getSupportFragmentManager(), binding.walletActionsProgressBar, this).execute();
+        new CheckWalletLocked(getSupportFragmentManager(), binding.progressBar, this).execute();
     }
 
     @Override
@@ -210,18 +304,18 @@ public class WalletActivity extends DrawerActivity {
 
     static class CheckWalletLocked extends AsyncTask<Void, Void, Boolean> {
         private FragmentManager fragmentManager;
-        private ProgressBar walletActionsProgressBar;
+//        private ProgressBar walletActionsProgressBar;
         private LifecycleOwner lifecycleOwner;
 
         CheckWalletLocked(FragmentManager fragmentManager, ProgressBar progressBar, LifecycleOwner lifecycleOwner) {
             this.fragmentManager = fragmentManager;
-            walletActionsProgressBar = progressBar;
+//            walletActionsProgressBar = progressBar;
             this.lifecycleOwner = lifecycleOwner;
         }
 
         @Override
         protected Boolean doInBackground(Void... voids) {
-            LockStatusDao lockStatuses = AppDatabase.getDatabase(ShaktiApplication.getContext()).lockStatusDao();
+            LockStatusDao lockStatuses = AppDatabase.getDatabase(getContext()).lockStatusDao();
             LockStatus status = lockStatuses.getWalletKYCLockStatus();
             boolean isUnlocked = status != null && "UNLOCKED".equals(status.getStatus());
             if (!isUnlocked) {
@@ -233,7 +327,7 @@ public class WalletActivity extends DrawerActivity {
 
         @Override
         protected void onPostExecute(Boolean unlocked) {
-            walletActionsProgressBar.setVisibility(View.GONE);
+//            walletActionsProgressBar.setVisibility(View.GONE);
             if (lifecycleOwner != null
                     && lifecycleOwner.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED)) {
                 fragmentManager

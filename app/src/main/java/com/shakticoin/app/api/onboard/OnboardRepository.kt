@@ -122,6 +122,63 @@ class OnboardRepository : BackendRepository() {
         })
     }
 
+
+//    fun createSession(passphrase: String, listener: OnCompleteListener<String>) {createSession(passphrase, listener, false)}
+//    private fun createSession(passphrase: String, listener: OnCompleteListener<String>, hasRecover401: Boolean) {
+//        val parameters = WalletRequest()
+//        parameters.passphrase = "123"
+//        parameters.walletBytes = "fhctFR+Dj4G72BgCqR6VgXemQUP9V2W2jC65SEecJNNVnciL6F/Bz3fxs7DWAzwtnsNXGQECMLqUQbvBk0KDfDt0vbEY5SFdoRYQ39FhJEznr9H+DC0eN8WT/qcnW+NNwycLsvNJW/m0PgeSuwT3aLjwKhld0GFoLo/BTxiuNezokMU4GZIuDf3/jcfWSrdti6nKYjv0BZe9srs5vAMY3Q"
+//        parameters.cacheBytes = ""
+//        callWlt = onboardService.createSession(Session.getAuthorizationHeader(), parameters)
+//        callWlt!!.enqueue(object: Callback<ResponseBean?> {
+//            override fun onFailure(call: Call<ResponseBean?>, t: Throwable) {
+//                return returnError(listener, t)
+//            }
+//
+//            override fun onResponse(call: Call<ResponseBean?>, response: Response<ResponseBean?>) {
+//                Debug.logDebug(response.toString())
+//                if (response.isSuccessful) {
+//                    val resp = response.body()
+//                    // it return success if wallet exists already for the account but w/o wallet bytes
+//                    if (resp != null) {
+//                        val details = resp.details
+//                        val sessionToken = details?.get("sessionToken") as Long
+//                        // This is in fact an error situation in spite of success code 201.
+//                        // It means that the network knows about the user's wallet but the user
+//                        // either did not store wallet bytes locally or lost it.
+//                        if (TextUtils.isEmpty(""+sessionToken)) {
+//                            listener.onComplete(null, RemoteException(details["message"] as String, response.code()))
+//                            return
+//                        }
+//                        listener.onComplete(""+sessionToken, null)
+//                    } else listener.onComplete(null, null)
+//                } else {
+//                    when(response.code()) {
+//                        401 -> {
+//                            if (!hasRecover401) {
+//                                authRepository.refreshToken(Session.getRefreshToken(), object: OnCompleteListener<TokenResponse>() {
+//                                    override fun onComplete(value: TokenResponse?, error: Throwable?) {
+//                                        if (error != null) {
+//                                            listener.onComplete(null, error)
+//                                            return
+//                                        }
+//                                        createWallet(passphrase, listener, true)
+//                                    }
+//                                })
+//                            } else {
+//                                listener.onComplete(null, UnauthorizedException())
+//                                return
+//                            }
+//                        }
+//                        else -> return returnError(listener, response)
+//                    }
+//                }
+//            }
+//
+//        })
+//    }
+
+
     override fun setLifecycleOwner(lifecycleOwner: LifecycleOwner?) {
         super.setLifecycleOwner(lifecycleOwner)
         authRepository.setLifecycleOwner(lifecycleOwner)
