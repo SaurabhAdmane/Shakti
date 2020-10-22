@@ -173,58 +173,56 @@ public class ProfileActivity extends DrawerActivity {
                 // already or we need to create new set
                 viewModel.userdata.setValue(value);
 
-                personalInfoViewModel.firstName.setValue((String) value.getFirstName());
-                personalInfoViewModel.middleName.setValue((String) value.getMiddleName());
-                personalInfoViewModel.lastName.setValue((String) value.getLastName());
+                personalInfoViewModel.firstName.setValue(value.getFirstName());
+                personalInfoViewModel.middleName.setValue(value.getMiddleName());
+                personalInfoViewModel.lastName.setValue(value.getLastName());
 
-                personalInfoViewModel.birthDate.setValue((String) value.getDob());
+                personalInfoViewModel.birthDate.setValue(value.getDob());
 
                 AddressModel postalAddress = value.getAddress();
                 if (postalAddress != null) {
-                    personalInfoViewModel.city.setValue((String) postalAddress.getCity());
-                    personalInfoViewModel.postalCode.setValue((String) postalAddress.getZipCode());
-                    personalInfoViewModel.address1.setValue((String) postalAddress.getAddress1());
-                    personalInfoViewModel.address2.setValue((String) postalAddress.getAddress2());
-                    String countryCode = (String) postalAddress.getCountryCode();
-                    if (countryCode != null) {
-                        licenseRepo.getCountry(countryCode, new OnCompleteListener<Country>() {
+                    personalInfoViewModel.city.setValue(postalAddress.getCity());
+                    personalInfoViewModel.postalCode.setValue(postalAddress.getZipCode());
+                    personalInfoViewModel.address1.setValue(postalAddress.getAddress1());
+                    personalInfoViewModel.address2.setValue(postalAddress.getAddress2());
+                    String countryCode = postalAddress.getCountryCode();
+                    licenseRepo.getCountry(countryCode, new OnCompleteListener<Country>() {
+                        @Override
+                        public void onComplete(Country value, Throwable error) {
+                            if (error != null) {
+                                return;
+                            }
+                            personalInfoViewModel.selectedCountry.setValue(value);
+                        }
+                    });
+
+                    String stateProvinceCode = (String) postalAddress.getStateProvinceCode();
+                    if (stateProvinceCode != null) {
+                        licenseRepo.getSubdivisionsByCountry(countryCode, new OnCompleteListener<List<Subdivision>>() {
                             @Override
-                            public void onComplete(Country value, Throwable error) {
+                            public void onComplete(List<Subdivision> subdivisions, Throwable error) {
                                 if (error != null) {
                                     return;
                                 }
-                                personalInfoViewModel.selectedCountry.setValue(value);
-                            }
-                        });
 
-                        String stateProvinceCode = (String) postalAddress.getStateProvinceCode();
-                        if (stateProvinceCode != null) {
-                            licenseRepo.getSubdivisionsByCountry(countryCode, new OnCompleteListener<List<Subdivision>>() {
-                                @Override
-                                public void onComplete(List<Subdivision> subdivisions, Throwable error) {
-                                    if (error != null) {
-                                        return;
-                                    }
+                                personalInfoViewModel.stateProvinceList.setValue(subdivisions);
 
-                                    personalInfoViewModel.stateProvinceList.setValue(subdivisions);
-
-                                    for (Subdivision subdivision : subdivisions) {
-                                        if (stateProvinceCode.equals(subdivision.getProvinceCode())) {
-                                            personalInfoViewModel.selectedState.setValue(subdivision);
-                                            break;
-                                        }
+                                for (Subdivision subdivision : subdivisions) {
+                                    if (stateProvinceCode.equals(subdivision.getProvinceCode())) {
+                                        personalInfoViewModel.selectedState.setValue(subdivision);
+                                        break;
                                     }
                                 }
-                            });
-                        }
+                            }
+                        });
                     }
                 }
 
-                personalInfoViewModel.emailAddress.setValue((String) value.getSecondaryEmail());
-                personalInfoViewModel.phoneNumber.setValue((String) value.getSecondaryMobile());
-                personalInfoViewModel.occupation.setValue((String) value.getOccupation());
-                personalInfoViewModel.educationLevel.setValue((String) value.getEducation1());
-                Boolean emailAlert = (Boolean) value.getEmailAlert();
+                personalInfoViewModel.emailAddress.setValue(value.getSecondaryEmail());
+                personalInfoViewModel.phoneNumber.setValue(value.getSecondaryMobile());
+                personalInfoViewModel.occupation.setValue(value.getOccupation());
+                personalInfoViewModel.educationLevel.setValue(value.getEducation1());
+                Boolean emailAlert = value.getEmailAlert();
                 personalInfoViewModel.subscriptionConfirmed.set(emailAlert != null ? emailAlert : false);
             }
         });
@@ -431,7 +429,7 @@ public class ProfileActivity extends DrawerActivity {
             return;
         }
 
-        File imageFile = null;
+        File imageFile;
         try {
             imageFile = getPhotoFile();
         } catch (IOException e) {
