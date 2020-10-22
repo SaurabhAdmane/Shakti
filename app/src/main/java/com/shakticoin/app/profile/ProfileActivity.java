@@ -171,7 +171,7 @@ public class ProfileActivity extends DrawerActivity {
 
                 // we save mainly to be able determine if an user data are created
                 // already or we need to create new set
-                viewModel.shaktiId.setValue((String) value.getShaktiID());
+                viewModel.userdata.setValue(value);
 
                 personalInfoViewModel.firstName.setValue((String) value.getFirstName());
                 personalInfoViewModel.middleName.setValue((String) value.getMiddleName());
@@ -316,7 +316,7 @@ public class ProfileActivity extends DrawerActivity {
 
             viewModel.getProgressBarTrigger().set(true);
             KycUserModel userData = createUserModel();
-            if (TextUtils.isEmpty(viewModel.shaktiId.getValue())) {
+            if (viewModel.userdata.getValue() == null) {
                 kycRepository.createUserDetails(userData, new OnCompleteListener<Map<String, Object>>() {
 
                     @Override

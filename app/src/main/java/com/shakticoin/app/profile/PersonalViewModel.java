@@ -9,12 +9,13 @@ import androidx.lifecycle.ViewModel;
 import com.shakticoin.app.ProgressBarModel;
 import com.shakticoin.app.api.kyc.KycCategory;
 import com.shakticoin.app.api.kyc.KycDocType;
+import com.shakticoin.app.api.kyc.KycUserView;
 
 import java.util.List;
 
 public class PersonalViewModel extends ViewModel implements ProgressBarModel {
     private ObservableBoolean progressBarTrigger = new ObservableBoolean(false);
-    public MutableLiveData<String> shaktiId = new MutableLiveData<>();
+    public MutableLiveData<KycUserView> userdata = new MutableLiveData<>();
 
     /** Selected KYC category */
     MutableLiveData<KycCategory> selectedCategory = new MutableLiveData<>();

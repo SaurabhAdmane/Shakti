@@ -1,7 +1,6 @@
 package com.shakticoin.app.api.kyc
 
 class KycUserView {
-    var shaktiID: String? = null
     var walletID: String? = null
     var firstName: String? = null
     var lastName: String? = null
