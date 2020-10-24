@@ -10,12 +10,6 @@ import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.view.ViewCompat;
-import androidx.core.widget.TextViewCompat;
-import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
-
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -34,6 +28,11 @@ import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.view.ViewCompat;
+import androidx.core.widget.TextViewCompat;
+import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
 import com.shakticoin.app.R;
 
@@ -189,6 +188,7 @@ public class TextInputLayout extends RelativeLayout {
                 validationFieldEmpty = false;
             }
 
+            editTextView.setCompoundDrawablePadding(20);
             if (valid) {
                 TextViewCompat.setCompoundDrawablesRelative(editTextView, compounds[0], compounds[1],
                         validationOk, compounds[3]);
@@ -311,7 +311,7 @@ public class TextInputLayout extends RelativeLayout {
             if (passwordToggleDummyDrawable == null) {
                 passwordToggleDummyDrawable = new ColorDrawable();
             }
-            passwordToggleDummyDrawable.setBounds(0, 0, passwordToggleView.getMeasuredWidth(), 1);
+            passwordToggleDummyDrawable.setBounds(0, 0, 80, 1);
 
             final Drawable[] compounds = TextViewCompat.getCompoundDrawablesRelative(editTextView);
             // ctore the user defined end compound drawable so that we can restore it later
