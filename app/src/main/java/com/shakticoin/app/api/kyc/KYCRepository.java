@@ -151,18 +151,23 @@ public class KYCRepository extends BackendRepository {
                             }
                             break;
                         default:
-                            JSONObject jsonResponse = errorBodyJSON(response.errorBody());
-                            if (jsonResponse != null && jsonResponse.has("rootArray")) {
-                                try {
-                                    JSONArray msgArray = jsonResponse.getJSONArray("rootArray");
-                                    listener.onComplete(null, new RemoteException(msgArray.getString(0)));
-                                    return;
-                                } catch (JSONException e) {
-                                    Debug.logDebug(e.getMessage());
+                            try {
+                                JSONObject jsonResponse = errorBodyJSON(response.errorBody());
+                                if (jsonResponse != null) {
+                                    if (jsonResponse.has("rootArray")) {
+                                        JSONArray msgArray = jsonResponse.getJSONArray("rootArray");
+                                        listener.onComplete(null, new RemoteException(msgArray.getString(0)));
+                                        return;
+                                    } else if (jsonResponse.has("message")) {
+                                        listener.onComplete(null, new RemoteException(jsonResponse.getString("message")));
+                                        return;
+                                    }
                                 }
+                            } catch (JSONException e) {
+                                Debug.logException(e);
                             }
-                            returnError(listener, response);
                     }
+                    returnError(listener, response);
                 }
             }
 
@@ -204,20 +209,21 @@ public class KYCRepository extends BackendRepository {
                                 return;
                             }
                             break;
-                        case 400:
-                            String errMsg = getResponseErrorMessage("message", response.errorBody());
-                            listener.onComplete(null, new RemoteException(errMsg, response.code()));
-                            break;
                         default:
-                            JSONObject jsonResponse = errorBodyJSON(response.errorBody());
-                            if (jsonResponse != null && jsonResponse.has("rootArray")) {
-                                try {
-                                    JSONArray msgArray = jsonResponse.getJSONArray("rootArray");
-                                    listener.onComplete(null, new RemoteException(msgArray.getString(0)));
-                                    return;
-                                } catch (JSONException e) {
-                                    Debug.logDebug(e.getMessage());
+                            try {
+                                JSONObject jsonResponse = errorBodyJSON(response.errorBody());
+                                if (jsonResponse != null) {
+                                    if (jsonResponse.has("rootArray")) {
+                                        JSONArray msgArray = jsonResponse.getJSONArray("rootArray");
+                                        listener.onComplete(null, new RemoteException(msgArray.getString(0)));
+                                        return;
+                                    } else if (jsonResponse.has("message")) {
+                                        listener.onComplete(null, new RemoteException(jsonResponse.getString("message")));
+                                        return;
+                                    }
                                 }
+                            } catch (JSONException e) {
+                                Debug.logException(e);
                             }
                             returnError(listener, response);
                     }
