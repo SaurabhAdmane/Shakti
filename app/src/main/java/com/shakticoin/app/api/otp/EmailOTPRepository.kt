@@ -47,12 +47,12 @@ class EmailOTPRepository : BackendRepository() {
                     } else listener.onComplete(null, null);
                 } else {
                     val context = ShaktiApplication.getContext()
-                    var errMsg = getResponseErrorMessage("responseMsg", response.errorBody())
+                    var errMsg = context.getString(R.string.err_unexpected)
                     when(response.code()) {
                         400, 500 -> errMsg = context.getString(R.string.reg__email_err_unexpected)
                         404 -> errMsg = context.getString(R.string.reg__email_err_try_later)
                         406 -> errMsg = context.getString(R.string.reg__email_err_blacklisted)
-                        409 -> errMsg = getResponseErrorMessage("responseMsg", response.errorBody())
+                        409 -> errMsg = context.getString(R.string.reg__email_err_registered, email)
                         422 -> errMsg = context.getString(R.string.reg__email_err_verified)
                         429 -> errMsg = context.getString(R.string.reg__email_err_too_many_attempts)
                     }
