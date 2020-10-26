@@ -36,25 +36,26 @@ class RegEnterMobileFragment : Fragment() {
             true
         }
 
-        viewModel?.countryCodes = phoneOtpRepository.getCountryCodeList();
-        viewModel?.countryCodes?.observe(viewLifecycleOwner, object: Observer<List<IntlPhoneCountryCode>> {
-            override fun onChanged(codes: List<IntlPhoneCountryCode>?) {
-                if (codes != null) {
-                    val deviceIsoCode = CommonUtil.getCountryCode2(requireContext());
-                    if (deviceIsoCode != null) {
-                        val codesList : List<IntlPhoneCountryCode>? = viewModel?.countryCodes?.value
-                        if (codesList != null) {
-                            for (item in codesList) {
-                                if (deviceIsoCode.equals(item.isoCode, true)) {
-                                    viewModel?.selectedCountryCode?.value = item
-                                    break
+        if (viewModel?.countryCodes != null) {
+            viewModel?.countryCodes?.observe(viewLifecycleOwner, object : Observer<List<IntlPhoneCountryCode>?> {
+                override fun onChanged(codes: List<IntlPhoneCountryCode>?) {
+                    if (codes != null) {
+                        val deviceIsoCode = CommonUtil.getCountryCode2(requireContext());
+                        if (deviceIsoCode != null) {
+                            val codesList: List<IntlPhoneCountryCode>? = viewModel?.countryCodes?.value
+                            if (codesList != null) {
+                                for (item in codesList) {
+                                    if (deviceIsoCode.equals(item.isoCode, true)) {
+                                        viewModel?.selectedCountryCode?.value = item
+                                        break
+                                    }
                                 }
                             }
                         }
                     }
                 }
-            }
-        })
+            })
+        }
 
         return binding?.root
     }

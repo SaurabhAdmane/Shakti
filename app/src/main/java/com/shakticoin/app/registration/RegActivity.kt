@@ -257,7 +257,7 @@ class RegActivity : AppCompatActivity() {
                     Toast.makeText(self, Debug.getFailureMsg(self, error), Toast.LENGTH_LONG).show()
                     supportFragmentManager
                             .beginTransaction()
-                            .add(binding.fragments.id, RegEnterEmailFragment())
+                            .replace(binding.fragments.id, RegEnterEmailFragment())
                             .commit()
                     return
                 }
