@@ -201,7 +201,7 @@ public class WalletRepository extends BackendRepository {
     private void getTransactionHistory(String sessionToken,  OnCompleteListener<SessionModelResponse> listener, boolean hasRecover401) {
         SessionModelRequest parameters = new SessionModelRequest();
         parameters.includeTransactionDetails = 1;
-        parameters.timestamp = 1603810776.237406;//Double.parseDouble(""+(System.currentTimeMillis()/1000));
+        parameters.timestamp = Double.parseDouble(""+(System.currentTimeMillis()/1000));
         parameters.sessionToken = Integer.parseInt(sessionToken);
 
 

@@ -72,9 +72,10 @@ public class ReferralActivity extends AppCompatActivity {
 
         binding.contactMechSelector.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                binding.promotionalCode.setText("");
                 if(isChecked){
                     binding.emailAddressLayout.setVisibility(View.VISIBLE);
-                    binding.mobileNumberLayout.setVisibility(View.GONE);
+                    binding.mobileNumberLayout.setVisibility(View.INVISIBLE);
                     binding.countryPicker.setVisibility(View.GONE);
                 }else{
                     binding.emailAddressLayout.setVisibility(View.GONE);
@@ -94,7 +95,7 @@ public class ReferralActivity extends AppCompatActivity {
 
     public void onReward(View view) {
 
-        binding.progressBar.setVisibility(View.VISIBLE);
+
         boolean validationSuccessful = true;
         ReferralParameters referral = new ReferralParameters();
 
@@ -103,6 +104,12 @@ public class ReferralActivity extends AppCompatActivity {
                 validationSuccessful = false;
                 binding.emailAddressLayout.setError(getString(R.string.err_email_required));
             }
+
+            if (binding.promotionalCode.getText().toString().trim().length()==0) {
+                validationSuccessful = false;
+                binding.promotionalCode.setError(getString(R.string.err_email_code));
+            }
+
             referral.emailRegistration = true;
             referral.emailOrMobile = viewModel.emailAddress.getValue();
         }else{
@@ -110,12 +117,20 @@ public class ReferralActivity extends AppCompatActivity {
                 validationSuccessful = false;
                 binding.mobileNumberLayout.setError(getString(R.string.err_phone_required));
             }
+
+            if (binding.promotionalCode.getText().toString().trim().length()==0) {
+                validationSuccessful = false;
+                binding.promotionalCode.setError(getString(R.string.err_email_code));
+            }
+
             referral.emailRegistration = false;
             referral.emailOrMobile = binding.tvCC.getSelectedCountryCode()
                     + viewModel.mobileNumber.getValue();
         }
 
         if (!validationSuccessful) return;
+
+        binding.progressBar.setVisibility(View.VISIBLE);
 
         if(binding.promotionalCode.getText().toString().trim().length()>0) {
             referral.promotionalCode = binding.promotionalCode.getText().toString();

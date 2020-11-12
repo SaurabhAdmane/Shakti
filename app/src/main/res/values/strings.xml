@@ -82,6 +82,7 @@
     <string name="recovery_sent_title">Link Sent</string>
     <string name="recovery_sent_subtitle">Be sure to check spam or junkmail.</string>
     <string name="err_email_required">Please enter a valid email</string>
+    <string name="err_email_code">Please enter a valid promotional code</string>
     <string name="err_phone_required">Please enter a valid phone number</string>
     <string name="err_email_phone_required">Please enter a valid email address or phone number</string>
     <string name="err_either_email_phone_required">Either email address or phone number required</string>

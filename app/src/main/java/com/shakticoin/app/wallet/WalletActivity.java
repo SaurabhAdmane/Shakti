@@ -35,6 +35,7 @@ import com.shakticoin.app.api.wallet.TransferModelResponse;
 import com.shakticoin.app.api.wallet.WalletRepository;
 import com.shakticoin.app.databinding.ActivityWalletBinding;
 import com.shakticoin.app.miner.BecomeMinerActivity;
+import com.shakticoin.app.registration.ReferralActivity;
 import com.shakticoin.app.registration.SignInActivity;
 import com.shakticoin.app.room.AppDatabase;
 import com.shakticoin.app.room.LockStatusDao;
@@ -341,6 +342,9 @@ if(walletBytes.equals("-1")) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         DialogGrabWallet.newInstance().show(fragmentManager, DialogGrabWallet.TAG);
          */
+
+        Intent intent = new Intent(this, ReferralActivity.class);
+        startActivity(intent);
     }
 
     private void getWalletBalance() {

@@ -62,7 +62,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
-                        android:text="h.arora.shakti@gmail.com"
+                        android:text="hitesh.arora.050@gmail.com"
                         android:hint="@string/hint_email_address"
                         android:inputType="textEmailAddress" />
 
