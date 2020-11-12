@@ -57,6 +57,12 @@ public class WalletActivity extends DrawerActivity {
     private LicenseRepository licenseRepository;
     private BizvaultRepository bizvaultRepository;
     private BountyRepository bountyRepository;
+    private Boolean bountyStatus = false;
+    private Boolean loadMain = false;
+    private String balanceMain = "0";
+
+//    private FragmentManager fragmentManager;
+//    private LifecycleOwner lifecycleOwner;
 
     @Override
     public void onBackPressed() {
@@ -93,15 +99,33 @@ public class WalletActivity extends DrawerActivity {
         bountyRepository = new BountyRepository();
         bountyRepository.setLifecycleOwner(this);
 
-        getSessionApi();
+
         getBizVaultStatus();
         getBountyStatus();
+
+
+//        if (Session.getWalletBytes() == null) {
+//            DialogPass.getInstance(new DialogPass.OnPassListener() {
+//                @Override
+//                public void onPassEntered(@Nullable String password) {
+//                    if (!TextUtils.isEmpty(password)) {
+//                        Session.setWalletPassphrase(password);
+//                        createWalletByte();
+//                    }
+//                }
+//            }).show(getSupportFragmentManager(), DialogPass.class.getName());
+//            return;
+//        }else{
+            getSessionApi();
+//        }
     }
 
-    private void getBountyStatus() {
-        bountyRepository.bountyStatus(new OnCompleteListener<String>() {
+    private void createWalletByte() {
+        viewModel.isProgressBarActive.set(true);
+        onboardRepository.createWallet(Session.getWalletPassphrase(), new OnCompleteListener<String>() {
             @Override
             public void onComplete(String walletBytes, Throwable error) {
+                viewModel.isProgressBarActive.set(false);
                 if (error != null) {
                     Toast.makeText(WalletActivity.this, Debug.getFailureMsg(WalletActivity.this, error), Toast.LENGTH_LONG).show();
                     if (error instanceof RemoteException && ((RemoteException) error).getResponseCode() == 201) {
@@ -109,22 +133,69 @@ public class WalletActivity extends DrawerActivity {
                     }
                     return;
                 }
+                Session.setWalletBytes(walletBytes);
+                getSessionApi();
+            }
+        });
+    }
+
+    private void getBountyStatus() {
+        bountyRepository.bountyStatus(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(String walletBytes, Throwable error) {
+//                if (error != null) {
+//                    Toast.makeText(WalletActivity.this, Debug.getFailureMsg(WalletActivity.this, error), Toast.LENGTH_LONG).show();
+//                    if (error instanceof RemoteException && ((RemoteException) error).getResponseCode() == 201) {
+//                        Session.setWalletPassphrase(null);
+//                    }
+//                    return;
+//                }
+if(walletBytes.equals("-1")) {
+    bountyStatus = false;
+    binding.lockedBlackRect21.setVisibility(View.VISIBLE);
+    binding.icon31.setVisibility(View.VISIBLE);
+    binding.label51.setVisibility(View.VISIBLE);
+    binding.doRefer1.setVisibility(View.VISIBLE);
+
+    binding.label4.setVisibility(View.GONE);
+    binding.bonusBalance.setVisibility(View.GONE);
+
+}else {
+    bountyStatus = true;
+    binding.lockedBlackRect21.setVisibility(View.GONE);
+    binding.icon31.setVisibility(View.GONE);
+    binding.label51.setVisibility(View.GONE);
+    binding.doRefer1.setVisibility(View.GONE);
+
+    binding.label4.setVisibility(View.VISIBLE);
+    binding.bonusBalance.setVisibility(View.VISIBLE);
+    binding.bonusBalance.setText("SXE "+walletBytes);
+}
             }
         });
     }
 
     private void getBizVaultStatus() {
 
-        bizvaultRepository.bizvaultStatus(new OnCompleteListener<String>() {
+        bizvaultRepository.bizvaultStatus(new OnCompleteListener<Boolean>() {
                     @Override
-                    public void onComplete(String walletBytes, Throwable error) {
+                    public void onComplete(Boolean walletBytes, Throwable error) {
                         if (error != null) {
                             Toast.makeText(WalletActivity.this, Debug.getFailureMsg(WalletActivity.this, error), Toast.LENGTH_LONG).show();
                             if (error instanceof RemoteException && ((RemoteException) error).getResponseCode() == 201) {
                                 Session.setWalletPassphrase(null);
                             }
                             return;
+
+
                         }
+                        loadMain = walletBytes;
+                            getSupportFragmentManager().beginTransaction()
+                                    .add(R.id.wallet_actions, true ?
+                                            new WalletActionsFragment(walletBytes) :
+                                            new WalletActionsFragment(walletBytes))
+
+                                    .commit();
                     }
                 });
     }
@@ -137,7 +208,10 @@ public class WalletActivity extends DrawerActivity {
         viewModel.isProgressBarActive.set(true);
 
         walletRepository.createSession(
-                "123","",
+//                Session.getWalletPassphrase(),
+                "123",
+                "",
+//                Session.getWalletBytes()
                 "fhctFR+Dj4G72BgCqR6VgXemQUP9V2W2jC65SEecJNNVnciL6F/Bz3fxs7DWAzwtnsNXGQECMLqUQbvBk0KDfDt0vbEY5SFdoRYQ39FhJEznr9H+DC0eN8WT/qcnW+NNwycLsvNJW/m0PgeSuwT3aLjwKhld0GFoLo/BTxiuNezokMU4GZIuDf3/jcfWSrdti6nKYjv0BZe9srs5vAMY3Q"
 
         , new OnCompleteListener<String>() {
@@ -172,6 +246,7 @@ public class WalletActivity extends DrawerActivity {
                             return;
                         }
                         binding. balance.setText("SXE "+balance);
+                        balanceMain = balance;
                     }
                 });
     }
@@ -211,7 +286,21 @@ public class WalletActivity extends DrawerActivity {
         });
 
         // check wallet lock status and display action buttons if unlocked
-        new CheckWalletLocked(getSupportFragmentManager(), binding.progressBar, this).execute();
+//        new CheckWalletLocked(getSupportFragmentManager(), binding.progressBar, this).execute();
+
+
+//        if (Session.getWalletBytes() != null && Session.getWalletPassphrase() == null) {
+//        DialogPasss.getInstance(new DialogPasss.OnPassListener() {
+//                @Override
+//                public void onPassEntered(@Nullable String password) {
+//                    if (!TextUtils.isEmpty(password)) {
+//                        Session.setWalletPassphrase(password);
+//                    }
+//                }
+//            }).show(getSupportFragmentManager(), DialogPasss.class.getName());
+//            return;
+//        }
+
     }
 
     @Override
@@ -220,11 +309,17 @@ public class WalletActivity extends DrawerActivity {
     }
 
     public void onAdminWallet(View v) {
-        startActivity(new Intent(this, WalletAdminActivity.class));
+        startActivity(new Intent(this, WalletAdminActivity.class)
+                .putExtra("status", bountyStatus).
+                putExtra("balance", balanceMain).putExtra("screen", loadMain)
+        );
     }
 
     public void onBalanceHistory(View v) {
-        startActivity(new Intent(this, WalletHistoryActivity.class));
+        startActivity(new Intent(this, WalletHistoryActivity.class).
+                putExtra("balance", balanceMain).putExtra("screen", loadMain)
+                .putExtra("status", bountyStatus)
+        );
     }
 
     public void onShowBusinessVaultInfo(View v) {
@@ -333,7 +428,7 @@ public class WalletActivity extends DrawerActivity {
                 fragmentManager
                         .beginTransaction()
                         .add(R.id.wallet_actions, unlocked ?
-                                new WalletActionsFragment() :
+                                new WalletActionsFragment(false) :
                                 new KycVerificationRequiredFragment())
                         .commit();
             }

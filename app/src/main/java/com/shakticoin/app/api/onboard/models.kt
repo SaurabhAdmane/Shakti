@@ -24,12 +24,29 @@ class WalletRequest {
     var addressNumber: Int? = null
     var sessionToken: String? = null
 
+    var timestamp: String? = null
+
+
 
 }
 
 class GeoJSONModel {
     var latitude: Double? = null
     var longitude: Double? = null
+}
+
+class ResponseVault {
+    var details : Response = Response()
+    var message : String? = null
+    var path : String? = null
+    var status : Int? = null
+    var timestamp : String? = null
+    var sessionToken : String? = null
+    var walletBalance : String? = null
+}
+
+class Response {
+    var bizvaultIdStatus : Boolean = false
 }
 
 class ResponseBean {
@@ -40,4 +57,5 @@ class ResponseBean {
     var timestamp : String? = null
     var sessionToken : String? = null
     var walletBalance : String? = null
+    var lockedGenesisBounty : String? = null
 }

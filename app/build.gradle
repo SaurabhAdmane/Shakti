@@ -9,7 +9,7 @@ android {
         targetSdkVersion 29
         multiDexEnabled true
         versionCode 30
-        versionName "0.2.0-stg"
+        versionName "0.3.0-stg"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
@@ -57,6 +57,7 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'com.google.android.material:material:1.0.0'
+    implementation 'com.hbb20:ccp:1.8.1'
 }
 
 apply plugin: 'com.google.gms.google-services'

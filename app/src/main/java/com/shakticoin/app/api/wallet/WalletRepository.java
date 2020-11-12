@@ -192,6 +192,79 @@ public class WalletRepository extends BackendRepository {
         });
     }
 
+
+
+
+    public void getTransactionHistory(String sessionToken, OnCompleteListener<SessionModelResponse> listener) {
+        getTransactionHistory(sessionToken, listener, false);
+    }
+    private void getTransactionHistory(String sessionToken,  OnCompleteListener<SessionModelResponse> listener, boolean hasRecover401) {
+        SessionModelRequest parameters = new SessionModelRequest();
+        parameters.includeTransactionDetails = 1;
+        parameters.timestamp = 1603810776.237406;//Double.parseDouble(""+(System.currentTimeMillis()/1000));
+        parameters.sessionToken = Integer.parseInt(sessionToken);
+
+
+        service.getTransactionHist(Session.getAuthorizationHeader(), parameters).enqueue(new Callback<SessionModelResponse>() {
+            @EverythingIsNonNull
+            @Override
+            public void onResponse(Call<SessionModelResponse> call, Response<SessionModelResponse> response) {
+                Debug.logDebug(response.toString());
+                if (response.isSuccessful()) {
+                    SessionModelResponse result = response.body();
+                    if (result != null) {
+                        String message = result.getMessage();
+                        if (message != null) Debug.logDebug(message);
+                        listener.onComplete(result, null);
+                    } else listener.onComplete(null, new IllegalStateException());
+                } else {
+                    if (response.code() == 401) {
+                        if (!hasRecover401) {
+                            authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
+                                @Override
+                                public void onComplete(TokenResponse value, Throwable error) {
+                                    if (error != null) {
+                                        listener.onComplete(null, new UnauthorizedException());
+                                        return;
+                                    }
+                                }
+                            });
+                        } else {
+                            listener.onComplete(null, new UnauthorizedException());
+                            return;
+                        }
+                    } if (response.code() == 500) {
+                        // this is a general service error but most probably it means incorrect passphrase
+                        String errorMsg = response.message();
+                        ResponseBody errorBody = response.errorBody();
+                        if (errorBody != null) {
+                            try {
+                                String errorBodyContent = errorBody.string();
+                                Debug.logDebug(errorBodyContent);
+                                JSONObject errorJson = new JSONObject(errorBodyContent);
+                                if (errorJson.has("message")) errorMsg = errorJson.getString("message");
+                            } catch (JSONException | IOException e) {
+                                Debug.logException(e);
+                                errorMsg = ShaktiApplication.getContext().getString(R.string.err_unexpected);
+                                listener.onComplete(null, e);
+                            }
+                        }
+                        listener.onComplete(null, new SessionException(errorMsg));
+                    } else {
+                        Debug.logErrorResponse(response);
+                        returnError(listener, response);
+                    }
+                }
+            }
+
+            @EverythingIsNonNull
+            @Override
+            public void onFailure(Call<SessionModelResponse> call, Throwable t) {
+                returnError(listener, t);
+            }
+        });
+    }
+
     /**
      * Creates a new wallet and return wallet bytes as a string. Wallet bytes must be stored and
      * used in parameters of other calls.
@@ -385,10 +458,10 @@ public class WalletRepository extends BackendRepository {
         });
     }
 
-    public void transfer(@NonNull String address, @NonNull Long amount, @Nullable String message, @NonNull OnCompleteListener<TransferModelResponse> listener) {
-        transfer(address, amount, message, listener, false);
+    public void transfer(@NonNull String address, @NonNull Long amount, @Nullable String message1, @NonNull OnCompleteListener<TransferModelResponse> listener) {
+        transfer(address, amount, message1, listener, false);
     }
-    public void transfer(@NonNull String address, @NonNull Long amount, @Nullable String message, @NonNull OnCompleteListener<TransferModelResponse> listener, boolean hasRecover401) {
+    public void transfer(@NonNull String address, @NonNull Long amount, @Nullable String message1, @NonNull OnCompleteListener<TransferModelResponse> listener, boolean hasRecover401) {
         Long sessionToken = Session.getWalletSessionToken();
         if (sessionToken == null) {
             getWalletSession(new OnCompleteListener<Long>() {
@@ -399,17 +472,20 @@ public class WalletRepository extends BackendRepository {
                         return;
                     }
                     Session.setWalletSessionToken(token);
-                    transfer(address, amount, message, listener);
+                    transfer(address, amount, message1, listener);
                 }
             });
             return;
         }
         CoinModel parameters = new CoinModel();
-        parameters.setToAddress(address);
+        parameters.cacheBytes = "";
+        parameters.setMessageForRecipient("Test message");
+        parameters.toEmail = address;
         parameters.setValueInToshi(amount.toString());
         parameters.setSessionToken(sessionToken);
-        parameters.setMessageForRecipient(message != null ? message
-                : ShaktiApplication.getContext().getString(R.string.dlg_sxe_default_message));
+        parameters.setAddressNumber(0);
+//        parameters.setMessageForRecipient(message != null ? message
+//                : ShaktiApplication.getContext().getString(R.string.dlg_sxe_default_message));
         service.transferSxeCoins(Session.getAuthorizationHeader(), parameters).enqueue(new Callback<TransferModelResponse>() {
             @EverythingIsNonNull
             @Override
@@ -433,7 +509,7 @@ public class WalletRepository extends BackendRepository {
                                         listener.onComplete(null, new UnauthorizedException());
                                         return;
                                     }
-                                    transfer(address, amount, message, listener, true);
+                                    transfer(address, amount, message1, listener, true);
                                 }
                             });
                         } else {

@@ -17,6 +17,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.shakticoin.app.R;
 import com.shakticoin.app.ShaktiApplication;
 import com.shakticoin.app.api.Constants;
 import com.shakticoin.app.api.OnCompleteListener;
@@ -32,6 +33,11 @@ public class WalletActionsFragment extends Fragment {
     private FragmentInlineWalletActionsBinding binding;
     private WalletRepository walletRepository;
     private WalletModel viewModel;
+    private Boolean walletBytes;
+
+    public WalletActionsFragment(Boolean walletBytes) {
+        this.walletBytes = walletBytes;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,16 +54,36 @@ public class WalletActionsFragment extends Fragment {
         walletRepository = new WalletRepository();
         walletRepository.setLifecycleOwner(getViewLifecycleOwner());
 
+
+
         binding.doPaySXE.setOnClickListener(this::onPay);
-        binding.doReceiveSXE.setOnClickListener(this::onReceive);
+        binding.doReceiveSXE.setOnClickListener(this::onPay);
+
+        if(walletBytes){
+            binding.doReceiveSXE.setText(getResources().getString(R.string.wallet_receive_sxe_vault));
+            binding.doPaySXE.setText(getResources().getString(R.string.wallet_pay_sxe_receaive));
+        }else{
+            binding.doReceiveSXE.setText(getResources().getString(R.string.wallet_receive_sxe));
+            binding.doPaySXE.setText(getResources().getString(R.string.wallet_pay_sxe));
+        }
 
         return binding.getRoot();
     }
 
-    public void onPay(View v) {
-        DialogPaySXE.getInstance(this::makeSxePayment)
-                .show(requireActivity().getSupportFragmentManager(), DialogPaySXE.class.getSimpleName());
+    public void onPay(View view) {
+
+        switch (view.getId()) {
+            case R.id.doReceiveSXE:
+                DialogPaySXE.getInstance(this::makeSxePayment,  false)
+                        .show(requireActivity().getSupportFragmentManager(), DialogPaySXE.class.getSimpleName());
+
+            case R.id.doPaySXE:
+                DialogPaySXE.getInstance(this::makeSxePayment,  true)
+                        .show(requireActivity().getSupportFragmentManager(), DialogPaySXE.class.getSimpleName());
+        }
+
     }
+
 
     public void onReceive(View v) {
         // TODO: for now we are able only to send coins to a wallet address, no mapping ID to address.

@@ -8,6 +8,7 @@ CoinModel {
     private String messageForRecipient;
     public Long sessionToken;
     private String toAddress;
+    public String toEmail;
 
     public String walletBytes;
     public String passphrase;

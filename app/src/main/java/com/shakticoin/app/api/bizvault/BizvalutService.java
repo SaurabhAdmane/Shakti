@@ -1,6 +1,7 @@
 package com.shakticoin.app.api.bizvault;
 
 import com.shakticoin.app.api.onboard.ResponseBean;
+import com.shakticoin.app.api.onboard.ResponseVault;
 import com.shakticoin.app.api.wallet.BlockByTimeRequest;
 import com.shakticoin.app.api.wallet.BlockByTimeResponse;
 import com.shakticoin.app.api.wallet.CoinModel;
@@ -26,6 +27,6 @@ import retrofit2.http.POST;
 
 public interface BizvalutService {
     @GET("verify/bizvaultid/")
-    Call<ResponseBean> bizvaultStatus(@Header("Authorization") String authorization);
+    Call<ResponseVault> bizvaultStatus(@Header("Authorization") String authorization);
 
 }

@@ -23,6 +23,7 @@ import com.shakticoin.app.api.UnauthorizedException;
 import com.shakticoin.app.api.auth.AuthRepository;
 import com.shakticoin.app.api.auth.TokenResponse;
 import com.shakticoin.app.api.onboard.ResponseBean;
+import com.shakticoin.app.api.onboard.ResponseVault;
 import com.shakticoin.app.api.wallet.CoinModel;
 import com.shakticoin.app.api.wallet.SessionException;
 import com.shakticoin.app.api.wallet.SessionModelRequest;
@@ -70,23 +71,23 @@ public class BizvaultRepository extends BackendRepository {
     }
 
 //    https://bizvault-stg.shakticoin.com/bizvault/api/v1/bizvaults/verify/bizvaultid
-    public void bizvaultStatus(@NonNull OnCompleteListener<String> listener) {
+    public void bizvaultStatus(@NonNull OnCompleteListener<Boolean> listener) {
         bizvaultStatus(listener, false);
     }
-    public void bizvaultStatus(@NonNull OnCompleteListener<String> listener, boolean hasRecover401) {
+    public void bizvaultStatus(@NonNull OnCompleteListener<Boolean> listener, boolean hasRecover401) {
 
-        service.bizvaultStatus(Session.getAuthorizationHeader()).enqueue(new Callback<ResponseBean>() {
+        service.bizvaultStatus(Session.getAuthorizationHeader()).enqueue(new Callback<ResponseVault>() {
             @EverythingIsNonNull
             @Override
-            public void onResponse(Call<ResponseBean> call, Response<ResponseBean> response) {
+            public void onResponse(Call<ResponseVault> call, Response<ResponseVault> response) {
                 Debug.logDebug(response.toString());
                 Session.setWalletSessionToken(null);
                 if (response.isSuccessful()) {
-                    ResponseBean results = response.body();
+                    ResponseVault results = response.body();
                     if (results != null) {
                         String message = results.getMessage();
                         if (message != null) Debug.logDebug(message);
-                        listener.onComplete(results.getSessionToken(), null);
+                        listener.onComplete(results.getDetails().getBizvaultIdStatus(), null);
                     } else listener.onComplete(null, new IllegalStateException());
                 } else {
                     if (response.code() == 401) {
@@ -115,7 +116,7 @@ public class BizvaultRepository extends BackendRepository {
 
             @EverythingIsNonNull
             @Override
-            public void onFailure(Call<ResponseBean> call, Throwable t) {
+            public void onFailure(Call<ResponseVault> call, Throwable t) {
                 Session.setWalletSessionToken(null);
                 returnError(listener, t);
             }

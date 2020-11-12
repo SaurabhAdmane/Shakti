@@ -33,6 +33,13 @@ public interface KYCService {
     Call<KycUserView> getUserDetails(@Header("Authorization") String authorization);
 
     /**
+     * Get all Status on Admin page
+     */
+    @Headers("Accept: application/json")
+    @GET("kyc/status")
+    Call<KycUserView> getAllStatus(@Header("Authorization") String authorization);
+
+    /**
      * Create KYC user.
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})

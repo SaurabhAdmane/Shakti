@@ -20,6 +20,12 @@ public interface WalletService {
     Call<SessionModelResponse> getSession(@Header("Authorization") String authorization,
                                           @Body SessionModelRequest parameters);
 
+
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("wallet/transaction/history/bytime")
+    Call<SessionModelResponse> getTransactionHist(@Header("Authorization") String authorization,
+                                          @Body SessionModelRequest parameters);
+
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("wallets/")
     Call<Map<String, String>> createWallet(@Header("Authorization") String authorization,

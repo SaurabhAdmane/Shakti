@@ -73,14 +73,14 @@ public class SignInActivity extends AppCompatActivity {
 
         String username = Objects.requireNonNull(binding.username.getText()).toString();
         boolean validationSuccessful = true;
-        if (!Validator.isEmail(username)) {
-            validationSuccessful = false;
-            binding.usernameLayout.setError(getString(R.string.err_loging_must_be_email));
-        }
+//        if (!Validator.isEmail(username)) {
+//            validationSuccessful = false;
+//            binding.usernameLayout.setError(getString(R.string.err_loging_must_be_email));
+//        }
         String password = Objects.requireNonNull(binding.password.getText()).toString();
-        if (!validationSuccessful) {
-            return;
-        }
+//        if (!validationSuccessful) {
+//            return;
+//        }
 
         boolean rememberMe = binding.rememberMe.isChecked();
 
