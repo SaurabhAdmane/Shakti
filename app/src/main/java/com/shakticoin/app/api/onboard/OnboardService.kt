@@ -1,10 +1,7 @@
 package com.shakticoin.app.api.onboard
 
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.Header
-import retrofit2.http.Headers
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface OnboardService {
 
@@ -16,9 +13,20 @@ interface OnboardService {
     @POST("onboardShakti/users/password/change")
     fun changePassword(@Header("Authorization") authorization: String,
                        @Body parameters: UpdatePasswordModel) : Call<ResponseBean?>
-
     @Headers("Accept: application/json")
     @POST("onboardShakti/wallet")
     fun createWallet(@Header("Authorization") authorization: String?,
                      @Body parameters: WalletRequest) : Call<ResponseBean?>
+
+
+    @Headers("Accept: application/json")
+    @GET("onboardShakti/users/password/status")
+    fun getPasswordRecStatus(@Header("Authorization") authorization: String?) : Call<ResponseBean?>
+
+
+
+
+
+
+
 }

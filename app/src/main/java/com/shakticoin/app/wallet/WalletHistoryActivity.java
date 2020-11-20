@@ -1,6 +1,7 @@
 package com.shakticoin.app.wallet;
 
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -24,7 +25,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProviders;
@@ -39,6 +39,8 @@ import com.shakticoin.app.api.Session;
 import com.shakticoin.app.api.kyc.KYCRepository;
 import com.shakticoin.app.api.onboard.OnboardRepository;
 import com.shakticoin.app.api.wallet.SessionException;
+import com.shakticoin.app.api.wallet.SessionModelRequest;
+import com.shakticoin.app.api.wallet.SessionModelResponse;
 import com.shakticoin.app.api.wallet.Transaction;
 import com.shakticoin.app.api.wallet.WalletRepository;
 import com.shakticoin.app.databinding.ActivityWalletHistoryBinding;
@@ -86,10 +88,67 @@ public class WalletHistoryActivity extends DrawerActivity {
         onboardRepository = new OnboardRepository();
         onboardRepository.setLifecycleOwner(this);
 
+
+
+
+        binding.balance.setText("SXE "+getIntent().getStringExtra("balance"));
+
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.wallet_actions, new WalletActionsFragment(getIntent().getBooleanExtra("screen", false)))
+                .commit();
+
+        createSession();
+
+    }
+
+    private void createSession() {
+        viewModel.isProgressBarActive.set(true);
+        walletRepository.createSession(
+//                Session.getWalletPassphrase(),
+                "123",
+                "",
+//                Session.getWalletBytes()
+                "fhctFR+Dj4G72BgCqR6VgXemQUP9V2W2jC65SEecJNNVnciL6F/Bz3fxs7DWAzwtnsNXGQECMLqUQbvBk0KDfDt0vbEY5SFdoRYQ39FhJEznr9H+DC0eN8WT/qcnW+NNwycLsvNJW/m0PgeSuwT3aLjwKhld0GFoLo/BTxiuNezokMU4GZIuDf3/jcfWSrdti6nKYjv0BZe9srs5vAMY3Q"
+
+                , new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(String walletBytes, Throwable error) {
+                        if (error != null) {
+                            Toast.makeText(WalletHistoryActivity.this, Debug.getFailureMsg(WalletHistoryActivity.this, error), Toast.LENGTH_LONG).show();
+                            if (error instanceof RemoteException && ((RemoteException) error).getResponseCode() == 201) {
+                                Session.setWalletPassphrase(null);
+                            }
+                            return;
+                        }
+                        getTransactionHistory(walletBytes);
+                    }
+                });
+    }
+
+    private void getTransactionHistory(String walletBytes) {
+
+        walletRepository.getTransactionHistory(walletBytes, new OnCompleteListener<SessionModelResponse>() {
+            @Override
+            public void onComplete(SessionModelResponse SessionModelResponse, Throwable error) {
+                if (error != null) {
+                    Toast.makeText(WalletHistoryActivity.this, Debug.getFailureMsg(WalletHistoryActivity.this, error), Toast.LENGTH_LONG).show();
+                    if (error instanceof RemoteException && ((RemoteException) error).getResponseCode() == 201) {
+                        Session.setWalletPassphrase(null);
+                    }
+                    return;
+                }
+
+                setListAdapter(SessionModelResponse.blockByTime.transactionDetails);
+
+            }
+        });
+    }
+
+    private void setListAdapter(ArrayList<TransactionDetails> transactionDetails) {
         binding.list.setHasFixedSize(true);
         binding.list.setLayoutManager(new LinearLayoutManager(this));
         binding.list.addItemDecoration(new ItemDecoration(this));
-        adapter = new TransactionAdapter(new ArrayList<>());
+        adapter = new TransactionAdapter(transactionDetails);
         binding.list.setAdapter(adapter);
     }
 
@@ -133,7 +192,7 @@ public class WalletHistoryActivity extends DrawerActivity {
         */
 
         // check wallet lock status and display action buttons if unlocked
-        new CheckWalletLocked(getSupportFragmentManager(), binding.walletActionsProgressBar, this).execute();
+//        new CheckWalletLocked(getSupportFragmentManager(), binding.walletActionsProgressBar, this).execute();
     }
 
     @Override
@@ -141,82 +200,84 @@ public class WalletHistoryActivity extends DrawerActivity {
         return 0;
     }
 
-    public void getWalletBalance() {
-        if (Session.getWalletPassphrase() == null) {
-            DialogPass.getInstance(new DialogPass.OnPassListener() {
-                @Override
-                public void onPassEntered(@Nullable String password) {
-                    if (!TextUtils.isEmpty(password)) {
-                        Session.setWalletPassphrase(password);
-                    }
-                    getWalletBalance();
-                }
-            }).show(getSupportFragmentManager(), DialogPass.class.getName());
-            return;
-        }
-
-        Activity activity = this;
-
-        viewModel.isProgressBarActive.set(true);
-        String walletBytes = walletRepository.getExistingWallet();
-        if (walletBytes == null) {
-            String passphrase = Session.getWalletPassphrase();
-            if (!TextUtils.isEmpty(passphrase)) {
-                // we need to create a new wallet
-                onboardRepository.createWallet(passphrase, new OnCompleteListener<String>() {
-                    @Override
-                    public void onComplete(String walletBytes, Throwable error) {
-                        viewModel.isProgressBarActive.set(false);
-                        if (error != null) {
-                            Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
-                            if (error instanceof RemoteException && ((RemoteException) error).getResponseCode() == 201) {
-                                Session.setWalletPassphrase(null);
-                            }
-                            return;
-                        }
-                        walletRepository.storeWallet(walletBytes);
-                        getWalletBalance();
-                    }
-                });
-            }
-        } else {
-            walletRepository.getBalance(new OnCompleteListener<BigDecimal>() {
-                @Override
-                public void onComplete(BigDecimal balance, Throwable error) {
-                    viewModel.isProgressBarActive.set(false);
-                    if (error != null) {
-                        Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
-                        if (error instanceof SessionException) {
-                            Session.setWalletPassphrase(null);
-                            getWalletBalance();
-                        }
-                        return;
-                    }
-                    viewModel.balance.set(balance);
-
-                    // if we get the balance successfully then we can request transactions
-                    walletRepository.getTransactions(new OnCompleteListener<List<Transaction>>() {
-                        @Override
-                        public void onComplete(List<Transaction> transactions, Throwable error) {
-                            if (error != null) {
-                                Debug.logException(error);
-                                return;
-                            }
-                            binding.emptyListMsg.setVisibility(transactions.size() == 0 ? View.VISIBLE : View.GONE);
-                            adapter.addAll(transactions);
-                        }
-                    });
-                }
-            });
-        }
-    }
+//    public void getWalletBalance() {
+//        if (Session.getWalletPassphrase() == null) {
+//            DialogPass.getInstance(new DialogPass.OnPassListener() {
+//                @Override
+//                public void onPassEntered(@Nullable String password) {
+//                    if (!TextUtils.isEmpty(password)) {
+//                        Session.setWalletPassphrase(password);
+//                    }
+//                    getWalletBalance();
+//                }
+//            }).show(getSupportFragmentManager(), DialogPass.class.getName());
+//            return;
+//        }
+//
+//        Activity activity = this;
+//
+//        viewModel.isProgressBarActive.set(true);
+//        String walletBytes = walletRepository.getExistingWallet();
+//        if (walletBytes == null) {
+//            String passphrase = Session.getWalletPassphrase();
+//            if (!TextUtils.isEmpty(passphrase)) {
+//                // we need to create a new wallet
+//                onboardRepository.createWallet(passphrase, new OnCompleteListener<String>() {
+//                    @Override
+//                    public void onComplete(String walletBytes, Throwable error) {
+//                        viewModel.isProgressBarActive.set(false);
+//                        if (error != null) {
+//                            Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
+//                            if (error instanceof RemoteException && ((RemoteException) error).getResponseCode() == 201) {
+//                                Session.setWalletPassphrase(null);
+//                            }
+//                            return;
+//                        }
+//                        walletRepository.storeWallet(walletBytes);
+//                        getWalletBalance();
+//                    }
+//                });
+//            }
+//        } else {
+//            walletRepository.getBalance(new OnCompleteListener<BigDecimal>() {
+//                @Override
+//                public void onComplete(BigDecimal balance, Throwable error) {
+//                    viewModel.isProgressBarActive.set(false);
+//                    if (error != null) {
+//                        Toast.makeText(activity, Debug.getFailureMsg(activity, error), Toast.LENGTH_LONG).show();
+//                        if (error instanceof SessionException) {
+//                            Session.setWalletPassphrase(null);
+//                            getWalletBalance();
+//                        }
+//                        return;
+//                    }
+//                    viewModel.balance.set(balance);
+//
+//                    // if we get the balance successfully then we can request transactions
+//                    walletRepository.getTransactions(new OnCompleteListener<List<Transaction>>() {
+//                        @Override
+//                        public void onComplete(List<Transaction> transactions, Throwable error) {
+//                            if (error != null) {
+//                                Debug.logException(error);
+//                                return;
+//                            }
+//                            binding.emptyListMsg.setVisibility(transactions.size() == 0 ? View.VISIBLE : View.GONE);
+//                            adapter.addAll(transactions);
+//                        }
+//                    });
+//                }
+//            });
+//        }
+//    }
 
     public void onOpenMainWallet(View v) {
         startActivity(new Intent(this, WalletActivity.class));
     }
 
     public void onOpenWalletAdmin(View v) {
-        startActivity(new Intent(this, WalletAdminActivity.class));
+        startActivity(new Intent(this, WalletAdminActivity.class)
+                .putExtra("status", getIntent().getBooleanExtra("status", false))
+        );
     }
 
     public void onShowDetails(View v) {
@@ -237,14 +298,14 @@ public class WalletHistoryActivity extends DrawerActivity {
     }
 
     class TransactionAdapter extends RecyclerView.Adapter<ViewHolder> {
-        private List<RecyclerViewItem> dataset;
+        private List<TransactionDetails> dataset;
 
         NumberFormat currencyFormat;
         DateFormat timeFormat;
         int positiveAmountColor;
         int negativeAmountColor;
 
-        TransactionAdapter(@NonNull List<RecyclerViewItem> dataset) {
+        TransactionAdapter(@NonNull ArrayList<TransactionDetails> dataset) {
             this.dataset = dataset;
             currencyFormat = NumberFormat.getCurrencyInstance(Locale.US);
             timeFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
@@ -260,31 +321,31 @@ public class WalletHistoryActivity extends DrawerActivity {
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            RecyclerViewItem item = dataset.get(position);
-            switch (item.getItemType()) {
-                case HEADER:
-                    holder.descriptionView.setText(item.toString());
-                    break;
-                case ITEM:
-                    holder.descriptionView.setText(((Transaction)item).getDescription());
-                    holder.timeView.setText(timeFormat.format(((Transaction)item).getDate()));
-                    BigDecimal transactionAmount = ((Transaction)item).getAmount();
+            TransactionDetails item = dataset.get(position);
+//            switch (item.getItemType()) {
+//                case HEADER:
+//                    holder.descriptionView.setText(item.toString());
+//                    break;
+//                case ITEM:
+                    holder.descriptionView.setText("*****"+item.identifier.substring(item.identifier.length()-9, item.identifier.length()));
+                    holder.timeView.setText(timeFormat.format(item.timestamp));
+                    BigDecimal transactionAmount = item.amountInToshi;
                     holder.amountView.setText(String.format(Locale.US, "%1$+.2f", transactionAmount));
                     holder.amountView.setTextColor(transactionAmount.signum() > 0 ? positiveAmountColor : negativeAmountColor);
-                    break;
-            }
+//                    break;
+//            }
         }
 
         @Override
         public int getItemViewType(int position) {
-            RecyclerViewItem item = dataset.get(position);
-            switch (item.getItemType()) {
-                case ITEM:
+            TransactionDetails item = dataset.get(position);
+//            switch (item.getItemType()) {
+//                case ITEM:
                     return R.layout.item_transaction;
-                case HEADER:
-                default:
-                    return R.layout.item_transaction_header;
-            }
+//                case HEADER:
+//                default:
+//                    return R.layout.item_transaction_header;
+//            }
         }
 
         @Override
@@ -293,37 +354,37 @@ public class WalletHistoryActivity extends DrawerActivity {
         }
 
         /** Sort by date and split into date buckets */
-        void addAll(List<Transaction> transactionList) {
-            if (transactionList == null) return;
-
-            DateFormatSymbols dfs = new DateFormatSymbols();
-            String[] months = dfs.getMonths();
-
-            Map<String, List<Transaction>> buckets = new HashMap<>();
-            for (Transaction transaction : transactionList) {
-                Calendar cal = Calendar.getInstance();
-                cal.setTimeInMillis(transaction.getDate().getTime());
-                String bucketTitle = months[cal.get(Calendar.MONTH)] + " " + cal.get(Calendar.YEAR);
-                List<Transaction> currentBucket = buckets.get(bucketTitle);
-                if (currentBucket == null) {
-                    currentBucket = new ArrayList<>();
-                    buckets.put(bucketTitle, currentBucket);
-                }
-                currentBucket.add(transaction);
-            }
-
-            List<RecyclerViewItem> finalList = new ArrayList<>();
-            for (String bucketTitle : buckets.keySet()) {
-                finalList.add(new RecyclerViewHeader(bucketTitle));
-                List<Transaction> currentBucket = buckets.get(bucketTitle);
-                if (currentBucket != null && currentBucket.size() > 0) {
-                    finalList.addAll(currentBucket);
-                }
-            }
-            dataset.addAll(finalList);
-
-            notifyDataSetChanged();
-        }
+//        void addAll(List<Transaction> transactionList) {
+//            if (transactionList == null) return;
+//
+//            DateFormatSymbols dfs = new DateFormatSymbols();
+//            String[] months = dfs.getMonths();
+//
+//            Map<String, List<Transaction>> buckets = new HashMap<>();
+//            for (Transaction transaction : transactionList) {
+//                Calendar cal = Calendar.getInstance();
+//                cal.setTimeInMillis(transaction.getDate().getTime());
+//                String bucketTitle = months[cal.get(Calendar.MONTH)] + " " + cal.get(Calendar.YEAR);
+//                List<Transaction> currentBucket = buckets.get(bucketTitle);
+//                if (currentBucket == null) {
+//                    currentBucket = new ArrayList<>();
+//                    buckets.put(bucketTitle, currentBucket);
+//                }
+//                currentBucket.add(transaction);
+//            }
+//
+//            List<TransactionDetails> finalList = new ArrayList<>();
+//            for (String bucketTitle : buckets.keySet()) {
+//                finalList.add(new RecyclerViewHeader(bucketTitle));
+//                List<Transaction> currentBucket = buckets.get(bucketTitle);
+//                if (currentBucket != null && currentBucket.size() > 0) {
+//                    finalList.addAll(currentBucket);
+//                }
+//            }
+//            dataset.addAll(finalList);
+//
+//            notifyDataSetChanged();
+//        }
     }
 
     class ItemDecoration extends RecyclerView.ItemDecoration {
@@ -378,37 +439,37 @@ public class WalletHistoryActivity extends DrawerActivity {
 
     }
 
-    static class CheckWalletLocked extends AsyncTask<Void, Void, Boolean> {
-        private FragmentManager fragmentManager;
-        private ProgressBar walletActionsProgressBar;
-        private LifecycleOwner lifecycleOwner;
-
-        CheckWalletLocked(FragmentManager fragmentManager, ProgressBar progressBar, LifecycleOwner lifecycleOwner) {
-            this.fragmentManager = fragmentManager;
-            this.walletActionsProgressBar = progressBar;
-            this.lifecycleOwner = lifecycleOwner;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... voids) {
-            LockStatusDao lockStatuses = AppDatabase.getDatabase(ShaktiApplication.getContext()).lockStatusDao();
-            LockStatus status = lockStatuses.getWalletKYCLockStatus();
-            return status != null && "UNLOCKED".equals(status.getStatus());
-        }
-
-        @Override
-        protected void onPostExecute(Boolean unlocked) {
-            walletActionsProgressBar.setVisibility(View.GONE);
-            if (lifecycleOwner != null
-                    && lifecycleOwner.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED)) {
-                fragmentManager
-                        .beginTransaction()
-                        .add(R.id.wallet_actions, unlocked ?
-                                new WalletActionsFragment() :
-                                new KycVerificationRequiredFragment())
-                        .commit();
-            }
-        }
-    }
+//    static class CheckWalletLocked extends AsyncTask<Void, Void, Boolean> {
+//        private android.app.FragmentManager fragmentManager;
+//        private ProgressBar walletActionsProgressBar;
+//        private LifecycleOwner lifecycleOwner;
+//
+//        CheckWalletLocked(FragmentManager fragmentManager, ProgressBar progressBar, LifecycleOwner lifecycleOwner) {
+//            this.fragmentManager = fragmentManager;
+//            this.walletActionsProgressBar = progressBar;
+//            this.lifecycleOwner = lifecycleOwner;
+//        }
+//
+//        @Override
+//        protected Boolean doInBackground(Void... voids) {
+//            LockStatusDao lockStatuses = AppDatabase.getDatabase(ShaktiApplication.getContext()).lockStatusDao();
+//            LockStatus status = lockStatuses.getWalletKYCLockStatus();
+//            return status != null && "UNLOCKED".equals(status.getStatus());
+//        }
+//
+//        @Override
+//        protected void onPostExecute(Boolean unlocked) {
+//            walletActionsProgressBar.setVisibility(View.GONE);
+//            if (lifecycleOwner != null
+//                    && lifecycleOwner.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED)) {
+//                fragmentManager
+//                        .beginTransaction()
+//                        .add(R.id.wallet_actions, unlocked ?
+//                                new WalletActionsFragment(false) :
+//                                new KycVerificationRequiredFragment())
+//                        .commit();
+//            }
+//        }
+//    }
 
 }

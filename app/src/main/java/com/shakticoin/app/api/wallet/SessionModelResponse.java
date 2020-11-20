@@ -1,8 +1,14 @@
 package com.shakticoin.app.api.wallet;
 
+import com.shakticoin.app.wallet.BlockByTime;
+
+import java.util.ArrayList;
+
 public class SessionModelResponse {
     private Long sessionToken;
     private String message;
+
+    public BlockByTime blockByTime;
 
     public Long getSessionToken() {
         return sessionToken;
@@ -20,3 +26,7 @@ public class SessionModelResponse {
         this.message = message;
     }
 }
+
+
+
+

@@ -12,30 +12,32 @@
 
         <Button
             android:id="@+id/doReceiveSXE"
-            style="@style/AppButton.Rounded.Transparent.Gold"
+            style="@style/AppButton.Rounded"
             android:layout_width="wrap_content"
             android:layout_height="36dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
             android:text="@string/wallet_receive_sxe"
             android:onClick="onReceive"
-            app:layout_constraintBottom_toBottomOf="@+id/doPaySXE"
-            app:layout_constraintEnd_toStartOf="@+id/doPaySXE"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/doPaySXE" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/doPaySXE"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/doPaySXE"
             style="@style/AppButton.Rounded"
             android:layout_width="wrap_content"
             android:layout_height="36dp"
-            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:text="@string/wallet_pay_sxe"
             android:onClick="onPay"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/doReceiveSXE"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintBottom_toBottomOf="@+id/doReceiveSXE"
+            app:layout_constraintEnd_toStartOf="@+id/doReceiveSXE"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/doReceiveSXE" />
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

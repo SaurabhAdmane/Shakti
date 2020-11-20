@@ -34,4 +34,7 @@ public interface ReferralService {
     @Headers("Accept: application/json")
     @GET("referralservice/v1/api/referrals/find_by_referrer/id/{id}")
     Call<Map<String, Object>> findReferralByReferrer(@Header("Authorization") String authorization, @Path("id") String id);
+
+
+
 }

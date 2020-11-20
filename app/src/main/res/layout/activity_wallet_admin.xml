@@ -163,6 +163,7 @@
                             android:textAppearance="@style/AppText.Body"/>
 
                         <TextView
+                            android:id="@+id/tvStatusWallet"
                             android:layout_width="wrap_content"
                             android:layout_height="30dp"
                             android:gravity="start|center_vertical"
@@ -178,6 +179,7 @@
                             android:layout_height="wrap_content" />
 
                         <TextView
+                            android:id="@+id/tvStatusVault"
                             android:layout_width="wrap_content"
                             android:layout_height="30dp"
                             android:gravity="start|center_vertical"
@@ -208,6 +210,7 @@
                             android:textAppearance="@style/AppText.Body"/>
 
                         <TextView
+                            android:id="@+id/tvBWallet"
                             android:layout_width="wrap_content"
                             android:layout_height="30dp"
                             android:gravity="start|center_vertical"
@@ -226,6 +229,7 @@
                             tools:ignore="ContentDescription" />
 
                         <TextView
+                            android:id="@+id/tvBVault"
                             android:layout_width="wrap_content"
                             android:layout_height="30dp"
                             android:gravity="start|center_vertical"
@@ -257,6 +261,7 @@
                             android:textAppearance="@style/AppText.Body"/>
 
                         <TextView
+                            android:id="@+id/tvKycWallet"
                             android:layout_width="wrap_content"
                             android:layout_height="30dp"
                             android:gravity="start|center_vertical"
@@ -275,6 +280,7 @@
                             tools:ignore="ContentDescription" />
 
                         <TextView
+                            android:id="@+id/tvKycVault"
                             android:layout_width="wrap_content"
                             android:layout_height="30dp"
                             android:gravity="start|center_vertical"
@@ -307,6 +313,7 @@
                             android:textAppearance="@style/AppText.Body"/>
 
                         <TextView
+                            android:id="@+id/tvPassWallet"
                             android:layout_width="wrap_content"
                             android:layout_height="30dp"
                             android:gravity="start|center_vertical"
@@ -325,6 +332,7 @@
                             tools:ignore="ContentDescription" />
 
                         <TextView
+                            android:id="@+id/tvPassVault"
                             android:layout_width="wrap_content"
                             android:layout_height="30dp"
                             android:gravity="start|center_vertical"
@@ -356,6 +364,7 @@
                             android:textAppearance="@style/AppText.Body"/>
 
                         <TextView
+                            android:id="@+id/tvDigitalWallet"
                             android:layout_width="wrap_content"
                             android:layout_height="30dp"
                             android:gravity="start|center_vertical"
@@ -374,6 +383,7 @@
                             tools:ignore="ContentDescription" />
 
                         <TextView
+                            android:id="@+id/tvDigitalVault"
                             android:layout_width="wrap_content"
                             android:layout_height="30dp"
                             android:gravity="start|center_vertical"
@@ -406,6 +416,7 @@
                             android:textAppearance="@style/AppText.Body"/>
 
                         <TextView
+                            android:id="@+id/tvDobWallet"
                             android:layout_width="wrap_content"
                             android:layout_height="30dp"
                             android:gravity="start|center_vertical"
@@ -424,6 +435,7 @@
                             tools:ignore="ContentDescription" />
 
                         <TextView
+                            android:id="@+id/tvDobVault"
                             android:layout_width="wrap_content"
                             android:layout_height="30dp"
                             android:gravity="start|center_vertical"
@@ -455,6 +467,7 @@
                             android:textAppearance="@style/AppText.Body"/>
 
                         <TextView
+                            android:id="@+id/tvMicroWallet"
                             android:layout_width="wrap_content"
                             android:layout_height="30dp"
                             android:gravity="start|center_vertical"
@@ -473,6 +486,7 @@
                             tools:ignore="ContentDescription" />
 
                         <TextView
+                            android:id="@+id/tvMicroVault"
                             android:layout_width="wrap_content"
                             android:layout_height="30dp"
                             android:gravity="start|center_vertical"
@@ -505,6 +519,7 @@
                             android:textAppearance="@style/AppText.Body"/>
 
                         <TextView
+                            android:id="@+id/tvAgeWallet"
                             android:layout_width="wrap_content"
                             android:layout_height="30dp"
                             android:gravity="start|center_vertical"
@@ -523,6 +538,7 @@
                             tools:ignore="ContentDescription" />
 
                         <TextView
+                            android:id="@+id/tvAgeVault"
                             android:layout_width="wrap_content"
                             android:layout_height="30dp"
                             android:gravity="start|center_vertical"
@@ -554,6 +570,7 @@
                             android:textAppearance="@style/AppText.Body"/>
 
                         <TextView
+                            android:id="@+id/tvUsWallet"
                             android:layout_width="wrap_content"
                             android:layout_height="30dp"
                             android:gravity="start|center_vertical"

@@ -23,15 +23,16 @@ import java.math.BigDecimal;
 
 public class DialogPaySXE extends DialogFragment {
 
+    private static Boolean type;
+
     public interface OnPayListener {
         void onPay(@NonNull String payee, @NonNull BigDecimal amount, @Nullable String message);
     }
 
     private OnPayListener listener;
-
     private EditText vRecipient;
     private EditText vAmount;
-    private EditText vMessage;
+//    private EditText vMessage;
 
     private DialogPaySXE(OnPayListener listener) {
         this.listener = listener;
@@ -45,12 +46,12 @@ public class DialogPaySXE extends DialogFragment {
 
         vRecipient = dialog.findViewById(R.id.recipient);
         vAmount = dialog.findViewById(R.id.amount);
-        vMessage = dialog.findViewById(R.id.messageToRecipient);
+//        vMessage = dialog.findViewById(R.id.messageToRecipient);
 
         TextView title = dialog.findViewById(R.id.title);
         title.setText(Html.fromHtml(getString(R.string.dlg_sxe_pay_title)));
 
-        vMessage.setOnEditorActionListener((v, actionId, event) -> {
+        vAmount.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 onSubmit();
                 return true;
@@ -66,15 +67,23 @@ public class DialogPaySXE extends DialogFragment {
         Button doMainAction = dialog.findViewById(R.id.doOk);
         doMainAction.setOnClickListener(v -> onSubmit());
 
+        if(type){
+            title.setText("Pay with");
+        }else{
+            title.setText("Receive with");
+        }
+
         return dialog;
     }
 
     private void onSubmit() {
         // TODO: recipient must be a Shakti ID, but for now we use wallet address for testing
         String recipient = vRecipient.getText().toString();
-        String messageToRecipient = vMessage.getText().toString();
+//        String messageToRecipient = vMessage.getText().toString();
         String amount = vAmount.getText().toString();
-        if (TextUtils.isEmpty(recipient) || TextUtils.isEmpty(amount) || TextUtils.isEmpty(messageToRecipient)) {
+        if (TextUtils.isEmpty(recipient) || TextUtils.isEmpty(amount)
+//                || TextUtils.isEmpty(messageToRecipient)
+        ) {
             Toast.makeText(getContext(), R.string.err_field_mandatory, Toast.LENGTH_LONG).show();
             return;
         }
@@ -91,12 +100,13 @@ public class DialogPaySXE extends DialogFragment {
             return;
         }
 
-        listener.onPay(recipient, amountNum, messageToRecipient);
+        listener.onPay(recipient, amountNum, "0");
 
         dismiss();
     }
 
-    public static DialogPaySXE getInstance(@NonNull OnPayListener listener) {
+    public static DialogPaySXE getInstance(@NonNull OnPayListener listener, Boolean types) {
+        type = types;
         return new DialogPaySXE(listener);
     }
 }

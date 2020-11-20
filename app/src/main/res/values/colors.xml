@@ -11,6 +11,7 @@
     <color name="colorTintBackground">#BF000000</color>
     <color name="colorTintBackground50">#80000000</color>
     <color name="colorErrorText">#FFFFFFFF</color>
+    <color name="cWhite">#FFFFFF</color>
     <color name="colorErrorBackground">#FFBE061C</color>
     <color name="colorHint">@color/colorGrey2</color>
     <color name="colorGrey1">#FF898989</color>

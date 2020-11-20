@@ -84,6 +84,74 @@ public class ReferralRepository extends BackendRepository {
     }
 
 
+
+    /**
+     * Add new referral.
+     */
+    public void getReferral(@NonNull ReferralParameters parameters, @NonNull OnCompleteListener<Referral> listener) {
+        addReferral(parameters, listener, false);
+    }
+    public void getReferral(@NonNull ReferralParameters parameters, @NonNull OnCompleteListener<Referral> listener, boolean hasRecover401) {
+        service.addReferral(Session.getAuthorizationHeader(), parameters).enqueue(new Callback<Referral>() {
+            @EverythingIsNonNull
+            @Override
+            public void onResponse(Call<Referral> call, Response<Referral> response) {
+                Debug.logDebug(response.toString());
+                if (response.isSuccessful()) {
+                    listener.onComplete(response.body(), null);
+                } else {
+                    switch (response.code()) {
+                        case 401:
+                            if (!hasRecover401) {
+                                authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
+                                    @Override
+                                    public void onComplete(TokenResponse value, Throwable error) {
+                                        if (error != null) {
+                                            listener.onComplete(null, new UnauthorizedException());
+                                            return;
+                                        }
+                                        addReferral(parameters, listener, true);
+                                    }
+                                });
+                            } else {
+                                listener.onComplete(null, new UnauthorizedException());
+                                return;
+                            }
+                            break;
+                        case 400:
+                            ResponseBody errorBody = response.errorBody();
+                            if (errorBody != null) {
+                                try {
+                                    RemoteMessageException e = new RemoteMessageException(response.message(), response.code());
+                                    JSONObject errorResponse = new JSONObject(errorBody.string());
+                                    Iterator<String> keys = errorResponse.keys();
+                                    while (keys.hasNext()) {
+                                        String key = keys.next();
+                                        JSONArray errorMessageList = errorResponse.getJSONArray(key);
+                                        String errorMessage = (String) errorMessageList.get(0);
+                                        e.addValidationError(key, errorMessage);
+                                    }
+                                    listener.onComplete(null, e);
+                                } catch (IOException | JSONException e) {
+                                    listener.onComplete(null, e);
+                                }
+                            }
+                            break;
+                        default:
+                            Debug.logErrorResponse(response);
+                            returnError(listener, response);
+                    }
+                }
+            }
+
+            @EverythingIsNonNull
+            @Override
+            public void onFailure(Call<Referral> call, Throwable t) {
+                returnError(listener, t);
+            }
+        });
+    }
+
     /**
      * Add new referral.
      */
@@ -206,55 +274,7 @@ public class ReferralRepository extends BackendRepository {
         });
     }
 
-    public void getReferralsByReferrer(String id, @NonNull OnCompleteListener<List<Referral>> listener) {
-        getReferralsByReferrer(id, listener, false);
-    }
-    public void getReferralsByReferrer(String id, @NonNull OnCompleteListener<List<Referral>> listener, boolean hasRecover401) {
-        service.findReferralByReferrer(Session.getAuthorizationHeader(), id).enqueue(new Callback<Map<String, Object>>() {
-            @EverythingIsNonNull
-            @Override
-            public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
-                Debug.logDebug(response.toString());
-                if (response.isSuccessful()) {
-                    List<Referral> results = new ArrayList<>();
-                    Map<String, Object> resp = response.body();
-                    List<Map<String, Object>> referrals = (List<Map<String, Object>>) resp.get("referrals");
-                    if (referrals != null && referrals.size() > 0) {
-                        for (Map<String, Object> r : referrals) {
-                            results.add(new Referral(r));
-                        }
-                    }
-                    listener.onComplete(results, null);
-                } else {
-                    if (response.code() == 401) {
-                        if (!hasRecover401) {
-                            authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
-                                @Override
-                                public void onComplete(TokenResponse value, Throwable error) {
-                                    if (error != null) {
-                                        listener.onComplete(null, new UnauthorizedException());
-                                        return;
-                                    }
-                                    getReferralsByReferrer(id, listener, true);
-                                }
-                            });
-                        } else {
-                            listener.onComplete(null, new UnauthorizedException());
-                        }
-                    } else {
-                        Debug.logErrorResponse(response);
-                        returnError(listener, response);
-                    }
-                }
-            }
 
-            @EverythingIsNonNull
-            @Override
-            public void onFailure(Call<Map<String, Object>> call, Throwable t) {
-                returnError(listener, t);
-            }
-        });
-    }
 
     @Override
     public void setLifecycleOwner(LifecycleOwner lifecycleOwner) {

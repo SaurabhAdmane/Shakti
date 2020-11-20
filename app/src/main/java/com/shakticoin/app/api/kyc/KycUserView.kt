@@ -2,6 +2,7 @@ package com.shakticoin.app.api.kyc
 
 class KycUserView {
     var walletID: String? = null
+    var walletBytes: String? = null
     var firstName: String? = null
     var lastName: String? = null
     var middleName: String? = null
@@ -29,6 +30,11 @@ class KycUserView {
     var verificationStatus: String? = null
     var verificationComments: String? = null
     var kycStatus: String? = null
+    var digitalNation: String? = null
+    var micro: String? = null
+    var age: String? = null
+    var usValidation: String? = null
+
 
     companion object {
         const val REL_SINGLE = "SINGLE"
