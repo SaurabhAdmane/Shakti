@@ -108,6 +108,8 @@
     <string name="ref_scan_qr">Scan the QR Code</string>
     <string name="ref_reward">Reward your referral</string>
     <string name="ref_skip">I don\'t remember who referred me</string>
+    <string name="ref_promocode_hint">Promo Code</string>
+    <string name="ref_promocode_required">A promo code is required</string>
     <string name="refconfirm_story1"><b>You\'ve successfuly registered your referral.</b>\nWith your good deed, your friend is little closer to unlocking their Bonus Bounty.</string>
     <string name="refconfirm_story2"><b>Finish your Shakti ID now to claim\nyour Bonus Bounty.</b></string>
     <string name="refconfirm_title">Thank you!</string>

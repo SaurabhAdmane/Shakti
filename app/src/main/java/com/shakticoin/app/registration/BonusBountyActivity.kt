@@ -14,13 +14,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shakticoin.app.R
 import com.shakticoin.app.api.OnCompleteListener
-import com.shakticoin.app.api.bounty.BountyReferralViewModel
 import com.shakticoin.app.api.bounty.BountyRepository
 import com.shakticoin.app.api.bounty.OfferModel
 import com.shakticoin.app.databinding.ActivityBountyBinding
-import com.shakticoin.app.util.Debug
 import com.shakticoin.app.widget.CheckableRoundButton
-import com.shakticoin.app.widget.MessageBox
 
 class BonusBountyActivity : AppCompatActivity() {
     private lateinit var binding: ActivityBountyBinding
@@ -56,22 +53,24 @@ class BonusBountyActivity : AppCompatActivity() {
     }
 
     fun onClaim(v: View?) {
-        val activity = this
-        val offer = viewModel.selectedBonus.value
-        if (offer != null) {
-            binding.progressBar.visibility = View.VISIBLE
-            bountyRepository.claimBonusBounty(offer.id, null, object : OnCompleteListener<BountyReferralViewModel>() {
-                override fun onComplete(value: BountyReferralViewModel?, error: Throwable?) {
-                    binding.progressBar.visibility = View.INVISIBLE
-                    if (error != null) {
-                        MessageBox(Debug.getFailureMsg(activity, error)).show(supportFragmentManager, null)
-                        return
-                    }
-                    val intent = Intent(activity, NewBonusBountyActivity::class.java)
-                    startActivity(intent)
-                }
-            })
-        }
+        val intent = Intent(this, ReferralActivity::class.java)
+        startActivity(intent)
+//        val activity = this
+//        val offer = viewModel.selectedBonus.value
+//        if (offer != null) {
+//            binding.progressBar.visibility = View.VISIBLE
+//            bountyRepository.claimBonusBounty(offer.id, null, object : OnCompleteListener<BountyReferralViewModel>() {
+//                override fun onComplete(value: BountyReferralViewModel?, error: Throwable?) {
+//                    binding.progressBar.visibility = View.INVISIBLE
+//                    if (error != null) {
+//                        MessageBox(Debug.getFailureMsg(activity, error)).show(supportFragmentManager, null)
+//                        return
+//                    }
+//                    val intent = Intent(activity, NewBonusBountyActivity::class.java)
+//                    startActivity(intent)
+//                }
+//            })
+//        }
     }
 
     fun onViewPromotion(v: View?) {

@@ -128,11 +128,11 @@ class BountyRepository : BackendRepository() {
         activeCalls.add(call)
     }
 
-    fun registerReferral(emailOrMobile: String, listener: OnCompleteListener<RegisterReferralResponseModel>) {
-        registerReferral(emailOrMobile, listener, false)
+    fun registerReferral(emailOrMobile: String, emailRegistration: Boolean, promoCode: String, listener: OnCompleteListener<RegisterReferralResponseModel>) {
+        registerReferral(emailOrMobile, emailRegistration, promoCode, listener, false)
     }
-    private fun registerReferral(emailOrMobile: String, listener: OnCompleteListener<RegisterReferralResponseModel>, hasRecover401: Boolean) {
-        val params = RegisterReferralModel(emailOrMobile, null, null)
+    private fun registerReferral(emailOrMobile: String, emailRegistration: Boolean, promoCode: String, listener: OnCompleteListener<RegisterReferralResponseModel>, hasRecover401: Boolean) {
+        val params = RegisterReferralModel(emailOrMobile, emailRegistration, promoCode)
         val call = service.registerReferral(Session.getAuthorizationHeader(), params)
         call.enqueue(object : Callback<RegisterReferralResponseModel?> {
             override fun onResponse(call: Call<RegisterReferralResponseModel?>, response: Response<RegisterReferralResponseModel?>) {
@@ -149,7 +149,7 @@ class BountyRepository : BackendRepository() {
                                             listener.onComplete(null, error)
                                             return
                                         }
-                                        registerReferral(emailOrMobile, listener, true)
+                                        registerReferral(emailOrMobile, emailRegistration, promoCode, listener, true)
                                     }
                                 })
                             } else {
@@ -157,7 +157,8 @@ class BountyRepository : BackendRepository() {
                                 return
                             }
                         }
-                        else -> returnError(listener, response)
+                        else -> listener.onComplete(null, RemoteException(
+                                getResponseErrorMessage("errorMessage", response.errorBody()), response.code()))
                     }
                 }
             }

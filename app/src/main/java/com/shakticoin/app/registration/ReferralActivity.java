@@ -1,34 +1,38 @@
 package com.shakticoin.app.registration;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.shakticoin.app.R;
 import com.shakticoin.app.api.OnCompleteListener;
-import com.shakticoin.app.api.referral.ReferralParameters;
-import com.shakticoin.app.api.referral.model.Referral;
-import com.shakticoin.app.api.referrals.BountyRepository;
+import com.shakticoin.app.api.bounty.BountyRepository;
+import com.shakticoin.app.api.bounty.RegisterReferralResponseModel;
+import com.shakticoin.app.api.otp.IntlPhoneCountryCode;
 import com.shakticoin.app.databinding.ActivityReferralBinding;
 import com.shakticoin.app.util.CommonUtil;
 import com.shakticoin.app.util.Debug;
 import com.shakticoin.app.util.Validator;
 import com.shakticoin.app.wallet.WalletActivity;
+import com.shakticoin.app.widget.MessageBox;
 import com.shakticoin.app.widget.qr.QRScannerActivity;
+
+import java.util.List;
 
 
 public class ReferralActivity extends AppCompatActivity {
     private ReferralActivityModel viewModel;
     private ActivityReferralBinding binding;
-    private BountyRepository referralRepository;
-
+    private BountyRepository bountyRepository;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -43,6 +47,7 @@ public class ReferralActivity extends AppCompatActivity {
                     // close activity. Or what?
 //                    viewModel.referralCode.setValue(referralCode);
                     Toast.makeText(this, referralCode, Toast.LENGTH_SHORT).show();
+                    postReferralInfo();
                 }
             }
         }
@@ -57,98 +62,119 @@ public class ReferralActivity extends AppCompatActivity {
         binding.setLifecycleOwner(this);
         binding.setViewModel(viewModel);
 
-        referralRepository = new BountyRepository();
-        referralRepository.setLifecycleOwner(this);
+        bountyRepository = new BountyRepository();
+        bountyRepository.setLifecycleOwner(this);
 
         // display a special icon if content of the field conform the target format
         binding.emailAddressLayout.setValidator((view, value) -> Validator.isEmail(value));
         binding.mobileNumberLayout.setValidator((view, value) -> Validator.isPhoneNumber(value));
 
-        binding.contactMechSelector.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                binding.promotionalCode.setText("");
-                if(isChecked){
-                    binding.emailAddressLayout.setVisibility(View.VISIBLE);
-                    binding.mobileNumberLayout.setVisibility(View.INVISIBLE);
-                    binding.countryPicker.setVisibility(View.GONE);
-                }else{
-                    binding.emailAddressLayout.setVisibility(View.GONE);
-                    binding.mobileNumberLayout.setVisibility(View.VISIBLE);
-                    binding.countryPicker.setVisibility(View.VISIBLE);
-                }
+        binding.contactMechSelector.setOnCheckedChangeListener((compoundButton, isChecked) -> {
+            if (isChecked) {
+                binding.emailAddressLayout.setVisibility(View.GONE);
+                binding.countryCodesLayout.setVisibility(View.VISIBLE);
+                binding.mobileNumberLayout.setVisibility(View.VISIBLE);
+            } else {
+                binding.emailAddressLayout.setVisibility(View.VISIBLE);
+                binding.countryCodesLayout.setVisibility(View.GONE);
+                binding.mobileNumberLayout.setVisibility(View.GONE);
             }
         });
+
+        Activity activity = this;
+        if (viewModel.getCountryCodes() != null) {
+            viewModel.getCountryCodes().observe(this, new Observer<List<IntlPhoneCountryCode>>() {
+                @Override
+                public void onChanged(List<IntlPhoneCountryCode> codes) {
+                    if (codes != null) {
+                        String deviceIsoCode = CommonUtil.getCountryCode2(activity);
+                        if (deviceIsoCode != null) {
+                            List<IntlPhoneCountryCode> codesList = viewModel.getCountryCodes().getValue();
+                            if (codesList != null) {
+                                for (IntlPhoneCountryCode item : codesList) {
+                                    if (deviceIsoCode.equals(item.getIsoCode())) {
+                                        viewModel.getSelectedCountryCode().setValue(item);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
 
     }
 
     public void OnSkipReferral(View view) {
-        //TODO: remove, was added for demo purpose
         Intent intent = new Intent(this, WalletActivity.class);
         startActivity(intent);
     }
 
     public void onReward(View view) {
-
-
+        String emailOrMobile;
+        boolean emailRegistration = false;
         boolean validationSuccessful = true;
-        ReferralParameters referral = new ReferralParameters();
-
-        if( binding.emailAddressLayout.getVisibility() == View.VISIBLE){
-            if (!Validator.isEmail(viewModel.emailAddress.getValue())) {
-                validationSuccessful = false;
-                binding.emailAddressLayout.setError(getString(R.string.err_email_required));
-            }
-
-            if (binding.promotionalCode.getText().toString().trim().length()==0) {
-                validationSuccessful = false;
-                binding.promotionalCode.setError(getString(R.string.err_email_code));
-            }
-
-            referral.emailRegistration = true;
-            referral.emailOrMobile = viewModel.emailAddress.getValue();
-        }else{
-            if (!Validator.isPhoneNumber(viewModel.mobileNumber.getValue())) {
+        if (binding.contactMechSelector.isChecked()) {
+            // phone number selected
+            if (!Validator.isPhoneNumber(viewModel.getMobileNumber().getValue())) {
                 validationSuccessful = false;
                 binding.mobileNumberLayout.setError(getString(R.string.err_phone_required));
             }
-
-            if (binding.promotionalCode.getText().toString().trim().length()==0) {
-                validationSuccessful = false;
-                binding.promotionalCode.setError(getString(R.string.err_email_code));
+            IntlPhoneCountryCode phoneCode = viewModel.getSelectedCountryCode().getValue();
+            StringBuilder sb = new StringBuilder();
+            if (phoneCode != null) {
+                sb.append(phoneCode.getCountryCode());
             }
-
-            referral.emailRegistration = false;
-            referral.emailOrMobile = binding.tvCC.getSelectedCountryCode()
-                    + viewModel.mobileNumber.getValue();
+            sb.append(binding.mobileNumber.getText().toString());
+            emailOrMobile = sb.toString();
+        } else {
+            // email address selected
+            emailRegistration = true;
+            if (!Validator.isEmail(viewModel.getEmailAddress().getValue())) {
+                validationSuccessful = false;
+                binding.emailAddressLayout.setError(getString(R.string.err_email_required));
+            }
+            emailOrMobile = binding.emailAddress.getText().toString();
         }
-
+        if (TextUtils.isEmpty(viewModel.getPromoCode().getValue())) {
+            binding.promoCodeLayout.setError(getString(R.string.ref_promocode_required));
+            validationSuccessful = false;
+        }
         if (!validationSuccessful) return;
 
+        Activity activity = this;
         binding.progressBar.setVisibility(View.VISIBLE);
-
-        if(binding.promotionalCode.getText().toString().trim().length()>0) {
-            referral.promotionalCode = binding.promotionalCode.getText().toString();
-        }
-
-        referralRepository.getReferral(referral, new OnCompleteListener<Referral>() {
+        bountyRepository.registerReferral(emailOrMobile, emailRegistration,
+                viewModel.getPromoCode().getValue(), new OnCompleteListener<RegisterReferralResponseModel>() {
             @Override
-            public void onComplete(Referral value, Throwable error) {
+            public void onComplete(RegisterReferralResponseModel value, Throwable error) {
                 binding.progressBar.setVisibility(View.INVISIBLE);
                 if (error != null) {
-                    Toast.makeText(ReferralActivity.this, Debug.getFailureMsg(ReferralActivity.this, error), Toast.LENGTH_LONG).show();
+                    new MessageBox(Debug.getFailureMsg(activity, error)).show(getSupportFragmentManager(), null);
                     return;
                 }
-                Intent intent = new Intent(ReferralActivity.this, ReferralConfirmationActivity.class);
+
+                Boolean success = value.isReferralRegisterSuccessful();
+                if (success == null) success = false;
+
+                if (!success) {
+                    new MessageBox(value.getMessage()).show(getSupportFragmentManager(), null);
+                    return;
+                }
+
+                Intent intent = new Intent(activity, ReferralConfirmationActivity.class);
                 startActivity(intent);
             }
         });
-
-
     }
 
     public void onReadQRCode(View view) {
         startActivityForResult(new Intent(this, QRScannerActivity.class), QRScannerActivity.REQUEST_QR);
     }
 
+    private void postReferralInfo() {
+
+    }
 
 }

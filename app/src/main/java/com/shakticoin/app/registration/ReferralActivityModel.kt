@@ -10,6 +10,7 @@ import com.shakticoin.app.widget.InlineLabelSpinner
 
 class ReferralActivityModel : ViewModel() {
     var emailAddress : MutableLiveData<String> = MutableLiveData()
+    var promoCode : MutableLiveData<String> = MutableLiveData()
     var mobileNumber : MutableLiveData<String> = MutableLiveData()
     var countryCodes : LiveData<List<IntlPhoneCountryCode>?>? = PhoneOTPRepository().getCountryCodeList()
     var selectedCountryCode : MutableLiveData<IntlPhoneCountryCode> = MutableLiveData()
