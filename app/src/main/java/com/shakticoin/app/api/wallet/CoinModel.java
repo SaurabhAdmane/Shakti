@@ -6,7 +6,7 @@ CoinModel {
     public Integer addressNumber = 0;
     public String cacheBytes = "";
     private String messageForRecipient;
-    public Long sessionToken;
+    public String sessionToken;
     private String toAddress;
     public String toEmail;
 
@@ -39,11 +39,11 @@ CoinModel {
         this.messageForRecipient = messageForRecipient;
     }
 
-    public Long getSessionToken() {
+    public String getSessionToken() {
         return sessionToken;
     }
 
-    public void setSessionToken(Long sessionToken) {
+    public void setSessionToken(String sessionToken) {
         this.sessionToken = sessionToken;
     }
 

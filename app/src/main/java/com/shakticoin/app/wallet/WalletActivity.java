@@ -265,6 +265,7 @@ if(walletBytes.equals("-1")) {
                     }
                     return;
                 }
+                Session.setWalletSessionToken(Long.parseLong(walletBytes));
                 getBalanceApi(walletBytes);
 
             }
@@ -274,7 +275,10 @@ if(walletBytes.equals("-1")) {
     private void getBalanceApi(String walletBytes){
         viewModel.isProgressBarActive.set(true);
         walletRepository.getMyBalance(
-                0, "", Long.parseLong(walletBytes)
+                0, "",
+//                Long.parseLong(
+                        walletBytes
+//        )
                 , new OnCompleteListener<String>() {
                     @Override
                     public void onComplete(String balance, Throwable error) {

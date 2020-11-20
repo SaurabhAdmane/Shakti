@@ -162,7 +162,25 @@ public class BountyRepository extends BackendRepository {
                             break;
                         default:
                             Debug.logErrorResponse(response);
-                            returnError(listener, response);
+//                            returnError(listener, response);
+                            ResponseBody errorBody1 = response.errorBody();
+                            if (errorBody1 != null) {
+                                try {
+                                    RemoteMessageException e = new RemoteMessageException(response.message(), response.code());
+                                    JSONObject errorResponse = new JSONObject(errorBody1.string());
+                                    Iterator<String> keys = errorResponse.keys();
+                                    while (keys.hasNext()) {
+                                        String key = keys.next();
+                                        JSONArray errorMessageList = errorResponse.getJSONArray(key);
+                                        String errorMessage = (String) errorMessageList.get(0);
+                                        e.addValidationError(key, errorMessage);
+                                    }
+                                    listener.onComplete(null, e);
+                                } catch (IOException | JSONException e) {
+                                    listener.onComplete(null, e);
+                                }
+                            }
+
                     }
                 }
             }

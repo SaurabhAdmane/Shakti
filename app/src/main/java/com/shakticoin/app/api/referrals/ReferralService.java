@@ -10,6 +10,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 
 public interface ReferralService {
     @GET("bounties/")
@@ -20,7 +21,7 @@ public interface ReferralService {
      * Create referral.
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("bounties/registerreferral/")
+    @PUT("bounties/registerreferral/")
     Call<Referral> getReferral(@Header("Authorization") String authorization, @Body ReferralParameters newReferral);
 
 }

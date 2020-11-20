@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.security.keystore.KeyGenParameterSpec;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -458,25 +459,25 @@ public class WalletRepository extends BackendRepository {
         });
     }
 
-    public void transfer(@NonNull String address, @NonNull Long amount, @Nullable String message1, @NonNull OnCompleteListener<TransferModelResponse> listener) {
-        transfer(address, amount, message1, listener, false);
+    public void transfer(String sessionToken, @NonNull String address, @NonNull Long amount, @Nullable String message1, @NonNull OnCompleteListener<TransferModelResponse> listener) {
+        transfer(sessionToken, address, amount, message1, listener, false);
     }
-    public void transfer(@NonNull String address, @NonNull Long amount, @Nullable String message1, @NonNull OnCompleteListener<TransferModelResponse> listener, boolean hasRecover401) {
-        Long sessionToken = Session.getWalletSessionToken();
-        if (sessionToken == null) {
-            getWalletSession(new OnCompleteListener<Long>() {
-                @Override
-                public void onComplete(Long token, Throwable error) {
-                    if (error != null) {
-                        listener.onComplete(null, error);
-                        return;
-                    }
-                    Session.setWalletSessionToken(token);
-                    transfer(address, amount, message1, listener);
-                }
-            });
-            return;
-        }
+    public void transfer(String sessionToken, @NonNull String address, @NonNull Long amount, @Nullable String message1, @NonNull OnCompleteListener<TransferModelResponse> listener, boolean hasRecover401) {
+//        Long sessionToken = Session.getWalletSessionToken();
+//        if (sessionToken == null) {
+//            getWalletSession(new OnCompleteListener<Long>() {
+//                @Override
+//                public void onComplete(Long token, Throwable error) {
+//                    if (error != null) {
+//                        listener.onComplete(null, error);
+//                        return;
+//                    }
+//                    Session.setWalletSessionToken(token);
+//                    transfer(address, amount, message1, listener);
+//                }
+//            });
+//            return;
+//        }
         CoinModel parameters = new CoinModel();
         parameters.cacheBytes = "";
         parameters.setMessageForRecipient("Test message");
@@ -509,7 +510,7 @@ public class WalletRepository extends BackendRepository {
                                         listener.onComplete(null, new UnauthorizedException());
                                         return;
                                     }
-                                    transfer(address, amount, message1, listener, true);
+//                                    transfer(address, amount, message1, listener, true);
                                 }
                             });
                         } else {
@@ -517,10 +518,24 @@ public class WalletRepository extends BackendRepository {
                         }
                     } else {
                         Debug.logErrorResponse(response);
-                        listener.onComplete(null,
-                                new RemoteException(
-                                        ShaktiApplication.getContext().getString(R.string.dlg_sxe_err_transfer),
-                                        response.code()));
+
+                        JSONObject jObjError = null;
+                        try {
+                            jObjError = new JSONObject(response.errorBody().string());
+
+                            listener.onComplete(null,
+                                    new RemoteException(
+                                            jObjError.getJSONObject("error").getString("message"),
+                                            response.code()));
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+
+                            listener.onComplete(null,
+                                    new RemoteException(
+                                            ShaktiApplication.getContext().getString(R.string.dlg_sxe_err_transfer),
+                                            response.code()));
+                        }
                     }
                 }
             }
@@ -608,10 +623,10 @@ public class WalletRepository extends BackendRepository {
         });
     }
 
-    public void getMyBalance(@NonNull Integer address, @NonNull String cacheBytes, @Nullable Long sessionToken, @NonNull OnCompleteListener<String> listener) {
+    public void getMyBalance(@NonNull Integer address, @NonNull String cacheBytes, @Nullable String sessionToken, @NonNull OnCompleteListener<String> listener) {
         getMyBalance(address, cacheBytes, sessionToken, listener, false);
     }
-    public void getMyBalance(@NonNull Integer address, @NonNull String cacheBytes, @Nullable Long sessionToken, @NonNull OnCompleteListener<String> listener, boolean hasRecover401) {
+    public void getMyBalance(@NonNull Integer address, @NonNull String cacheBytes, @Nullable String sessionToken, @NonNull OnCompleteListener<String> listener, boolean hasRecover401) {
 
         CoinModel parameters = new CoinModel();
         parameters.addressNumber = address;

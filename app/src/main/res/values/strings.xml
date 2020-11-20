@@ -620,7 +620,7 @@
     <string name="dlg_sxe_pay_amount">SXE amount</string>
     <string name="dlg_sxe_pay_message">Message</string>
     <string name="dlg_sxe_default_message">Transfer of personal funds</string>
-    <string name="dlg_sxe_err_transfer">Unexpected error happen during the transfer</string>
+    <string name="dlg_sxe_err_transfer">Unexpected error happen during the transfer or insufficient funds</string>
     <string name="not_found">Not Found</string>
     <string name="activation_activating">Activating your account</string>
     <string name="activation_failed">An error happen</string>
