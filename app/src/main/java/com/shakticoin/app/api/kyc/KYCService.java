@@ -16,6 +16,7 @@ import retrofit2.http.Multipart;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface KYCService {
@@ -90,8 +91,8 @@ public interface KYCService {
     /**
      * Get KYC user document types.
      */
-    @GET("selfyid/")
-    Call<KycUserView> getWalletByte(@Header("Authorization") String authorization, @Query("walletId") String walletId);
+    @GET("selfyid/{walletId}")
+    Call<KycUserView> getWalletByte(@Header("Authorization") String authorization, @Path("walletId") String walletId);
 
 
 }

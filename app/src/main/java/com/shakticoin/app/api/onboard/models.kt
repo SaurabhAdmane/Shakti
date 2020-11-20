@@ -8,6 +8,7 @@ class OnboardShaktiModel {
     var geojson: GeoJSONModel? = null
     var ipaddress: String? = null
     var password: String? = null
+    var authorizationBytes: String? = "" // blank until further directions
 }
 
 class UpdatePasswordModel {

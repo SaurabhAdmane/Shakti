@@ -17,6 +17,7 @@ import androidx.databinding.DataBindingUtil;
 
 import com.shakticoin.app.R;
 import com.shakticoin.app.api.OnCompleteListener;
+import com.shakticoin.app.api.Session;
 import com.shakticoin.app.api.auth.AuthRepository;
 import com.shakticoin.app.api.auth.TokenResponse;
 import com.shakticoin.app.databinding.ActivitySigninBinding;
@@ -98,6 +99,8 @@ public class SignInActivity extends AppCompatActivity {
 
                 SharedPreferences prefs = getSharedPreferences(PreferenceHelper.GENERAL_PREFERENCES, Context.MODE_PRIVATE);
                 prefs.edit().putBoolean(PreferenceHelper.PREF_KEY_HAS_ACCOUNT, true).apply();
+
+                Session.setWalletPassphrase(password);
 
                 // go to the wallet
                 startActivity(new Intent(self, WalletActivity.class));

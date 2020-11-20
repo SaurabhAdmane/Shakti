@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.shakticoin.app.api.otp.IntlPhoneCountryCode
+import com.shakticoin.app.api.otp.PhoneOTPRepository
 import com.shakticoin.app.widget.InlineLabelSpinner
 
 class RegViewModel : ViewModel() {
@@ -18,7 +19,7 @@ class RegViewModel : ViewModel() {
     val emailAddress: MutableLiveData<String> = MutableLiveData()
     val emailAddressError: MutableLiveData<String> = MutableLiveData()
 
-    var countryCodes : LiveData<List<IntlPhoneCountryCode>?>? = null
+    var countryCodes : LiveData<List<IntlPhoneCountryCode>?>? = PhoneOTPRepository().getCountryCodeList()
     var selectedCountryCode : MutableLiveData<IntlPhoneCountryCode> = MutableLiveData()
     val phoneNumber: MutableLiveData<String> = MutableLiveData()
     val phoneNumberError: MutableLiveData<String> = MutableLiveData()

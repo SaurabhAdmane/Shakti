@@ -42,7 +42,7 @@ public class InlineLabelEditText extends AppCompatEditText {
     private Point rightBottomStart;
     private RectF rightBottomArc;
 
-    private Path borderPath = new Path();
+    private final Path borderPath = new Path();
 
     private Float textWidth = 0f;
 
@@ -103,24 +103,34 @@ public class InlineLabelEditText extends AppCompatEditText {
     }
 
     public void drawOpenBorder(Canvas canvas) {
-        textEnd.x = textStart.x + textWidth.intValue();
+        // When we enter very long string (with width longer than the field width) the
+        // canvas clip bounds grows horizontally and this breaks drawing geometry. We
+        // need add a correction to every X value. canvasOffset is that correction.
+        // It equals to zero until length of the string entered exceeds field width.
+        int canvasOffset = canvas.getClipBounds().right - canvas.getWidth();
+
+        textEnd.x = textStart.x + textWidth.intValue() + canvasOffset;
 
         borderPath.rewind();
         borderPath.moveTo(textEnd.x, textEnd.y);
-        borderPath.lineTo(rightTopStart.x, rightTopStart.y);
-        borderPath.arcTo(rightTopArc, 270f, 90f);
-        borderPath.lineTo(rightBottomStart.x, rightBottomStart.y);
-        borderPath.arcTo(rightBottomArc, 0f, 90f);
-        borderPath.lineTo(leftBottomStart.x, leftBottomStart.y);
-        borderPath.arcTo(leftBottomArc, 90f, 90f);
-        borderPath.lineTo(leftTopStart.x, leftTopStart.y);
-        borderPath.arcTo(leftTopArc, 180f, 90f);
-        borderPath.lineTo(textStart.x, textStart.y);
+        borderPath.lineTo(rightTopStart.x + canvasOffset, rightTopStart.y);
+        borderPath.arcTo(offsetRect(rightTopArc, canvasOffset), 270f, 90f);
+        borderPath.lineTo(rightBottomStart.x + canvasOffset, rightBottomStart.y);
+        borderPath.arcTo(offsetRect(rightBottomArc, canvasOffset), 0f, 90f);
+        borderPath.lineTo(leftBottomStart.x + canvasOffset, leftBottomStart.y);
+        borderPath.arcTo(offsetRect(leftBottomArc, canvasOffset), 90f, 90f);
+        borderPath.lineTo(leftTopStart.x + canvasOffset, leftTopStart.y);
+        borderPath.arcTo(offsetRect(leftTopArc, canvasOffset), 180f, 90f);
+        borderPath.lineTo(textStart.x + canvasOffset, textStart.y);
         canvas.drawPath(borderPath, borderPaint);
     }
 
     private void drawClosedBorder(Canvas canvas) {
         canvas.drawRoundRect(closedBorder, closedBorderCornerRadius, closedBorderCornerRadius,  borderPaint);
+    }
+
+    private RectF offsetRect(RectF r, float offsetX) {
+        return new RectF(r.left + offsetX, r.top, r.right + offsetX, r.bottom);
     }
 
     @Override
@@ -132,7 +142,7 @@ public class InlineLabelEditText extends AppCompatEditText {
 
         closedBorder = new RectF();
 
-        // calculate left corner
+        // calculate left top corner
         Point leftTop = new Point(offset, offset);
         closedBorder.left = leftTop.x;
         closedBorder.top = leftTop.y;

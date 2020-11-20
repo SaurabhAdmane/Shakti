@@ -156,6 +156,7 @@
                     android:textAppearance="@style/AppText.Body"
                     android:text="@string/wallet_history_empty_list"
                     android:gravity="center"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

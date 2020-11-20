@@ -327,7 +327,7 @@ public class WalletHistoryActivity extends DrawerActivity {
 //                    holder.descriptionView.setText(item.toString());
 //                    break;
 //                case ITEM:
-                    holder.descriptionView.setText(item.identifier.substring(item.identifier.length()-9, item.identifier.length()));
+                    holder.descriptionView.setText("*****"+item.identifier.substring(item.identifier.length()-9, item.identifier.length()));
                     holder.timeView.setText(timeFormat.format(item.timestamp));
                     BigDecimal transactionAmount = item.amountInToshi;
                     holder.amountView.setText(String.format(Locale.US, "%1$+.2f", transactionAmount));

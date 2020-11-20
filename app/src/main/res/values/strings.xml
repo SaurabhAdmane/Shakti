@@ -744,6 +744,7 @@
     </string>
     <string name="reg__email_err_too_many_attempts">Sorry! Too many attempts. You are blocked for 60 minutes.</string>
     <string name="reg__email_err_verified">Email is already verified</string>
+    <string name="reg__email_err_registered">%1$s is a registered user. Proceed to log in!</string>
     <string name="reg__mobile_confirmation">Email confirmed. Enter your mobile number to continue.</string>
     <string name="reg__mobile_sent_sms">We will send you an SMS with a verification code.</string>
     <string name="reg__mobile_enter_code">Enter verification code</string>

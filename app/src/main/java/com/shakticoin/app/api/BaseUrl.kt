@@ -5,7 +5,7 @@ package com.shakticoin.app.api
  */
 object BaseUrl {
     /** Possible values "-stg", "-qa", and empty string  */
-    private const val ENV_CODE = "-qa"
+    private const val ENV_CODE = "-stg"
 
     const val IAM_BASE_URL = "https://iam${ENV_CODE}.shakticoin.com/oxauth/restv1/"
     const val WALLETSERVICE_BASE_URL = "https://walletservice${ENV_CODE}.shakticoin.com/walletservice/api/v1/"
@@ -21,8 +21,6 @@ object BaseUrl {
     const val PHONE_OTP_SERVICE_BASE_URL = "https://mobileotpservice${ENV_CODE}.shakticoin.com/sms-otp-service/api/v1/"
     const val EMAIL_OTP_SERVICE_BASE_URL = "https://emailotpservice${ENV_CODE}.shakticoin.com/email-otp-service/api/v1/"
     const val ONBOARD_SERVICE_BASE_URL = "https://onboardshakti${ENV_CODE}.shakticoin.com/onboardshakti-service/api/v1/"
-
-
 
 
     const val BIZVAULT_SERVICE_BASE_URL = "https://bizvault${ENV_CODE}.shakticoin.com/bizvault/api/v1/bizvaults/"

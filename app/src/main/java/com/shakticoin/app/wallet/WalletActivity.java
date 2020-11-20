@@ -111,19 +111,32 @@ public class WalletActivity extends DrawerActivity {
         getBountyStatus();
 
 
-        if (Session.getWalletBytes() == null) {
+        if (Session.getWalletPassphrase() == null) {
+            DialogPasss.getInstance(new DialogPasss.OnPassListener() {
+                @Override
+                public void onPassEntered(@Nullable String password) {
+                    if (!TextUtils.isEmpty(password)) {
+                        Session.setWalletPassphrase(password);
+                        createWalletByte();
+                    }
+                }
+            }).show(getSupportFragmentManager(), DialogPasss.class.getName());
+            return;
+        }else {
+            if (Session.getWalletBytes() == null) {
 //            DialogPass.getInstance(new DialogPass.OnPassListener() {
 //                @Override
 //                public void onPassEntered(@Nullable String password) {
 //                    if (!TextUtils.isEmpty(password)) {
 //                        Session.setWalletPassphrase(password);
-                        createWalletByte();
+                createWalletByte();
 //                    }
 //                }
 //            }).show(getSupportFragmentManager(), DialogPass.class.getName());
 //            return;
-        }else{
-            getSessionApi();
+            } else {
+                getSessionApi( Session.getWalletBytes());
+            }
         }
     }
 
@@ -159,7 +172,7 @@ public class WalletActivity extends DrawerActivity {
                     return;
                 }
                 Session.setWalletBytes(walletBytes);
-                getSessionApi();
+                getSessionApi(walletBytes);
             }
         });
     }
@@ -231,16 +244,16 @@ if(walletBytes.equals("-1")) {
     /**
      * Get the session token
      */
-    private void getSessionApi() {
+    private void getSessionApi(String bytes) {
 
         viewModel.isProgressBarActive.set(true);
 
         walletRepository.createSession(
-//                Session.getWalletPassphrase(),
-                "123",
+                Session.getWalletPassphrase(),
+//                "123",
                 "",
-//                Session.getWalletBytes()
-                "fhctFR+Dj4G72BgCqR6VgXemQUP9V2W2jC65SEecJNNVnciL6F/Bz3fxs7DWAzwtnsNXGQECMLqUQbvBk0KDfDt0vbEY5SFdoRYQ39FhJEznr9H+DC0eN8WT/qcnW+NNwycLsvNJW/m0PgeSuwT3aLjwKhld0GFoLo/BTxiuNezokMU4GZIuDf3/jcfWSrdti6nKYjv0BZe9srs5vAMY3Q"
+                bytes
+//                "fhctFR+Dj4G72BgCqR6VgXemQUP9V2W2jC65SEecJNNVnciL6F/Bz3fxs7DWAzwtnsNXGQECMLqUQbvBk0KDfDt0vbEY5SFdoRYQ39FhJEznr9H+DC0eN8WT/qcnW+NNwycLsvNJW/m0PgeSuwT3aLjwKhld0GFoLo/BTxiuNezokMU4GZIuDf3/jcfWSrdti6nKYjv0BZe9srs5vAMY3Q"
 
         , new OnCompleteListener<String>() {
             @Override
@@ -317,17 +330,17 @@ if(walletBytes.equals("-1")) {
 //        new CheckWalletLocked(getSupportFragmentManager(), binding.progressBar, this).execute();
 
 
-        if (Session.getWalletBytes() != null && Session.getWalletPassphrase() == null) {
-        DialogPasss.getInstance(new DialogPasss.OnPassListener() {
-                @Override
-                public void onPassEntered(@Nullable String password) {
-                    if (!TextUtils.isEmpty(password)) {
-                        Session.setWalletPassphrase(password);
-                    }
-                }
-            }).show(getSupportFragmentManager(), DialogPasss.class.getName());
-            return;
-        }
+//        if (Session.getWalletPassphrase() == null) {
+//        DialogPasss.getInstance(new DialogPasss.OnPassListener() {
+//                @Override
+//                public void onPassEntered(@Nullable String password) {
+//                    if (!TextUtils.isEmpty(password)) {
+//                        Session.setWalletPassphrase(password);
+//                    }
+//                }
+//            }).show(getSupportFragmentManager(), DialogPasss.class.getName());
+//            return;
+//        }
 
 
     }

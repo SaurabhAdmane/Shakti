@@ -57,6 +57,9 @@ public class WalletAdminActivity extends DrawerActivity {
             binding.tvBVault.setText(getResources().getString(R.string.wallet_admin_locked));
         }
 
+        binding.balance.setText("SXE "+getIntent().getStringExtra("balance"));
+
+
         getPassRecoveryStatus();
         getAllStatus();
 
