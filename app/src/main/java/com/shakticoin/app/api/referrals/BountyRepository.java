@@ -162,7 +162,7 @@ public class BountyRepository extends BackendRepository {
                             break;
                         default:
                             Debug.logErrorResponse(response);
-//                            returnError(listener, response);
+
                             ResponseBody errorBody1 = response.errorBody();
                             if (errorBody1 != null) {
                                 try {
@@ -176,8 +176,9 @@ public class BountyRepository extends BackendRepository {
                                         e.addValidationError(key, errorMessage);
                                     }
                                     listener.onComplete(null, e);
-                                } catch (IOException | JSONException e) {
-                                    listener.onComplete(null, e);
+                                } catch (Exception  e) {
+//                                    listener.onComplete(null, e);
+                                    returnError(listener, response);
                                 }
                             }
 
