@@ -30,6 +30,7 @@ import com.shakticoin.app.api.license.SubscribedLicenseModel;
 import com.shakticoin.app.api.onboard.OnboardRepository;
 import com.shakticoin.app.api.onboard.ResponseBean;
 import com.shakticoin.app.api.referrals.BountyRepository;
+import com.shakticoin.app.api.selfId.SelfRepository;
 import com.shakticoin.app.api.wallet.SessionException;
 import com.shakticoin.app.api.wallet.TransferModelResponse;
 import com.shakticoin.app.api.wallet.WalletRepository;
@@ -54,6 +55,8 @@ public class WalletActivity extends DrawerActivity {
 
     private WalletRepository walletRepository;
     private KYCRepository kycRepository;
+    private SelfRepository selfRepository;
+
     private OnboardRepository onboardRepository;
     private LicenseRepository licenseRepository;
     private BizvaultRepository bizvaultRepository;
@@ -87,6 +90,9 @@ public class WalletActivity extends DrawerActivity {
         viewModel = ViewModelProviders.of(this).get(WalletModel.class);
         binding.setViewModel(viewModel);
 
+        selfRepository = new SelfRepository();
+        selfRepository.setLifecycleOwner(this);
+
         kycRepository = new KYCRepository();
         kycRepository.setLifecycleOwner(this);
         licenseRepository = new LicenseRepository();
@@ -105,25 +111,43 @@ public class WalletActivity extends DrawerActivity {
         getBountyStatus();
 
 
-//        if (Session.getWalletBytes() == null) {
+        if (Session.getWalletBytes() == null) {
 //            DialogPass.getInstance(new DialogPass.OnPassListener() {
 //                @Override
 //                public void onPassEntered(@Nullable String password) {
 //                    if (!TextUtils.isEmpty(password)) {
 //                        Session.setWalletPassphrase(password);
-//                        createWalletByte();
+                        createWalletByte();
 //                    }
 //                }
 //            }).show(getSupportFragmentManager(), DialogPass.class.getName());
 //            return;
-//        }else{
+        }else{
             getSessionApi();
-//        }
+        }
     }
 
     private void createWalletByte() {
         viewModel.isProgressBarActive.set(true);
-        onboardRepository.createWallet(Session.getWalletPassphrase(), new OnCompleteListener<String>() {
+        kycRepository.getWalletRequestAPI(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(String walletBytes, Throwable error) {
+                if (error != null) {
+                    Toast.makeText(WalletActivity.this, Debug.getFailureMsg(WalletActivity.this, error), Toast.LENGTH_LONG).show();
+                    if (error instanceof RemoteException && ((RemoteException) error).getResponseCode() == 201) {
+                        Session.setWalletPassphrase(null);
+                    }
+                    return;
+                }
+                Session.setWalletBytes(walletBytes);
+                getWalletByte(walletBytes);
+            }
+        });
+    }
+
+    private void getWalletByte(String walletBytes) {
+        viewModel.isProgressBarActive.set(true);
+        selfRepository.getWalletRequestAPI(walletBytes, new OnCompleteListener<String>() {
             @Override
             public void onComplete(String walletBytes, Throwable error) {
                 viewModel.isProgressBarActive.set(false);
@@ -139,6 +163,9 @@ public class WalletActivity extends DrawerActivity {
             }
         });
     }
+
+
+
 
     private void getBountyStatus() {
         bountyRepository.bountyStatus(new OnCompleteListener<String>() {
@@ -290,17 +317,18 @@ if(walletBytes.equals("-1")) {
 //        new CheckWalletLocked(getSupportFragmentManager(), binding.progressBar, this).execute();
 
 
-//        if (Session.getWalletBytes() != null && Session.getWalletPassphrase() == null) {
-//        DialogPasss.getInstance(new DialogPasss.OnPassListener() {
-//                @Override
-//                public void onPassEntered(@Nullable String password) {
-//                    if (!TextUtils.isEmpty(password)) {
-//                        Session.setWalletPassphrase(password);
-//                    }
-//                }
-//            }).show(getSupportFragmentManager(), DialogPasss.class.getName());
-//            return;
-//        }
+        if (Session.getWalletBytes() != null && Session.getWalletPassphrase() == null) {
+        DialogPasss.getInstance(new DialogPasss.OnPassListener() {
+                @Override
+                public void onPassEntered(@Nullable String password) {
+                    if (!TextUtils.isEmpty(password)) {
+                        Session.setWalletPassphrase(password);
+                    }
+                }
+            }).show(getSupportFragmentManager(), DialogPasss.class.getName());
+            return;
+        }
+
 
     }
 

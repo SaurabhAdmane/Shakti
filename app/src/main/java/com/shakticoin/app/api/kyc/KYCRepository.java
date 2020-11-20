@@ -295,6 +295,61 @@ public class KYCRepository extends BackendRepository {
         });
     }
 
+    public void getWalletRequestAPI(OnCompleteListener<String> listener) {
+        getWalletRequestAPI(listener, false);
+    }
+    public void getWalletRequestAPI(OnCompleteListener<String> listener, boolean hasRecover401) {
+        service.getWalletRequestAPI(Session.getAuthorizationHeader()).enqueue(new Callback<KycUserView>() {
+            @EverythingIsNonNull
+            @Override
+            public void onResponse(Call<KycUserView> call, Response<KycUserView> response) {
+                Debug.logDebug(response.toString());
+                if (response.isSuccessful()) {
+                    KycUserView body = response.body();
+                    if (body != null) {
+                        try {
+                            String content = body.getWalletID();
+                            listener.onComplete(content, null);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                } else {
+                    switch (response.code()) {
+                        case 401:
+                            if (!hasRecover401) {
+                                authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
+                                    @Override
+                                    public void onComplete(TokenResponse value, Throwable error) {
+                                        if (error != null) {
+                                            listener.onComplete(null, new UnauthorizedException());
+                                            return;
+                                        }
+//                                        getKycDocumentTypes(listener, true);
+                                    }
+                                });
+                            } else {
+                                listener.onComplete(null, new UnauthorizedException());
+                                return;
+                            }
+                            break;
+                        default:
+                            Debug.logErrorResponse(response);
+                            returnError(listener, response);
+                    }
+                }
+            }
+
+            @EverythingIsNonNull
+            @Override
+            public void onFailure(Call<KycUserView> call, Throwable t) {
+                returnError(listener, t);
+            }
+        });
+    }
+
+
+
     public void getKycDocumentTypes(OnCompleteListener<List<Map<String, Object>>> listener) {
         getKycDocumentTypes(listener, false);
     }
