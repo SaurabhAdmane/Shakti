@@ -284,7 +284,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="34dp"
                 android:background="@android:color/transparent"
-                android:tint="@color/colorBrandDisabled"
+                android:tint="@color/colorBrand"
                 android:onClick="onGetPromoCode"
                 app:layout_constraintEnd_toStartOf="@+id/doInstagram"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -325,11 +325,13 @@
 
             <ImageButton
                 android:id="@+id/doLinkedIn"
+                android:tag="LINKEDIN"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="34dp"
                 android:background="@android:color/transparent"
-                android:tint="#FFABA79E"
+                android:tint="@color/colorBrand"
+                android:onClick="onGetPromoCode"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/doPlus"
@@ -339,11 +341,13 @@
 
             <ImageButton
                 android:id="@+id/doPinterest"
+                android:tag="PINTEREST"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="53dp"
                 android:background="@android:color/transparent"
-                android:tint="#FFABA79E"
+                android:tint="@color/colorBrand"
+                android:onClick="onGetPromoCode"
                 app:layout_constraintEnd_toStartOf="@+id/doSkype"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/doTwitter"
@@ -369,11 +373,13 @@
 
             <ImageButton
                 android:id="@+id/doSkype"
+                android:tag="SKYPE"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="53dp"
                 android:background="@android:color/transparent"
-                android:tint="#FFABA79E"
+                android:tint="@color/colorBrand"
+                android:onClick="onGetPromoCode"
                 app:layout_constraintEnd_toStartOf="@+id/doVK"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/doPinterest"
@@ -383,11 +389,13 @@
 
             <ImageButton
                 android:id="@+id/doVK"
+                android:tag="WK"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="53dp"
                 android:background="@android:color/transparent"
-                android:tint="#FFABA79E"
+                android:tint="@color/colorBrand"
+                android:onClick="onGetPromoCode"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/doSkype"
@@ -441,11 +449,13 @@
 
             <ImageButton
                 android:id="@+id/doWeChat"
+                android:tag="WECHAT"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="53dp"
                 android:background="@android:color/transparent"
-                android:tint="#FFABA79E"
+                android:tint="@color/colorBrand"
+                android:onClick="onGetPromoCode"
                 app:layout_constraintEnd_toStartOf="@+id/doTunblr"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
@@ -455,11 +465,13 @@
 
             <ImageButton
                 android:id="@+id/doTunblr"
+                android:tag="TUMBIR"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="53dp"
                 android:background="@android:color/transparent"
-                android:tint="#FFABA79E"
+                android:tint="@color/colorBrand"
+                android:onClick="onGetPromoCode"
                 app:layout_constraintEnd_toStartOf="@+id/doEmail"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/doWeChat"
@@ -485,11 +497,13 @@
 
             <ImageButton
                 android:id="@+id/doOtherMedia"
+                android:tag="OTHER"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="53dp"
                 android:background="@android:color/transparent"
-                android:tint="#FFABA79E"
+                android:tint="@color/colorBrand"
+                android:onClick="onGetPromoCode"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/doEmail"

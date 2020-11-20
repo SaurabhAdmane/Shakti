@@ -2,9 +2,12 @@ package com.shakticoin.app.referral;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 
@@ -102,7 +105,18 @@ public class MyReferralsActivity extends DrawerActivity {
                     return;
                 }
 
-                Debug.logDebug(value.getPromotionalcodeurl());
+                if ("OTHER".equals(media)) {
+                    Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                    shareIntent.putExtra(Intent.EXTRA_TEXT, value.getPromotionalcodeurl());
+                    shareIntent.setType("text/plain");
+                    startActivity(Intent.createChooser(shareIntent, null));
+                } else {
+                    ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                    if (clipboardManager != null) {
+                        clipboardManager.setPrimaryClip(ClipData.newRawUri(getString(R.string.share_uri_label), Uri.parse(value.getPromotionalcodeurl())));
+                        new MessageBox(getString(R.string.share_uri_ready_msg)).show(getSupportFragmentManager(), null);
+                    }
+                }
             }
         });
     }

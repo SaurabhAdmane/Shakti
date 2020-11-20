@@ -443,11 +443,11 @@
     <string name="my_refs_refer_other">Refer others to unlock SXE</string>
     <string name="my_refs_referred">%1$d Referred</string>
     <string name="my_refs_refer_note">
-        Refer friends by entering their info, or by importing contacts from your social media accounts.
+        Refer friends by entering their info, or by inviting contacts from your social media accounts.
     </string>
     <string name="my_refs_addreferral_action">Add a Referral</string>
     <string name="my_refs_myrate_action">My Effort Rates</string>
-    <string name="my_refs_import_from">Import from:</string>
+    <string name="my_refs_import_from">Invite from:</string>
     <string name="my_refs_media_facebook">Facebook</string>
     <string name="my_refs_media_instagram">Instagram</string>
     <string name="my_refs_media_plus">Google+</string>
@@ -799,5 +799,10 @@
         or full payout when one of the above conditions are met.
     </string>
     <string name="errbox__ok">OK</string>
+    <string name="share_uri_ready_msg">
+        An invitation link has copied to the clipboard. Please use it to refer Shakti to your
+        friends or family via selected media.
+    </string>
+    <string name="share_uri_label">Invitation link</string>
 
 </resources>
