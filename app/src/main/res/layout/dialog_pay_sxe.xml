@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/dialog_background"
     android:fillViewport="true">
 
     <LinearLayout
@@ -12,7 +13,7 @@
         android:layout_height="wrap_content"
         android:paddingBottom="24dp"
         android:orientation="vertical"
-        android:background="@drawable/dialog_background">
+       >
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -63,7 +64,23 @@
                 android:layout_marginEnd="16dp"
                 android:layout_toStartOf="@+id/doClose"
                 android:layout_toEndOf="@+id/circleBlack"
-                android:text="@string/dlg_sxe_pay_title"
+                android:text="Receive with"
+                android:textAppearance="@style/AppText.DialogTitle" />
+
+            <TextView
+                android:id="@+id/sxe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="8dp"
+                android:textStyle="bold"
+                android:layout_toStartOf="@+id/doClose"
+                android:layout_toEndOf="@+id/circleBlack"
+                android:layout_below="@+id/title"
+                android:textColor="@color/colorBrand"
+                android:text="SXE"
+                android:textSize="18sp"
                 android:textAppearance="@style/AppText.DialogTitle" />
 
         </RelativeLayout>
@@ -87,32 +104,33 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginEnd="32dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="24dp"
             android:gravity="center_horizontal"
+            android:hint="@string/enter_email"
             android:inputType="textEmailAddress"
             android:autofillHints="emailAddress" />
 
         <!-- FIXME: disabled after adding 3rd field that does not exist in the original design. If this
         change is approved we can remove this element -->
-        <!--TextView
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginEnd="32dp"
-            android:layout_marginTop="22dp"
+            android:layout_marginTop="24dp"
             android:fontFamily="@font/lato"
             android:gravity="center_horizontal"
             android:text="@string/and"
             android:textAppearance="@style/AppText.Title"
             android:textColor="@color/colorGrey3"
-            android:textStyle="bold" /-->
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginEnd="32dp"
-            android:layout_marginTop="17dp"
+            android:layout_marginTop="24dp"
             android:gravity="center_horizontal"
             android:textAppearance="@style/AppText.Title"
             android:textColor="@color/colorGrey3"
@@ -125,10 +143,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginEnd="32dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="24dp"
             android:gravity="center_horizontal"
             android:inputType="numberDecimal"
-            android:hint="@string/hint_zero"
+            android:hint="@string/enter_amount"
             android:importantForAutofill="no"/>
 
         <TextView
@@ -140,10 +158,11 @@
             android:gravity="center_horizontal"
             android:textAppearance="@style/AppText.Title"
             android:textColor="@color/colorGrey3"
+            android:visibility="gone"
             android:text="@string/dlg_sxe_pay_message"/>
 
         <EditText
-            android:id="@+id/messageToRecipient"
+            android:id="@+id/messageToRecipient1"
             style="@style/AppTextFieldDialogNoLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -153,6 +172,7 @@
             android:gravity="center_horizontal"
             android:inputType="textCapSentences"
             android:imeOptions="actionDone"
+            android:visibility="gone"
             android:hint="@string/dlg_sxe_default_message"
             android:importantForAutofill="no" />
 
@@ -161,7 +181,7 @@
             style="@style/AppButton.Rounded"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="71dp"
+            android:layout_marginTop="100dp"
             android:layout_marginStart="32dp"
             android:layout_marginEnd="32dp"
             android:layout_marginBottom="4dp"

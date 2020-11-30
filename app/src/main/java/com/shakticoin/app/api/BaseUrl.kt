@@ -11,8 +11,20 @@ object BaseUrl {
     const val WALLETSERVICE_BASE_URL = "https://walletservice${ENV_CODE}.shakticoin.com/walletservice/api/v1/"
     const val LICENSESERVICE_BASE_URL = "https://licenseservice${ENV_CODE}.shakticoin.com/license-service/api/v1/"
     const val KYC_USER_SERVICE_BASE_URL = "https://kycuser${ENV_CODE}.shakticoin.com/kyc-user-service/api/v1/"
+    const val SELF_ID_SERVICE_BASE_URL = "https://selfyid${ENV_CODE}.shakticoin.com/selfyid-service/api/v1/"
+
+//    https://kycuser-stg.shakticoin.com/kyc-user-service/api/v1/ kyc/wallet
+//    https://selfyid-stg.shakticoin.com/selfyid-service/api/v1/ selfyid/walletId
+
+
     const val KYC_CORP_SERVICE_BASE_URL = "https://kyccorpservice${ENV_CODE}.shakticoin.com/???"
     const val PHONE_OTP_SERVICE_BASE_URL = "https://mobileotpservice${ENV_CODE}.shakticoin.com/sms-otp-service/api/v1/"
     const val EMAIL_OTP_SERVICE_BASE_URL = "https://emailotpservice${ENV_CODE}.shakticoin.com/email-otp-service/api/v1/"
     const val ONBOARD_SERVICE_BASE_URL = "https://onboardshakti${ENV_CODE}.shakticoin.com/onboardshakti-service/api/v1/"
+
+
+    const val BIZVAULT_SERVICE_BASE_URL = "https://bizvault${ENV_CODE}.shakticoin.com/bizvault/api/v1/bizvaults/"
+    const val REFERRAL_SERVICE_BASE_URL = "https://referral${ENV_CODE}.shakticoin.com/bountyservice/api/v1/"
+
+
 }

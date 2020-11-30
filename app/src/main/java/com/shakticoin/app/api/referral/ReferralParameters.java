@@ -4,6 +4,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class ReferralParameters implements Parcelable {
+    public boolean emailRegistration;
+    public String emailOrMobile;
+    public String promotionalCode;
     private String firstName;
     private String lastName;
     private String email;

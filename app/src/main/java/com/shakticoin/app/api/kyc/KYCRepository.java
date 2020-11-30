@@ -121,6 +121,69 @@ public class KYCRepository extends BackendRepository {
         });
     }
 
+
+    public void getAllStatus(OnCompleteListener<KycUserView> listener) {
+        getAllStatus(listener, false);
+    }
+    private void getAllStatus(OnCompleteListener<KycUserView> listener, boolean hasRecover401) {
+        service.getAllStatus(Session.getAuthorizationHeader()).enqueue(new Callback<KycUserView>() {
+            @EverythingIsNonNull
+            @Override
+            public void onResponse(Call<KycUserView> call, Response<KycUserView> response) {
+                Debug.logDebug(response.toString());
+                if (response.isSuccessful()) {
+                    KycUserView values = response.body();
+                    listener.onComplete(values, null);
+                } else {
+                    switch (response.code()) {
+                        case 401:
+                            if (!hasRecover401) {
+                                authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
+                                    @Override
+                                    public void onComplete(TokenResponse value, Throwable error) {
+                                        if (error != null) {
+                                            listener.onComplete(null, new UnauthorizedException());
+                                            return;
+                                        }
+                                        getUserDetails(listener, true);
+                                    }
+                                });
+                            } else {
+                                listener.onComplete(null, new UnauthorizedException());
+                                return;
+                            }
+                            break;
+                        case 404:
+                            ResponseBody errorBody = response.errorBody();
+                            String message = response.message();
+                            if (errorBody != null) {
+                                try {
+                                    String errorResponse = errorBody.string();
+                                    JSONObject json = new JSONObject(errorResponse);
+                                    if (json.has("message")) {
+                                        message = json.getString("message");
+                                    }
+                                } catch (IOException | JSONException e) {
+                                    Debug.logDebug(e.getMessage());
+                                }
+                            }
+                            listener.onComplete(null, new RemoteException(message, 404));
+                            break;
+                        default:
+                            Debug.logErrorResponse(response);
+                            returnError(listener, response);
+                    }
+                }
+            }
+
+            @EverythingIsNonNull
+            @Override
+            public void onFailure(Call<KycUserView> call, Throwable t) {
+                returnError(listener, t);
+            }
+        });
+    }
+
     public void createUserDetails(@NonNull KycUserModel parameters, @NonNull OnCompleteListener<Map<String, Object>> listener) {
         createUserDetails(parameters, listener, false);
     }
@@ -237,6 +300,61 @@ public class KYCRepository extends BackendRepository {
             }
         });
     }
+
+    public void getWalletRequestAPI(OnCompleteListener<String> listener) {
+        getWalletRequestAPI(listener, false);
+    }
+    public void getWalletRequestAPI(OnCompleteListener<String> listener, boolean hasRecover401) {
+        service.getWalletRequestAPI(Session.getAuthorizationHeader()).enqueue(new Callback<KycUserView>() {
+            @EverythingIsNonNull
+            @Override
+            public void onResponse(Call<KycUserView> call, Response<KycUserView> response) {
+                Debug.logDebug(response.toString());
+                if (response.isSuccessful()) {
+                    KycUserView body = response.body();
+                    if (body != null) {
+                        try {
+                            String content = body.getWalletID();
+                            listener.onComplete(content, null);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                } else {
+                    switch (response.code()) {
+                        case 401:
+                            if (!hasRecover401) {
+                                authRepository.refreshToken(Session.getRefreshToken(), new OnCompleteListener<TokenResponse>() {
+                                    @Override
+                                    public void onComplete(TokenResponse value, Throwable error) {
+                                        if (error != null) {
+                                            listener.onComplete(null, new UnauthorizedException());
+                                            return;
+                                        }
+//                                        getKycDocumentTypes(listener, true);
+                                    }
+                                });
+                            } else {
+                                listener.onComplete(null, new UnauthorizedException());
+                                return;
+                            }
+                            break;
+                        default:
+                            Debug.logErrorResponse(response);
+                            returnError(listener, response);
+                    }
+                }
+            }
+
+            @EverythingIsNonNull
+            @Override
+            public void onFailure(Call<KycUserView> call, Throwable t) {
+                returnError(listener, t);
+            }
+        });
+    }
+
+
 
     public void getKycDocumentTypes(OnCompleteListener<List<Map<String, Object>>> listener) {
         getKycDocumentTypes(listener, false);

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="24dp"
+        android:orientation="vertical"
+        >
+
+        <RelativeLayout
+            android:layout_marginTop="24dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            >
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/circleBlack"
+                android:text="@string/enter_your_passphrase"
+                android:layout_centerInParent="true"
+                android:textAppearance="@style/AppText.DialogTitle" />
+
+        </RelativeLayout>
+
+        <EditText
+            android:id="@+id/passphrase"
+            style="@style/AppTextFieldDialogNoLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginTop="24dp"
+            android:gravity="center_horizontal"
+            android:inputType="textPassword"
+            android:hint="@string/dlg_pass__hint"
+            android:autofillHints="password" />
+
+        <Button
+            android:id="@+id/doOk"
+            style="@style/AppButton.Rounded"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="4dp"
+            android:text="@string/dlg_pass__action" />
+
+    </LinearLayout>
+</ScrollView>

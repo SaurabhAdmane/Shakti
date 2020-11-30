@@ -8,6 +8,10 @@ public class SessionModelRequest {
     private String passphrase;
     private String walletBytes;
 
+    public Integer includeTransactionDetails = 1;
+    public Double timestamp;
+    public Integer sessionToken;
+
     public SessionModelRequest() {}
 
     public SessionModelRequest(@Nullable String cacheBytes, @NonNull String passphrase, @NonNull String walletBytes) {

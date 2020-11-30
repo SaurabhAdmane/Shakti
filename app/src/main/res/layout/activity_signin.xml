@@ -62,6 +62,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
+                        android:text="hitesh.arora.050@gmail.com"
                         android:hint="@string/hint_email_address"
                         android:inputType="textEmailAddress" />
 
@@ -77,6 +78,7 @@
                     app:labelFontTypeface="@font/lato"
                     app:labelTextSize="11sp"
                     app:passwordToggleEnabled="true"
+
                     app:passwordToggleDrawable="@drawable/passwd_toggle_states"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -90,6 +92,7 @@
                         android:layout_height="wrap_content"
                         android:ems="10"
                         android:hint="@string/password"
+                        android:text="Hitesh@123"
                         android:imeOptions="actionDone"
                         android:inputType="textPassword" />
 

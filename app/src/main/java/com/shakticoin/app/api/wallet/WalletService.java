@@ -1,5 +1,7 @@
 package com.shakticoin.app.api.wallet;
 
+import com.shakticoin.app.api.onboard.ResponseBean;
+
 import java.util.Map;
 
 import retrofit2.Call;
@@ -13,6 +15,12 @@ public interface WalletService {
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("users/session/")
     Call<SessionModelResponse> getSession(@Header("Authorization") String authorization,
+                                          @Body SessionModelRequest parameters);
+
+
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("wallet/transaction/history/bytime")
+    Call<SessionModelResponse> getTransactionHist(@Header("Authorization") String authorization,
                                           @Body SessionModelRequest parameters);
 
     @Headers({"Content-Type: application/json", "Accept: application/json"})
@@ -34,6 +42,16 @@ public interface WalletService {
     @POST("coins/")
     Call<TransferModelResponse> transferSxeCoins(@Header("Authorization") String authorization,
                                                @Body CoinModel parameters);
+
+
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("users/session/")
+    Call<ResponseBean> createSession(@Header("Authorization") String authorization,
+                                     @Body CoinModel parameters);
+
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("users/wallet/mybalance")
+    Call<ResponseBean> getMyBalance(@Header("Authorization") String authorization, @Body CoinModel parameters);
 
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("wallet/transaction/history/bytime/")

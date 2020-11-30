@@ -1,11 +1,18 @@
 package com.shakticoin.app.api.wallet;
 
-public class CoinModel {
-    private Integer addressNumber = 0;
-    private String cacheBytes = "";
+public class
+
+CoinModel {
+    public Integer addressNumber = 0;
+    public String cacheBytes = "";
     private String messageForRecipient;
-    private Long sessionToken;
+    public String sessionToken;
     private String toAddress;
+    public String toEmail;
+
+    public String walletBytes;
+    public String passphrase;
+
     private String valueInToshi;
 
     public Integer getAddressNumber() {
@@ -32,11 +39,11 @@ public class CoinModel {
         this.messageForRecipient = messageForRecipient;
     }
 
-    public Long getSessionToken() {
+    public String getSessionToken() {
         return sessionToken;
     }
 
-    public void setSessionToken(Long sessionToken) {
+    public void setSessionToken(String sessionToken) {
         this.sessionToken = sessionToken;
     }
 
