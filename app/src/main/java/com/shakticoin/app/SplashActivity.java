@@ -4,12 +4,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.Session;
 import com.shakticoin.app.api.UnauthorizedException;
@@ -30,7 +33,14 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         super.setContentView(R.layout.activity_splash);
 
+        handleDeepLink(getIntent());
         route();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        handleDeepLink(intent);
     }
 
     private void route() {
@@ -74,5 +84,21 @@ public class SplashActivity extends AppCompatActivity {
             startActivity(new Intent(this, WelcomeTourActivity.class));
             finish();
         }
+    }
+
+    void handleDeepLink(Intent intent) {
+        FirebaseDynamicLinks.getInstance()
+                .getDynamicLink(intent)
+                .addOnSuccessListener(this, pendingDynamicLinkData -> {
+                    if (pendingDynamicLinkData != null) {
+                        Uri deepLink = pendingDynamicLinkData.getLink();
+                        String code = deepLink.getQueryParameter("code");
+                        if (!TextUtils.isEmpty(code)) {
+                            SharedPreferences prefs = getSharedPreferences(PreferenceHelper.GENERAL_PREFERENCES, Context.MODE_PRIVATE);
+                            prefs.edit().putString(PreferenceHelper.PREF_KEY_INVITATION_CODE, code).apply();
+                        }
+                    }
+                })
+                .addOnFailureListener(Debug::logException);
     }
 }

@@ -15,6 +15,8 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.firebase.dynamiclinks.DynamicLink;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.shakticoin.app.R;
 import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.bounty.BountyReferralData;
@@ -106,10 +108,23 @@ public class MyReferralsActivity extends DrawerActivity {
                 }
 
                 if ("OTHER".equals(media)) {
-                    Intent shareIntent = new Intent(Intent.ACTION_SEND);
-                    shareIntent.putExtra(Intent.EXTRA_TEXT, value.getPromotionalcodeurl());
-                    shareIntent.setType("text/plain");
-                    startActivity(Intent.createChooser(shareIntent, null));
+                    String siteUrl = value.getPromotionalcodeurl();
+                    FirebaseDynamicLinks.getInstance().createDynamicLink()
+                            .setLink(Uri.parse(siteUrl))
+                            .setDomainUriPrefix("https://shakticoin.page.link/")
+                            .setAndroidParameters(
+                                    new DynamicLink.AndroidParameters.Builder()
+                                            .setMinimumVersion(34)
+                                            .build()
+                            )
+                            .buildShortDynamicLink()
+                            .addOnSuccessListener(activity, shortDynamicLink -> {
+                                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                                shareIntent.putExtra(Intent.EXTRA_TEXT, shortDynamicLink.getShortLink().toString());
+                                shareIntent.setType("text/plain");
+                                startActivity(Intent.createChooser(shareIntent, null));
+                            })
+                            .addOnFailureListener(Debug::logException);
                 } else {
                     ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                     if (clipboardManager != null) {

@@ -33,6 +33,7 @@ android {
 }
 
 dependencies {
+    implementation 'com.google.firebase:firebase-invites:17.0.0'
     def retrofit_version = "2.6.1"
 
     implementation fileTree(include: ['*.jar'], dir: 'libs')
@@ -60,6 +61,8 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'com.google.android.material:material:1.0.0'
+    implementation 'com.google.firebase:firebase-dynamic-links-ktx:19.1.1'
+
     implementation 'com.hbb20:ccp:1.8.1'
 }
 
