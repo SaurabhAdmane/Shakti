@@ -25,7 +25,5 @@ object BaseUrl {
 
 
     const val BIZVAULT_SERVICE_BASE_URL = "https://bizvault${ENV_CODE}.shakticoin.com/bizvault/api/v1/bizvaults/"
-    const val REFERRAL_SERVICE_BASE_URL = "https://referral${ENV_CODE}.shakticoin.com/bountyservice/api/v1/"
-
 
 }

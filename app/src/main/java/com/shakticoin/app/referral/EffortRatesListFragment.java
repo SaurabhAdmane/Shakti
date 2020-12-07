@@ -19,14 +19,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.shakticoin.app.R;
-import com.shakticoin.app.api.OnCompleteListener;
 import com.shakticoin.app.api.bounty.Referral;
-import com.shakticoin.app.api.referral.ReferralRepository;
 import com.shakticoin.app.databinding.FragmentEffortListBinding;
-import com.shakticoin.app.util.Debug;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class EffortRatesListFragment extends Fragment {
     private FragmentEffortListBinding binding;
@@ -44,23 +40,23 @@ public class EffortRatesListFragment extends Fragment {
         adapter = new LeadListAdapter();
         binding.list.setAdapter(adapter);
 
-        ReferralRepository repository = new ReferralRepository();
-        repository.setLifecycleOwner(getViewLifecycleOwner());
-        repository.getReferrals(null, new OnCompleteListener<List<Referral>>() {
-            @Override
-            public void onComplete(List<Referral> referrals, Throwable error) {
-                if (error != null) {
-                    Debug.logException(error);
-                    return;
-                }
-
-                if (referrals != null && referrals.size() > 0) {
-                    for (Referral referral : referrals) {
-                        adapter.add(referral);
-                    }
-                }
-            }
-        });
+//        ReferralRepository repository = new ReferralRepository();
+//        repository.setLifecycleOwner(getViewLifecycleOwner());
+//        repository.getReferrals(null, new OnCompleteListener<List<Referral>>() {
+//            @Override
+//            public void onComplete(List<Referral> referrals, Throwable error) {
+//                if (error != null) {
+//                    Debug.logException(error);
+//                    return;
+//                }
+//
+//                if (referrals != null && referrals.size() > 0) {
+//                    for (Referral referral : referrals) {
+//                        adapter.add(referral);
+//                    }
+//                }
+//            }
+//        });
         return v;
     }
 

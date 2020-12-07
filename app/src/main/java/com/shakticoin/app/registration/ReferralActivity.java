@@ -72,11 +72,11 @@ public class ReferralActivity extends AppCompatActivity {
         binding.contactMechSelector.setOnCheckedChangeListener((compoundButton, isChecked) -> {
             if (isChecked) {
                 binding.emailAddressLayout.setVisibility(View.GONE);
-                binding.countryCodesLayout.setVisibility(View.VISIBLE);
+                binding.countryPicker.setVisibility(View.VISIBLE);
                 binding.mobileNumberLayout.setVisibility(View.VISIBLE);
             } else {
                 binding.emailAddressLayout.setVisibility(View.VISIBLE);
-                binding.countryCodesLayout.setVisibility(View.GONE);
+                binding.countryPicker.setVisibility(View.GONE);
                 binding.mobileNumberLayout.setVisibility(View.GONE);
             }
         });
@@ -138,7 +138,7 @@ public class ReferralActivity extends AppCompatActivity {
             emailOrMobile = binding.emailAddress.getText().toString();
         }
         if (TextUtils.isEmpty(viewModel.getPromoCode().getValue())) {
-            binding.promoCodeLayout.setError(getString(R.string.ref_promocode_required));
+            binding.promotionalCodes.setError(getString(R.string.ref_promocode_required));
             validationSuccessful = false;
         }
         if (!validationSuccessful) return;

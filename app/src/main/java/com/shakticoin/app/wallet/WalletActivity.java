@@ -22,12 +22,13 @@ import com.shakticoin.app.api.RemoteException;
 import com.shakticoin.app.api.Session;
 import com.shakticoin.app.api.UnauthorizedException;
 import com.shakticoin.app.api.bizvault.BizvaultRepository;
+import com.shakticoin.app.api.bounty.BountyReferralData;
+import com.shakticoin.app.api.bounty.BountyRepository;
 import com.shakticoin.app.api.kyc.KYCRepository;
 import com.shakticoin.app.api.license.LicenseRepository;
 import com.shakticoin.app.api.license.NodeOperatorModel;
 import com.shakticoin.app.api.license.SubscribedLicenseModel;
 import com.shakticoin.app.api.onboard.OnboardRepository;
-import com.shakticoin.app.api.referrals.BountyRepository;
 import com.shakticoin.app.api.selfId.SelfRepository;
 import com.shakticoin.app.api.wallet.SessionException;
 import com.shakticoin.app.api.wallet.WalletRepository;
@@ -178,9 +179,9 @@ public class WalletActivity extends DrawerActivity {
 
 
     private void getBountyStatus() {
-        bountyRepository.bountyStatus(new OnCompleteListener<String>() {
+        bountyRepository.getBounties(new OnCompleteListener<BountyReferralData>() {
             @Override
-            public void onComplete(String walletBytes, Throwable error) {
+            public void onComplete(BountyReferralData referralData, Throwable error) {
 //                if (error != null) {
 //                    Toast.makeText(WalletActivity.this, Debug.getFailureMsg(WalletActivity.this, error), Toast.LENGTH_LONG).show();
 //                    if (error instanceof RemoteException && ((RemoteException) error).getResponseCode() == 201) {
@@ -188,27 +189,28 @@ public class WalletActivity extends DrawerActivity {
 //                    }
 //                    return;
 //                }
-if(walletBytes.equals("-1")) {
-    bountyStatus = false;
-    binding.lockedBlackRect21.setVisibility(View.VISIBLE);
-    binding.icon31.setVisibility(View.VISIBLE);
-    binding.label51.setVisibility(View.VISIBLE);
-    binding.doRefer1.setVisibility(View.VISIBLE);
+                String walletBytes = Session.getWalletBytes();
+                if(walletBytes.equals("-1")) {
+                    bountyStatus = false;
+                    binding.lockedBlackRect21.setVisibility(View.VISIBLE);
+                    binding.icon31.setVisibility(View.VISIBLE);
+                    binding.label51.setVisibility(View.VISIBLE);
+                    binding.doRefer1.setVisibility(View.VISIBLE);
 
-    binding.label4.setVisibility(View.GONE);
-    binding.bonusBalance.setVisibility(View.GONE);
+                    binding.label4.setVisibility(View.GONE);
+                    binding.bonusBalance.setVisibility(View.GONE);
 
-}else {
-    bountyStatus = true;
-    binding.lockedBlackRect21.setVisibility(View.GONE);
-    binding.icon31.setVisibility(View.GONE);
-    binding.label51.setVisibility(View.GONE);
-    binding.doRefer1.setVisibility(View.GONE);
+                }else {
+                    bountyStatus = true;
+                    binding.lockedBlackRect21.setVisibility(View.GONE);
+                    binding.icon31.setVisibility(View.GONE);
+                    binding.label51.setVisibility(View.GONE);
+                    binding.doRefer1.setVisibility(View.GONE);
 
-    binding.label4.setVisibility(View.VISIBLE);
-    binding.bonusBalance.setVisibility(View.VISIBLE);
-    binding.bonusBalance.setText("SXE "+walletBytes);
-}
+                    binding.label4.setVisibility(View.VISIBLE);
+                    binding.bonusBalance.setVisibility(View.VISIBLE);
+                    binding.bonusBalance.setText("SXE "+walletBytes);
+                }
             }
         });
     }

@@ -179,8 +179,14 @@ class BountyRepository : BackendRepository() {
         call.enqueue(object : Callback<BountyReferralViewModel?> {
             override fun onResponse(call: Call<BountyReferralViewModel?>, response: Response<BountyReferralViewModel?>) {
                 Debug.logDebug(response.toString())
+                Session.setWalletSessionToken(null);
                 if (response.isSuccessful) {
-                    listener.onComplete(response.body()?.data, null)
+                    val results : BountyReferralViewModel? = response.body()
+                    if (results != null) {
+                        val message = results.message
+                        if (message != null) Debug.logDebug(message);
+                        listener.onComplete(results.data, null);
+                    } else listener.onComplete(null, IllegalStateException());
                 } else {
                     when(response.code()) {
                         401 -> {
