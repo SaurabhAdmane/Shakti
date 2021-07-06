@@ -8,7 +8,8 @@ object BaseUrl {
     private const val ENV_CODE = "-stg"
 
     const val IAM_BASE_URL = "https://iam${ENV_CODE}.shakticoin.com/oxauth/restv1/"
-    const val WALLETSERVICE_BASE_URL = "https://walletservice${ENV_CODE}.shakticoin.com/walletservice/api/v1/"
+    //const val WALLETSERVICE_BASE_URL = "https://walletservice${ENV_CODE}.shakticoin.com/walletservice/api/v1/"
+    const val WALLETSERVICE_BASE_URL = "https://walletservice-dev.shakticoin.com/wallet/api/v2/"
     const val LICENSESERVICE_BASE_URL = "https://licenseservice${ENV_CODE}.shakticoin.com/license-service/api/v1/"
     const val KYC_USER_SERVICE_BASE_URL = "https://kycuser${ENV_CODE}.shakticoin.com/kyc-user-service/api/v1/"
     const val SELF_ID_SERVICE_BASE_URL = "https://selfyid${ENV_CODE}.shakticoin.com/selfyid-service/api/v1/"
