@@ -50,7 +50,6 @@ import static com.shakticoin.app.ShaktiApplication.getContext;
 public class WalletActivity extends DrawerActivity {
     private ActivityWalletBinding binding;
     private WalletModel viewModel;
-
     private WalletRepository walletRepository;
     private KYCRepository kycRepository;
     private SelfRepository selfRepository;
