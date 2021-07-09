@@ -20,6 +20,8 @@ interface LicenseService {
             @Header("Authorization") authorization: String?,
             @Path("country") country: String?,
             @Query("province") province: String?,
+           /* @Query("countryCode") countryCode: String?,
+            @Query("pageNo")  pageNo: Int?,*/
             @Query("city") city: String?): Call<ResponseBody?>?
 
     @GET("node-operator")
