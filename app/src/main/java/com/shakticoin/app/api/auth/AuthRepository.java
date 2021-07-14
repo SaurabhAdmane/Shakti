@@ -22,7 +22,7 @@ public class AuthRepository extends BackendRepository {
     private static final String IAM_STG = "Basic MTY0MjA3N2QtM2ExYi00MTBlLTk5N2UtMDQxYTg4ODhkMDJhOnFLY0RKdyZoNEEzSQ==";
     private static final String IAM_QA = "Basic NmFmYzM0MjEtMWRjNC00MjE3LWE3ODYtOGE0MTNkZGUzMmQ2OmdpQVpxSUVlaTdzOFBsaEtBcmdBc0FUcllicFladGw3cjd1U1pnMDk=";
     private static final String IAM_PROD = "Basic YmY2NjE3OGUtM2YwNi00N2QwLWE4YzUtYjEyYmRkMDcyZTZhOlhwQW95a3E2T2V1dTVSdHBIYzE3YlhqYWFBU05CNlVOVGdkM0hQd08=";
-    private static final String IAM_AUTH_HEADER = IAM_STG;
+    private static final String IAM_AUTH_HEADER = "Basic ODMxZmFmNDItMzk4Zi00ODBlLTkzN2ItZjgyMTYyZGUwMDRlOmdhQm1nQzJUWVVDTEtKTUVaTFp5c0lTMjZjaW9TMVdEcXc0WGNMRWg=";
 
     public AuthRepository() {
         Retrofit retrofit = new Retrofit.Builder()

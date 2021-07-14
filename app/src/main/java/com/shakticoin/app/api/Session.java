@@ -26,7 +26,7 @@ public class Session {
     private static String shaktiId;
     private static Long walletSessionToken;
     private static String walletPassphrase;
-    private static String walletBytes;
+    private static String walletByte = "-1";
 
     private static boolean networkConnected = true;
 
@@ -124,11 +124,11 @@ public class Session {
     }
 
     public static String getWalletBytes() {
-        return walletBytes;
+        return walletByte;
     }
 
     public static synchronized void setWalletBytes(String walletBytes) {
-        walletBytes = walletBytes;
+        walletByte = walletBytes;
     }
 
     public static synchronized void clean() {
@@ -137,7 +137,7 @@ public class Session {
         shaktiId            = null;
         walletSessionToken  = null;
         walletPassphrase    = null;
-        walletBytes    = null;
+        walletByte    = null;
         Context context = ShaktiApplication.getContext();
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

@@ -7,7 +7,6 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 
 public interface BizvalutService {
-    @GET("verify/bizvaultid/")
+    @GET("bizvaults/verify/bizvaultid")
     Call<ResponseVault> bizvaultStatus(@Header("Authorization") String authorization);
-
 }

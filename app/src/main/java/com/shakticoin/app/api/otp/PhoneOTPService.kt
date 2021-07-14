@@ -17,15 +17,18 @@ interface PhoneOTPService {
 
     @Headers("Content-Type: application/json", "Accept: application/json")
     @POST("registration/request")
-    fun registrationRequest(@Body parameters : MobileRegistrationRequest) : Call<MainResponseBean?>
+    fun registrationRequest(@Header("Authorization") authorization: String?,
+                            @Body parameters : MobileRegistrationRequest) : Call<MainResponseBean?>
 
     @Headers("Content-Type: application/json", "Accept: application/json")
-    @POST("registration/confirm-registration")
-    fun confirmRegistration(@Body parameters : ConfirmRegistrationRequest) : Call<MainResponseBean?>
+    @POST("registration/confirm")
+    fun confirmRegistration(@Header("Authorization") authorization: String?,
+                            @Body parameters : ConfirmRegistrationRequest) : Call<MainResponseBean?>
 
     @Headers("Content-Type: application/json", "Accept: application/json")
-    @POST("inquiry/sms")
-    fun inquiryPhoneNumber(@Body parameters: MobileRegistrationRequest) : Call<MainResponseBean?>
+    @POST("inquiry/mobile")
+    fun inquiryPhoneNumber(@Header("Authorization") authorization: String?,
+                           @Body parameters: MobileRegistrationRequest) : Call<MainResponseBean?>
 
     @Headers("Accept: application/json")
     @GET("mobile/country-codes")
