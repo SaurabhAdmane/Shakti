@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 
+import com.shakticoin.app.BuildConfig;
 import com.shakticoin.app.R;
 import com.shakticoin.app.ShaktiApplication;
 import com.shakticoin.app.api.BackendRepository;
@@ -32,6 +33,7 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -40,13 +42,18 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.internal.EverythingIsNonNull;
 
 public class KYCRepository extends BackendRepository {
-    private KYCService service;
-    private AuthRepository authRepository;
+    private final KYCService service;
+    private final AuthRepository authRepository;
+    HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
 
     public KYCRepository() {
         OkHttpClient client = new OkHttpClient.Builder()
                 .readTimeout(60, TimeUnit.SECONDS)
                 .connectTimeout(60, TimeUnit.SECONDS)
+                .addInterceptor(BuildConfig.DEBUG ? httpLoggingInterceptor.setLevel(
+                        HttpLoggingInterceptor.Level.BODY
+                        ) : httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.NONE)
+                )
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -62,6 +69,7 @@ public class KYCRepository extends BackendRepository {
     public void getUserDetails(OnCompleteListener<KycUserView> listener) {
         getUserDetails(listener, false);
     }
+
     private void getUserDetails(OnCompleteListener<KycUserView> listener, boolean hasRecover401) {
         service.getUserDetails(Session.getAuthorizationHeader()).enqueue(new Callback<KycUserView>() {
             @EverythingIsNonNull
@@ -125,6 +133,7 @@ public class KYCRepository extends BackendRepository {
     public void getAllStatus(OnCompleteListener<KycUserView> listener) {
         getAllStatus(listener, false);
     }
+
     private void getAllStatus(OnCompleteListener<KycUserView> listener, boolean hasRecover401) {
         service.getAllStatus(Session.getAuthorizationHeader()).enqueue(new Callback<KycUserView>() {
             @EverythingIsNonNull
@@ -187,6 +196,7 @@ public class KYCRepository extends BackendRepository {
     public void createUserDetails(@NonNull KycUserModel parameters, @NonNull OnCompleteListener<Map<String, Object>> listener) {
         createUserDetails(parameters, listener, false);
     }
+
     public void createUserDetails(@NonNull KycUserModel parameters, @NonNull OnCompleteListener<Map<String, Object>> listener, boolean hasRecover401) {
         service.createUserDetails(Session.getAuthorizationHeader(), parameters).enqueue(new Callback<Map<String, Object>>() {
             @EverythingIsNonNull
@@ -245,6 +255,7 @@ public class KYCRepository extends BackendRepository {
     public void updateUserDetails(KycUserModel parameters, OnCompleteListener<Map<String, Object>> listener) {
         updateUserDetails(parameters, listener, false);
     }
+
     public void updateUserDetails(KycUserModel parameters, OnCompleteListener<Map<String, Object>> listener, boolean hasRecover401) {
         service.updateUserDetails(Session.getAuthorizationHeader(), parameters).enqueue(new Callback<Map<String, Object>>() {
             @EverythingIsNonNull
@@ -304,6 +315,7 @@ public class KYCRepository extends BackendRepository {
     public void getWalletRequestAPI(OnCompleteListener<String> listener) {
         getWalletRequestAPI(listener, false);
     }
+
     public void getWalletRequestAPI(OnCompleteListener<String> listener, boolean hasRecover401) {
         service.getWalletRequestAPI(Session.getAuthorizationHeader()).enqueue(new Callback<KycUserView>() {
             @EverythingIsNonNull
@@ -355,10 +367,10 @@ public class KYCRepository extends BackendRepository {
     }
 
 
-
     public void getKycDocumentTypes(OnCompleteListener<List<Map<String, Object>>> listener) {
         getKycDocumentTypes(listener, false);
     }
+
     public void getKycDocumentTypes(OnCompleteListener<List<Map<String, Object>>> listener, boolean hasRecover401) {
         service.getDocumentTypes(Session.getAuthorizationHeader()).enqueue(new Callback<ResponseBody>() {
             @EverythingIsNonNull
@@ -466,6 +478,7 @@ public class KYCRepository extends BackendRepository {
     public void uploadDocument(List<MultipartBody.Part> files, OnCompleteListener<Void> listener) {
         uploadDocument(files, listener, false);
     }
+
     public void uploadDocument(List<MultipartBody.Part> files, OnCompleteListener<Void> listener, boolean hasRecover401) {
         service.uploadDocuments(Session.getAuthorizationHeader(), files).enqueue(new Callback<Map<String, Object>>() {
             @EverythingIsNonNull
@@ -520,6 +533,7 @@ public class KYCRepository extends BackendRepository {
     public void subscription(@NonNull OnCompleteListener<String> listener) {
         subscription(listener, false);
     }
+
     private void subscription(@NonNull OnCompleteListener<String> listener, boolean hasRecover401) {
         Call<CheckoutResponse> call = service.subscription(Session.getAuthorizationHeader());
         call.enqueue(new Callback<CheckoutResponse>() {

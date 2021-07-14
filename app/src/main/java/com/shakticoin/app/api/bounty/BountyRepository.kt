@@ -1,5 +1,6 @@
 package com.shakticoin.app.api.bounty
 
+import com.shakticoin.app.BuildConfig
 import com.shakticoin.app.R
 import com.shakticoin.app.ShaktiApplication
 import com.shakticoin.app.api.*
@@ -7,6 +8,7 @@ import com.shakticoin.app.api.auth.AuthRepository
 import com.shakticoin.app.api.auth.TokenResponse
 import com.shakticoin.app.util.Debug
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -15,9 +17,14 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 class BountyRepository : BackendRepository() {
+    var httpLoggingInterceptor = HttpLoggingInterceptor()
     private val http = OkHttpClient.Builder()
             .readTimeout(30, TimeUnit.SECONDS)
-            .connectTimeout(30, TimeUnit.SECONDS)
+            .connectTimeout(30, TimeUnit.SECONDS).addInterceptor(
+            if (BuildConfig.DEBUG) httpLoggingInterceptor.setLevel(
+                HttpLoggingInterceptor.Level.BODY
+            ) else httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.NONE)
+        )
             .build()
 
     private val service : BountyService = Retrofit.Builder()

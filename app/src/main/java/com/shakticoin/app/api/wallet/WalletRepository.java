@@ -12,6 +12,7 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKeys;
 
+import com.shakticoin.app.BuildConfig;
 import com.shakticoin.app.R;
 import com.shakticoin.app.ShaktiApplication;
 import com.shakticoin.app.api.BackendRepository;
@@ -35,8 +36,11 @@ import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -45,13 +49,23 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.internal.EverythingIsNonNull;
 
 public class WalletRepository extends BackendRepository {
-    private WalletService service;
-    private AuthRepository authRepository;
+    HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
+    private final WalletService service;
+    private final AuthRepository authRepository;
 
     public WalletRepository() {
+        OkHttpClient client = new OkHttpClient.Builder()
+                .readTimeout(60, TimeUnit.SECONDS)
+                .connectTimeout(60, TimeUnit.SECONDS)
+                .addInterceptor(BuildConfig.DEBUG ? httpLoggingInterceptor.setLevel(
+                        HttpLoggingInterceptor.Level.BODY
+                        ) : httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.NONE)
+                )
+                .build();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BaseUrl.WALLETSERVICE_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
                 .build();
         service = retrofit.create(WalletService.class);
         authRepository = new AuthRepository();
@@ -61,6 +75,7 @@ public class WalletRepository extends BackendRepository {
      * Before a user enters the wallet page we must have this wallet. The wallet bytes (that is
      * a wallet ID) must be stored in encrypted preferences (for now, better to get it in user's
      * information).
+     *
      * @return
      */
     public String getExistingWallet() {
@@ -96,6 +111,7 @@ public class WalletRepository extends BackendRepository {
     /**
      * Store wallet ID locally for future use but we must save it in the user profile when API
      * will allow this.
+     *
      * @param walletBytes A wallet ID
      */
     public void storeWallet(@NonNull String walletBytes) {
@@ -126,6 +142,7 @@ public class WalletRepository extends BackendRepository {
     private void getWalletSession(@NonNull OnCompleteListener<Long> listener) {
         getWalletSession(listener, false);
     }
+
     private void getWalletSession(@NonNull OnCompleteListener<Long> listener, boolean hasRecover401) {
         SessionModelRequest parameters =
                 new SessionModelRequest(null, Session.getWalletPassphrase(), getExistingWallet());
@@ -158,7 +175,8 @@ public class WalletRepository extends BackendRepository {
                             listener.onComplete(null, new UnauthorizedException());
                             return;
                         }
-                    } if (response.code() == 500) {
+                    }
+                    if (response.code() == 500) {
                         // this is a general service error but most probably it means incorrect passphrase
                         String errorMsg = response.message();
                         ResponseBody errorBody = response.errorBody();
@@ -167,7 +185,8 @@ public class WalletRepository extends BackendRepository {
                                 String errorBodyContent = errorBody.string();
                                 Debug.logDebug(errorBodyContent);
                                 JSONObject errorJson = new JSONObject(errorBodyContent);
-                                if (errorJson.has("message")) errorMsg = errorJson.getString("message");
+                                if (errorJson.has("message"))
+                                    errorMsg = errorJson.getString("message");
                             } catch (JSONException | IOException e) {
                                 Debug.logException(e);
                                 errorMsg = ShaktiApplication.getContext().getString(R.string.err_unexpected);
@@ -191,15 +210,14 @@ public class WalletRepository extends BackendRepository {
     }
 
 
-
-
     public void getTransactionHistory(String sessionToken, OnCompleteListener<SessionModelResponse> listener) {
         getTransactionHistory(sessionToken, listener, false);
     }
-    private void getTransactionHistory(String sessionToken,  OnCompleteListener<SessionModelResponse> listener, boolean hasRecover401) {
+
+    private void getTransactionHistory(String sessionToken, OnCompleteListener<SessionModelResponse> listener, boolean hasRecover401) {
         SessionModelRequest parameters = new SessionModelRequest();
         parameters.includeTransactionDetails = 1;
-        parameters.timestamp = Double.parseDouble(""+(System.currentTimeMillis()/1000));
+        parameters.timestamp = Double.parseDouble("" + (System.currentTimeMillis() / 1000));
         parameters.sessionToken = Integer.parseInt(sessionToken);
 
 
@@ -231,7 +249,8 @@ public class WalletRepository extends BackendRepository {
                             listener.onComplete(null, new UnauthorizedException());
                             return;
                         }
-                    } if (response.code() == 500) {
+                    }
+                    if (response.code() == 500) {
                         // this is a general service error but most probably it means incorrect passphrase
                         String errorMsg = response.message();
                         ResponseBody errorBody = response.errorBody();
@@ -240,7 +259,8 @@ public class WalletRepository extends BackendRepository {
                                 String errorBodyContent = errorBody.string();
                                 Debug.logDebug(errorBodyContent);
                                 JSONObject errorJson = new JSONObject(errorBodyContent);
-                                if (errorJson.has("message")) errorMsg = errorJson.getString("message");
+                                if (errorJson.has("message"))
+                                    errorMsg = errorJson.getString("message");
                             } catch (JSONException | IOException e) {
                                 Debug.logException(e);
                                 errorMsg = ShaktiApplication.getContext().getString(R.string.err_unexpected);
@@ -266,12 +286,14 @@ public class WalletRepository extends BackendRepository {
     /**
      * Creates a new wallet and return wallet bytes as a string. Wallet bytes must be stored and
      * used in parameters of other calls.
+     *
      * @param passphrase The wallet password. Basically, it's encryption passphrase that is not
      *                   depends on user's account password.
      */
     public void createWallet(@Nullable String passphrase, @NonNull OnCompleteListener<String> listener) {
         createWallet(passphrase, listener, false);
     }
+
     public void createWallet(@Nullable String passphrase, @NonNull OnCompleteListener<String> listener, boolean hasRecover401) {
         WalletModelRequest parameters = new WalletModelRequest(null, passphrase);
         service.createWallet(Session.getAuthorizationHeader(), parameters).enqueue(new Callback<Map<String, String>>() {
@@ -321,6 +343,7 @@ public class WalletRepository extends BackendRepository {
     public void getAddress(@NonNull OnCompleteListener<String> listener) {
         getAddress(listener, false);
     }
+
     public void getAddress(@NonNull OnCompleteListener<String> listener, boolean hasRecover401) {
         Long sessionToken = Session.getWalletSessionToken();
         if (sessionToken == null) {
@@ -388,6 +411,7 @@ public class WalletRepository extends BackendRepository {
     public void getBalance(@NonNull OnCompleteListener<BigDecimal> listener) {
         getBalance(listener, false);
     }
+
     public void getBalance(@NonNull OnCompleteListener<BigDecimal> listener, boolean hasRecover401) {
         Long sessionToken = Session.getWalletSessionToken();
         if (sessionToken == null) {
@@ -417,7 +441,7 @@ public class WalletRepository extends BackendRepository {
                     if (results != null) {
                         String message = results.getMessage();
                         if (message != null) Debug.logDebug(message);
-                        String walletBalance = (String) results.getWalletBalance();
+                        String walletBalance = results.getWalletBalance();
                         BigDecimal balance = BigDecimal.ZERO;
                         if (!TextUtils.isEmpty(walletBalance) && TextUtils.isDigitsOnly(walletBalance)) {
                             balance = new BigDecimal(walletBalance);
@@ -459,6 +483,7 @@ public class WalletRepository extends BackendRepository {
     public void transfer(String sessionToken, @NonNull String address, @NonNull Long amount, @Nullable String message1, @NonNull OnCompleteListener<TransferModelResponse> listener) {
         transfer(sessionToken, address, amount, message1, listener, false);
     }
+
     public void transfer(String sessionToken, @NonNull String address, @NonNull Long amount, @Nullable String message1, @NonNull OnCompleteListener<TransferModelResponse> listener, boolean hasRecover401) {
 //        Long sessionToken = Session.getWalletSessionToken();
 //        if (sessionToken == null) {
@@ -567,6 +592,7 @@ public class WalletRepository extends BackendRepository {
     public void createSession(@NonNull String passphrase, @NonNull String cacheBytes, @Nullable String walletBytes, @NonNull OnCompleteListener<String> listener) {
         createSession(passphrase, cacheBytes, walletBytes, listener, false);
     }
+
     public void createSession(@NonNull String passphrase, @NonNull String cacheBytes, @Nullable String walletBytes, @NonNull OnCompleteListener<String> listener, boolean hasRecover401) {
 
         CoinModel parameters = new CoinModel();
@@ -623,6 +649,7 @@ public class WalletRepository extends BackendRepository {
     public void getMyBalance(@NonNull Integer address, @NonNull String cacheBytes, @Nullable String sessionToken, @NonNull OnCompleteListener<String> listener) {
         getMyBalance(address, cacheBytes, sessionToken, listener, false);
     }
+
     public void getMyBalance(@NonNull Integer address, @NonNull String cacheBytes, @Nullable String sessionToken, @NonNull OnCompleteListener<String> listener, boolean hasRecover401) {
 
         CoinModel parameters = new CoinModel();
@@ -677,7 +704,6 @@ public class WalletRepository extends BackendRepository {
     }
 
 
-
     /**
      * Returns list of transactions on an account
      * // TODO: we should request transactions for a particular wallet but for now it's not clear
@@ -707,7 +733,6 @@ public class WalletRepository extends BackendRepository {
         super.setLifecycleOwner(lifecycleOwner);
         authRepository.setLifecycleOwner(lifecycleOwner);
     }
-
 
 
 }

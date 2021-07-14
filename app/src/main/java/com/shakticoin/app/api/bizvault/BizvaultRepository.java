@@ -3,6 +3,7 @@ package com.shakticoin.app.api.bizvault;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 
+import com.shakticoin.app.BuildConfig;
 import com.shakticoin.app.R;
 import com.shakticoin.app.ShaktiApplication;
 import com.shakticoin.app.api.BackendRepository;
@@ -16,6 +17,10 @@ import com.shakticoin.app.api.auth.TokenResponse;
 import com.shakticoin.app.api.onboard.ResponseVault;
 import com.shakticoin.app.util.Debug;
 
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -24,22 +29,34 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.internal.EverythingIsNonNull;
 
 public class BizvaultRepository extends BackendRepository {
-    private BizvalutService service;
-    private AuthRepository authRepository;
+    private final BizvalutService service;
+    private final AuthRepository authRepository;
+    HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
 
     public BizvaultRepository() {
+        OkHttpClient client = new OkHttpClient.Builder()
+                .readTimeout(60, TimeUnit.SECONDS)
+                .connectTimeout(60, TimeUnit.SECONDS)
+                .addInterceptor(BuildConfig.DEBUG ? httpLoggingInterceptor.setLevel(
+                        HttpLoggingInterceptor.Level.BODY
+                        ) : httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.NONE)
+                )
+                .build();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BaseUrl.BIZVAULT_SERVICE_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
                 .build();
+
         service = retrofit.create(BizvalutService.class);
         authRepository = new AuthRepository();
     }
 
-//    https://bizvault-stg.shakticoin.com/bizvault/api/v1/bizvaults/verify/bizvaultid
+    //    https://bizvault-stg.shakticoin.com/bizvault/api/v1/bizvaults/verify/bizvaultid
     public void bizvaultStatus(@NonNull OnCompleteListener<Boolean> listener) {
         bizvaultStatus(listener, false);
     }
+
     public void bizvaultStatus(@NonNull OnCompleteListener<Boolean> listener, boolean hasRecover401) {
 
         service.bizvaultStatus(Session.getAuthorizationHeader()).enqueue(new Callback<ResponseVault>() {
@@ -94,7 +111,6 @@ public class BizvaultRepository extends BackendRepository {
         super.setLifecycleOwner(lifecycleOwner);
         authRepository.setLifecycleOwner(lifecycleOwner);
     }
-
 
 
 }
