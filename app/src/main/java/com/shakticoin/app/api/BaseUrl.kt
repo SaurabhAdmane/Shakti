@@ -51,7 +51,7 @@ object BaseUrl {
     const val BIZVAULT_SERVICE_BASE_URL =
         "https://bizvault${ENV_CODE}.shakticoin.com/bizvault/api/v2/"
     const val KYC_USER_SERVICE_BASE_URL =
-        "https://kycuserservice${ENV_CODE}.shakticoin.com/kyc-user/api/v2"
+        "https://kycuserservice${ENV_CODE}.shakticoin.com/kyc-user/api/v2/"
     const val LICENSESERVICE_BASE_URL =
         "https://licenseservice${ENV_CODE}.shakticoin.com/license/api/v2/"
 }
