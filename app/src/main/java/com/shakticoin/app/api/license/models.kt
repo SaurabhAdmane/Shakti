@@ -1,7 +1,9 @@
 package com.shakticoin.app.api.license
 
+import android.os.Build
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.annotation.RequiresApi
 
 val MINING_PLANS: List<String> = listOf("M101", "T100", "T200", "T300", "T400")
 
@@ -22,18 +24,34 @@ class NodeOperatorUpdateModel {
 }
 
 class NodeOperatorModel {
-    var nodeID: String? = null
+    var ipAddress: String? = null
+    var port: String? = null
+    var nodeName: String? = null
+    var publicKey: String? = null
     var walletID: String? = null
     var bizVaultID: String? = null
+    var email: String? = null
+    var mobileNumber: String? = null
+    var guest: Boolean = false
+    var nodeID: String? = null
     var vanityID1: String? = null
     var vanityID2: String? = null
     var brandID: String? = null
-    var email: String? = null
-    var mobileNumber: String? = null
     var address: AddressModel? = null
+    var activeLicense: ActiveLicenseModel? = null
     var subscribedLicenses: List<SubscribedLicenseModel>? = null
+    var occupiedLicenses: List<SubscribedLicenseModel>? = null
 }
 
+class ActiveLicenseModel{
+    var subscriptionId:String? = null
+    var planCode:String? = null
+    var action:String? = null
+    var active:Boolean = false
+    var paymentStatus:String? = null
+    var dateOfPurchase:Long? = 0
+    var licensePurchasedEmail:String? = null
+}
 class CheckoutModel {
     var planCode: String? = null
     var address: AddressModel? = null
@@ -66,18 +84,23 @@ class CheckoutPlanRequest {
 class SubscribedLicenseModel() : Parcelable {
     var planCode: String? = null
     var subscriptionId: String? = null
+    var active: Boolean = false
     /** Value is one of ACTION_ constants */
     var action: String? = null
     /** Value is on of PMNT_ constants */
     var paymentStatus: String? = null
     var dateOfPurchase: Long? = null
+    var consumedEmail: String? = null
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this() {
         planCode = parcel.readString()
         subscriptionId = parcel.readString()
+        active = parcel.readBoolean()
         action = parcel.readString()
         paymentStatus = parcel.readString()
         dateOfPurchase = parcel.readValue(Long::class.java.classLoader) as? Long
+        consumedEmail = parcel.readString()
     }
 
     val planType : String? get() = planCode?.substring(0..3);
@@ -86,12 +109,15 @@ class SubscribedLicenseModel() : Parcelable {
         return 0;
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(planCode)
         parcel.writeString(subscriptionId)
+        parcel.writeBoolean(active)
         parcel.writeString(action)
         parcel.writeString(paymentStatus)
         parcel.writeValue(dateOfPurchase)
+        parcel.writeString(consumedEmail)
     }
 
     companion object CREATOR : Parcelable.Creator<SubscribedLicenseModel> {
@@ -107,6 +133,7 @@ class SubscribedLicenseModel() : Parcelable {
         const val PMNT_SUCCESS      = "SUCCESS"
         const val PMNT_FAILED       = "FAILED"
 
+        @RequiresApi(Build.VERSION_CODES.Q)
         override fun createFromParcel(parcel: Parcel): SubscribedLicenseModel {
             return SubscribedLicenseModel(parcel)
         }

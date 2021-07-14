@@ -19,49 +19,61 @@ import java.util.concurrent.TimeUnit
 class BountyRepository : BackendRepository() {
     var httpLoggingInterceptor = HttpLoggingInterceptor()
     private val http = OkHttpClient.Builder()
-            .readTimeout(30, TimeUnit.SECONDS)
-            .connectTimeout(30, TimeUnit.SECONDS).addInterceptor(
+        .readTimeout(30, TimeUnit.SECONDS)
+        .connectTimeout(30, TimeUnit.SECONDS).addInterceptor(
             if (BuildConfig.DEBUG) httpLoggingInterceptor.setLevel(
                 HttpLoggingInterceptor.Level.BODY
             ) else httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.NONE)
         )
-            .build()
+        .build()
 
-    private val service : BountyService = Retrofit.Builder()
-            .baseUrl(BaseUrl.BOUNTY_SERVICE_BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(http)
-            .build()
-            .create(BountyService::class.java)
+    private val service: BountyService = Retrofit.Builder()
+        .baseUrl(BaseUrl.BOUNTY_SERVICE_BASE_URL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .client(http)
+        .build()
+        .create(BountyService::class.java)
 
     val authRepository = AuthRepository()
 
-    private val activeCalls : MutableList<Call<*>> = mutableListOf()
+    private val activeCalls: MutableList<Call<*>> = mutableListOf()
 
-    fun getOffers(listener : OnCompleteListener<List<OfferModel>>) {
+    fun getOffers(listener: OnCompleteListener<List<OfferModel>>) {
         getOffers(listener, false)
     }
-    private fun getOffers(listener : OnCompleteListener<List<OfferModel>>, hasRecover401: Boolean = false) {
+
+    private fun getOffers(
+        listener: OnCompleteListener<List<OfferModel>>,
+        hasRecover401: Boolean = false
+    ) {
         val call = service.getOffers(Session.getAuthorizationHeader())
         call.enqueue(object : Callback<OfferListResponseViewModel?> {
-            override fun onResponse(call: Call<OfferListResponseViewModel?>, response: Response<OfferListResponseViewModel?>) {
+            override fun onResponse(
+                call: Call<OfferListResponseViewModel?>,
+                response: Response<OfferListResponseViewModel?>
+            ) {
                 Debug.logDebug(response.toString())
                 if (response.isSuccessful) {
                     val result = response.body()
                     listener.onComplete(result?.data, null)
                 } else {
-                    when(response.code()) {
+                    when (response.code()) {
                         401 -> {
                             if (!hasRecover401) {
-                                authRepository.refreshToken(Session.getRefreshToken(), object : OnCompleteListener<TokenResponse?>() {
-                                    override fun onComplete(value: TokenResponse?, error: Throwable?) {
-                                        if (error != null) {
-                                            listener.onComplete(null, error)
-                                            return
+                                authRepository.refreshToken(
+                                    Session.getRefreshToken(),
+                                    object : OnCompleteListener<TokenResponse?>() {
+                                        override fun onComplete(
+                                            value: TokenResponse?,
+                                            error: Throwable?
+                                        ) {
+                                            if (error != null) {
+                                                listener.onComplete(null, error)
+                                                return
+                                            }
+                                            getOffers(listener, true)
                                         }
-                                        getOffers(listener, true)
-                                    }
-                                })
+                                    })
                             } else {
                                 listener.onComplete(null, UnauthorizedException())
                                 return
@@ -80,14 +92,27 @@ class BountyRepository : BackendRepository() {
         activeCalls.add(call)
     }
 
-    fun claimBonusBounty(id: String, birthDay: String?, listener: OnCompleteListener<BountyReferralViewModel>) {
+    fun claimBonusBounty(
+        id: String,
+        birthDay: String?,
+        listener: OnCompleteListener<BountyReferralViewModel>
+    ) {
         claimBonusBounty(id, birthDay, listener, false)
     }
-    private fun claimBonusBounty(id: String, birthDay: String?, listener: OnCompleteListener<BountyReferralViewModel>, hasRecover401: Boolean) {
+
+    private fun claimBonusBounty(
+        id: String,
+        birthDay: String?,
+        listener: OnCompleteListener<BountyReferralViewModel>,
+        hasRecover401: Boolean
+    ) {
         val params = GenesisBonusBountyCreateModel(id, birthDay)
         val call = service.claimBonusBounty(Session.getAuthorizationHeader(), params)
-        call.enqueue(object: Callback<BountyReferralViewModel?> {
-            override fun onResponse(call: Call<BountyReferralViewModel?>, response: Response<BountyReferralViewModel?>) {
+        call.enqueue(object : Callback<BountyReferralViewModel?> {
+            override fun onResponse(
+                call: Call<BountyReferralViewModel?>,
+                response: Response<BountyReferralViewModel?>
+            ) {
                 Debug.logDebug(response.toString())
                 if (response.isSuccessful) {
                     val resp = response.body()
@@ -97,32 +122,48 @@ class BountyRepository : BackendRepository() {
                         listener.onComplete(null, null)
                     }
                 } else {
-                    when(response.code()) {
+                    when (response.code()) {
                         401 -> {
                             if (!hasRecover401) {
-                                authRepository.refreshToken(Session.getRefreshToken(), object : OnCompleteListener<TokenResponse?>() {
-                                    override fun onComplete(value: TokenResponse?, error: Throwable?) {
-                                        if (error != null) {
-                                            listener.onComplete(null, error)
-                                            return
+                                authRepository.refreshToken(
+                                    Session.getRefreshToken(),
+                                    object : OnCompleteListener<TokenResponse?>() {
+                                        override fun onComplete(
+                                            value: TokenResponse?,
+                                            error: Throwable?
+                                        ) {
+                                            if (error != null) {
+                                                listener.onComplete(null, error)
+                                                return
+                                            }
+                                            claimBonusBounty(id, birthDay, listener, true)
                                         }
-                                        claimBonusBounty(id, birthDay, listener, true)
-                                    }
-                                })
+                                    })
                             } else {
                                 listener.onComplete(null, UnauthorizedException())
                                 return
                             }
                         }
-                        409 -> listener.onComplete(null, RemoteException(
-                                ShaktiApplication.getContext().getString(R.string.bonus__409_claimed_already),
-                                response.code()))
-                        410 -> listener.onComplete(null, RemoteException(
-                                ShaktiApplication.getContext().getString(R.string.bonus__410_expired),
-                                response.code()))
-                        400 -> listener.onComplete(null, RemoteException(
+                        409 -> listener.onComplete(
+                            null, RemoteException(
+                                ShaktiApplication.getContext()
+                                    .getString(R.string.bonus__409_claimed_already),
+                                response.code()
+                            )
+                        )
+                        410 -> listener.onComplete(
+                            null, RemoteException(
+                                ShaktiApplication.getContext()
+                                    .getString(R.string.bonus__410_expired),
+                                response.code()
+                            )
+                        )
+                        400 -> listener.onComplete(
+                            null, RemoteException(
                                 getResponseErrorMessage("errorMessage", response.errorBody()),
-                                response.code()))
+                                response.code()
+                            )
+                        )
                         else -> returnError(listener, response)
                     }
                 }
@@ -135,37 +176,67 @@ class BountyRepository : BackendRepository() {
         activeCalls.add(call)
     }
 
-    fun registerReferral(emailOrMobile: String, emailRegistration: Boolean, promoCode: String, listener: OnCompleteListener<RegisterReferralResponseModel>) {
+    fun registerReferral(
+        emailOrMobile: String,
+        emailRegistration: Boolean,
+        promoCode: String,
+        listener: OnCompleteListener<RegisterReferralResponseModel>
+    ) {
         registerReferral(emailOrMobile, emailRegistration, promoCode, listener, false)
     }
-    private fun registerReferral(emailOrMobile: String, emailRegistration: Boolean, promoCode: String, listener: OnCompleteListener<RegisterReferralResponseModel>, hasRecover401: Boolean) {
+
+    private fun registerReferral(
+        emailOrMobile: String,
+        emailRegistration: Boolean,
+        promoCode: String,
+        listener: OnCompleteListener<RegisterReferralResponseModel>,
+        hasRecover401: Boolean
+    ) {
         val params = RegisterReferralModel(emailOrMobile, emailRegistration, promoCode)
         val call = service.registerReferral(Session.getAuthorizationHeader(), params)
         call.enqueue(object : Callback<RegisterReferralResponseModel?> {
-            override fun onResponse(call: Call<RegisterReferralResponseModel?>, response: Response<RegisterReferralResponseModel?>) {
+            override fun onResponse(
+                call: Call<RegisterReferralResponseModel?>,
+                response: Response<RegisterReferralResponseModel?>
+            ) {
                 Debug.logDebug(response.toString())
                 if (response.isSuccessful) {
                     listener.onComplete(response.body(), null)
                 } else {
-                    when(response.code()) {
+                    when (response.code()) {
                         401 -> {
                             if (!hasRecover401) {
-                                authRepository.refreshToken(Session.getRefreshToken(), object : OnCompleteListener<TokenResponse?>() {
-                                    override fun onComplete(value: TokenResponse?, error: Throwable?) {
-                                        if (error != null) {
-                                            listener.onComplete(null, error)
-                                            return
+                                authRepository.refreshToken(
+                                    Session.getRefreshToken(),
+                                    object : OnCompleteListener<TokenResponse?>() {
+                                        override fun onComplete(
+                                            value: TokenResponse?,
+                                            error: Throwable?
+                                        ) {
+                                            if (error != null) {
+                                                listener.onComplete(null, error)
+                                                return
+                                            }
+                                            registerReferral(
+                                                emailOrMobile,
+                                                emailRegistration,
+                                                promoCode,
+                                                listener,
+                                                true
+                                            )
                                         }
-                                        registerReferral(emailOrMobile, emailRegistration, promoCode, listener, true)
-                                    }
-                                })
+                                    })
                             } else {
                                 listener.onComplete(null, UnauthorizedException())
                                 return
                             }
                         }
-                        else -> listener.onComplete(null, RemoteException(
-                                getResponseErrorMessage("errorMessage", response.errorBody()), response.code()))
+                        else -> listener.onComplete(
+                            null, RemoteException(
+                                getResponseErrorMessage("errorMessage", response.errorBody()),
+                                response.code()
+                            )
+                        )
                     }
                 }
             }
@@ -178,35 +249,47 @@ class BountyRepository : BackendRepository() {
         activeCalls.add(call)
     }
 
-    fun getBounties(listener : OnCompleteListener<BountyReferralData?>) {
+    fun getBounties(listener: OnCompleteListener<BountyReferralData?>) {
         getBounties(listener, false)
     }
-    private fun getBounties(listener : OnCompleteListener<BountyReferralData?>, hasRecover401: Boolean) {
-        val call = service.getBounties(Session.getAuthorizationHeader());
+
+    private fun getBounties(
+        listener: OnCompleteListener<BountyReferralData?>,
+        hasRecover401: Boolean
+    ) {
+        val call = service.getBounties(Session.getAuthorizationHeader())
         call.enqueue(object : Callback<BountyReferralViewModel?> {
-            override fun onResponse(call: Call<BountyReferralViewModel?>, response: Response<BountyReferralViewModel?>) {
+            override fun onResponse(
+                call: Call<BountyReferralViewModel?>,
+                response: Response<BountyReferralViewModel?>
+            ) {
                 Debug.logDebug(response.toString())
-                Session.setWalletSessionToken(null);
+                Session.setWalletSessionToken(null)
                 if (response.isSuccessful) {
-                    val results : BountyReferralViewModel? = response.body()
+                    val results: BountyReferralViewModel? = response.body()
                     if (results != null) {
                         val message = results.message
-                        if (message != null) Debug.logDebug(message);
-                        listener.onComplete(results.data, null);
-                    } else listener.onComplete(null, IllegalStateException());
+                        if (message != null) Debug.logDebug(message)
+                        listener.onComplete(results.data, null)
+                    } else listener.onComplete(null, IllegalStateException())
                 } else {
-                    when(response.code()) {
+                    when (response.code()) {
                         401 -> {
                             if (!hasRecover401) {
-                                authRepository.refreshToken(Session.getRefreshToken(), object : OnCompleteListener<TokenResponse?>() {
-                                    override fun onComplete(value: TokenResponse?, error: Throwable?) {
-                                        if (error != null) {
-                                            listener.onComplete(null, error)
-                                            return
+                                authRepository.refreshToken(
+                                    Session.getRefreshToken(),
+                                    object : OnCompleteListener<TokenResponse?>() {
+                                        override fun onComplete(
+                                            value: TokenResponse?,
+                                            error: Throwable?
+                                        ) {
+                                            if (error != null) {
+                                                listener.onComplete(null, error)
+                                                return
+                                            }
+                                            getBounties(listener, true)
                                         }
-                                        getBounties(listener, true)
-                                    }
-                                })
+                                    })
                             } else {
                                 listener.onComplete(null, UnauthorizedException())
                                 return
@@ -224,30 +307,48 @@ class BountyRepository : BackendRepository() {
         activeCalls.add(call)
     }
 
-    fun getPromoCode(bountyId: String, media: String, listener: OnCompleteListener<PromotionalCodeResponseViewModel>) {
+    fun getPromoCode(
+        bountyId: String,
+        media: String,
+        listener: OnCompleteListener<PromotionalCodeResponseViewModel>
+    ) {
         getPromoCode(bountyId, media, listener, false)
     }
-    private fun getPromoCode(bountyId: String, media: String, listener: OnCompleteListener<PromotionalCodeResponseViewModel>, hasRecover401: Boolean) {
+
+    private fun getPromoCode(
+        bountyId: String,
+        media: String,
+        listener: OnCompleteListener<PromotionalCodeResponseViewModel>,
+        hasRecover401: Boolean
+    ) {
         val params = PromotionalCodeModel(media)
-        val call = service.promoCode(Session.getAuthorizationHeader(), bountyId, params);
+        val call = service.promoCode(Session.getAuthorizationHeader(), bountyId, params)
         call.enqueue(object : Callback<PromotionalCodeResponseViewModel> {
-            override fun onResponse(call: Call<PromotionalCodeResponseViewModel>, response: Response<PromotionalCodeResponseViewModel>) {
+            override fun onResponse(
+                call: Call<PromotionalCodeResponseViewModel>,
+                response: Response<PromotionalCodeResponseViewModel>
+            ) {
                 Debug.logDebug(response.toString())
                 if (response.isSuccessful) {
                     listener.onComplete(response.body(), null)
                 } else {
-                    when(response.code()) {
+                    when (response.code()) {
                         401 -> {
                             if (!hasRecover401) {
-                                authRepository.refreshToken(Session.getRefreshToken(), object : OnCompleteListener<TokenResponse?>() {
-                                    override fun onComplete(value: TokenResponse?, error: Throwable?) {
-                                        if (error != null) {
-                                            listener.onComplete(null, error)
-                                            return
+                                authRepository.refreshToken(
+                                    Session.getRefreshToken(),
+                                    object : OnCompleteListener<TokenResponse?>() {
+                                        override fun onComplete(
+                                            value: TokenResponse?,
+                                            error: Throwable?
+                                        ) {
+                                            if (error != null) {
+                                                listener.onComplete(null, error)
+                                                return
+                                            }
+                                            getPromoCode(bountyId, media, listener, true)
                                         }
-                                        getPromoCode(bountyId, media, listener, true)
-                                    }
-                                })
+                                    })
                             } else {
                                 listener.onComplete(null, UnauthorizedException())
                                 return
@@ -265,37 +366,67 @@ class BountyRepository : BackendRepository() {
         activeCalls.add(call)
     }
 
-    fun addReferral(bountyId: String, emailAddress: String?, phoneNumber: String?, listener: OnCompleteListener<CommonReferralResponseViewModel?>) {
+    fun addReferral(
+        bountyId: String,
+        emailAddress: String?,
+        phoneNumber: String?,
+        listener: OnCompleteListener<CommonReferralResponseViewModel?>
+    ) {
         addReferral(bountyId, emailAddress, phoneNumber, listener, false)
     }
-    private fun addReferral(bountyId: String, emailAddress: String?, phoneNumber: String?, listener: OnCompleteListener<CommonReferralResponseViewModel?>, hasRecover401: Boolean) {
+
+    private fun addReferral(
+        bountyId: String,
+        emailAddress: String?,
+        phoneNumber: String?,
+        listener: OnCompleteListener<CommonReferralResponseViewModel?>,
+        hasRecover401: Boolean
+    ) {
         val params = CommonReferralModel(emailAddress, phoneNumber)
         val call = service.addCommonReferral(Session.getAuthorizationHeader(), bountyId, params)
-        call.enqueue(object: Callback<CommonReferralResponseViewModel?> {
-            override fun onResponse(call: Call<CommonReferralResponseViewModel?>, response: Response<CommonReferralResponseViewModel?>) {
+        call.enqueue(object : Callback<CommonReferralResponseViewModel?> {
+            override fun onResponse(
+                call: Call<CommonReferralResponseViewModel?>,
+                response: Response<CommonReferralResponseViewModel?>
+            ) {
                 Debug.logDebug(response.toString())
                 if (response.isSuccessful) {
                     listener.onComplete(response.body(), null)
                 } else {
-                    when(response.code()) {
+                    when (response.code()) {
                         401 -> {
                             if (!hasRecover401) {
-                                authRepository.refreshToken(Session.getRefreshToken(), object : OnCompleteListener<TokenResponse?>() {
-                                    override fun onComplete(value: TokenResponse?, error: Throwable?) {
-                                        if (error != null) {
-                                            listener.onComplete(null, error)
-                                            return
+                                authRepository.refreshToken(
+                                    Session.getRefreshToken(),
+                                    object : OnCompleteListener<TokenResponse?>() {
+                                        override fun onComplete(
+                                            value: TokenResponse?,
+                                            error: Throwable?
+                                        ) {
+                                            if (error != null) {
+                                                listener.onComplete(null, error)
+                                                return
+                                            }
+                                            addReferral(
+                                                bountyId,
+                                                emailAddress,
+                                                phoneNumber,
+                                                listener,
+                                                true
+                                            )
                                         }
-                                        addReferral(bountyId, emailAddress, phoneNumber, listener, true)
-                                    }
-                                })
+                                    })
                             } else {
                                 listener.onComplete(null, UnauthorizedException())
                                 return
                             }
                         }
-                        400 -> listener.onComplete(null, RemoteException(
-                                getResponseErrorMessage("errorMessage", response.errorBody()), response.code()))
+                        400 -> listener.onComplete(
+                            null, RemoteException(
+                                getResponseErrorMessage("errorMessage", response.errorBody()),
+                                response.code()
+                            )
+                        )
                         else -> returnError(listener, response)
                     }
                 }
@@ -309,30 +440,48 @@ class BountyRepository : BackendRepository() {
         activeCalls.add(call)
     }
 
-    fun updateGrantOption(bountyId: String, option: String, listener: OnCompleteListener<BountyGrantOptionInfoViewModel?>) {
+    fun updateGrantOption(
+        bountyId: String,
+        option: String,
+        listener: OnCompleteListener<BountyGrantOptionInfoViewModel?>
+    ) {
         updateGrantOption(bountyId, option, listener, false)
     }
-    private fun updateGrantOption(bountyId: String, option: String, listener: OnCompleteListener<BountyGrantOptionInfoViewModel?>, hasRecover401: Boolean) {
+
+    private fun updateGrantOption(
+        bountyId: String,
+        option: String,
+        listener: OnCompleteListener<BountyGrantOptionInfoViewModel?>,
+        hasRecover401: Boolean
+    ) {
         val params = BountyGrantOptionInfoModel(option)
         val call = service.grantOptions(Session.getAuthorizationHeader(), bountyId, params)
         call.enqueue(object : Callback<BountyGrantOptionInfoViewModel> {
-            override fun onResponse(call: Call<BountyGrantOptionInfoViewModel>, response: Response<BountyGrantOptionInfoViewModel>) {
+            override fun onResponse(
+                call: Call<BountyGrantOptionInfoViewModel>,
+                response: Response<BountyGrantOptionInfoViewModel>
+            ) {
                 Debug.logDebug(response.toString())
                 if (response.isSuccessful) {
                     listener.onComplete(response.body(), null)
                 } else {
-                    when(response.code()) {
+                    when (response.code()) {
                         401 -> {
                             if (!hasRecover401) {
-                                authRepository.refreshToken(Session.getRefreshToken(), object : OnCompleteListener<TokenResponse?>() {
-                                    override fun onComplete(value: TokenResponse?, error: Throwable?) {
-                                        if (error != null) {
-                                            listener.onComplete(null, error)
-                                            return
+                                authRepository.refreshToken(
+                                    Session.getRefreshToken(),
+                                    object : OnCompleteListener<TokenResponse?>() {
+                                        override fun onComplete(
+                                            value: TokenResponse?,
+                                            error: Throwable?
+                                        ) {
+                                            if (error != null) {
+                                                listener.onComplete(null, error)
+                                                return
+                                            }
+                                            updateGrantOption(bountyId, option, listener, true)
                                         }
-                                        updateGrantOption(bountyId, option, listener, true)
-                                    }
-                                })
+                                    })
                             } else {
                                 listener.onComplete(null, UnauthorizedException())
                                 return
@@ -351,30 +500,56 @@ class BountyRepository : BackendRepository() {
         activeCalls.add(call)
     }
 
-    fun updateInfluenceCount(bountyId: String, influenceCount: Int, media: String, listener: OnCompleteListener<CommonReferralResponseViewModel?>) {
+    fun updateInfluenceCount(
+        bountyId: String,
+        influenceCount: Int,
+        media: String,
+        listener: OnCompleteListener<CommonReferralResponseViewModel?>
+    ) {
         updateInfluenceCount(bountyId, influenceCount, media, listener, false)
     }
-    private fun updateInfluenceCount(bountyId: String, influenceCount: Int, media: String, listener: OnCompleteListener<CommonReferralResponseViewModel?>, hasRecover401: Boolean) {
+
+    private fun updateInfluenceCount(
+        bountyId: String,
+        influenceCount: Int,
+        media: String,
+        listener: OnCompleteListener<CommonReferralResponseViewModel?>,
+        hasRecover401: Boolean
+    ) {
         val params = InfluenceModel(influenceCount, media)
         val call = service.setInfluence(Session.getAuthorizationHeader(), bountyId, params)
         call.enqueue(object : Callback<CommonReferralResponseViewModel?> {
-            override fun onResponse(call: Call<CommonReferralResponseViewModel?>, response: Response<CommonReferralResponseViewModel?>) {
+            override fun onResponse(
+                call: Call<CommonReferralResponseViewModel?>,
+                response: Response<CommonReferralResponseViewModel?>
+            ) {
                 Debug.logDebug(response.toString())
                 if (response.isSuccessful) {
                     listener.onComplete(response.body(), null)
                 } else {
-                    when(response.code()) {
+                    when (response.code()) {
                         401 -> {
                             if (!hasRecover401) {
-                                authRepository.refreshToken(Session.getRefreshToken(), object : OnCompleteListener<TokenResponse?>() {
-                                    override fun onComplete(value: TokenResponse?, error: Throwable?) {
-                                        if (error != null) {
-                                            listener.onComplete(null, error)
-                                            return
+                                authRepository.refreshToken(
+                                    Session.getRefreshToken(),
+                                    object : OnCompleteListener<TokenResponse?>() {
+                                        override fun onComplete(
+                                            value: TokenResponse?,
+                                            error: Throwable?
+                                        ) {
+                                            if (error != null) {
+                                                listener.onComplete(null, error)
+                                                return
+                                            }
+                                            updateInfluenceCount(
+                                                bountyId,
+                                                influenceCount,
+                                                media,
+                                                listener,
+                                                true
+                                            )
                                         }
-                                        updateInfluenceCount(bountyId, influenceCount, media, listener, true)
-                                    }
-                                })
+                                    })
                             } else {
                                 listener.onComplete(null, UnauthorizedException())
                                 return
@@ -393,29 +568,45 @@ class BountyRepository : BackendRepository() {
         activeCalls.add(call)
     }
 
-    fun getProgress(bountyId: String, listener: OnCompleteListener<ProgressingStatusListResponseViewModel?>) {
+    fun getProgress(
+        bountyId: String,
+        listener: OnCompleteListener<ProgressingStatusListResponseViewModel?>
+    ) {
         getProgress(bountyId, listener, false)
     }
-    private fun getProgress(bountyId: String, listener: OnCompleteListener<ProgressingStatusListResponseViewModel?>, hasRecover401: Boolean) {
+
+    private fun getProgress(
+        bountyId: String,
+        listener: OnCompleteListener<ProgressingStatusListResponseViewModel?>,
+        hasRecover401: Boolean
+    ) {
         val call = service.getProgressingData(Session.getAuthorizationHeader(), bountyId)
         call.enqueue(object : Callback<ProgressingStatusListResponseViewModel?> {
-            override fun onResponse(call: Call<ProgressingStatusListResponseViewModel?>, response: Response<ProgressingStatusListResponseViewModel?>) {
+            override fun onResponse(
+                call: Call<ProgressingStatusListResponseViewModel?>,
+                response: Response<ProgressingStatusListResponseViewModel?>
+            ) {
                 Debug.logDebug(response.toString())
                 if (response.isSuccessful) {
                     listener.onComplete(response.body(), null)
                 } else {
-                    when(response.code()) {
+                    when (response.code()) {
                         401 -> {
                             if (!hasRecover401) {
-                                authRepository.refreshToken(Session.getRefreshToken(), object : OnCompleteListener<TokenResponse?>() {
-                                    override fun onComplete(value: TokenResponse?, error: Throwable?) {
-                                        if (error != null) {
-                                            listener.onComplete(null, error)
-                                            return
+                                authRepository.refreshToken(
+                                    Session.getRefreshToken(),
+                                    object : OnCompleteListener<TokenResponse?>() {
+                                        override fun onComplete(
+                                            value: TokenResponse?,
+                                            error: Throwable?
+                                        ) {
+                                            if (error != null) {
+                                                listener.onComplete(null, error)
+                                                return
+                                            }
+                                            getProgress(bountyId, listener, true)
                                         }
-                                        getProgress(bountyId, listener, true)
-                                    }
-                                })
+                                    })
                             } else {
                                 listener.onComplete(null, UnauthorizedException())
                                 return
@@ -426,7 +617,10 @@ class BountyRepository : BackendRepository() {
                 }
             }
 
-            override fun onFailure(call: Call<ProgressingStatusListResponseViewModel?>, t: Throwable) {
+            override fun onFailure(
+                call: Call<ProgressingStatusListResponseViewModel?>,
+                t: Throwable
+            ) {
                 returnError(listener, t)
             }
 
@@ -437,44 +631,64 @@ class BountyRepository : BackendRepository() {
     fun getEffortRate(bountyId: String, listener: OnCompleteListener<List<EffortRate>?>) {
         getEffortRate(bountyId, listener, false)
     }
-    private fun getEffortRate(bountyId: String, listener: OnCompleteListener<List<EffortRate>?>, hasRecover401: Boolean) {
+
+    private fun getEffortRate(
+        bountyId: String,
+        listener: OnCompleteListener<List<EffortRate>?>,
+        hasRecover401: Boolean
+    ) {
         val call = service.getEffortRate(Session.getAuthorizationHeader(), bountyId)
         call.enqueue(object : Callback<EffortStatusListResponseViewModel?> {
-            override fun onResponse(call: Call<EffortStatusListResponseViewModel?>, response: Response<EffortStatusListResponseViewModel?>) {
+            override fun onResponse(
+                call: Call<EffortStatusListResponseViewModel?>,
+                response: Response<EffortStatusListResponseViewModel?>
+            ) {
                 Debug.logDebug(response.toString())
                 if (response.isSuccessful) {
                     val resultList = arrayListOf<EffortRate>()
                     val resp = response.body()
                     if (resp?.data != null && resp.data!!.size > 0) {
                         for (item in resp.data!! as List<Map<String, Any?>>) {
-                            resultList.add(EffortRate(
+                            resultList.add(
+                                EffortRate(
                                     item["media"] as String,
                                     item["convertedPercentage"] as Int,
                                     item["progressingPercentage"] as Int,
-                                    item["influencePercentage"] as Int))
+                                    item["influencePercentage"] as Int
+                                )
+                            )
                         }
                     }
                     listener.onComplete(resultList, null)
                 } else {
-                    when(response.code()) {
+                    when (response.code()) {
                         401 -> {
                             if (!hasRecover401) {
-                                authRepository.refreshToken(Session.getRefreshToken(), object : OnCompleteListener<TokenResponse?>() {
-                                    override fun onComplete(value: TokenResponse?, error: Throwable?) {
-                                        if (error != null) {
-                                            listener.onComplete(null, error)
-                                            return
+                                authRepository.refreshToken(
+                                    Session.getRefreshToken(),
+                                    object : OnCompleteListener<TokenResponse?>() {
+                                        override fun onComplete(
+                                            value: TokenResponse?,
+                                            error: Throwable?
+                                        ) {
+                                            if (error != null) {
+                                                listener.onComplete(null, error)
+                                                return
+                                            }
+                                            getEffortRate(bountyId, listener, true)
                                         }
-                                        getEffortRate(bountyId, listener, true)
-                                    }
-                                })
+                                    })
                             } else {
                                 listener.onComplete(null, UnauthorizedException())
                                 return
                             }
                         }
-                        else -> listener.onComplete(null, RemoteException(
-                                getResponseErrorMessage("errorMessage", response.errorBody()), response.code()))
+                        else -> listener.onComplete(
+                            null, RemoteException(
+                                getResponseErrorMessage("errorMessage", response.errorBody()),
+                                response.code()
+                            )
+                        )
                     }
                 }
             }
@@ -487,29 +701,41 @@ class BountyRepository : BackendRepository() {
         activeCalls.add(call)
     }
 
-    fun generateQR(listener : OnCompleteListener<QRCodeResponseViewModel?>) {
+    fun generateQR(listener: OnCompleteListener<QRCodeResponseViewModel?>) {
         generateQR(listener, false)
     }
-    private fun generateQR(listener : OnCompleteListener<QRCodeResponseViewModel?>, hasRecover401: Boolean) {
+
+    private fun generateQR(
+        listener: OnCompleteListener<QRCodeResponseViewModel?>,
+        hasRecover401: Boolean
+    ) {
         val call = service.generateQR(Session.getAuthorizationHeader())
         call.enqueue(object : Callback<QRCodeResponseViewModel?> {
-            override fun onResponse(call: Call<QRCodeResponseViewModel?>, response: Response<QRCodeResponseViewModel?>) {
+            override fun onResponse(
+                call: Call<QRCodeResponseViewModel?>,
+                response: Response<QRCodeResponseViewModel?>
+            ) {
                 Debug.logDebug(response.toString())
                 if (response.isSuccessful) {
                     listener.onComplete(response.body(), null)
                 } else {
-                    when(response.code()) {
+                    when (response.code()) {
                         401 -> {
                             if (!hasRecover401) {
-                                authRepository.refreshToken(Session.getRefreshToken(), object : OnCompleteListener<TokenResponse?>() {
-                                    override fun onComplete(value: TokenResponse?, error: Throwable?) {
-                                        if (error != null) {
-                                            listener.onComplete(null, error)
-                                            return
+                                authRepository.refreshToken(
+                                    Session.getRefreshToken(),
+                                    object : OnCompleteListener<TokenResponse?>() {
+                                        override fun onComplete(
+                                            value: TokenResponse?,
+                                            error: Throwable?
+                                        ) {
+                                            if (error != null) {
+                                                listener.onComplete(null, error)
+                                                return
+                                            }
+                                            generateQR(listener, true)
                                         }
-                                        generateQR(listener, true)
-                                    }
-                                })
+                                    })
                             } else {
                                 listener.onComplete(null, UnauthorizedException())
                                 return

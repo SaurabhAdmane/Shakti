@@ -1,18 +1,14 @@
 package com.shakticoin.app.api.wallet;
 
-public class
-
-CoinModel {
+public class CoinModel {
     public Integer addressNumber = 0;
     public String cacheBytes = "";
-    private String messageForRecipient;
     public String sessionToken;
-    private String toAddress;
     public String toEmail;
-
     public String walletBytes;
     public String passphrase;
-
+    private String messageForRecipient;
+    private String toAddress;
     private String valueInToshi;
 
     public Integer getAddressNumber() {
