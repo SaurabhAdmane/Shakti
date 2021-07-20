@@ -142,21 +142,20 @@ class RegActivity : AppCompatActivity() {
     fun onVerifyPhone(v: View?) {
         imm?.hideSoftInputFromWindow(binding.root.windowToken, 0)
         val self: AppCompatActivity = this
-// todo Saurabh need to check need to send on checkPhoneNumberStatus method
-//        val countryCode = viewModel?.selectedCountryCode?.value?.countryCode
-//        if (TextUtils.isEmpty(countryCode)) {
-//            Toast.makeText(this, R.string.reg__mobile_no_code, Toast.LENGTH_SHORT).show()
-//            return;
-//        }
+        val countryCode = viewModel?.selectedCountryCode?.value?.countryCode
+        if (TextUtils.isEmpty(countryCode)) {
+            Toast.makeText(this, R.string.reg__mobile_no_code, Toast.LENGTH_SHORT).show()
+            return;
+        }
         val phoneNumber = viewModel?.phoneNumber?.value
-        if (TextUtils.isEmpty(phoneNumber) /*|| !Validator.isPhoneNumber(phoneNumber)*/) { // todo
+        if (TextUtils.isEmpty(phoneNumber)/* || !Validator.isPhoneNumber(phoneNumber)*/) {
             Toast.makeText(this, R.string.reg__mobile_validation_err, Toast.LENGTH_SHORT).show()
             return
         }
 
         viewModel?.progressOn?.value = true
         otpPhoneRepository.checkPhoneNumberStatus(
-            "+91",//todo hardcoded
+            countryCode!!,
             phoneNumber!!,
             object : OnCompleteListener<Boolean>() {
                 override fun onComplete(isVerified: Boolean?, error: Throwable?) {
@@ -168,17 +167,39 @@ class RegActivity : AppCompatActivity() {
                     }
 
                     if (isVerified != null && isVerified) {
-                        viewModel?.progressOn?.value = false
-                        supportFragmentManager
-                            .beginTransaction()
-                            .replace(binding.fragments.id, RegPasswordFragment())
-                            .addToBackStack(null)
-                            .commit()
+//                        viewModel?.progressOn?.value = false
+//                        supportFragmentManager
+//                            .beginTransaction()
+//                            .replace(binding.fragments.id, RegPasswordFragment())
+//                            .addToBackStack(null)
+//                            .commit()
+                        otpPhoneRepository.requestRegistration(
+                            countryCode,
+                            phoneNumber,
+                            object : OnCompleteListener<Void?>() {
+                                override fun onComplete(value: Void?, error: Throwable?) {
+                                    viewModel?.progressOn?.value = false
+                                    if (error != null) {
+                                        Toast.makeText(
+                                            self,
+                                            Debug.getFailureMsg(self, error),
+                                            Toast.LENGTH_LONG
+                                        ).show()
+                                        return
+                                    }
+                                    // error with code 409 allowed to reach this point
+                                    supportFragmentManager
+                                        .beginTransaction()
+                                        .replace(binding.fragments.id, RegVerifyMobileFragment())
+                                        .addToBackStack(null)
+                                        .commit()
+                                }
+                            })
                     } else {
                         otpPhoneRepository.requestRegistration(
-                            "+91",
+                            countryCode,
                             phoneNumber,
-                            object : OnCompleteListener<Void?>() { //todo hardcoded
+                            object : OnCompleteListener<Void?>() {
                                 override fun onComplete(value: Void?, error: Throwable?) {
                                     viewModel?.progressOn?.value = false
                                     if (error != null) {

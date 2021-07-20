@@ -52,7 +52,7 @@ class PhoneOTPRepository : BackendRepository() {
         listener: OnCompleteListener<Void?>
     ) {
         val parameters = MobileRegistrationRequest(countryCode, phoneNumber)
-        callReqReg = service.registrationRequest(Session.getAuthorizationHeader(),parameters)
+        callReqReg = service.registrationRequest(Session.getAuthorizationHeader(), parameters)
         callReqReg!!.enqueue(object : Callback<MainResponseBean?> {
             override fun onFailure(call: Call<MainResponseBean?>, t: Throwable) {
                 Debug.logDebug(t.message)
@@ -116,7 +116,7 @@ class PhoneOTPRepository : BackendRepository() {
         listener: OnCompleteListener<Boolean?>
     ) {
         val parameters = ConfirmRegistrationRequest(countryCode, mobileNo, code)
-        callConfReg = service.confirmRegistration(Session.getAuthorizationHeader(),parameters)
+        callConfReg = service.confirmRegistration(Session.getAuthorizationHeader(), parameters)
         callConfReg!!.enqueue(object : Callback<MainResponseBean?> {
             override fun onFailure(call: Call<MainResponseBean?>, t: Throwable) {
                 Debug.logDebug(t.message)
@@ -238,11 +238,23 @@ class PhoneOTPRepository : BackendRepository() {
                     }
                 } else {
                     returnError(listener, response)
+                    // todo hardcoded country code
+                    val list = ArrayList<IntlPhoneCountryCode>()
+                    list.add(IntlPhoneCountryCode("+91", "India", "IND"))
+                    list.add(IntlPhoneCountryCode("+1", "United States", "USA"))
+                    list.add(IntlPhoneCountryCode("+44", "United Kingdom", "GBR"))
+                    listener.onComplete(list.sortedBy { it.country }, null)
                 }
             }
 
             override fun onFailure(call: Call<List<IntlPhoneCountryCode>?>, t: Throwable) {
                 returnError(listener, t)
+                // todo hardcoded country code
+                val list = ArrayList<IntlPhoneCountryCode>()
+                list.add(IntlPhoneCountryCode("+91", "India", "IND"))
+                list.add(IntlPhoneCountryCode("+1", "United States", "USA"))
+                list.add(IntlPhoneCountryCode("+44", "United Kingdom", "GBR"))
+                listener.onComplete(list.sortedBy { it.country }, null)
             }
         })
     }

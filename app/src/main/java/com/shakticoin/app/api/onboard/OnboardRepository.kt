@@ -57,7 +57,7 @@ class OnboardRepository : BackendRepository() {
         parameters.countryCode = countryCode
         parameters.mobileNo = phoneNumber
         parameters.password = password
-        callAddUsr = onboardService.addUser(parameters)
+        callAddUsr = onboardService.addUser(parameters = parameters)
         callAddUsr!!.enqueue(object : Callback<ResponseBean?> {
             override fun onFailure(call: Call<ResponseBean?>, t: Throwable) {
                 return returnError(listener, t)

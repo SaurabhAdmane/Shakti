@@ -1,13 +1,15 @@
 package com.shakticoin.app.api.onboard
 
+import com.shakticoin.app.api.Session
 import retrofit2.Call
 import retrofit2.http.*
 
 interface OnboardService {
 
     @Headers("Content-Type: application/json", "Accept: application/json")
-    @POST("onboardShakti/users")
-    fun addUser(@Body parameters: OnboardShaktiModel) : Call<ResponseBean?>
+    @POST("users")
+    fun addUser(@Header("Authorization") authorization: String? = Session.getAuthorizationHeader(),
+                @Body parameters: OnboardShaktiModel) : Call<ResponseBean?>
 
     @Headers("Content-Type: application/json", "Accept: application/json")
     @POST("onboardShakti/users/password/change")
