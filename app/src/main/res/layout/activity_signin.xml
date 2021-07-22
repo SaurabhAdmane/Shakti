@@ -62,7 +62,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
-                        android:text="amitzkumar001@gmail.com"
+                        android:text="s.admane02@gmail.com"
                         android:hint="@string/hint_email_address"
                         android:inputType="textEmailAddress" />
 
@@ -91,7 +91,7 @@
                         android:layout_height="wrap_content"
                         android:ems="10"
                         android:hint="@string/password"
-                        android:text="Amit@123"
+                        android:text="Pass@12345"
                         android:imeOptions="actionDone"
                         android:inputType="textPassword" />
 

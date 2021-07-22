@@ -12,17 +12,18 @@ interface OnboardService {
                 @Body parameters: OnboardShaktiModel) : Call<ResponseBean?>
 
     @Headers("Content-Type: application/json", "Accept: application/json")
-    @POST("onboardShakti/users/password/change")
+    @POST("users/password/change")
     fun changePassword(@Header("Authorization") authorization: String,
                        @Body parameters: UpdatePasswordModel) : Call<ResponseBean?>
+
     @Headers("Accept: application/json")
-    @POST("onboardShakti/wallet")
+    @POST("wallet")
     fun createWallet(@Header("Authorization") authorization: String?,
                      @Body parameters: WalletRequest) : Call<ResponseBean?>
 
 
     @Headers("Accept: application/json")
-    @GET("onboardShakti/users/password/status")
+    @GET("users/status")
     fun getPasswordRecStatus(@Header("Authorization") authorization: String?) : Call<ResponseBean?>
 
 
