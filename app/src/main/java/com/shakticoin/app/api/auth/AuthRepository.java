@@ -38,7 +38,7 @@ public class AuthRepository extends BackendRepository {
      * Login to the backend and return user's information if successful.
      */
     public void login(@NonNull String username, @NonNull String password, boolean rememberMe, @NonNull OnCompleteListener<TokenResponse> listener) {
-        Call<TokenResponse> call = loginService.token(IAM_AUTH_HEADER, "password", "openid+profile", username, password);
+        Call<TokenResponse> call = loginService.token(IAM_AUTH_HEADER, "password", "openid permission profile shakti_id email mobile_phone", username, password);
         call.enqueue(new Callback<TokenResponse>() {
             @Override
             public void onResponse(@NonNull Call<TokenResponse> call, @NonNull Response<TokenResponse> response) {

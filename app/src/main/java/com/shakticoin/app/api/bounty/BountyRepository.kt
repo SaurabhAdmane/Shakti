@@ -20,7 +20,8 @@ class BountyRepository : BackendRepository() {
     var httpLoggingInterceptor = HttpLoggingInterceptor()
     private val http = OkHttpClient.Builder()
         .readTimeout(30, TimeUnit.SECONDS)
-        .connectTimeout(30, TimeUnit.SECONDS).addInterceptor(
+        .connectTimeout(30, TimeUnit.SECONDS)
+        .addInterceptor(
             if (BuildConfig.DEBUG) httpLoggingInterceptor.setLevel(
                 HttpLoggingInterceptor.Level.BODY
             ) else httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.NONE)

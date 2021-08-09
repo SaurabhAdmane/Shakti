@@ -1,5 +1,7 @@
 package com.shakticoin.app.api;
 
+import com.shakticoin.app.BuildConfig;
+
 import java.security.cert.CertificateException;
 
 import javax.net.ssl.HostnameVerifier;
@@ -10,12 +12,15 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 
 public class UnsafeHttpClient {
+    static HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
+
     public static OkHttpClient getUnsafeOkHttpClient() {
         try {
             // Create a trust manager that does not validate certificate chains
-            final TrustManager[] trustAllCerts = new TrustManager[] {
+            final TrustManager[] trustAllCerts = new TrustManager[]{
                     new X509TrustManager() {
                         @Override
                         public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
@@ -40,7 +45,7 @@ public class UnsafeHttpClient {
             final SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
 
             OkHttpClient.Builder builder = new OkHttpClient.Builder();
-            builder.sslSocketFactory(sslSocketFactory, (X509TrustManager)trustAllCerts[0]);
+            builder.sslSocketFactory(sslSocketFactory, (X509TrustManager) trustAllCerts[0]);
             builder.hostnameVerifier(new HostnameVerifier() {
                 @Override
                 public boolean verify(String hostname, SSLSession session) {
@@ -48,7 +53,10 @@ public class UnsafeHttpClient {
                 }
             });
 
-            OkHttpClient okHttpClient = builder.build();
+            OkHttpClient okHttpClient = builder.addInterceptor(BuildConfig.DEBUG ? httpLoggingInterceptor.setLevel(
+                    HttpLoggingInterceptor.Level.BODY
+                    ) : httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.NONE)
+            ).build();
             return okHttpClient;
 
         } catch (Exception e) {
