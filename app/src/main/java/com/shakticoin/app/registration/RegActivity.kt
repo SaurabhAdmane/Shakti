@@ -5,6 +5,7 @@ import android.content.res.ColorStateList
 import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -33,6 +34,11 @@ class RegActivity : AppCompatActivity() {
 
     private var imm: InputMethodManager? = null
 
+//    companion object {
+//        @JvmStatic
+//        external fun createNewWallet(a: String?, b: String): String?
+//    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRegistrationBinding.inflate(layoutInflater)
@@ -40,7 +46,7 @@ class RegActivity : AppCompatActivity() {
         viewModel = ViewModelProviders.of(this).get(RegViewModel::class.java)
         binding.viewModel = viewModel
         setContentView(binding.root)
-
+//        Log.e("TAG", createNewWallet(null, "Admane"))
         viewModel?.currentStep?.observe(
             this,
             Observer<RegViewModel.Step> { t -> t?.let { updateIndicator(it) } })
@@ -145,7 +151,7 @@ class RegActivity : AppCompatActivity() {
         val countryCode = viewModel?.selectedCountryCode?.value?.countryCode
         if (TextUtils.isEmpty(countryCode)) {
             Toast.makeText(this, R.string.reg__mobile_no_code, Toast.LENGTH_SHORT).show()
-            return;
+            return
         }
         val phoneNumber = viewModel?.phoneNumber?.value
         if (TextUtils.isEmpty(phoneNumber)/* || !Validator.isPhoneNumber(phoneNumber)*/) {
@@ -302,6 +308,9 @@ class RegActivity : AppCompatActivity() {
 
         val self: AppCompatActivity = this
         viewModel?.progressOn?.value = true
+        // todo add wallet lib functions
+
+
         onboardRepository.addUser(viewModel?.emailAddress?.value!!,
             viewModel?.selectedCountryCode?.value?.countryCode!!,
             viewModel?.phoneNumber?.value!!,

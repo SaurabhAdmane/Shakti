@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Toast;
@@ -29,8 +30,13 @@ import com.shakticoin.app.wallet.WalletActivity;
 import java.util.Objects;
 
 public class SignInActivity extends AppCompatActivity {
-    private ActivitySigninBinding binding;
+//    static {
+//        Log.e("TAG", "Loads lib started..");
+//        System.loadLibrary("walletlib");
+//        Log.e("TAG", "Loads lib end..");
+//    }
 
+    private ActivitySigninBinding binding;
     private AuthRepository authRepository;
 
     @Override
